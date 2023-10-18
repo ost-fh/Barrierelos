@@ -11,6 +11,12 @@
     "preview": "vite preview",
     "openapi": "npx openapi-typescript openapi.yaml -o ./src/lib/api/v1.d.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.ost.ch/barrierelos/frontend"
+  },
+  "author": "Pascal Lehmann",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",

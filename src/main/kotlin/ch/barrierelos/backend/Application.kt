@@ -5,8 +5,9 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 class Application
+public class Application
 
-fun main(args: Array<String>)
+public fun main(args: Array<String>)
 {
   runApplication<Application>(*args)
 }

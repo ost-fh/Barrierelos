@@ -24,6 +24,10 @@ dependencies {
   implementation("org.yaml:snakeyaml:2.2")
 }
 
+kotlin {
+  explicitApi()
+}
+
 tasks.withType<KotlinCompile> {
   kotlinOptions {
     freeCompilerArgs += "-Xjsr305=strict"

@@ -2,6 +2,11 @@ server:
   port: 8030
 
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5040/barrierelos?stringtype=unspecified
+    username: barrierelos
+    password: password
+    driver-class-name: org.postgresql.Driver
   jpa:
     properties:
       hibernate:

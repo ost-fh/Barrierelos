@@ -23,6 +23,9 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-web:3.1.5")
   implementation("org.yaml:snakeyaml:2.2")
+
+  runtimeOnly("org.postgresql:postgresql:42.6.0")
+
 }
 
 kotlin {

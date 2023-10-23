@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "main": "dist/app.js",
   "scripts": {
-    "start:dev": "npx nodemon",
-    "start": "npm run build && node dist/app.js",
+    "start:dev": "npx nodemon --enable-source-maps",
+    "start": "npm run build && node dist/app.js --enable-source-maps",
     "lint": "eslint . --ext .ts",
     "build": "rimraf ./dist && tsc",
     "test": "echo \"No tests specified\" && exit 0"
@@ -28,5 +28,8 @@
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@cloudamqp/amqp-client": "^3.1.1"
   }
 }

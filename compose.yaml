@@ -1,0 +1,25 @@
+version: "3.9"
+
+name: barrierelos
+
+networks:
+  barrierelos:
+    driver: bridge
+
+volumes:
+  barrierelos-data: {}
+
+services:
+  database:
+    container_name: barrierelos-database
+    image: postgres:16.0
+    ports:
+      - "5040:5432"
+    environment:
+      - POSTGRES_DB=barrierelos
+      - POSTGRES_USER=barrierelos
+      - POSTGRES_PASSWORD=password
+    networks:
+      - barrierelos
+    volumes:
+      - barrierelos-data:/var/lib/postgresql/data

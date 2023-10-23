@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   kotlin("jvm") version "1.8.22"
+  kotlin("plugin.serialization") version "1.8.22"
   kotlin("plugin.spring") version "1.8.22"
   kotlin("plugin.jpa") version "1.8.22"
   id("org.springframework.boot") version "3.1.5"
@@ -20,6 +21,7 @@ repositories {
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-web:3.1.5")
   implementation("org.yaml:snakeyaml:2.2")

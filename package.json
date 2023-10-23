@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "start:dev": "npx nodemon --enable-source-maps",
-    "start": "npm run build && node dist/app.js --enable-source-maps",
+    "start": "node dist/app.js --enable-source-maps",
     "lint": "eslint . --ext .ts",
     "build": "rimraf ./dist && tsc",
     "test": "echo \"No tests specified\" && exit 0"

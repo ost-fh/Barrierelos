@@ -10,6 +10,21 @@ volumes:
   barrierelos-data: {}
 
 services:
+  backend:
+    container_name: barrierelos-backend
+    build:
+      dockerfile: Dockerfile
+    image: ch/barrierelos/backend:latest
+    ports:
+      - "8030:8030"
+    environment:
+      - spring.datasource.url=jdbc:postgresql://barrierelos-database:5432/barrierelos?stringtype=unspecified
+      - POSTGRES_USER=barrierelos
+      - POSTGRES_PASSWORD=password
+    networks:
+      - barrierelos
+    volumes:
+      - barrierelos-data:/var/lib/barrierelos/data
   database:
     container_name: barrierelos-database
     image: postgres:16.0

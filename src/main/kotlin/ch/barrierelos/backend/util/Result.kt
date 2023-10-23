@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.utils
+package ch.barrierelos.backend.util
 
 import ch.barrierelos.backend.constants.Header
 import org.springframework.http.HttpHeaders

@@ -1,7 +1,7 @@
 package ch.barrierelos.backend.repository
 
-import ch.barrierelos.backend.utils.Result
-import ch.barrierelos.backend.utils.toResult
+import ch.barrierelos.backend.util.Result
+import ch.barrierelos.backend.util.toResult
 import ch.barrierelos.backend.message.enums.Order
 import jakarta.persistence.Id
 import org.springframework.data.domain.Page

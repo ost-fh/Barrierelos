@@ -1,0 +1,28 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run RabbitMQ" type="docker-deploy" factoryName="docker-image" server-name="Docker">
+    <deployment type="docker-image">
+      <settings>
+        <option name="imageTag" value="rabbitmq:3-management" />
+        <option name="containerName" value="rabbitmq" />
+        <option name="portBindings">
+          <list>
+            <DockerPortBindingImpl>
+              <option name="containerPort" value="5672" />
+              <option name="hostPort" value="5672" />
+            </DockerPortBindingImpl>
+            <DockerPortBindingImpl>
+              <option name="containerPort" value="15672" />
+              <option name="hostPort" value="8080" />
+            </DockerPortBindingImpl>
+          </list>
+        </option>
+        <option name="commandLineOptions" value="--network barrierelos-dev --hostname my-rabbit" />
+        <option name="showCommandPreview" value="true" />
+      </settings>
+    </deployment>
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Create Local Docker Network" run_configuration_type="ShConfigurationType" />
+      <option name="LaunchBrowser.Before.Run" url="http://localhost:8080" />
+    </method>
+  </configuration>
+</component>

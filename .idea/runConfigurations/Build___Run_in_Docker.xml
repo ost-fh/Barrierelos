@@ -3,10 +3,13 @@
     <deployment type="dockerfile">
       <settings>
         <option name="imageTag" value="barrierelos-scanner:latest" />
-        <option name="containerName" value="" />
+        <option name="containerName" value="barrierelos-scanner" />
+        <option name="commandLineOptions" value="--network barrierelos-dev" />
         <option name="sourceFilePath" value="Dockerfile" />
       </settings>
     </deployment>
-    <method v="2" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Run RabbitMQ" run_configuration_type="docker-deploy" />
+    </method>
   </configuration>
 </component>

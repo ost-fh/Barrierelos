@@ -2,10 +2,12 @@
   "name": "barrierelos-scanner",
   "private": true,
   "version": "0.0.0",
-  "main": "dist/app.js",
+  "main": "dist/app.mjs",
+  "type": "module",
   "scripts": {
-    "start:dev": "npx nodemon --enable-source-maps",
-    "start": "node dist/app.js --enable-source-maps",
+    "start:rabbit": "docker run -d --hostname my-rabbit --expose 5672 rabbitmq:3",
+    "start:dev": "npx nodemon --inspect-brk --enable-source-maps",
+    "start": "node dist/app.mjs --enable-source-maps",
     "lint": "eslint . --ext .ts",
     "build": "rimraf ./dist && tsc",
     "test": "echo \"No tests specified\" && exit 0"
@@ -18,7 +20,7 @@
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@types/node": "^20.8.7",
-    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
     "eslint": "^8.52.0",
     "eslint-config-standard-with-typescript": "^39.1.1",
     "eslint-plugin-import": "^2.29.0",

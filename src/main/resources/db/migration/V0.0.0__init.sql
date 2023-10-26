@@ -17,10 +17,12 @@ CREATE TABLE "user"
 (
   "user_id" BIGSERIAL,
   "username" VARCHAR NOT NULL,
-  "password" VARCHAR NOT NULL,
   "firstname" VARCHAR NOT NULL,
   "lastname" VARCHAR NOT NULL,
   "email" VARCHAR NOT NULL,
+  "password" VARCHAR,
+  "issuer" VARCHAR,
+  "subject" VARCHAR,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("user_id")
 );

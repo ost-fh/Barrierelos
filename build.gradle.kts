@@ -11,10 +11,6 @@ plugins {
 group = "ch.barrierelos"
 version = "0.0.0-SNAPSHOT"
 
-java {
-  sourceCompatibility = JavaVersion.VERSION_17
-}
-
 repositories {
   mavenCentral()
 }
@@ -26,10 +22,15 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-security:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-web:3.1.5")
+  implementation("org.springframework.security:spring-security-oauth2-jose:6.1.5")
+  implementation("org.springframework.security:spring-security-oauth2-resource-server:6.1.5")
   implementation("org.yaml:snakeyaml:2.2")
 
   runtimeOnly("org.postgresql:postgresql:42.6.0")
+}
 
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
 }
 
 kotlin {

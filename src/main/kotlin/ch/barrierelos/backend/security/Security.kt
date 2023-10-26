@@ -28,7 +28,16 @@ public object Security
   
   public fun getRoles(): Set<RoleEnum>
   {
-    return SecurityContextHolder.getContext().authentication.authorities.map { RoleEnum.valueOf(it.authority.substringAfter("ROLE_")) }.toSet()
+    val principal = SecurityContextHolder.getContext().authentication.principal
+
+    if(principal is AuthenticationDetails)
+    {
+      return principal.getRoles()
+    }
+    else
+    {
+      throw exception()
+    }
   }
   
   public fun hasId(id: Long): Boolean

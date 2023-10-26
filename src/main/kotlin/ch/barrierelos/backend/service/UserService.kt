@@ -3,7 +3,6 @@ package ch.barrierelos.backend.service
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.entity.UserEntity
-import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.message.enums.Order
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.model.enums.RoleEnum
@@ -11,6 +10,7 @@ import ch.barrierelos.backend.repository.Repository.Companion.checkIfExists
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.security.Security
+import ch.barrierelos.backend.util.Result
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service

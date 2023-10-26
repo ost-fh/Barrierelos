@@ -1,26 +1,21 @@
 package ch.barrierelos.backend.security
 
+import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.model.enums.RoleEnum
 import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-public class AuthenticationDetails(private val userId: Long, private val username: String, private val password: String, roles: Collection<RoleEnum>) : UserDetails
+public class AuthenticationDetails public constructor(private val user: User, private val roles: Set<RoleEnum>, private val authorities: MutableCollection<GrantedAuthority>) : UserDetails
 {
-  private val roles: MutableCollection<GrantedAuthority>
+  public fun getUserId(): Long = this.user.id
 
-  init
-  {
-    this.roles = roles.map { role -> SimpleGrantedAuthority("ROLE_" + role.name) }.toMutableList()
-  }
+  public fun getRoles(): Set<RoleEnum> = this.roles
   
-  public fun getUserId(): Long = userId
+  override fun getAuthorities(): MutableCollection<GrantedAuthority> = this.authorities
   
-  override fun getAuthorities(): MutableCollection<GrantedAuthority> = roles
-  
-  override fun getPassword(): String = password
-  
-  override fun getUsername(): String = username
+  override fun getPassword(): String = this.user.password ?: ""
+
+  override fun getUsername(): String = this.user.username
   
   override fun isAccountNonExpired(): Boolean = true
   

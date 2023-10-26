@@ -11,9 +11,11 @@ public class UserEntity
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var userId: Long = 0,
   public var username: String,
-  public var password: String,
   public var firstname: String,
   public var lastname: String,
   public var email: String,
+  public var password: String?,
+  public var issuer: String?,
+  public var subject: String?,
   public var modified: Timestamp = Timestamp(0),
 )

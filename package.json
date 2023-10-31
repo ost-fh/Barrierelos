@@ -39,6 +39,7 @@
     "@cloudamqp/amqp-client": "^3.1.1",
     "axe-core": "^4.8.2",
     "dotenv": "^16.3.1",
-    "puppeteer": "^21.4.0"
+    "puppeteer": "^21.4.0",
+    "winston": "^3.11.0"
   }
 }

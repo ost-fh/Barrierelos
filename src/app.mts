@@ -1,12 +1,13 @@
 import "dotenv/config"
 import subscribe from "./rabbitmq.mjs";
+import Logger from "./logger.js";
 
 async function subscribeToQueue() {
     try {
         await subscribe()
     } catch (e) {
-        console.error(e)
-        console.log("Reconnecting to RabbitMQ...")
+        Logger.error(e)
+        Logger.info("Reconnecting to RabbitMQ...")
         setTimeout(subscribeToQueue, 3000)
     }
 }

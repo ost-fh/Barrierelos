@@ -3,6 +3,7 @@ import puppeteer, {Browser} from "puppeteer";
 import {AxePuppeteer} from "@axe-core/puppeteer";
 import {formatAnalysisResults, formatFailedWebpageResult, formatWebpageResults} from "./formatter.js";
 import {AnalysisJob, AnalysisResult, WebpageResult} from "./model.js";
+import Logger from "./logger.js";
 
 export async function analyzeWebsite(job: AnalysisJob): Promise<AnalysisResult> {
     const browser = await puppeteer.launch({headless: "new"});
@@ -26,7 +27,7 @@ async function analyzeWebpage(browser: Browser, baseUrl: string, path: string): 
         const results = await new AxePuppeteer(page).analyze();
         return formatWebpageResults(path, results)
     } catch (e) {
-        console.log(e)
+        Logger.info(e)
         return formatFailedWebpageResult(path, e)
     }
 }

@@ -1,5 +1,10 @@
 server:
   port: 8030
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 spring:
   datasource:
@@ -27,3 +32,12 @@ logging:
       hibernate:
         SQL: debug
         type: trace
+
+springdoc:
+  api-docs:
+    path: /openapi
+  swagger-ui:
+    path: /swagger/index.html
+    disable-swagger-default-url: true
+    operations-sorter: alpha
+    tags-sorter: alpha

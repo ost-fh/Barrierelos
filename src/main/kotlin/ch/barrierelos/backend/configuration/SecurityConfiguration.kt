@@ -38,6 +38,9 @@ public class SecurityConfiguration
         authorize
           .requestMatchers("$USER/**").hasAnyRole(RoleEnum.ADMIN.name)
           .requestMatchers("$USER_ROLE/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()
+          .requestMatchers("$DOCUMENTATION_OPENAPI.yaml").permitAll()
+          .requestMatchers("$DOCUMENTATION_SWAGGER/**").permitAll()
           .anyRequest().denyAll()
       }
   }

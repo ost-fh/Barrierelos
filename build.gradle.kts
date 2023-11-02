@@ -6,6 +6,7 @@ plugins {
   kotlin("plugin.spring") version "1.8.22"
   kotlin("plugin.jpa") version "1.8.22"
   id("org.springframework.boot") version "3.1.5"
+  id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
 }
 
 group = "ch.barrierelos"
@@ -19,6 +20,7 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
   implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-security:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-web:3.1.5")
@@ -35,6 +37,12 @@ java {
 
 kotlin {
   explicitApi()
+}
+
+openApi {
+  apiDocsUrl.set("http://localhost:8030/openapi")
+  outputDir.set(layout.buildDirectory.dir("openapi").get().asFile)
+  outputFileName.set("openapi.json")
 }
 
 tasks.withType<KotlinCompile> {

@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
-    "build": "tsc && vite build",
-    "test": "jest",
-    "openapi": "npx openapi-typescript openapi.yaml -o ./src/lib/api/v1.d.ts"
+    "openapi": "npx openapi-typescript openapi.yaml -o ./src/lib/api/v1.d.ts",
+    "build": "vite build",
+    "test:unittest": "jest",
+    "test:lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "test:typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",

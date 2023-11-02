@@ -5,12 +5,12 @@
   "main": "dist/app.mjs",
   "type": "module",
   "scripts": {
-    "start:rabbit": "docker run -d --hostname my-rabbit --expose 5672 rabbitmq:3",
     "start:dev": "npx nodemon --inspect-brk --enable-source-maps",
+    "start:rabbit": "docker run -d --hostname my-rabbit --expose 5672 rabbitmq:3",
     "start": "node dist/app.mjs --enable-source-maps",
-    "lint": "eslint . --ext .ts",
-    "build": "rimraf ./dist && tsc",
-    "test": "jest"
+    "build": "rimraf ./dist && tsc --project tsconfig.build.json",
+    "test:lint": "eslint . --ext .ts",
+    "test:unittest": "jest"
   },
   "repository": {
     "type": "git",

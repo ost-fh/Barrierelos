@@ -2,10 +2,11 @@ package ch.barrierelos.backend.controller
 
 import ch.barrierelos.backend.constants.Endpoint.USER_ROLE
 import ch.barrierelos.backend.constants.MediaType
-import ch.barrierelos.backend.util.toHeaders
-import ch.barrierelos.backend.message.enums.Order
 import ch.barrierelos.backend.model.UserRole
+import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.UserRoleService
+import ch.barrierelos.backend.util.toHeaders
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -38,11 +39,11 @@ public class UserRoleController
   }
   
   @GetMapping(value = [USER_ROLE], produces = [MediaType.JSON])
-  public fun getUserRoles(@RequestParam page: Int?, @RequestParam size: Int?, @RequestParam sort: String?, @RequestParam order: Order?, @RequestParam modifiedAfter: Long?): ResponseEntity<List<UserRole>>
+  public fun getUserRoles(@ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<UserRole>>
   {
-    val userRoleResult = this.userRoleService.getUserRoles(page, size, sort, order, modifiedAfter)
+    val userRolePage = this.userRoleService.getUserRoles(defaultParameters)
     
-    return ResponseEntity.status(HttpStatus.OK).headers(userRoleResult.toHeaders()).body(userRoleResult.content)
+    return ResponseEntity.status(HttpStatus.OK).headers(userRolePage.toHeaders()).body(userRolePage.content)
   }
   
   @GetMapping(value = ["$USER_ROLE/{id}"], produces = [MediaType.JSON])

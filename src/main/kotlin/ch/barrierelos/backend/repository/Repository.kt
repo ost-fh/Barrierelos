@@ -1,8 +1,9 @@
 package ch.barrierelos.backend.repository
 
+import ch.barrierelos.backend.message.enums.Order
+import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toResult
-import ch.barrierelos.backend.message.enums.Order
 import jakarta.persistence.Id
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -35,6 +36,8 @@ public interface Repository<E> : JpaRepository<E, Long>
     private fun <E> Repository<E>.findAllByModifiedAfter(modified: Long, pageable: Pageable): Page<E> = findAllByModifiedAfter(Timestamp(modified), pageable)
 
     private fun <E> Repository<E>.findAllByModifiedAfter(modified: Long, sort: Sort): List<E> = findAllByModifiedAfter(Timestamp(modified), sort)
+
+    public fun <E, M> Repository<E>.findAll(defaultParameters: DefaultParameters, entity: Class<E>, toModel: E.() -> M): Result<M> = findAll(defaultParameters.page, defaultParameters.size, defaultParameters.sort, defaultParameters.order, defaultParameters.modifiedAfter, entity, toModel)
 
     public fun <E, M> Repository<E>.findAll(page: Int?, size: Int?, sort: String?, order: Order?, modifiedAfter: Long?, entity: Class<E>, toModel: E.() -> M): Result<M>
     {

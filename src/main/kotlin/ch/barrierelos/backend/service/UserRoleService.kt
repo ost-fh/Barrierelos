@@ -3,9 +3,9 @@ package ch.barrierelos.backend.service
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.entity.UserRoleEntity
-import ch.barrierelos.backend.message.enums.Order
 import ch.barrierelos.backend.model.UserRole
 import ch.barrierelos.backend.model.enums.RoleEnum
+import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.checkIfExists
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.UserRoleRepository
@@ -40,11 +40,11 @@ public class UserRoleService
     return this.userRoleRepository.save(userRole.toEntity()).toModel()
   }
 
-  public fun getUserRoles(page: Int?, size: Int?, sort: String?, order: Order?, modifiedAfter: Long?): Result<UserRole>
+  public fun getUserRoles(defaultParameters: DefaultParameters): Result<UserRole>
   {
     Security.assertAnyRoles(RoleEnum.ADMIN)
 
-    return this.userRoleRepository.findAll(page, size, sort, order, modifiedAfter, UserRoleEntity::class.java, UserRoleEntity::toModel)
+    return this.userRoleRepository.findAll(defaultParameters, UserRoleEntity::class.java, UserRoleEntity::toModel)
   }
 
   public fun getUserRole(userRoleId: Long): UserRole

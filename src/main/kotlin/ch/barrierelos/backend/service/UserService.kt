@@ -3,9 +3,9 @@ package ch.barrierelos.backend.service
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.entity.UserEntity
-import ch.barrierelos.backend.message.enums.Order
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.model.enums.RoleEnum
+import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.checkIfExists
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.UserRepository
@@ -61,12 +61,12 @@ public class UserService
       .also { it.password = "" }
   }
 
-  public fun getUsers(page: Int?, size: Int?, sort: String?, order: Order?, modifiedAfter: Long?): Result<User>
+  public fun getUsers(defaultParameters: DefaultParameters): Result<User>
   {
     Security.assertAnyRoles(RoleEnum.ADMIN)
 
     // Prevent exposing the password
-    return this.userRepository.findAll(page, size, sort, order, modifiedAfter, UserEntity::class.java, UserEntity::toModel)
+    return this.userRepository.findAll(defaultParameters, UserEntity::class.java, UserEntity::toModel)
       .also { userPage -> userPage.content.forEach { it.password = "" } }
   }
 

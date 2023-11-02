@@ -2,10 +2,11 @@ package ch.barrierelos.backend.controller
 
 import ch.barrierelos.backend.constants.Endpoint.USER
 import ch.barrierelos.backend.constants.MediaType
-import ch.barrierelos.backend.util.toHeaders
-import ch.barrierelos.backend.message.enums.Order
 import ch.barrierelos.backend.model.User
+import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.UserService
+import ch.barrierelos.backend.util.toHeaders
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -38,9 +39,9 @@ public class UserController
   }
   
   @GetMapping(value = [USER], produces = [MediaType.JSON])
-  public fun getUsers(@RequestParam page: Int?, @RequestParam size: Int?, @RequestParam sort: String?, @RequestParam order: Order?, @RequestParam modifiedAfter: Long?): ResponseEntity<List<User>>
+  public fun getUsers(@ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<User>>
   {
-    val userPage = this.userService.getUsers(page, size, sort, order, modifiedAfter)
+    val userPage = this.userService.getUsers(defaultParameters)
 
     return ResponseEntity.status(HttpStatus.OK).headers(userPage.toHeaders()).body(userPage.content)
   }

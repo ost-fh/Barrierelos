@@ -1,5 +1,7 @@
 package ch.barrierelos.backend.configuration
 
+import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
+import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.USER
 import ch.barrierelos.backend.constants.Endpoint.USER_ROLE
 import ch.barrierelos.backend.model.enums.RoleEnum
@@ -27,14 +29,9 @@ public class SecurityConfiguration
   @Autowired
   private lateinit var authenticationConverter: AuthenticationConverter
 
-  @Bean
-  @Order(Ordered.HIGHEST_PRECEDENCE)
-  public fun basicAuthFilterChain(http: HttpSecurity): SecurityFilterChain
+  private fun HttpSecurity.configure(): HttpSecurity
   {
-    return http
-      .securityMatcher { request ->
-        request.getHeader(HttpHeaders.AUTHORIZATION)?.startsWith("Basic ", true) ?: false
-      }
+    return this
       .csrf { csrf: CsrfConfigurer<HttpSecurity> -> csrf.disable() }
       .cors(withDefaults())
       .authorizeHttpRequests { authorize ->
@@ -43,23 +40,27 @@ public class SecurityConfiguration
           .requestMatchers("$USER_ROLE/**").hasAnyRole(RoleEnum.ADMIN.name)
           .anyRequest().denyAll()
       }
+  }
+
+  @Bean
+  @Order(Ordered.LOWEST_PRECEDENCE)
+  public fun basicAuthFilterChain(http: HttpSecurity): SecurityFilterChain
+  {
+    return http
+      .configure()
       .httpBasic(withDefaults())
       .build()
   }
 
   @Bean
-  @Order(Ordered.LOWEST_PRECEDENCE)
+  @Order(Ordered.HIGHEST_PRECEDENCE)
   public fun oAuthFilterChain(http: HttpSecurity): SecurityFilterChain
   {
     return http
-      .csrf { csrf: CsrfConfigurer<HttpSecurity> -> csrf.disable() }
-      .cors(withDefaults())
-      .authorizeHttpRequests { authorize ->
-        authorize
-          .requestMatchers("$USER/**").hasAnyRole(RoleEnum.ADMIN.name)
-          .requestMatchers("$USER_ROLE/**").hasAnyRole(RoleEnum.ADMIN.name)
-          .anyRequest().denyAll()
+      .securityMatcher { request ->
+        request.getHeader(HttpHeaders.AUTHORIZATION)?.startsWith("Bearer ", true) ?: false
       }
+      .configure()
       .oauth2ResourceServer { oauth2 ->
         oauth2.jwt { jwt ->
           jwt.jwtAuthenticationConverter(this.authenticationConverter)

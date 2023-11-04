@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  kotlin("jvm") version "1.8.22"
-  kotlin("plugin.serialization") version "1.8.22"
+  kotlin("jvm") version "1.9.20"
+  kotlin("plugin.serialization") version "1.9.20"
   kotlin("plugin.spring") version "1.8.22"
   kotlin("plugin.jpa") version "1.8.22"
   id("org.springframework.boot") version "3.1.5"
@@ -36,7 +36,7 @@ java {
 }
 
 kotlin {
-  explicitApi()
+  explicitApiWarning()
 }
 
 openApi {

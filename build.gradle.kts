@@ -21,6 +21,8 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+  implementation("org.springframework.amqp:spring-rabbit:3.0.10")
+  implementation("org.springframework.boot:spring-boot-starter-amqp:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-security:3.1.5")
   implementation("org.springframework.boot:spring-boot-starter-web:3.1.5")

@@ -19,12 +19,17 @@ services:
       - "8030:8030"
     environment:
       - spring.datasource.url=jdbc:postgresql://barrierelos-database:5432/barrierelos?stringtype=unspecified
+      - spring.rabbitmq.host=barrierelos-queue
+      - spring.rabbitmq.port=5672
       - POSTGRES_USER=barrierelos
       - POSTGRES_PASSWORD=password
     networks:
       - barrierelos
     volumes:
       - barrierelos-data:/var/lib/barrierelos/data
+    depends_on:
+      - database
+      - queue
   database:
     container_name: barrierelos-database
     image: postgres:16.0
@@ -38,3 +43,16 @@ services:
       - barrierelos
     volumes:
       - barrierelos-data:/var/lib/postgresql/data
+  queue:
+    container_name: barrierelos-queue
+    image: rabbitmq:3.12-management #:3.12
+    ports:
+      - '5050:5672'
+      - '8070:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=barrierelos
+      - RABBITMQ_DEFAULT_PASS=password
+    networks:
+      - barrierelos
+    volumes:
+      - barrierelos-data:/var/lib/rabbitmq/data

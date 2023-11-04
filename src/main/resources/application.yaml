@@ -26,7 +26,16 @@ spring:
         jwt:
           issuer-uri: "https://accounts.google.com"
           jwk-set-uri: "https://www.googleapis.com/oauth2/v3/certs"
-logging:
+  rabbitmq:
+    host: localhost
+    port: 5050
+    username: barrierelos
+    password: password
+    virtual-host: /
+  amqp:
+    deserialization:
+      trust:
+        all: true
   level:
     org:
       hibernate:

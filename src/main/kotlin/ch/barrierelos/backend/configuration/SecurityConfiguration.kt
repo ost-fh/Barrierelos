@@ -4,7 +4,7 @@ import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.USER
 import ch.barrierelos.backend.constants.Endpoint.USER_ROLE
-import ch.barrierelos.backend.model.enums.RoleEnum
+import ch.barrierelos.backend.model.backend.enums.RoleEnum
 import ch.barrierelos.backend.security.AuthenticationConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -36,7 +37,10 @@ public class SecurityConfiguration
       .cors(withDefaults())
       .authorizeHttpRequests { authorize ->
         authorize
-          .requestMatchers("$USER/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.POST, "$USER/**").permitAll()
+          .requestMatchers(HttpMethod.PUT, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
+          .requestMatchers(HttpMethod.GET, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
+          .requestMatchers(HttpMethod.DELETE, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$USER_ROLE/**").hasAnyRole(RoleEnum.ADMIN.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()
           .requestMatchers("$DOCUMENTATION_OPENAPI.yaml").permitAll()

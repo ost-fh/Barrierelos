@@ -29,6 +29,7 @@ dependencies {
   implementation("org.springframework.security:spring-security-oauth2-jose:6.1.5")
   implementation("org.springframework.security:spring-security-oauth2-resource-server:6.1.5")
   implementation("org.yaml:snakeyaml:2.2")
+  implementation(kotlin("script-runtime"))
 
   runtimeOnly("org.postgresql:postgresql:42.6.0")
 }

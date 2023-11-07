@@ -1,0 +1,66 @@
+default:
+  image: openjdk:17-jdk-alpine
+  cache:
+    paths:
+      - .gradle/wrapper
+      - .gradle/caches
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+
+workflow:
+  rules:
+    # Prevent creation of duplicate pipelines (https://stackoverflow.com/questions/74114309/avoid-duplicate-ci-pipelines-on-gitlab)
+    - if: $CI_PIPELINE_SOURCE != "merge_request_event"
+
+stages:
+  - build
+  - test
+  - publish
+  - deploy
+
+build:
+  stage: build
+  script:
+    - ./gradlew assemble
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: 1 day
+
+check:
+  stage: test
+  needs: [ ]
+  script:
+    - ./gradlew check
+
+publish:
+  stage: publish
+  tags:
+    - deploy
+  image: docker:git
+  cache: { }
+  before_script: [ ]
+  script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest .
+    - docker push --all-tags $CI_REGISTRY_IMAGE
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
+    - if: $CI_COMMIT_TAG == "no_auto_deploy"
+      when: manual
+
+deploy:
+  stage: deploy
+  tags:
+    - deploy
+  image: docker:git
+  cache: { }
+  before_script: [ ]
+  script:
+    - git clone https://$CI_DEPLOY_USER:$CI_DEPLOY_PASSWORD@gitlab.ost.ch/barrierelos/deployment.git
+    - cd deployment
+    - echo -n $CI_DEPLOY_PASSWORD | docker login -u $CI_DEPLOY_USER --password-stdin $CI_REGISTRY
+    - docker compose up --detach --pull always --remove-orphans

@@ -55,6 +55,10 @@ tasks.withType<KotlinCompile> {
   }
 }
 
+tasks.getByName<Jar>("jar") {
+  enabled = false
+}
+
 task<Exec>("dockerStop") {
   group = "docker"
   description = "Stops this projects Docker container."

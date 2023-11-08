@@ -13,7 +13,8 @@ default:
 
 workflow:
   rules:
-    # Prevent creation of duplicate pipelines (https://stackoverflow.com/questions/74114309/avoid-duplicate-ci-pipelines-on-gitlab)
+    # Prevent creation of duplicate pipelines
+    # https://stackoverflow.com/a/69860485/3635931
     - if: $CI_PIPELINE_SOURCE != "merge_request_event"
 
 stages:

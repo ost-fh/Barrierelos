@@ -1,5 +1,5 @@
 import "dotenv/config"
-import subscribe from "./rabbitmq.mjs";
+import subscribe from "./rabbitmq.js";
 import Logger from "./logger.js";
 
 async function subscribeToQueue() {

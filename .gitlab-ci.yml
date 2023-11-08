@@ -40,6 +40,12 @@ unit-test:
   needs: [ ]
   script:
     - npm run test:unittest
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
 
 publish:
   stage: publish
@@ -53,9 +59,10 @@ publish:
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest .
     - docker push --all-tags $CI_REGISTRY_IMAGE
   rules:
-    - when: manual
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
     - if: $CI_COMMIT_TAG == "no_auto_deploy"
       when: manual
 
@@ -67,7 +74,7 @@ deploy:
   cache: { }
   before_script: [ ]
   script:
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ost.ch/barrierelos/deployment.git
+    - git clone https://$CI_DEPLOY_USER:$CI_DEPLOY_PASSWORD@gitlab.ost.ch/barrierelos/deployment.git
     - cd deployment
-    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo -n $CI_DEPLOY_PASSWORD | docker login -u $CI_DEPLOY_USER --password-stdin $CI_REGISTRY
     - docker compose up --detach --pull always --remove-orphans

@@ -9,16 +9,21 @@ interface AnalysisResult {
     modelVersion: string
     website: string
     scanTimestamp: string
-    scanStatus: "success" | "failed"
+    scanStatus: ScanStatus
     errorMessage?: string
     webpages: WebpageResult[]
 }
 
 interface WebpageResult {
     path: string
-    scanStatus: "success" | "failed"
+    scanStatus: ScanStatus
     errorMessage?: string
     rules: Rule[]
+}
+
+enum ScanStatus {
+    Success = "success",
+    Failed = "failed",
 }
 
 interface Rule {
@@ -53,4 +58,4 @@ interface CheckElement extends Element {
     relatedElements: Element[]
 }
 
-export {AnalysisJob, AnalysisResult, WebpageResult, Rule, Check, CheckType, Impact, Element, CheckElement}
+export {AnalysisJob, AnalysisResult, ScanStatus, WebpageResult, Rule, Check, CheckType, Impact, Element, CheckElement}

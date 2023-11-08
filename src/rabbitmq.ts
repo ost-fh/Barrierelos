@@ -19,7 +19,8 @@ export async function subscribe() {
     await connection.close()
 
     async function handleMessage(msg: AMQPMessage) {
-        if (!msg.bodyString()) {
+        const bodyString = msg.bodyString()
+        if (bodyString === null) {
             const errorMessage = "Received a message without a body"
             Logger.error(errorMessage)
             const failResult = formatFailedAnalysisResult("unknown", errorMessage)
@@ -28,7 +29,7 @@ export async function subscribe() {
             return
         }
 
-        const job: AnalysisJob = JSON.parse(msg.bodyString() as string)
+        const job: AnalysisJob = JSON.parse(bodyString) as AnalysisJob
         const result = await analyzeWebsite(job)
         await resultQueue.publish(JSON.stringify(result))
         await msg.ack()

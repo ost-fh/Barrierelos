@@ -1,34 +1,24 @@
 import {AxeResults, CheckResult, NodeResult, Result} from "axe-core";
-import {AnalysisResult, Check, CheckElement, CheckType, Impact, Rule, WebpageResult} from "./model.js";
-
-
-function formatFailedAnalysisResult(baseUrl: string, error: unknown): AnalysisResult {
-    return {
-        modelVersion: "0.0.0",
-        website: baseUrl,
-        scanTimestamp: new Date().toISOString(),
-        scanStatus: "failed",
-        errorMessage: JSON.stringify(error),
-        webpages: []
-    }
-}
+import {AnalysisResult, Check, CheckElement, CheckType, Impact, Rule, ScanStatus, WebpageResult} from "./model.js";
 
 function formatAnalysisResults(baseUrl: string, webpageResults: WebpageResult[]): AnalysisResult {
     return {
         modelVersion: "0.0.0",
         website: baseUrl,
         scanTimestamp: new Date().toISOString(),
-        scanStatus: "success",
+        scanStatus: ScanStatus.Success,
         webpages: webpageResults
     }
 }
 
-function formatFailedWebpageResult(path: string, error: unknown): WebpageResult {
+function formatFailedAnalysisResult(baseUrl: string, error: unknown): AnalysisResult {
     return {
-        path,
-        scanStatus: "failed",
-        errorMessage: JSON.stringify(error),
-        rules: []
+        modelVersion: "0.0.0",
+        website: baseUrl,
+        scanTimestamp: new Date().toISOString(),
+        scanStatus: ScanStatus.Failed,
+        errorMessage: errorToErrorMessage(error),
+        webpages: []
     }
 }
 
@@ -52,9 +42,27 @@ function formatWebpageResults(path: string, results: AxeResults): WebpageResult 
 
     return {
         path,
-        scanStatus: "success",
+        scanStatus: ScanStatus.Success,
         rules
     }
+}
+
+function formatFailedWebpageResult(path: string, error: unknown): WebpageResult {
+    return {
+        path,
+        scanStatus: ScanStatus.Failed,
+        errorMessage: errorToErrorMessage(error),
+        rules: []
+    }
+}
+
+function errorToErrorMessage(error: unknown) {
+    if (error === null) return "An unknown error occurred."
+    if (typeof error === "string") return error
+    if (typeof error === "object" && "message" in error && error.message != null && error !== error.message) {
+        return errorToErrorMessage(error.message)
+    }
+    return JSON.stringify(error)
 }
 
 interface AxeRule {
@@ -64,12 +72,12 @@ interface AxeRule {
 
 type AxeResultStatus = "pass" | "violation" | "incomplete" | "inapplicable"
 
+
 function addToMapArray<K, V>(map: Map<K, V[]>, key: K, value: V) {
     const array = map.get(key) ?? []
     array.push(value)
     map.set(key, array)
 }
-
 
 function formatRuleOccurrences(axeRuleOccurrences: [string, AxeRule[]]): Rule {
     const [id, occurrences] = axeRuleOccurrences
@@ -136,13 +144,13 @@ function formatCheckOccurrences(axeCheckOccurrences: [string, AxeCheck[]]): Chec
 
 function formatElement(axeCheck: AxeCheck): CheckElement {
     return {
-        target: JSON.stringify(axeCheck.element.target),
+        target: axeCheck.element.target.toString(),
         html: axeCheck.element.html,
         issueDescription: axeCheck.check.message,
         data: JSON.stringify(axeCheck.check.data),
         relatedElements: axeCheck.check.relatedNodes?.map(node => {
             return {
-                target: JSON.stringify(node.target),
+                target: node.target.toString(),
                 html: node.html
             }
         }) ?? []

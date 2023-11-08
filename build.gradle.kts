@@ -32,6 +32,19 @@ dependencies {
   implementation(kotlin("script-runtime"))
 
   runtimeOnly("org.postgresql:postgresql:42.6.0")
+
+  testImplementation("com.h2database:h2:2.2.224")
+  testImplementation("com.ninja-squad:springmockk:4.0.2")
+  testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.0")
+  testImplementation("io.mockk", "mockk", "1.13.8")
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+  testImplementation("org.springframework.boot", "spring-boot-starter-test", "3.1.5") {
+    exclude("org.junit.vintage", "junit-vintage-engine")
+    exclude("org.mockito", "mockito-core")
+  }
+  testImplementation("org.springframework.security:spring-security-test:6.1.5")
+
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 }
 
 java {
@@ -48,15 +61,21 @@ openApi {
   outputFileName.set("openapi.json")
 }
 
-tasks.withType<KotlinCompile> {
-  kotlinOptions {
-    freeCompilerArgs += "-Xjsr305=strict"
-    jvmTarget = "17"
+tasks {
+  withType<KotlinCompile> {
+    kotlinOptions {
+      freeCompilerArgs += "-Xjsr305=strict"
+      jvmTarget = "17"
+    }
   }
-}
 
-tasks.getByName<Jar>("jar") {
-  enabled = false
+  getByName<Jar>("jar") {
+    enabled = false
+  }
+
+  test {
+    useJUnitPlatform()
+  }
 }
 
 task<Exec>("dockerStop") {

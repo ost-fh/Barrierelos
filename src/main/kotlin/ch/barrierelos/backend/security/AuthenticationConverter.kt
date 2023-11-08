@@ -1,7 +1,6 @@
 package ch.barrierelos.backend.security
 
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.model.enums.RoleEnum
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.convert.converter.Converter
 import org.springframework.security.core.GrantedAuthority
@@ -25,9 +24,8 @@ public class AuthenticationConverter : Converter<Jwt, AuthenticationToken>
     }
     else
     {
-      val roles: Set<RoleEnum> = this.authenticationService.getRoles(user)
-      val authorities: MutableCollection<GrantedAuthority> = this.authenticationService.getAuthorities(roles)
-      val principal = AuthenticationDetails(user, roles, authorities)
+      val authorities: MutableCollection<GrantedAuthority> = this.authenticationService.getAuthorities(user.roles)
+      val principal = AuthenticationDetails(user, authorities)
 
       AuthenticationToken(jwt, principal, authorities)
     }

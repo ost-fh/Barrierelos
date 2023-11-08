@@ -17,7 +17,7 @@ public class UserController
 {
   @Autowired
   private lateinit var userService: UserService
-  
+
   @PostMapping(value = [USER], consumes = [MediaType.JSON], produces = [MediaType.JSON])
   public fun addUser(@RequestBody user: User): ResponseEntity<User>
   {
@@ -29,11 +29,11 @@ public class UserController
   }
   
   @PutMapping(value = ["$USER/{id}"], consumes = [MediaType.JSON], produces = [MediaType.JSON])
-  public fun updateUser(@PathVariable id: Long, @RequestBody user: User): ResponseEntity<User>
+  public fun updateUser(@PathVariable id: Long, @RequestBody user: User, @RequestParam changeCredentials: Boolean = false): ResponseEntity<User>
   {
     user.id = id
 
-    val user: User = this.userService.updateUser(user)
+    val user: User = this.userService.updateUser(user, changeCredentials)
     
     return ResponseEntity.status(HttpStatus.OK).body(user)
   }

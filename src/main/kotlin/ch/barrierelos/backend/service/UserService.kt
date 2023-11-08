@@ -3,6 +3,10 @@ package ch.barrierelos.backend.service
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.entity.UserEntity
+import ch.barrierelos.backend.exceptions.InvalidCredentialsException
+import ch.barrierelos.backend.exceptions.InvalidEmailException
+import ch.barrierelos.backend.exceptions.NoRoleException
+import ch.barrierelos.backend.exceptions.UserAlreadyExistsException
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.model.enums.RoleEnum
 import ch.barrierelos.backend.parameter.DefaultParameters
@@ -11,6 +15,7 @@ import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.util.Result
+import ch.barrierelos.backend.util.throwIfNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -25,66 +30,122 @@ public class UserService
 
   public fun addUser(user: User): User
   {
-    Security.assertAnyRoles(RoleEnum.ADMIN)
+    if(user.roles.contains(RoleEnum.ADMIN)) Security.assertRole(RoleEnum.ADMIN)
+    if(user.roles.contains(RoleEnum.MODERATOR)) Security.assertRole(RoleEnum.ADMIN)
+
+    throwIfNoRole(user)
+    throwIfNoValidCredentials(user)
+    throwIfNoValidEmail(user)
+    throwIfUsernameAlreadyExists(user)
+    encodePasswordIfExists(user)
 
     user.modified = System.currentTimeMillis()
 
-    // Encode the password
-    user.password = this.passwordEncoder.encode(user.password)
-
-    // Prevent exposing the password
-    return this.userRepository.save(user.toEntity()).toModel()
-      .also { it.password = "" }
+    return this.userRepository.save(user.toEntity()).toModel().preventExposingCredentials()
   }
 
-  public fun updateUser(user: User, changePassword: Boolean = false): User
+  public fun updateUser(user: User, changeCredentials: Boolean): User
   {
-    Security.assertAnyRolesOrId(user.id, RoleEnum.ADMIN)
+    Security.assertRoleOrId(user.id, RoleEnum.ADMIN)
 
-    this.userRepository.checkIfExists(user.id)
+    if(user.roles.contains(RoleEnum.ADMIN)) Security.assertRole(RoleEnum.ADMIN)
+    if(user.roles.contains(RoleEnum.MODERATOR)) Security.assertRole(RoleEnum.ADMIN)
+
+    val existingUser = this.userRepository.findByUserId(user.id).throwIfNull(NoSuchElementException()).toModel()
+
+    throwIfNoRole(user)
+    throwIfNoValidEmail(user)
+    if(user.username != existingUser.username) throwIfUsernameAlreadyExists(user)
 
     user.modified = System.currentTimeMillis()
 
-    if(changePassword)
+    if(changeCredentials)
     {
-      // Encode the password
-      user.password = this.passwordEncoder.encode(user.password)
+      throwIfNoValidCredentials(user)
+      encodePasswordIfExists(user)
     }
     else
     {
-      // Prevent changing the password
-      user.password = this.userRepository.getPasswordById(user.id)
+      // Prevent changing credentials
+      user.password = existingUser.password
+      user.issuer = existingUser.issuer
+      user.subject = existingUser.subject
     }
 
-    // Prevent exposing the password
-    return this.userRepository.save(user.toEntity()).toModel()
-      .also { it.password = "" }
+    return this.userRepository.save(user.toEntity()).toModel().preventExposingCredentials()
   }
 
-  public fun getUsers(defaultParameters: DefaultParameters): Result<User>
+  public fun getUsers(defaultParameters: DefaultParameters = DefaultParameters()): Result<User>
   {
-    Security.assertAnyRoles(RoleEnum.ADMIN)
+    Security.assertRole(RoleEnum.ADMIN)
 
-    // Prevent exposing the password
     return this.userRepository.findAll(defaultParameters, UserEntity::class.java, UserEntity::toModel)
-      .also { userPage -> userPage.content.forEach { it.password = "" } }
+      .also { userPage -> userPage.content.forEach { user -> user.preventExposingCredentials() } }
   }
 
   public fun getUser(userId: Long): User
   {
-    Security.assertAnyRoles(RoleEnum.ADMIN)
+    Security.assertRoleOrId(userId, RoleEnum.ADMIN)
 
-    // Prevent exposing the password
-    return this.userRepository.findById(userId).orElseThrow().toModel()
-      .also { it.password = "" }
+    return this.userRepository.findById(userId).orElseThrow().toModel().preventExposingCredentials()
   }
 
   public fun deleteUser(userId: Long)
   {
-    Security.assertAnyRoles(RoleEnum.ADMIN)
+    Security.assertRoleOrId(userId, RoleEnum.ADMIN)
 
     this.userRepository.checkIfExists(userId)
 
     this.userRepository.deleteById(userId)
+  }
+
+  private fun throwIfNoRole(user: User)
+  {
+    if(user.roles.isEmpty())
+    {
+      throw NoRoleException("No role provided.")
+    }
+  }
+
+  private fun throwIfNoValidCredentials(user: User)
+  {
+    if((user.password == null || user.password == "") && (user.issuer == null || user.subject == null || user.issuer == "" || user.subject == ""))
+    {
+      throw InvalidCredentialsException("No password or oAuth issuer and subject provided.")
+    }
+  }
+
+  private fun throwIfUsernameAlreadyExists(user: User)
+  {
+    if(this.userRepository.findByUsername(user.username) != null)
+    {
+      throw UserAlreadyExistsException("User with that username already exists.")
+    }
+  }
+
+  private fun throwIfNoValidEmail(user: User)
+  {
+    if(!user.email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$".toRegex()))
+    {
+      throw InvalidEmailException("Email address is not valid.")
+    }
+  }
+
+  private fun encodePasswordIfExists(user: User)
+  {
+    if(user.password != null)
+    {
+      // Encode the password
+      user.password = this.passwordEncoder.encode(user.password)
+    }
+  }
+
+  private fun User.preventExposingCredentials(): User
+  {
+    this.password = null
+    this.issuer = null
+    this.subject = null
+
+    return this
   }
 }

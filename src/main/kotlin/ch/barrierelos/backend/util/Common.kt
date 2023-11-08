@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.util
 
-public fun <T> T?.throwIfNotNull(exception: Exception): T
+public fun <T> T?.throwIfNull(exception: Exception): T
 {
   if(this == null)
   {

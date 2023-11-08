@@ -1,7 +1,6 @@
 package ch.barrierelos.backend.security
 
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.model.enums.RoleEnum
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -25,10 +24,9 @@ public class AuthenticationDetailsService : UserDetailsService
     }
     else
     {
-      val roles: Set<RoleEnum> = this.authenticationService.getRoles(user)
-      val authorities: MutableCollection<GrantedAuthority> = this.authenticationService.getAuthorities(roles)
+      val authorities: MutableCollection<GrantedAuthority> = this.authenticationService.getAuthorities(user.roles)
 
-      AuthenticationDetails(user, roles, authorities)
+      AuthenticationDetails(user, authorities)
     }
   }
 }

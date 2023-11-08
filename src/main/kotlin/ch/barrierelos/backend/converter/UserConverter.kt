@@ -15,6 +15,7 @@ public fun User.toEntity(): UserEntity
     password = this.password,
     issuer = this.issuer,
     subject = this.subject,
+    roles = this.roles,
     modified = Timestamp(this.modified),
   )
 }
@@ -30,6 +31,7 @@ public fun UserEntity.toModel(): User
     password = this.password,
     issuer = this.issuer,
     subject = this.subject,
+    roles = this.roles,
     modified = this.modified.time,
   )
 }

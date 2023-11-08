@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS "user_role" CASCADE;
 DROP TABLE IF EXISTS "user" CASCADE;
 
 DROP CAST IF EXISTS (VARCHAR AS ROLE_ENUM);
@@ -16,23 +15,14 @@ CREATE CAST (VARCHAR AS ROLE_ENUM) WITH INOUT AS IMPLICIT;
 CREATE TABLE "user"
 (
   "user_id" BIGSERIAL,
-  "username" VARCHAR NOT NULL,
+  "username" VARCHAR NOT NULL UNIQUE,
   "firstname" VARCHAR NOT NULL,
   "lastname" VARCHAR NOT NULL,
   "email" VARCHAR NOT NULL,
   "password" VARCHAR,
   "issuer" VARCHAR,
   "subject" VARCHAR,
+  "roles" ROLE_ENUM ARRAY NOT NULL CHECK (cardinality("roles") > 0),
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("user_id")
-);
-
-CREATE TABLE "user_role"
-(
-  "user_role_id" BIGSERIAL,
-  "user_fk" BIGSERIAL,
-  "role" ROLE_ENUM NOT NULL,
-  "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
-  PRIMARY KEY ("user_role_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
 );

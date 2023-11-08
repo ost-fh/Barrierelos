@@ -1,13 +1,13 @@
 package ch.barrierelos.backend.configuration
 
-import ch.barrierelos.backend.message.enums.Order
+import ch.barrierelos.backend.message.enums.OrderEnum
+import ch.barrierelos.backend.model.enums.RoleEnum
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.converter.Converter
 import org.springframework.format.FormatterRegistry
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.util.*
-
 
 @Configuration
 public class WebConfiguration : WebMvcConfigurer
@@ -19,21 +19,23 @@ public class WebConfiguration : WebMvcConfigurer
 
   override fun addFormatters(registry: FormatterRegistry)
   {
-    registry.addConverter(StringToOrderConverter())
+    registry.addConverter(StringToOrderEnumConverter())
+    registry.addConverter(StringToRoleEnumConverter())
   }
 
-  private class StringToOrderConverter : Converter<String, Order>
+  private class StringToOrderEnumConverter : Converter<String, OrderEnum>
   {
-    override fun convert(source: String): Order?
+    override fun convert(source: String): OrderEnum
     {
-      return try
-      {
-        Order.valueOf(source.uppercase(Locale.getDefault()))
-      }
-      catch(exception: Exception)
-      {
-        null
-      }
+      return OrderEnum.valueOf(source.uppercase(Locale.getDefault()))
+    }
+  }
+
+  private class StringToRoleEnumConverter : Converter<String, RoleEnum>
+  {
+    override fun convert(source: String): RoleEnum
+    {
+      return RoleEnum.valueOf(source.uppercase(Locale.getDefault()))
     }
   }
 }

@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.repository
 
-import ch.barrierelos.backend.message.enums.Order
+import ch.barrierelos.backend.message.enums.OrderEnum
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toResult
@@ -39,7 +39,7 @@ public interface Repository<E> : JpaRepository<E, Long>
 
     public fun <E, M> Repository<E>.findAll(defaultParameters: DefaultParameters, entity: Class<E>, toModel: E.() -> M): Result<M> = findAll(defaultParameters.page, defaultParameters.size, defaultParameters.sort, defaultParameters.order, defaultParameters.modifiedAfter, entity, toModel)
 
-    public fun <E, M> Repository<E>.findAll(page: Int?, size: Int?, sort: String?, order: Order?, modifiedAfter: Long?, entity: Class<E>, toModel: E.() -> M): Result<M>
+    public fun <E, M> Repository<E>.findAll(page: Int?, size: Int?, sort: String?, order: OrderEnum?, modifiedAfter: Long?, entity: Class<E>, toModel: E.() -> M): Result<M>
     {
       var sort = (if(sort == "id") null else sort) ?: (entity.declaredFields.find { it.isAnnotationPresent(Id::class.java) })?.name
 
@@ -61,8 +61,8 @@ public interface Repository<E> : JpaRepository<E, Long>
 
       sorting = when(order)
       {
-        Order.ASC -> sorting.ascending()
-        Order.DESC -> sorting.descending()
+        OrderEnum.ASC -> sorting.ascending()
+        OrderEnum.DESC -> sorting.descending()
         else -> sorting
       }
 

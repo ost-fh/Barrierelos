@@ -1,3 +1,7 @@
+include:
+  - project: 'barrierelos/deployment'
+    file: '.gitlab-ci-docker-publish-deploy.yml'
+
 default:
   image: openjdk:17-jdk-alpine
   cache:
@@ -32,45 +36,3 @@ check:
   needs: [ ]
   script:
     - ./gradlew check
-
-publish:
-  stage: publish
-  tags:
-    - deploy
-  image: docker:git
-  rules:
-    - if: >-
-        $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH &&
-        $CI_COMMIT_DESCRIPTION !~ /.*no_auto_deploy.*/
-      when: always
-    - when: manual
-      # Makes the job optional, otherwise the pipeline stays pending until this job is manually triggered and completed
-      allow_failure: true
-  cache: { }
-  before_script: [ ]
-  script:
-    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest .
-    - docker push --all-tags $CI_REGISTRY_IMAGE
-
-
-deploy:
-  stage: deploy
-  tags:
-    - deploy
-  image: docker:git
-  rules:
-    - if: >-
-        $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH &&
-        $CI_COMMIT_DESCRIPTION !~ /.*no_auto_deploy.*/
-      when: always
-    - when: manual
-      # Makes the job optional, otherwise the pipeline stays pending until this job is manually triggered and completed
-      allow_failure: true
-  cache: { }
-  before_script: [ ]
-  script:
-    - git clone https://$CI_DEPLOY_USER:$CI_DEPLOY_PASSWORD@gitlab.ost.ch/barrierelos/deployment.git
-    - cd deployment
-    - echo -n $CI_DEPLOY_PASSWORD | docker login -u $CI_DEPLOY_USER --password-stdin $CI_REGISTRY
-    - docker compose up --detach --pull always --remove-orphans

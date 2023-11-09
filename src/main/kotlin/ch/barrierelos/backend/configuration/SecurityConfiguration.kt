@@ -1,5 +1,6 @@
 package ch.barrierelos.backend.configuration
 
+import ch.barrierelos.backend.constants.Endpoint.ANALYSIS
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.USER
@@ -36,6 +37,7 @@ public class SecurityConfiguration
       .cors(withDefaults())
       .authorizeHttpRequests { authorize ->
         authorize
+          .requestMatchers("$ANALYSIS/**").permitAll()
           .requestMatchers(HttpMethod.POST, "$USER/**").permitAll()
           .requestMatchers(HttpMethod.PUT, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers(HttpMethod.GET, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)

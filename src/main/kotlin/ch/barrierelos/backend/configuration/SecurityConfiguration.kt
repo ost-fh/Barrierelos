@@ -4,7 +4,7 @@ import ch.barrierelos.backend.constants.Endpoint.ANALYSIS
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.USER
-import ch.barrierelos.backend.model.enums.RoleEnum
+import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.security.AuthenticationConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean

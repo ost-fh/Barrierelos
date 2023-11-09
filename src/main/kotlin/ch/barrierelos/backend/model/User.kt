@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.model
 
-import ch.barrierelos.backend.model.enums.RoleEnum
+import ch.barrierelos.backend.enums.RoleEnum
 import kotlinx.serialization.Serializable
 
 @Serializable

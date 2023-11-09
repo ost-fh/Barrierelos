@@ -1,14 +1,14 @@
 package ch.barrierelos.backend.integration
 
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.enums.OrderEnum
+import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.exceptions.InvalidCredentialsException
 import ch.barrierelos.backend.exceptions.InvalidEmailException
 import ch.barrierelos.backend.exceptions.NoRoleException
 import ch.barrierelos.backend.exceptions.UserAlreadyExistsException
 import ch.barrierelos.backend.helper.createUserEntity
 import ch.barrierelos.backend.helper.createUserModel
-import ch.barrierelos.backend.message.enums.OrderEnum
-import ch.barrierelos.backend.model.enums.RoleEnum
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.security.Security

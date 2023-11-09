@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.repository
 
-import ch.barrierelos.backend.message.enums.OrderEnum
+import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toResult

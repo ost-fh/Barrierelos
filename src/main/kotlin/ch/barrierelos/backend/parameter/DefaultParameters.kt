@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.parameter
 
-import ch.barrierelos.backend.message.enums.OrderEnum
+import ch.barrierelos.backend.enums.OrderEnum
 
 public data class DefaultParameters
 (

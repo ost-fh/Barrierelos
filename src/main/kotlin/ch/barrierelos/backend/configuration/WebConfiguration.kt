@@ -1,7 +1,7 @@
 package ch.barrierelos.backend.configuration
 
-import ch.barrierelos.backend.message.enums.OrderEnum
-import ch.barrierelos.backend.model.enums.RoleEnum
+import ch.barrierelos.backend.enums.OrderEnum
+import ch.barrierelos.backend.enums.RoleEnum
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.converter.Converter
 import org.springframework.format.FormatterRegistry

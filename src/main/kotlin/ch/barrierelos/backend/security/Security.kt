@@ -1,7 +1,7 @@
 package ch.barrierelos.backend.security
 
+import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.model.enums.RoleEnum
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder

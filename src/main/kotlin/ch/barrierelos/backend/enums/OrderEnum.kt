@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.message.enums
+package ch.barrierelos.backend.enums
 
 public enum class OrderEnum
 {

@@ -1,7 +1,7 @@
 package ch.barrierelos.backend.security
 
+import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.model.enums.RoleEnum
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 

@@ -1,8 +1,8 @@
 package ch.barrierelos.backend.security
 
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.model.enums.RoleEnum
 import ch.barrierelos.backend.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority

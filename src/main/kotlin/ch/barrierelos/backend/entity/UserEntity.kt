@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.entity
 
-import ch.barrierelos.backend.model.enums.RoleEnum
+import ch.barrierelos.backend.enums.RoleEnum
 import jakarta.persistence.*
 import java.sql.Timestamp
 

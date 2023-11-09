@@ -16,6 +16,7 @@ import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.checkIfExists
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.scanner.*
+import ch.barrierelos.backend.scoring.ScoringService
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.fromJson
@@ -29,6 +30,8 @@ import org.springframework.stereotype.Service
 @Service
 public class AnalysisService(private val queue: RabbitTemplate)
 {
+  @Autowired
+  private lateinit var scoringService: ScoringService
   @Autowired
   private lateinit var analysisJobRepository: AnalysisJobRepository
   @Autowired
@@ -59,6 +62,8 @@ public class AnalysisService(private val queue: RabbitTemplate)
     val analysisResultId = storeAnalysisResult(analysisResultMessage)
 
     val analysisResult = loadAnalysisResult(analysisResultId)
+
+    this.scoringService.onReceiveResult(analysisResult.toModel())
   }
 
   private fun storeAnalysisResult(analysisResultMessage: AnalysisResultMessage): Long

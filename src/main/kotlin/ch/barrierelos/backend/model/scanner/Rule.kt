@@ -1,0 +1,12 @@
+package ch.barrierelos.backend.model.scanner
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+public data class Rule
+(
+  public val id: Long,
+  public val code: String,
+  public val checks: MutableSet<Check>,
+  public var modified: Long = System.currentTimeMillis(),
+)

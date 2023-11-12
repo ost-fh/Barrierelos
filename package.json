@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start:dev": "npx nodemon --inspect-brk --enable-source-maps",
-    "start:rabbit": "docker run -d --hostname my-rabbit --expose 5672 rabbitmq:3",
+    "start:dev": "npx tsx watch --enable-source-maps ./src/app.ts",
     "start": "node dist/app.js --enable-source-maps",
     "build": "rimraf ./dist && tsc --project tsconfig.build.json",
     "test:lint": "eslint . --ext .ts",
@@ -18,8 +17,6 @@
   "author": "Pascal Lehmann",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
-    "@istanbuljs/esm-loader-hook": "^0.2.0",
-    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/chai": "^4.3.9",
     "@types/mocha": "^10.0.4",
     "@types/node": "^20.8.7",
@@ -31,13 +28,10 @@
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-n": "^16.2.0",
     "eslint-plugin-promise": "^6.1.1",
-    "jest": "^29.7.0",
     "mocha": "^10.2.0",
-    "nodemon": "^3.0.1",
     "rimraf": "^5.0.5",
     "testdouble": "^3.20.0",
-    "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
+    "tsx": "^4.1.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {

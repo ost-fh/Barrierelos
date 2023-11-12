@@ -5,6 +5,6 @@ module.exports = {
     timeout: false,
     ui: 'bdd',
     "node-option": [
-        "loader=ts-node/esm"
+        "import=tsx/esm"
     ]
 };

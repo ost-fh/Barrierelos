@@ -5,7 +5,10 @@ import {formatFailedAnalysisResult} from "./formatter.js";
 import Logger from "./logger.js";
 
 export async function subscribe() {
-    const url = process.env.RABBIT_MQ_URL ?? "amqp://localhost"
+    const user = process.env.RABBITMQ_USER ?? "guest"
+    const password = process.env.RABBITMQ_PASSWORD ?? "guest"
+    const hostname = process.env.RABBITMQ_HOSTNAME ?? "localhost"
+    const url = `amqp://${user}:${password}@${hostname}`
     const amqpClient = new AMQPClient(url)
     const connection = await amqpClient.connect()
     const channel = await connection.channel()

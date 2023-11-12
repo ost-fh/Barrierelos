@@ -4,7 +4,7 @@
       <settings>
         <option name="imageTag" value="barrierelos-scanner:latest" />
         <option name="containerName" value="barrierelos-scanner" />
-        <option name="commandLineOptions" value="--network barrierelos-dev" />
+        <option name="commandLineOptions" value="--network scanner-rabbitmq" />
         <option name="sourceFilePath" value="Dockerfile" />
       </settings>
     </deployment>

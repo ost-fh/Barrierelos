@@ -12,11 +12,11 @@
             </DockerPortBindingImpl>
             <DockerPortBindingImpl>
               <option name="containerPort" value="15672" />
-              <option name="hostPort" value="8080" />
+              <option name="hostPort" value="15672" />
             </DockerPortBindingImpl>
           </list>
         </option>
-        <option name="commandLineOptions" value="--network barrierelos-dev --hostname my-rabbit" />
+        <option name="commandLineOptions" value="--network scanner-rabbitmq --hostname my-rabbit" />
         <option name="showCommandPreview" value="true" />
       </settings>
     </deployment>

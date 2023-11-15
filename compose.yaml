@@ -48,8 +48,8 @@ services:
       - '5050:5672'
       - '8070:15672'
     environment:
-      - RABBITMQ_DEFAULT_USER=barrierelos
-      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     networks:
       - barrierelos
     volumes:

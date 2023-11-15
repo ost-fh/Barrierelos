@@ -30,8 +30,8 @@ spring:
   rabbitmq:
     host: localhost
     port: 5050
-    username: barrierelos
-    password: password
+    username: guest
+    password: guest
     virtual-host: /
   amqp:
     deserialization:

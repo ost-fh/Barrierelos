@@ -125,6 +125,17 @@ task<Exec>("dockerUp") {
   commandLine("docker", "compose", "up", "-d")
 }
 
+task<Exec>("dockerDependenciesUp") {
+  group = "docker"
+  description = "Launches this application's Docker dependencies using docker compose"
+
+  commandLine(
+    "sh",
+    "-c",
+    "docker compose -f compose-prod.yml -f compose-dev.yml up -d --pull always rabbitmq barrierelos-scanner database barrierelos-frontend"
+  )
+}
+
 task("dockerRun") {
   group = "docker"
   description = "Runs this project as a Docker container."

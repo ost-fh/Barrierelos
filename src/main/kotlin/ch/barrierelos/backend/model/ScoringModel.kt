@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.scoring.model
+package ch.barrierelos.backend.model
 
 public data class ScoringModel
 (

@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.scoring.entities
+package ch.barrierelos.backend.entity
 
 public class ScoringEntity
 {

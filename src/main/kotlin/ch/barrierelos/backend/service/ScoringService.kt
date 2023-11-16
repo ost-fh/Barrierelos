@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.scoring
+package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.model.scanner.AnalysisResult
 import org.springframework.stereotype.Service

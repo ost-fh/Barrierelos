@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.scoring.repository
+package ch.barrierelos.backend.repository
 
 public interface ScoringRepository
 {

@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.scoring.enums
+package ch.barrierelos.backend.enums
 
 public enum class ScoringEnum
 {

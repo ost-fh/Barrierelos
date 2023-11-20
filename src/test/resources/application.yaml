@@ -8,8 +8,8 @@ server:
 spring:
   datasource:
     url: jdbc:h2:mem:barrierelos;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
-    username: barrierelos
-    password: password
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
@@ -30,8 +30,8 @@ spring:
   rabbitmq:
     host: localhost
     port: 5050
-    username: barrierelos
-    password: password
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
     virtual-host: /
   amqp:
     deserialization:

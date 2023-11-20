@@ -9,8 +9,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5040/barrierelos?stringtype=unspecified
-    username: barrierelos
-    password: password
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -30,8 +30,8 @@ spring:
   rabbitmq:
     host: localhost
     port: 5050
-    username: guest
-    password: guest
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
     virtual-host: /
   amqp:
     deserialization:

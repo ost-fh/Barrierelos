@@ -3,3 +3,6 @@ update-compose:
 	cp ./deployment/compose.yml ./compose-prod.yml
 	cp ./deployment/compose-dev.yml ./
 	rm -rf ./deployment/
+
+update-images:
+	docker compose -f compose-prod.yml -f compose-dev.yml pull

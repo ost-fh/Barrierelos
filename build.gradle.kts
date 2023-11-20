@@ -29,6 +29,7 @@ dependencies {
   implementation("org.springframework.security:spring-security-oauth2-jose:6.1.5")
   implementation("org.springframework.security:spring-security-oauth2-resource-server:6.1.5")
   implementation("org.yaml:snakeyaml:2.2")
+  implementation("me.paulschwarz:spring-dotenv:4.0.0")
   implementation(kotlin("script-runtime"))
 
   runtimeOnly("org.postgresql:postgresql:42.6.0")
@@ -132,7 +133,7 @@ task<Exec>("dockerDependenciesUp") {
   commandLine(
     "sh",
     "-c",
-    "docker compose -f compose-prod.yml -f compose-dev.yml up -d --pull always rabbitmq scanner database frontend"
+    "docker compose -f compose-prod.yml -f compose-dev.yml up -d rabbitmq scanner database frontend"
   )
 }
 

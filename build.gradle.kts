@@ -132,7 +132,7 @@ task<Exec>("dockerDependenciesUp") {
   commandLine(
     "sh",
     "-c",
-    "docker compose -f compose-prod.yml -f compose-dev.yml up -d --pull always rabbitmq barrierelos-scanner database barrierelos-frontend"
+    "docker compose -f compose-prod.yml -f compose-dev.yml up -d --pull always rabbitmq scanner database frontend"
   )
 }
 

@@ -12,8 +12,8 @@ export async function subscribe() {
     const amqpClient = new AMQPClient(url)
     const connection = await amqpClient.connect()
     const channel = await connection.channel()
-    const jobQueue = await channel.queue("analysis_job_queue")
-    const resultQueue = await channel.queue("analysis_result_queue")
+    const jobQueue = await channel.queue("barrierelos.analysis.job")
+    const resultQueue = await channel.queue("barrierelos.analysis.result")
     const consumer = await jobQueue.subscribe({exclusive: true, noAck: false}, handleMessage)
 
     Logger.info(`Connected to RabbitMQ at ${url}`)

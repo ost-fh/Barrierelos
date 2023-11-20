@@ -6,7 +6,7 @@ import {AnalysisJob, AnalysisResult, WebpageResult} from "./model.js";
 import Logger from "./logger.js";
 
 export async function analyzeWebsite(job: AnalysisJob): Promise<AnalysisResult> {
-    const browser = await puppeteer.launch({headless: "new"});
+    const browser = await puppeteer.launch({headless: "new", args: ["--no-sandbox"]});
     const webpageResults = await Promise.all(
         job.webpagePaths.map(async path => {
             return await analyzeWebpage(browser, job.websiteBaseUrl, path)

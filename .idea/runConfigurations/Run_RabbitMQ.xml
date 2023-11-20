@@ -3,7 +3,7 @@
     <deployment type="docker-image">
       <settings>
         <option name="imageTag" value="rabbitmq:3-management" />
-        <option name="containerName" value="rabbitmq" />
+        <option name="containerName" value="barrierelos-rabbitmq" />
         <option name="portBindings">
           <list>
             <DockerPortBindingImpl>

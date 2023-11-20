@@ -41,23 +41,23 @@ public interface Repository<E> : JpaRepository<E, Long>
 
     public fun <E, M> Repository<E>.findAll(page: Int?, size: Int?, sort: String?, order: OrderEnum?, modifiedAfter: Long?, entity: Class<E>, toModel: E.() -> M): Result<M>
     {
-      var sort = (if(sort == "id") null else sort) ?: (entity.declaredFields.find { it.isAnnotationPresent(Id::class.java) })?.name
+      var sortStr = (if (sort == "id") null else sort)
+        ?: (entity.declaredFields.find { it.isAnnotationPresent(Id::class.java) })?.name
 
       val fields = entity.declaredFields.map { it.name }
 
-      if(sort != null && !fields.contains(sort))
+      if (sortStr != null && !fields.contains(sortStr))
       {
-        if(sort.startsWith("is"))
+        if (sortStr.startsWith("is"))
         {
-          sort = sort.substringAfter("is").replaceFirstChar { it.lowercase() }
-        }
-        else if(sort.endsWith("Id"))
+          sortStr = sortStr.substringAfter("is").replaceFirstChar { it.lowercase() }
+        } else if (sortStr.endsWith("Id"))
         {
-          sort = sort.substringBeforeLast("Id") + "Fk"
+          sortStr = sortStr.substringBeforeLast("Id") + "Fk"
         }
       }
 
-      var sorting = if(sort != null) Sort.by(sort) else Sort.unsorted()
+      var sorting = if (sortStr != null) Sort.by(sortStr) else Sort.unsorted()
 
       sorting = when(order)
       {

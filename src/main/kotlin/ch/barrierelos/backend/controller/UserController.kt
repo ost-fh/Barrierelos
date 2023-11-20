@@ -23,9 +23,9 @@ public class UserController
   {
     user.id = 0
 
-    val user: User = this.userService.addUser(user)
+    val savedUser: User = this.userService.addUser(user)
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(user)
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedUser)
   }
   
   @PutMapping(value = ["$USER/{id}"], consumes = [MediaType.JSON], produces = [MediaType.JSON])
@@ -33,9 +33,9 @@ public class UserController
   {
     user.id = id
 
-    val user: User = this.userService.updateUser(user, changeCredentials)
-    
-    return ResponseEntity.status(HttpStatus.OK).body(user)
+    val savedUser: User = this.userService.updateUser(user, changeCredentials)
+
+    return ResponseEntity.status(HttpStatus.OK).body(savedUser)
   }
   
   @GetMapping(value = [USER], produces = [MediaType.JSON])

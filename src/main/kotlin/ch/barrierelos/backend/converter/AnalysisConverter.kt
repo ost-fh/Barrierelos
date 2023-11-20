@@ -44,38 +44,44 @@ public fun AnalysisJobEntity.toModel(): AnalysisJob
 
 public fun AnalysisResultMessage.toEntity(): AnalysisResultEntity
 {
-  return AnalysisResultEntity(
+  val analysisResult = AnalysisResultEntity(
     modelVersion = this.modelVersion,
     website = this.website,
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
     modified = Timestamp(System.currentTimeMillis()),
   )
+  analysisResult.webpages = this.webpages.map { it.toEntity(analysisResult, analysisResult.modified) }.toMutableSet()
+  return analysisResult
 }
 
 public fun WebpageResultMessage.toEntity(analysisResult: AnalysisResultEntity, timestamp: Timestamp): WebpageResultEntity
 {
-  return WebpageResultEntity(
+  val webpageResult = WebpageResultEntity(
     analysisResult = analysisResult,
     path = this.path,
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
     modified = timestamp,
   )
+  webpageResult.rules = this.rules.map { it.toEntity(webpageResult, timestamp) }.toMutableSet()
+  return webpageResult
 }
 
 public fun RuleMessage.toEntity(webpageResult: WebpageResultEntity, timestamp: Timestamp): RuleEntity
 {
-  return RuleEntity(
+  val rule = RuleEntity(
     webpageResult = webpageResult,
     code = this.id,
     modified = timestamp,
   )
+  rule.checks = this.checks.map { it.toEntity(rule, timestamp) }.toMutableSet()
+  return rule
 }
 
 public fun CheckMessage.toEntity(rule: RuleEntity, timestamp: Timestamp): CheckEntity
 {
-  return CheckEntity(
+  val check = CheckEntity(
     rule = rule,
     code = this.id,
     type = this.type,
@@ -86,17 +92,22 @@ public fun CheckMessage.toEntity(rule: RuleEntity, timestamp: Timestamp): CheckE
     incompleteCount = this.incompleteCount,
     modified = timestamp,
   )
+  check.violatingElements = this.violatingElements.map { it.toEntity(timestamp) }.toMutableSet()
+  check.incompleteElements = this.incompleteElements.map { it.toEntity(timestamp) }.toMutableSet()
+  return check
 }
 
 public fun CheckElementMessage.toEntity(timestamp: Timestamp): CheckElementEntity
 {
-  return CheckElementEntity(
+  val checkElement = CheckElementEntity(
     target = this.target,
     html = this.html,
     issueDescription = this.issueDescription,
     data = this.data,
     modified = timestamp,
   )
+  checkElement.relatedElements = this.relatedElements.map { it.toEntity(checkElement, timestamp) }.toMutableSet()
+  return checkElement
 }
 
 public fun ElementMessage.toEntity(checkElement: CheckElementEntity, timestamp: Timestamp): ElementEntity

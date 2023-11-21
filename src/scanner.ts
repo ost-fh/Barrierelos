@@ -21,6 +21,8 @@ async function analyzeWebpage(browser: Browser, baseUrl: string, path: string): 
     const context = await browser.createIncognitoBrowserContext()
     const page = await context.newPage()
     await page.setBypassCSP(true)
+    // One of the most common desktop user agents, taken from https://www.useragents.me/
+    await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36");
 
     try {
         await page.goto(join(baseUrl, path));

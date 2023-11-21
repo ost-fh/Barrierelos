@@ -47,6 +47,7 @@ public fun AnalysisResultMessage.toEntity(): AnalysisResultEntity
   val analysisResult = AnalysisResultEntity(
     modelVersion = this.modelVersion,
     website = this.website,
+    scanTimestamp = Timestamp(Instant.parse(this.scanTimestamp).toEpochMilliseconds()),
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
     modified = Timestamp(System.currentTimeMillis()),
@@ -126,6 +127,7 @@ public fun AnalysisResultEntity.toModel(): AnalysisResult
     id = this.analysisResultId,
     modelVersion = this.modelVersion,
     website = this.website,
+    scanTimestamp = Instant.fromEpochMilliseconds(this.scanTimestamp.time),
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
     webpages = this.webpages.map { it.toModel() }.toMutableSet(),

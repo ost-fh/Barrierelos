@@ -43,6 +43,7 @@ CREATE TABLE "analysis_result"
   "analysis_result_id" BIGSERIAL,
   "model_version" VARCHAR NOT NULL,
   "website" VARCHAR NOT NULL,
+  "scan_timestamp" TIMESTAMP(3) NOT NULL,
   "scan_status" SCAN_STATUS_ENUM,
   "error_message" VARCHAR DEFAULT null,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),

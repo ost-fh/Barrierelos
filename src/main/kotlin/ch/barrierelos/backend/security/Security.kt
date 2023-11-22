@@ -1,8 +1,8 @@
 package ch.barrierelos.backend.security
 
 import ch.barrierelos.backend.enums.RoleEnum
+import ch.barrierelos.backend.exceptions.NoAuthorizationException
 import ch.barrierelos.backend.model.User
-import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.server.ResponseStatusException
@@ -131,7 +131,7 @@ public object Security
 
   private fun exception(): ResponseStatusException
   {
-    throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    throw NoAuthorizationException()
   }
 
   private fun getAuthentication(): Authentication

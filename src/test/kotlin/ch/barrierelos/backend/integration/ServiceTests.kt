@@ -3,10 +3,7 @@ package ch.barrierelos.backend.integration
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.exceptions.InvalidCredentialsException
-import ch.barrierelos.backend.exceptions.InvalidEmailException
-import ch.barrierelos.backend.exceptions.NoRoleException
-import ch.barrierelos.backend.exceptions.UserAlreadyExistsException
+import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.helper.createUserEntity
 import ch.barrierelos.backend.helper.createUserModel
 import ch.barrierelos.backend.parameter.DefaultParameters
@@ -26,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.test.context.support.TestExecutionEvent.TEST_EXECUTION
 import org.springframework.security.test.context.support.WithUserDetails
-import org.springframework.web.server.ResponseStatusException
 
 @SpringBootTest
 @ExtendWith(MockKExtension::class)
@@ -42,19 +38,19 @@ class ServiceTests
   fun setUp()
   {
     // Delete all users
-    this.userRepository.deleteAll()
+    userRepository.deleteAll()
 
     // Add admin user
     val adminUser = createUserEntity()
     adminUser.username = "admin"
     adminUser.roles = mutableSetOf(RoleEnum.ADMIN)
-    this.userRepository.save(adminUser)
+    userRepository.save(adminUser)
 
     // Add contributor user
     val contributorUser = createUserEntity()
     contributorUser.username = "contributor"
     contributorUser.roles = mutableSetOf(RoleEnum.CONTRIBUTOR)
-    this.userRepository.save(contributorUser)
+    userRepository.save(contributorUser)
   }
 
   @Nested
@@ -187,7 +183,7 @@ class ServiceTests
         user.roles = mutableSetOf(RoleEnum.ADMIN)
 
         // then
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.addUser(user)
         }
       }
@@ -201,7 +197,7 @@ class ServiceTests
         user.roles = mutableSetOf(RoleEnum.ADMIN)
 
         // then
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.addUser(user)
         }
       }
@@ -369,7 +365,7 @@ class ServiceTests
         val user = userService.addUser(createUserModel())
 
         // then
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.updateUser(user, false)
         }
       }
@@ -382,7 +378,7 @@ class ServiceTests
         val user = userService.addUser(createUserModel())
 
         // then
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.updateUser(user, false)
         }
       }
@@ -461,7 +457,7 @@ class ServiceTests
       @Test
       fun `cannot get users, given no account`()
       {
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.getUsers()
         }
       }
@@ -470,7 +466,7 @@ class ServiceTests
       @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
       fun `cannot get users, given wrong account`()
       {
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.getUsers()
         }
       }
@@ -524,7 +520,7 @@ class ServiceTests
         val user = userRepository.findAll().first().toModel()
 
         // then
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.getUser(user.id)
         }
       }
@@ -537,7 +533,7 @@ class ServiceTests
         val user = userRepository.findAll().find { it.userId != Security.getUserId() }!!.toModel()
 
         // then
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.getUser(user.id)
         }
       }
@@ -615,7 +611,7 @@ class ServiceTests
         val user = userRepository.findAll().first().toModel()
 
         // then
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.deleteUser(user.id)
         }
       }
@@ -628,7 +624,7 @@ class ServiceTests
         val user = userRepository.findAll().find { it.userId != Security.getUserId() }!!.toModel()
 
         // then
-        assertThrows(ResponseStatusException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           userService.deleteUser(user.id)
         }
       }

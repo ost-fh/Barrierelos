@@ -6,8 +6,8 @@ import java.sql.Timestamp
 
 fun createUserEntity() = UserEntity(
   username = "username",
-  firstname = "firstname",
-  lastname = "lastname",
+  firstname = "Firstname",
+  lastname = "Lastname",
   email = "email@gmail.com",
   password = "password",
   issuer = "issuer",

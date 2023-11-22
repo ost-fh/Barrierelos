@@ -4,7 +4,23 @@
       <settings>
         <option name="imageTag" value="barrierelos-scanner:latest" />
         <option name="containerName" value="barrierelos-scanner" />
-        <option name="commandLineOptions" value="--network scanner-rabbitmq" />
+        <option name="envVars">
+          <list>
+            <DockerEnvVarImpl>
+              <option name="name" value="RABBITMQ_PASSWORD" />
+              <option name="value" value="barrierelos" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="RABBITMQ_USER" />
+              <option name="value" value="barrierelos" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="RABBITMQ_HOSTNAME" />
+              <option name="value" value="barrierelos-rabbitmq" />
+            </DockerEnvVarImpl>
+          </list>
+        </option>
+        <option name="commandLineOptions" value="--network scanner-rabbitmq --cpus 8" />
         <option name="sourceFilePath" value="Dockerfile" />
       </settings>
     </deployment>

@@ -10,7 +10,7 @@ export async function subscribe() {
     const hostname = process.env.RABBITMQ_HOSTNAME ?? "localhost"
     const port = process.env.RABBITMQ_PORT ?? "5672"
     const url = `amqp://${user}:${password}@${hostname}:${port}`
-    Logger.info(`Attempting to connect to RabbitMQ at ${url}`)
+    Logger.info(`Attempting to connect to RabbitMQ at ${url.replace(`:${password}`, ":<password>")}`)
     const amqpClient = new AMQPClient(url)
     const connection = await amqpClient.connect()
     Logger.info(`Connected to RabbitMQ`)

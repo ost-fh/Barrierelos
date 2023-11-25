@@ -15,12 +15,13 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         globally_quoted_identifiers: true
         format_sql: true
-    hibernate:
-      ddl-auto: none
     show-sql: true
+  flyway:
+    baseline-on-migrate: true
+    validate-on-migrate: false
+
   security:
     oauth2:
       resourceserver:

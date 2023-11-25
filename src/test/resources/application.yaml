@@ -21,6 +21,9 @@ spring:
         hbm2ddl:
           auto: create-drop
     show-sql: true
+  flyway:
+    enabled: false
+
   security:
     oauth2:
       resourceserver:

@@ -29,7 +29,7 @@ export async function subscribe() {
         if (bodyString === null) {
             const errorMessage = "Received a message without a body"
             Logger.error(errorMessage)
-            const failResult = formatFailedAnalysisResult("unknown", errorMessage)
+            const failResult = formatFailedAnalysisResult(errorMessage)
             await resultQueue.publish(JSON.stringify(failResult))
             await msg.reject(false)
             return

@@ -20,7 +20,7 @@
             </DockerEnvVarImpl>
           </list>
         </option>
-        <option name="commandLineOptions" value="--network scanner-rabbitmq --cpus 8" />
+        <option name="commandLineOptions" value="--network scanner-rabbitmq" />
         <option name="sourceFilePath" value="Dockerfile" />
       </settings>
     </deployment>

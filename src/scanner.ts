@@ -15,7 +15,7 @@ export async function analyzeWebsite(job: AnalysisJob): Promise<AnalysisResult> 
     await browser.close();
     Logger.info(`Finished scanning ${job.websiteBaseUrl}`)
 
-    return formatAnalysisResults(job.websiteBaseUrl, webpageResults)
+    return formatAnalysisResults(job, webpageResults)
 }
 
 async function analyzeWebpage(browser: Browser, baseUrl: string, path: string, waitForNavigation = false, retries = 2, navigationTimeout = 10e3): Promise<WebpageResult> {

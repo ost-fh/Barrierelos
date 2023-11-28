@@ -1,5 +1,6 @@
 interface AnalysisJob {
     modelVersion: string
+    jobId: number
     jobTimestamp: string
     websiteBaseUrl: string
     webpagePaths: string[]
@@ -7,6 +8,7 @@ interface AnalysisJob {
 
 interface AnalysisResult {
     modelVersion: string
+    jobId: number
     website: string
     scanTimestamp: string
     scanStatus: ScanStatus
@@ -28,6 +30,7 @@ enum ScanStatus {
 
 interface Rule {
     id: string
+    description: string
     checks: Check[]
 }
 

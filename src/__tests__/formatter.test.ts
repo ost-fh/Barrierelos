@@ -6,13 +6,22 @@ import {
     formatFailedWebpageResult,
     formatWebpageResults
 } from "../formatter.js";
-import {ScanStatus, WebpageResult} from "../model.js";
+import {AnalysisJob, ScanStatus, WebpageResult} from "../model.js";
 import {getEmptyAxeResults, getPopulatedAxeResults} from "../__mocks__/axeResults.js";
+import {getEmptyAnalysisJob} from "../__mocks__/analysisJob.js";
 
 describe("formatAnalysisResults()", () => {
-    it("should contain the baseUrl as website property", () => {
+    let job: AnalysisJob
+    beforeEach(() => {
+        job = getEmptyAnalysisJob()
+    })
+    it("should contain the jobId and baseUrl as website property", () => {
+        const jobId = 13
         const baseUrl = "testBaseUrl"
-        const result = formatAnalysisResults(baseUrl, [])
+        job.jobId = jobId
+        job.websiteBaseUrl = baseUrl
+        const result = formatAnalysisResults(job, [])
+        expect(result.jobId).to.equal(jobId)
         expect(result.website).to.equal(baseUrl)
     })
     it("should return the webpageResults as webpages property", () => {
@@ -21,17 +30,17 @@ describe("formatAnalysisResults()", () => {
             {test: 2} as unknown as WebpageResult,
             {test: 3} as unknown as WebpageResult,
         ]
-        const result = formatAnalysisResults("", webpages)
+        const result = formatAnalysisResults(job, webpages)
         expect(result.webpages.length).to.equal(3)
         expect(result.webpages).to.equal(webpages)
     })
     it("should return a success scanStatus and no errorMessage", () => {
-        const result = formatAnalysisResults("", [])
+        const result = formatAnalysisResults(job, [])
         expect(result.scanStatus).to.equal(ScanStatus.Success)
         expect(result.errorMessage).to.be.undefined
     })
     it("should return an accurate scanTimestamp", () => {
-        const result = formatAnalysisResults("", [])
+        const result = formatAnalysisResults(job, [])
         const timeDiffMilliseconds = new Date().getTime() - new Date(result.scanTimestamp).getTime()
         expect(timeDiffMilliseconds).to.be.lessThan(1000)
         expect(result.errorMessage).to.be.undefined
@@ -39,24 +48,24 @@ describe("formatAnalysisResults()", () => {
 })
 
 describe("formatFailedAnalysisResult()", () => {
-    it("should still contain the baseUrl as website property", () => {
-        const baseUrl = "testBaseUrl"
-        const failedResult = formatFailedAnalysisResult(baseUrl, "")
-        expect(failedResult.website).to.equal(baseUrl)
+    it("should contain jobId 0 and baseUrl N/A as website properties", () => {
+        const failedResult = formatFailedAnalysisResult("")
+        expect(failedResult.jobId).to.equal(0)
+        expect(failedResult.website).to.equal("N/A")
     })
     it("should return a failed scanStatus and an errorMessage", () => {
-        const failedResult = formatFailedAnalysisResult("", "")
+        const failedResult = formatFailedAnalysisResult("")
         expect(failedResult.scanStatus).to.equal(ScanStatus.Failed)
         expect(failedResult.errorMessage).not.to.be.undefined
     })
     it("should return an accurate scanTimestamp", () => {
-        const failedResult = formatAnalysisResults("", [])
+        const failedResult = formatFailedAnalysisResult([])
         const timeDiffMilliseconds = new Date().getTime() - new Date(failedResult.scanTimestamp).getTime()
         expect(timeDiffMilliseconds).to.be.lessThan(1000)
-        expect(failedResult.errorMessage).to.be.undefined
+        expect(failedResult.errorMessage).not.to.be.undefined
     })
     it("should return an empty webpages array", () => {
-        const failedResult = formatFailedAnalysisResult("", "")
+        const failedResult = formatFailedAnalysisResult("")
         expect(failedResult.webpages).to.be.empty
     })
 })
@@ -105,40 +114,34 @@ describe("formatFailedWebpageResult()", () => {
     })
 })
 
-const failedResultFunctions = [
-    {fn: formatFailedAnalysisResult},
-    {fn: formatFailedWebpageResult},
-]
-failedResultFunctions.forEach((param) => {
-    describe(`Different error parameters being passed to $param.fn.name()`, () => {
-        test("String should return the same as message", () => {
-            const error = "errorString";
-            const failedResult = param.fn("", error)
-            expect(failedResult.errorMessage).to.equal(error)
-        })
-        test("Error should return message property", () => {
-            const errorMessage = "errorMessage"
-            const failedResult = param.fn("", Error(errorMessage))
-            expect(failedResult.errorMessage).to.equal(errorMessage)
-        })
-        test("Object with message property should return that message", () => {
-            const errorMessage = "errorMessage"
-            const errorObject = {
-                message: errorMessage
-            }
-            const failedResult = param.fn("", errorObject)
-            expect(failedResult.errorMessage).to.equal(errorMessage)
-        })
-        test("Object without message property should be stringified", () => {
-            const errorObject = {
-                someProperty: "someValue"
-            }
-            const failedResult = param.fn("", errorObject)
-            expect(failedResult.errorMessage).to.equal(JSON.stringify(errorObject))
-        })
-        test("Null should return default message", () => {
-            const failedResult = param.fn("", null)
-            expect(failedResult.errorMessage).to.equal("An unknown error occurred.")
-        })
+describe(`Different error parameters being passed to formatFailedAnalysisResult`, () => {
+    test("String should return the same as message", () => {
+        const error = "errorString";
+        const failedResult = formatFailedAnalysisResult(error)
+        expect(failedResult.errorMessage).to.equal(error)
+    })
+    test("Error should return message property", () => {
+        const errorMessage = "errorMessage"
+        const failedResult = formatFailedAnalysisResult(Error(errorMessage))
+        expect(failedResult.errorMessage).to.equal(errorMessage)
+    })
+    test("Object with message property should return that message", () => {
+        const errorMessage = "errorMessage"
+        const errorObject = {
+            message: errorMessage
+        }
+        const failedResult = formatFailedAnalysisResult(errorObject)
+        expect(failedResult.errorMessage).to.equal(errorMessage)
+    })
+    test("Object without message property should be stringified", () => {
+        const errorObject = {
+            someProperty: "someValue"
+        }
+        const failedResult = formatFailedAnalysisResult(errorObject)
+        expect(failedResult.errorMessage).to.equal(JSON.stringify(errorObject))
+    })
+    test("Null should return default message", () => {
+        const failedResult = formatFailedAnalysisResult(null)
+        expect(failedResult.errorMessage).to.equal("An unknown error occurred.")
     })
 })

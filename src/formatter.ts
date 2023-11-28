@@ -1,20 +1,32 @@
 import {AxeResults, CheckResult, NodeResult, Result} from "axe-core";
-import {AnalysisResult, Check, CheckElement, CheckType, Impact, Rule, ScanStatus, WebpageResult} from "./model.js";
+import {
+    AnalysisJob,
+    AnalysisResult,
+    Check,
+    CheckElement,
+    CheckType,
+    Impact,
+    Rule,
+    ScanStatus,
+    WebpageResult
+} from "./model.js";
 
-function formatAnalysisResults(baseUrl: string, webpageResults: WebpageResult[]): AnalysisResult {
+function formatAnalysisResults(job: AnalysisJob, webpageResults: WebpageResult[]): AnalysisResult {
     return {
         modelVersion: "0.0.0",
-        website: baseUrl,
+        jobId: job.jobId,
+        website: job.websiteBaseUrl,
         scanTimestamp: new Date().toISOString(),
         scanStatus: ScanStatus.Success,
         webpages: webpageResults
     }
 }
 
-function formatFailedAnalysisResult(baseUrl: string, error: unknown): AnalysisResult {
+function formatFailedAnalysisResult(error: unknown): AnalysisResult {
     return {
         modelVersion: "0.0.0",
-        website: baseUrl,
+        jobId: 0,
+        website: "N/A",
         scanTimestamp: new Date().toISOString(),
         scanStatus: ScanStatus.Failed,
         errorMessage: errorToErrorMessage(error),
@@ -81,6 +93,9 @@ function addToMapArray<K, V>(map: Map<K, V[]>, key: K, value: V) {
 
 function formatRuleOccurrences(axeRuleOccurrences: [string, AxeRule[]]): Rule {
     const [id, occurrences] = axeRuleOccurrences
+
+    if (occurrences.length === 0) throw new Error("Found no rules for a website")
+
     const checkOccurrencesMap = new Map<string, AxeCheck[]>()
 
     occurrences.forEach(axeRule => {
@@ -101,6 +116,7 @@ function formatRuleOccurrences(axeRuleOccurrences: [string, AxeRule[]]): Rule {
 
     return {
         id,
+        description: occurrences[0].rule.description,
         checks
     }
 }

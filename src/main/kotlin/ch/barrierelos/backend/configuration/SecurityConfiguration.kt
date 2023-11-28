@@ -4,6 +4,7 @@ import ch.barrierelos.backend.constants.Endpoint.ANALYSIS
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.USER
+import ch.barrierelos.backend.constants.Endpoint.WEBSITE
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.security.AuthenticationConverter
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,6 +43,7 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.PUT, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers(HttpMethod.GET, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers(HttpMethod.DELETE, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
+          .requestMatchers("$WEBSITE/**").permitAll()
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()
           .requestMatchers("$DOCUMENTATION_OPENAPI.yaml").permitAll()
           .requestMatchers("$DOCUMENTATION_SWAGGER/**").permitAll()

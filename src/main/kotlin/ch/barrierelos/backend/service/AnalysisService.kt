@@ -36,8 +36,12 @@ public class AnalysisService(private val queue: RabbitTemplate)
 
   public fun scanWebsite(website: WebsiteMessage)
   {
-    val analysisJobMessage = website.toAnalysisJobMessage()
+    if (website.website.endsWith("/"))
+      throw IllegalArgumentException("websiteBaseUrl must not end with a slash")
+    if (website.webpages.any { !it.startsWith("/") })
+      throw IllegalArgumentException("webpagePaths must start with a slash")
 
+    val analysisJobMessage = website.toAnalysisJobMessage()
     this.analysisJobRepository.save(analysisJobMessage.toEntity())
 
     this.queue.send(Queueing.QUEUE_JOB, analysisJobMessage.toJson())
@@ -47,10 +51,7 @@ public class AnalysisService(private val queue: RabbitTemplate)
   private fun receiveResult(message: String)
   {
     val analysisResultMessage = message.fromJson<AnalysisResultMessage>()
-
-    val analysisResultId = this.analysisResultRepository.save(analysisResultMessage.toEntity()).analysisResultId
-
-    val analysisResult = this.analysisResultRepository.findById(analysisResultId).orElseThrow()
+    val analysisResult = this.analysisResultRepository.save(analysisResultMessage.toEntity())
 
     this.scoringService.onReceiveResult(analysisResult.toModel())
   }

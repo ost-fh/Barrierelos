@@ -2,7 +2,7 @@ package ch.barrierelos.backend.entity.scanner
 
 import jakarta.persistence.*
 
-@Embeddable
+@Entity
 @Table(name = "check_incomplete_element")
 public class CheckIncompleteElementEntity
 (

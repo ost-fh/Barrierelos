@@ -16,8 +16,6 @@ spring:
     properties:
       hibernate:
         globally_quoted_identifiers: true
-        format_sql: true
-    show-sql: true
   flyway:
     baseline-on-migrate: true
     validate-on-migrate: false
@@ -39,12 +37,12 @@ spring:
       trust:
         all: true
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: debug
-        type: trace
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: debug
+#        type: trace
 
 springdoc:
   api-docs:

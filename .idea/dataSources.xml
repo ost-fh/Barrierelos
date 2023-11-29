@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5040/barrierelos</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="barrierelos@barrierelos.ch" uuid="056bc968-a70c-459b-a8f6-48269de6df92">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5041/barrierelos</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

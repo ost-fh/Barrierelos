@@ -5,29 +5,27 @@ import ch.barrierelos.backend.entity.scanner.*
 import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.message.scanner.*
 import ch.barrierelos.backend.model.scanner.*
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.toJavaInstant
 import java.sql.Timestamp
-import java.time.format.DateTimeFormatter
 
-public fun WebsiteMessage.toAnalysisJobMessage(): AnalysisJobMessage
+public fun WebsiteMessage.toAnalysisJobEntity(): AnalysisJobEntity
 {
-  return AnalysisJobMessage(
+  return AnalysisJobEntity(
     modelVersion = MODEL_VERSION,
-    jobTimestamp = DateTimeFormatter.ISO_INSTANT.format(Clock.System.now().toJavaInstant()),
     websiteBaseUrl = this.website,
     webpagePaths = this.webpages,
+    modified = Timestamp(System.currentTimeMillis())
   )
 }
 
-public fun AnalysisJobMessage.toEntity(): AnalysisJobEntity
+public fun AnalysisJobEntity.toAnalysisJobMessage(): AnalysisJobMessage
 {
-  return AnalysisJobEntity(
+  return AnalysisJobMessage(
     modelVersion = this.modelVersion,
+    jobId = this.analysisJobId,
+    jobTimestamp = this.modified.toInstant().toString(),
     websiteBaseUrl = this.websiteBaseUrl,
     webpagePaths = this.webpagePaths,
-    modified = Timestamp.from(Instant.parse(this.jobTimestamp).toJavaInstant()),
   )
 }
 
@@ -42,10 +40,11 @@ public fun AnalysisJobEntity.toModel(): AnalysisJob
   )
 }
 
-public fun AnalysisResultMessage.toEntity(): AnalysisResultEntity
+public fun AnalysisResultMessage.toEntity(analysisJobEntity: AnalysisJobEntity?): AnalysisResultEntity
 {
   val analysisResult = AnalysisResultEntity(
     modelVersion = this.modelVersion,
+    analysisJob = analysisJobEntity,
     website = this.website,
     scanTimestamp = Timestamp(Instant.parse(this.scanTimestamp).toEpochMilliseconds()),
     scanStatus = this.scanStatus,
@@ -56,7 +55,10 @@ public fun AnalysisResultMessage.toEntity(): AnalysisResultEntity
   return analysisResult
 }
 
-public fun WebpageResultMessage.toEntity(analysisResult: AnalysisResultEntity, timestamp: Timestamp): WebpageResultEntity
+public fun WebpageResultMessage.toEntity(
+  analysisResult: AnalysisResultEntity,
+  timestamp: Timestamp,
+): WebpageResultEntity
 {
   val webpageResult = WebpageResultEntity(
     analysisResult = analysisResult,
@@ -74,6 +76,7 @@ public fun RuleMessage.toEntity(webpageResult: WebpageResultEntity, timestamp: T
   val rule = RuleEntity(
     webpageResult = webpageResult,
     code = this.id,
+    description = this.description,
     modified = timestamp,
   )
   rule.checks = this.checks.map { it.toEntity(rule, timestamp) }.toMutableSet()
@@ -126,6 +129,7 @@ public fun AnalysisResultEntity.toModel(): AnalysisResult
   return AnalysisResult(
     id = this.analysisResultId,
     modelVersion = this.modelVersion,
+    analysisJob = this.analysisJob?.toModel(),
     website = this.website,
     scanTimestamp = Instant.fromEpochMilliseconds(this.scanTimestamp.time),
     scanStatus = this.scanStatus,
@@ -152,6 +156,7 @@ public fun RuleEntity.toModel(): Rule
   return Rule(
     id = this.ruleId,
     code = this.code,
+    description = this.description,
     checks = this.checks.map { it.toModel() }.toMutableSet(),
     modified = this.modified.time,
   )

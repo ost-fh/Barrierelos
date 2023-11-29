@@ -1,15 +1,16 @@
 import {AMQPClient, AMQPMessage} from "@cloudamqp/amqp-client";
-import {AnalysisJob} from "./model.js";
+import {AnalysisJob, AppProperties} from "./model.js";
 import {analyzeWebsite} from "./scanner.js";
 import {formatFailedAnalysisResult} from "./formatter.js";
 import Logger from "./logger.js";
 
-export async function subscribe() {
-    const user = process.env.RABBITMQ_USER ?? "guest"
-    const password = process.env.RABBITMQ_PASSWORD ?? "guest"
-    const hostname = process.env.RABBITMQ_HOSTNAME ?? "localhost"
-    const port = process.env.RABBITMQ_PORT ?? "5672"
+export async function subscribe(props: AppProperties) {
+    const user = encodeURIComponent(props.rabbitmqUser)
+    const password = encodeURIComponent(props.rabbitmqPassword)
+    const hostname = encodeURI(props.rabbitmqHostname)
+    const port = props.rabbitmqPort
     const url = `amqp://${user}:${password}@${hostname}:${port}`
+
     Logger.info(`Attempting to connect to RabbitMQ at ${url.replace(`:${password}`, ":<password>")}`)
     const amqpClient = new AMQPClient(url)
     const connection = await amqpClient.connect()

@@ -7,16 +7,20 @@
         <option name="envVars">
           <list>
             <DockerEnvVarImpl>
+              <option name="name" value="RABBITMQ_HOSTNAME" />
+              <option name="value" value="barrierelos-rabbitmq" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
               <option name="name" value="RABBITMQ_PASSWORD" />
               <option name="value" value="barrierelos" />
             </DockerEnvVarImpl>
             <DockerEnvVarImpl>
-              <option name="name" value="RABBITMQ_USER" />
-              <option name="value" value="barrierelos" />
+              <option name="name" value="RABBITMQ_PORT" />
+              <option name="value" value="5672" />
             </DockerEnvVarImpl>
             <DockerEnvVarImpl>
-              <option name="name" value="RABBITMQ_HOSTNAME" />
-              <option name="value" value="barrierelos-rabbitmq" />
+              <option name="name" value="RABBITMQ_USER" />
+              <option name="value" value="barrierelos" />
             </DockerEnvVarImpl>
           </list>
         </option>

@@ -1,3 +1,10 @@
+interface AppProperties {
+    rabbitmqUser: string
+    rabbitmqPassword: string
+    rabbitmqHostname: string
+    rabbitmqPort: string
+}
+
 interface AnalysisJob {
     modelVersion: string
     jobId: number
@@ -61,4 +68,16 @@ interface CheckElement extends Element {
     relatedElements: Element[]
 }
 
-export {AnalysisJob, AnalysisResult, ScanStatus, WebpageResult, Rule, Check, CheckType, Impact, Element, CheckElement}
+export {
+    AppProperties,
+    AnalysisJob,
+    AnalysisResult,
+    ScanStatus,
+    WebpageResult,
+    Rule,
+    Check,
+    CheckType,
+    Impact,
+    Element,
+    CheckElement
+}

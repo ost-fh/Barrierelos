@@ -2,6 +2,7 @@ package ch.barrierelos.backend.controller
 
 import ch.barrierelos.backend.constants.Endpoint.USER
 import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.message.RegistrationMessage
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.UserService
@@ -19,23 +20,23 @@ public class UserController
   private lateinit var userService: UserService
 
   @PostMapping(value = [USER], consumes = [MediaType.JSON], produces = [MediaType.JSON])
-  public fun addUser(@RequestBody user: User): ResponseEntity<User>
+  public fun addUser(@RequestBody registration: RegistrationMessage): ResponseEntity<User>
   {
-    user.id = 0
+    registration.user.id = 0
 
-    val savedUser: User = this.userService.addUser(user)
+    val user: User = this.userService.addUser(registration.user, registration.credential)
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(savedUser)
+    return ResponseEntity.status(HttpStatus.CREATED).body(user)
   }
   
   @PutMapping(value = ["$USER/{id}"], consumes = [MediaType.JSON], produces = [MediaType.JSON])
-  public fun updateUser(@PathVariable id: Long, @RequestBody user: User, @RequestParam changeCredentials: Boolean = false): ResponseEntity<User>
+  public fun updateUser(@PathVariable id: Long, @RequestBody user: User): ResponseEntity<User>
   {
     user.id = id
 
-    val savedUser: User = this.userService.updateUser(user, changeCredentials)
-
-    return ResponseEntity.status(HttpStatus.OK).body(savedUser)
+    val user: User = this.userService.updateUser(user)
+    
+    return ResponseEntity.status(HttpStatus.OK).body(user)
   }
   
   @GetMapping(value = [USER], produces = [MediaType.JSON])
@@ -55,7 +56,7 @@ public class UserController
   }
   
   @DeleteMapping(value = ["$USER/{id}"], produces = [MediaType.JSON])
-  public fun deleteUser(@PathVariable id: Long): ResponseEntity<User>
+  public fun deleteUser(@PathVariable id: Long): ResponseEntity<Void>
   {
     this.userService.deleteUser(id)
     

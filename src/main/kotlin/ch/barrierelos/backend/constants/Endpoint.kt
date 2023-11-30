@@ -4,6 +4,7 @@ public object Endpoint
 {
   public const val ANALYSIS: String = "/analysis"
   public const val USER: String = "/user"
+  public const val CREDENTIAL: String = "/credential"
   public const val WEBSITE: String = "/website"
 
   public const val DOCUMENTATION_OPENAPI: String = "/openapi"

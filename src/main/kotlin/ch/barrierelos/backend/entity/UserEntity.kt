@@ -16,10 +16,8 @@ public class UserEntity
   public var firstname: String,
   public var lastname: String,
   public var email: String,
-  public var password: String?,
-  public var issuer: String?,
-  public var subject: String?,
   @Enumerated(EnumType.STRING)
   public var roles: MutableSet<RoleEnum>,
   public var modified: Timestamp = Timestamp(0),
+  public var created: Timestamp = Timestamp(0),
 )

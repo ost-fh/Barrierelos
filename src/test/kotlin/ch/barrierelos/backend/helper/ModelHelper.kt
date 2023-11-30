@@ -1,6 +1,7 @@
 package ch.barrierelos.backend.helper
 
 import ch.barrierelos.backend.enums.RoleEnum
+import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
 
 fun createUserModel() = User(
@@ -8,9 +9,16 @@ fun createUserModel() = User(
   firstname = "Firstname",
   lastname = "Lastname",
   email = "email@gmail.com",
-  password = "password",
-  issuer = "issuer",
-  subject = "subject",
   roles = mutableSetOf(RoleEnum.CONTRIBUTOR, RoleEnum.VIEWER),
   modified = 5000,
+  created = 5000,
+)
+
+fun createCredentialModel() = Credential(
+  password = "password",
+  userId = 1,
+  issuer = "issuer",
+  subject = "subject",
+  modified = 5000,
+  created = 5000,
 )

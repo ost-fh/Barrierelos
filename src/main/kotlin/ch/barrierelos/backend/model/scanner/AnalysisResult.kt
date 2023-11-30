@@ -15,4 +15,5 @@ public data class AnalysisResult(
   public val errorMessage: String? = null,
   public val webpages: MutableSet<WebpageResult>,
   public var modified: Long = System.currentTimeMillis(),
+  public var created: Long = System.currentTimeMillis(),
 )

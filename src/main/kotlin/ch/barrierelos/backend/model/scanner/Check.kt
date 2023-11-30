@@ -18,4 +18,5 @@ public data class Check
   public val violatingElements: MutableSet<CheckElement>,
   public val incompleteElements: MutableSet<CheckElement>,
   public var modified: Long = System.currentTimeMillis(),
+  public var created: Long = System.currentTimeMillis(),
 )

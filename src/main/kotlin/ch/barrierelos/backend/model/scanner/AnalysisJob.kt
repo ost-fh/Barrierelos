@@ -12,4 +12,5 @@ public data class AnalysisJob(
   public val websiteBaseUrl: String,
   public val webpagePaths: MutableSet<String>,
   public var modified: Long = System.currentTimeMillis(),
+  public var created: Long = System.currentTimeMillis(),
 )

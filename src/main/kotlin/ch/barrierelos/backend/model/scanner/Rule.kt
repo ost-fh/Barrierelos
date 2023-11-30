@@ -9,4 +9,5 @@ public data class Rule(
   public val description: String,
   public val checks: MutableSet<Check>,
   public var modified: Long = System.currentTimeMillis(),
+  public var created: Long = System.currentTimeMillis(),
 )

@@ -12,4 +12,5 @@ public data class WebpageResult
   public val errorMessage: String? = null,
   public val rules: MutableSet<Rule>,
   public var modified: Long = System.currentTimeMillis(),
+  public var created: Long = System.currentTimeMillis(),
 )

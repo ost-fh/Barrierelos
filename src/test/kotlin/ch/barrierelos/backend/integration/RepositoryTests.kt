@@ -1,6 +1,8 @@
 package ch.barrierelos.backend.integration
 
+import ch.barrierelos.backend.helper.createCredentialEntity
 import ch.barrierelos.backend.helper.createUserEntity
+import ch.barrierelos.backend.repository.CredentialRepository
 import ch.barrierelos.backend.repository.UserRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
@@ -8,7 +10,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
-import org.springframework.dao.EmptyResultDataAccessException
 
 @DataJpaTest
 class RepositoryTests
@@ -18,6 +19,8 @@ class RepositoryTests
 
   @Autowired
   lateinit var userRepository: UserRepository
+  @Autowired
+  lateinit var credentialRepository: CredentialRepository
 
   @Nested
   inner class UserRepositoryTests
@@ -44,9 +47,6 @@ class RepositoryTests
         assertEquals(expected.firstname, actual.firstname)
         assertEquals(expected.lastname, actual.lastname)
         assertEquals(expected.email, actual.email)
-        assertEquals(expected.password, actual.password)
-        assertEquals(expected.issuer, actual.issuer)
-        assertEquals(expected.subject, actual.subject)
         assertEquals(expected.roles, actual.roles)
         assertEquals(expected.modified, actual.modified)
       }
@@ -89,7 +89,7 @@ class RepositoryTests
       entityManager.flush()
 
       // then
-      val actual = userRepository.findByUserId(expected.userId)
+      val actual = userRepository.findById(expected.userId).orElse(null)
 
       assertNotNull(actual)
 
@@ -101,9 +101,6 @@ class RepositoryTests
         assertEquals(expected.firstname, actual.firstname)
         assertEquals(expected.lastname, actual.lastname)
         assertEquals(expected.email, actual.email)
-        assertEquals(expected.password, actual.password)
-        assertEquals(expected.issuer, actual.issuer)
-        assertEquals(expected.subject, actual.subject)
         assertEquals(expected.roles, actual.roles)
         assertEquals(expected.modified, actual.modified)
       }
@@ -116,7 +113,7 @@ class RepositoryTests
       val expected = createUserEntity()
 
       // then
-      val actual = userRepository.findByUserId(expected.userId)
+      val actual = userRepository.findById(expected.userId).orElse(null)
 
       assertNull(actual)
     }
@@ -131,7 +128,7 @@ class RepositoryTests
       entityManager.flush()
 
       // then
-      val actual = userRepository.findByUserId(5000)
+      val actual = userRepository.findById(5000).orElse(null)
 
       assertNull(actual)
     }
@@ -141,12 +138,14 @@ class RepositoryTests
     {
       // when
       val expected = createUserEntity()
+      val credential = createCredentialEntity()
 
-      entityManager.persist(expected)
+      credential.userFk = entityManager.persist(expected).userId
+      entityManager.persist(credential)
       entityManager.flush()
 
       // then
-      val actual = userRepository.findByIssuerAndSubject(expected.issuer!!, expected.subject!!)
+      val actual = userRepository.findByIssuerAndSubject(credential.issuer!!, credential.subject!!)
 
       assertNotNull(actual)
 
@@ -158,9 +157,6 @@ class RepositoryTests
         assertEquals(expected.firstname, actual.firstname)
         assertEquals(expected.lastname, actual.lastname)
         assertEquals(expected.email, actual.email)
-        assertEquals(expected.password, actual.password)
-        assertEquals(expected.issuer, actual.issuer)
-        assertEquals(expected.subject, actual.subject)
         assertEquals(expected.roles, actual.roles)
         assertEquals(expected.modified, actual.modified)
       }
@@ -170,10 +166,10 @@ class RepositoryTests
     fun `cannot find user by issuer and subject, when user not exists`()
     {
       // when
-      val expected = createUserEntity()
+      val credential = createCredentialEntity()
 
       // then
-      val actual = userRepository.findByIssuerAndSubject(expected.issuer!!, expected.subject!!)
+      val actual = userRepository.findByIssuerAndSubject(credential.issuer!!, credential.subject!!)
 
       assertNull(actual)
     }
@@ -183,12 +179,14 @@ class RepositoryTests
     {
       // when
       val expected = createUserEntity()
+      val credential = createCredentialEntity()
 
-      entityManager.persist(expected)
+      credential.userFk = entityManager.persist(expected).userId
+      entityManager.persist(credential)
       entityManager.flush()
 
       // then
-      val actual = userRepository.findByIssuerAndSubject("something", expected.subject!!)
+      val actual = userRepository.findByIssuerAndSubject("something", credential.subject!!)
 
       assertNull(actual)
     }
@@ -198,56 +196,115 @@ class RepositoryTests
     {
       // when
       val expected = createUserEntity()
+      val credential = createCredentialEntity()
 
+      credential.userFk = entityManager.persist(expected).userId
+      entityManager.persist(credential)
+      entityManager.flush()
+
+      // then
+      val actual = userRepository.findByIssuerAndSubject(credential.issuer!!, "something")
+
+      assertNull(actual)
+    }
+  }
+
+  @Nested
+  inner class CredentialRepositoryTests
+  {
+    @Test
+    fun `finds credential by userId, when user exists`()
+    {
+      // when
+      val expected = createCredentialEntity()
+      val user = createUserEntity()
+
+      expected.userFk = entityManager.persist(user).userId
       entityManager.persist(expected)
       entityManager.flush()
 
       // then
-      val actual = userRepository.findByIssuerAndSubject(expected.issuer!!, "something")
+      val actual = credentialRepository.findByUserFk(expected.userFk)
+
+      assertNotNull(actual)
+
+      if(actual != null)
+      {
+        assertNotEquals(0, actual.credentialId)
+        assertEquals(expected.userFk, actual.userFk)
+        assertEquals(expected.password, actual.password)
+        assertEquals(expected.issuer, actual.issuer)
+        assertEquals(expected.subject, actual.subject)
+        assertEquals(expected.modified, actual.modified)
+      }
+    }
+
+    @Test
+    fun `cannot find credential by userId, when not exists`()
+    {
+      // when
+      val expected = createCredentialEntity()
+
+      // then
+      val actual = credentialRepository.findByUserFk(expected.userFk)
 
       assertNull(actual)
     }
 
     @Test
-    fun `gets password by id, when user exists`()
+    fun `finds credential by id, when credential exists`()
     {
       // when
-      val expected = createUserEntity()
+      val expected = createCredentialEntity()
+      val user = createUserEntity()
 
+      expected.userFk = entityManager.persist(user).userId
       entityManager.persist(expected)
       entityManager.flush()
 
       // then
-      val password = userRepository.getPasswordById(expected.userId)
+      val actual = credentialRepository.findById(expected.credentialId).orElse(null)
 
-      assertEquals(expected.password, password)
-    }
+      assertNotNull(actual)
 
-    @Test
-    fun `cannot get password by id, when user not exists`()
-    {
-      // when
-      val expected = createUserEntity()
-
-      // then
-      assertThrows(EmptyResultDataAccessException::class.java) {
-        userRepository.getPasswordById(expected.userId)
+      if(actual != null)
+      {
+        assertNotEquals(0, actual.credentialId)
+        assertEquals(expected.userFk, actual.userFk)
+        assertEquals(expected.password, actual.password)
+        assertEquals(expected.issuer, actual.issuer)
+        assertEquals(expected.subject, actual.subject)
+        assertEquals(expected.modified, actual.modified)
       }
     }
 
     @Test
-    fun `cannot get password by id, when wrong id`()
+    fun `cannot find credential by id, when credential not exists`()
     {
       // when
-      val expected = createUserEntity()
+      val expected = createCredentialEntity()
 
+      // then
+      val actual = credentialRepository.findById(expected.credentialId).orElse(null)
+
+      assertNull(actual)
+    }
+
+    @Test
+    fun `cannot find credential by id, when wrong id`()
+    {
+      // when
+      val expected = createCredentialEntity()
+      val user = createUserEntity()
+
+      expected.userFk = entityManager.persist(user).userId
       entityManager.persist(expected)
       entityManager.flush()
 
       // then
-      assertThrows(EmptyResultDataAccessException::class.java) {
-        userRepository.getPasswordById(5000)
-      }
+      val actual = credentialRepository.findById(5000).orElse(null)
+
+      assertNull(actual)
     }
   }
 }

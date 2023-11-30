@@ -2,6 +2,8 @@ package ch.barrierelos.backend.unit
 
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.helper.createCredentialEntity
+import ch.barrierelos.backend.helper.createCredentialModel
 import ch.barrierelos.backend.helper.createUserEntity
 import ch.barrierelos.backend.helper.createUserModel
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -41,11 +43,44 @@ class ConverterTests
       assertEquals(expectedEntity.firstname, actualEntity.firstname)
       assertEquals(expectedEntity.lastname, actualEntity.lastname)
       assertEquals(expectedEntity.email, actualEntity.email)
+      assertEquals(expectedEntity.roles, actualEntity.roles)
+      assertEquals(expectedEntity.modified, actualEntity.modified)
+      assertEquals(expectedEntity.created, actualEntity.created)
+    }
+  }
+
+  @Nested
+  inner class CredentialTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createCredentialEntity()
+
+      // then
+      val model = createCredentialModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createCredentialModel()
+
+      // then
+      val expectedEntity = createCredentialEntity()
+
+      val actualEntity = model.toEntity()
+
+      assertEquals(expectedEntity.userFk, actualEntity.userFk)
       assertEquals(expectedEntity.password, actualEntity.password)
       assertEquals(expectedEntity.issuer, actualEntity.issuer)
       assertEquals(expectedEntity.subject, actualEntity.subject)
-      assertEquals(expectedEntity.roles, actualEntity.roles)
       assertEquals(expectedEntity.modified, actualEntity.modified)
+      assertEquals(expectedEntity.created, actualEntity.created)
     }
   }
 }

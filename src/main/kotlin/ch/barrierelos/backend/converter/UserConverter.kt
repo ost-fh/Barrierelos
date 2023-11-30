@@ -12,11 +12,9 @@ public fun User.toEntity(): UserEntity
     firstname = this.firstname,
     lastname = this.lastname,
     email = this.email,
-    password = this.password,
-    issuer = this.issuer,
-    subject = this.subject,
     roles = this.roles,
     modified = Timestamp(this.modified),
+    created = Timestamp(this.created),
   )
 }
 
@@ -28,10 +26,22 @@ public fun UserEntity.toModel(): User
     firstname = this.firstname,
     lastname = this.lastname,
     email = this.email,
-    password = this.password,
-    issuer = this.issuer,
-    subject = this.subject,
     roles = this.roles,
     modified = this.modified.time,
+    created = this.created.time,
   )
+}
+
+public fun UserEntity.toModel(user: User): User
+{
+  return user.apply {
+    id = this@toModel.userId
+    username = this@toModel.username
+    firstname = this@toModel.firstname
+    lastname = this@toModel.lastname
+    email = this@toModel.email
+    roles = this@toModel.roles
+    modified = this@toModel.modified.time
+    created = this@toModel.created.time
+  }
 }

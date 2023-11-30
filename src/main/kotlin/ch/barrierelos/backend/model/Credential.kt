@@ -1,17 +1,15 @@
 package ch.barrierelos.backend.model
 
-import ch.barrierelos.backend.enums.RoleEnum
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class User
+public data class Credential
 (
   public var id: Long = 0,
-  public var username: String,
-  public var firstname: String,
-  public var lastname: String,
-  public var email: String,
-  public var roles: MutableSet<RoleEnum>,
+  public var userId: Long = 0,
+  public var password: String? = null,
+  public var issuer: String? = null,
+  public var subject: String? = null,
   public var modified: Long = System.currentTimeMillis(),
   public var created: Long = System.currentTimeMillis(),
 )

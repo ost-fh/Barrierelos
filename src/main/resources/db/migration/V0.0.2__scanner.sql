@@ -35,6 +35,7 @@ CREATE TABLE "analysis_job"
   "website_base_url" VARCHAR NOT NULL,
   "webpage_paths" VARCHAR ARRAY NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("analysis_job_id")
 );
 
@@ -47,6 +48,7 @@ CREATE TABLE "analysis_result"
   "scan_status" SCAN_STATUS_ENUM,
   "error_message" VARCHAR DEFAULT null,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("analysis_result_id")
 );
 
@@ -58,6 +60,7 @@ CREATE TABLE "webpage_result"
   "scan_status" SCAN_STATUS_ENUM,
   "error_message" VARCHAR DEFAULT null,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("webpage_result_id"),
   FOREIGN KEY ("analysis_result_fk") REFERENCES "analysis_result" ("analysis_result_id")
 );
@@ -68,6 +71,7 @@ CREATE TABLE "rule"
   "webpage_result_fk" BIGSERIAL NOT NULL,
   "code" VARCHAR NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("rule_id"),
   FOREIGN KEY ("webpage_result_fk") REFERENCES "webpage_result" ("webpage_result_id")
 );
@@ -79,11 +83,12 @@ CREATE TABLE "check"
   "code" VARCHAR NOT NULL,
   "type" CHECK_TYPE_ENUM,
   "impact" IMPACT_ENUM,
-  "tested_count" Int,
-  "passed_count" Int,
-  "violated_count" Int,
-  "incomplete_count" Int,
+  "tested_count" INTEGER,
+  "passed_count" INTEGER,
+  "violated_count" INTEGER,
+  "incomplete_count" INTEGER,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("check_id"),
   FOREIGN KEY ("rule_fk") REFERENCES "rule" ("rule_id")
 );
@@ -96,6 +101,7 @@ CREATE TABLE "check_element"
   "issue_description" VARCHAR NOT NULL,
   "data" VARCHAR NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("check_element_id")
 );
 
@@ -126,6 +132,7 @@ CREATE TABLE "element"
   "target" VARCHAR NOT NULL,
   "html" VARCHAR NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("element_id"),
   FOREIGN KEY ("check_element_fk") REFERENCES "check_element" ("check_element_id")
 );

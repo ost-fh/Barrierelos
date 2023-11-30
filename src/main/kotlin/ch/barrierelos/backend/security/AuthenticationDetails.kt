@@ -1,11 +1,12 @@
 package ch.barrierelos.backend.security
 
 import ch.barrierelos.backend.enums.RoleEnum
+import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-public class AuthenticationDetails public constructor(private val user: User, private val authorities: MutableCollection<GrantedAuthority>) : UserDetails
+public class AuthenticationDetails public constructor(private val user: User, private val credential: Credential, private val authorities: MutableCollection<GrantedAuthority>) : UserDetails
 {
   public fun getUser(): User = this.user
 
@@ -15,7 +16,7 @@ public class AuthenticationDetails public constructor(private val user: User, pr
   
   override fun getAuthorities(): MutableCollection<GrantedAuthority> = this.authorities
   
-  override fun getPassword(): String = this.user.password ?: ""
+  override fun getPassword(): String = this.credential.password ?: ""
 
   override fun getUsername(): String = this.user.username
   

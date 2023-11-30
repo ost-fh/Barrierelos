@@ -1,5 +1,7 @@
 package ch.barrierelos.backend.security
 
+import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
@@ -25,8 +27,16 @@ public class AuthenticationDetailsService : UserDetailsService
     else
     {
       val authorities: MutableCollection<GrantedAuthority> = this.authenticationService.getAuthorities(user.roles)
+      val credential: Credential? = this.authenticationService.getCredential(user)
 
-      AuthenticationDetails(user, authorities)
+      if(credential == null)
+      {
+        throw NoAuthorizationException()
+      }
+      else
+      {
+        AuthenticationDetails(user, credential, authorities)
+      }
     }
   }
 }

@@ -1,5 +1,7 @@
 package ch.barrierelos.backend.security
 
+import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.convert.converter.Converter
@@ -25,9 +27,18 @@ public class AuthenticationConverter : Converter<Jwt, AuthenticationToken>
     else
     {
       val authorities: MutableCollection<GrantedAuthority> = this.authenticationService.getAuthorities(user.roles)
-      val principal = AuthenticationDetails(user, authorities)
+      val credential: Credential? = this.authenticationService.getCredential(user)
 
-      AuthenticationToken(jwt, principal, authorities)
+      if(credential == null)
+      {
+        throw NoAuthorizationException()
+      }
+      else
+      {
+        val principal = AuthenticationDetails(user, credential, authorities)
+
+        AuthenticationToken(jwt, principal, authorities)
+      }
     }
   }
 }

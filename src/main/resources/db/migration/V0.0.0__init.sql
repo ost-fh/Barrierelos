@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS "credential" CASCADE;
 
 DROP CAST IF EXISTS (VARCHAR AS ROLE_ENUM);
 
@@ -19,10 +20,22 @@ CREATE TABLE "user"
   "firstname" VARCHAR NOT NULL,
   "lastname" VARCHAR NOT NULL,
   "email" VARCHAR NOT NULL,
+  "roles" ROLE_ENUM ARRAY NOT NULL CHECK (cardinality("roles") > 0),
+  "deleted" BOOLEAN DEFAULT FALSE,
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  PRIMARY KEY ("user_id")
+);
+
+CREATE TABLE "credential"
+(
+  "credential_id" BIGSERIAL,
+  "user_fk" BIGSERIAL,
   "password" VARCHAR,
   "issuer" VARCHAR,
   "subject" VARCHAR,
-  "roles" ROLE_ENUM ARRAY NOT NULL CHECK (cardinality("roles") > 0),
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
-  PRIMARY KEY ("user_id")
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  PRIMARY KEY ("credential_id"),
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
 );

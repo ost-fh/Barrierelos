@@ -37,6 +37,7 @@ public fun AnalysisJobEntity.toModel(): AnalysisJob
     websiteBaseUrl = this.websiteBaseUrl,
     webpagePaths = this.webpagePaths,
     modified = this.modified.time,
+    created = this.created.time,
   )
 }
 
@@ -50,15 +51,15 @@ public fun AnalysisResultMessage.toEntity(analysisJobEntity: AnalysisJobEntity?)
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
     modified = Timestamp(System.currentTimeMillis()),
+    created = Timestamp(System.currentTimeMillis()),
   )
+
   analysisResult.webpages = this.webpages.map { it.toEntity(analysisResult, analysisResult.modified) }.toMutableSet()
+
   return analysisResult
 }
 
-public fun WebpageResultMessage.toEntity(
-  analysisResult: AnalysisResultEntity,
-  timestamp: Timestamp,
-): WebpageResultEntity
+public fun WebpageResultMessage.toEntity(analysisResult: AnalysisResultEntity, timestamp: Timestamp): WebpageResultEntity
 {
   val webpageResult = WebpageResultEntity(
     analysisResult = analysisResult,
@@ -66,8 +67,11 @@ public fun WebpageResultMessage.toEntity(
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
     modified = timestamp,
+    created = timestamp,
   )
+
   webpageResult.rules = this.rules.map { it.toEntity(webpageResult, timestamp) }.toMutableSet()
+
   return webpageResult
 }
 
@@ -78,8 +82,11 @@ public fun RuleMessage.toEntity(webpageResult: WebpageResultEntity, timestamp: T
     code = this.id,
     description = this.description,
     modified = timestamp,
+    created = timestamp,
   )
+
   rule.checks = this.checks.map { it.toEntity(rule, timestamp) }.toMutableSet()
+
   return rule
 }
 
@@ -95,9 +102,12 @@ public fun CheckMessage.toEntity(rule: RuleEntity, timestamp: Timestamp): CheckE
     violatedCount = this.violatedCount,
     incompleteCount = this.incompleteCount,
     modified = timestamp,
+    created = timestamp,
   )
+
   check.violatingElements = this.violatingElements.map { it.toEntity(timestamp) }.toMutableSet()
   check.incompleteElements = this.incompleteElements.map { it.toEntity(timestamp) }.toMutableSet()
+
   return check
 }
 
@@ -109,8 +119,11 @@ public fun CheckElementMessage.toEntity(timestamp: Timestamp): CheckElementEntit
     issueDescription = this.issueDescription,
     data = this.data,
     modified = timestamp,
+    created = timestamp,
   )
+
   checkElement.relatedElements = this.relatedElements.map { it.toEntity(checkElement, timestamp) }.toMutableSet()
+
   return checkElement
 }
 
@@ -121,6 +134,7 @@ public fun ElementMessage.toEntity(checkElement: CheckElementEntity, timestamp: 
     target = this.target,
     html = this.html,
     modified = timestamp,
+    created = timestamp,
   )
 }
 
@@ -136,6 +150,7 @@ public fun AnalysisResultEntity.toModel(): AnalysisResult
     errorMessage = this.errorMessage,
     webpages = this.webpages.map { it.toModel() }.toMutableSet(),
     modified = this.modified.time,
+    created = this.created.time,
   )
 }
 
@@ -148,6 +163,7 @@ public fun WebpageResultEntity.toModel(): WebpageResult
     errorMessage = this.errorMessage,
     rules = this.rules.map { it.toModel() }.toMutableSet(),
     modified = this.modified.time,
+    created = this.created.time,
   )
 }
 
@@ -159,6 +175,7 @@ public fun RuleEntity.toModel(): Rule
     description = this.description,
     checks = this.checks.map { it.toModel() }.toMutableSet(),
     modified = this.modified.time,
+    created = this.created.time,
   )
 }
 
@@ -176,6 +193,7 @@ public fun CheckEntity.toModel(): Check
     violatingElements = this.violatingElements.map { it.toModel() }.toMutableSet(),
     incompleteElements = this.incompleteElements.map { it.toModel() }.toMutableSet(),
     modified = this.modified.time,
+    created = this.created.time,
   )
 }
 
@@ -189,6 +207,7 @@ public fun CheckElementEntity.toModel(): CheckElement
     data = this.data,
     relatedElements = this.relatedElements.map { it.toModel() }.toMutableSet(),
     modified = this.modified.time,
+    created = this.created.time,
   )
 }
 
@@ -199,5 +218,6 @@ public fun ElementEntity.toModel(): Element
     target = this.target,
     html = this.html,
     modified = this.modified.time,
+    created = this.created.time,
   )
 }

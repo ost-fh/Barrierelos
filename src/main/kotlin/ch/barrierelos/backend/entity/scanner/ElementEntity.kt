@@ -16,4 +16,5 @@ public class ElementEntity
   public var target: String,
   public var html: String,
   public var modified: Timestamp = Timestamp(0),
+  public var created: Timestamp = Timestamp(0),
 )

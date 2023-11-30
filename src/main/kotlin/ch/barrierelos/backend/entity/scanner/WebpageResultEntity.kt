@@ -21,4 +21,5 @@ public class WebpageResultEntity
   @OneToMany(mappedBy = "webpageResult", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
   public var rules: MutableSet<RuleEntity> = mutableSetOf(),
   public var modified: Timestamp = Timestamp(0),
+  public var created: Timestamp = Timestamp(0),
 )

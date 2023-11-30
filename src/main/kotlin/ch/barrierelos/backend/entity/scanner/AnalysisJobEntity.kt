@@ -15,4 +15,5 @@ public class AnalysisJobEntity
   @Suppress("JpaAttributeTypeInspection")
   public val webpagePaths: MutableSet<String>,
   public var modified: Timestamp = Timestamp(0),
+  public var created: Timestamp = Timestamp(0),
 )

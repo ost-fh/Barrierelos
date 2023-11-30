@@ -17,4 +17,5 @@ public class RuleEntity(
   @OneToMany(mappedBy = "rule", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
   public var checks: MutableSet<CheckEntity> = mutableSetOf(),
   public var modified: Timestamp = Timestamp(0),
+  public var created: Timestamp = Timestamp(0),
 )

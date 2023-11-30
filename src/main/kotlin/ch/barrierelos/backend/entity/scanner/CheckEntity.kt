@@ -39,4 +39,5 @@ public class CheckEntity
   )
   public var incompleteElements: MutableSet<CheckElementEntity> = mutableSetOf(),
   public var modified: Timestamp = Timestamp(0),
+  public var created: Timestamp = Timestamp(0),
 )

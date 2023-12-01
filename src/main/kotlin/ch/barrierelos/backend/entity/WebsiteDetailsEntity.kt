@@ -13,4 +13,5 @@ public class WebsiteDetailsEntity (
     @OneToMany(mappedBy = "website", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     public var webpages: MutableSet<WebpageDetailsEntity> = mutableSetOf(),
     public var modified: Timestamp = Timestamp(0),
+    public var created: Timestamp = Timestamp(0),
 )

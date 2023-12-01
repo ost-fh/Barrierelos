@@ -14,7 +14,8 @@ public fun WebsiteMessage.toAnalysisJobEntity(): AnalysisJobEntity
     modelVersion = MODEL_VERSION,
     websiteBaseUrl = this.website,
     webpagePaths = this.webpages,
-    modified = Timestamp(System.currentTimeMillis())
+    modified = Timestamp(System.currentTimeMillis()),
+    created = Timestamp(System.currentTimeMillis()),
   )
 }
 

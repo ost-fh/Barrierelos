@@ -15,4 +15,5 @@ public class WebpageDetailsEntity (
     @JoinColumn(name="website_details_fk", nullable=false)
     public var website: WebsiteDetailsEntity,
     public var modified: Timestamp = Timestamp(0),
+    public var created: Timestamp = Timestamp(0),
 )

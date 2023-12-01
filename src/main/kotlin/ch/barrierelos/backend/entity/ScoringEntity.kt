@@ -15,4 +15,5 @@ public class ScoringEntity(
   public var score: Double,
   public var totalCount: Int,
   public var modified: Timestamp = Timestamp(0),
+  public var created: Timestamp = Timestamp(0),
 )

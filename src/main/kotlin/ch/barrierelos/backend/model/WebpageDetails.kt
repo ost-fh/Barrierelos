@@ -8,4 +8,5 @@ public data class WebpageDetails(
     public var path: String,
     public var score: Double,
     public var modified: Long = System.currentTimeMillis(),
+    public var created: Long = System.currentTimeMillis(),
 )

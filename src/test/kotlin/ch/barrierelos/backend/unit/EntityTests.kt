@@ -1,7 +1,6 @@
 package ch.barrierelos.backend.unit
 
-import ch.barrierelos.backend.helper.createCredentialEntity
-import ch.barrierelos.backend.helper.createUserEntity
+import ch.barrierelos.backend.helper.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -43,6 +42,7 @@ class EntityTests
       // then
       val actual = createCredentialEntity()
 
+      assertEquals(expected.credentialId, actual.credentialId)
       assertEquals(expected.userFk, actual.userFk)
       assertEquals(expected.password, actual.password)
       assertEquals(expected.issuer, actual.issuer)
@@ -51,4 +51,22 @@ class EntityTests
       assertEquals(expected.created, actual.created)
     }
   }
+
+  @Nested
+  inner class TagTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createTagEntity()
+
+      // then
+      val actual = createTagEntity()
+
+      assertEquals(expected.tagId, actual.tagId)
+      assertEquals(expected.name, actual.name)
+    }
+  }
+
 }

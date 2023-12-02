@@ -2,10 +2,7 @@ package ch.barrierelos.backend.unit
 
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
-import ch.barrierelos.backend.helper.createCredentialEntity
-import ch.barrierelos.backend.helper.createCredentialModel
-import ch.barrierelos.backend.helper.createUserEntity
-import ch.barrierelos.backend.helper.createUserModel
+import ch.barrierelos.backend.helper.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -34,18 +31,18 @@ class ConverterTests
       val model = createUserModel()
 
       // then
-      val expectedEntity = createUserEntity()
+      val expected = createUserEntity()
 
-      val actualEntity = model.toEntity()
+      val actual = model.toEntity()
 
-      assertEquals(expectedEntity.userId, actualEntity.userId)
-      assertEquals(expectedEntity.username, actualEntity.username)
-      assertEquals(expectedEntity.firstname, actualEntity.firstname)
-      assertEquals(expectedEntity.lastname, actualEntity.lastname)
-      assertEquals(expectedEntity.email, actualEntity.email)
-      assertEquals(expectedEntity.roles, actualEntity.roles)
-      assertEquals(expectedEntity.modified, actualEntity.modified)
-      assertEquals(expectedEntity.created, actualEntity.created)
+      assertEquals(expected.userId, actual.userId)
+      assertEquals(expected.username, actual.username)
+      assertEquals(expected.firstname, actual.firstname)
+      assertEquals(expected.lastname, actual.lastname)
+      assertEquals(expected.email, actual.email)
+      assertEquals(expected.roles, actual.roles)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
     }
   }
 
@@ -71,16 +68,48 @@ class ConverterTests
       val model = createCredentialModel()
 
       // then
-      val expectedEntity = createCredentialEntity()
+      val expected = createCredentialEntity()
 
-      val actualEntity = model.toEntity()
+      val actual = model.toEntity()
 
-      assertEquals(expectedEntity.userFk, actualEntity.userFk)
-      assertEquals(expectedEntity.password, actualEntity.password)
-      assertEquals(expectedEntity.issuer, actualEntity.issuer)
-      assertEquals(expectedEntity.subject, actualEntity.subject)
-      assertEquals(expectedEntity.modified, actualEntity.modified)
-      assertEquals(expectedEntity.created, actualEntity.created)
+      assertEquals(expected.credentialId, actual.credentialId)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.password, actual.password)
+      assertEquals(expected.issuer, actual.issuer)
+      assertEquals(expected.subject, actual.subject)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+  }
+
+  @Nested
+  inner class TagTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createTagEntity()
+
+      // then
+      val model = createTagModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createTagModel()
+
+      // then
+      val expected = createTagEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.tagId, actual.tagId)
+      assertEquals(expected.name, actual.name)
     }
   }
 }

@@ -1,8 +1,9 @@
 package ch.barrierelos.backend.helper
 
-import ch.barrierelos.backend.entity.CredentialEntity
-import ch.barrierelos.backend.entity.UserEntity
+import ch.barrierelos.backend.entity.*
+import ch.barrierelos.backend.enums.CategoryEnum
 import ch.barrierelos.backend.enums.RoleEnum
+import ch.barrierelos.backend.enums.StatusEnum
 import java.sql.Timestamp
 
 fun createUserEntity() = UserEntity(
@@ -22,4 +23,8 @@ fun createCredentialEntity() = CredentialEntity(
   subject = "subject",
   modified = Timestamp(5000),
   created = Timestamp(5000),
+)
+
+fun createTagEntity() = TagEntity(
+  name = "Something"
 )

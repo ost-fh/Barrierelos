@@ -22,3 +22,7 @@ fun createCredentialModel() = Credential(
   modified = 5000,
   created = 5000,
 )
+
+fun createTagModel() = Tag(
+  name = "Something",
+)

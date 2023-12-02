@@ -18,3 +18,10 @@ public fun <T> Optional<T>.orThrow(exception: Exception): T
 {
   return this.orElseThrow { exception }
 }
+
+public fun <T> MutableCollection<T>.clearAndAddAll(elements: Collection<T>): Boolean
+{
+  this.clear()
+
+  return this.addAll(elements)
+}

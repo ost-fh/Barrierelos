@@ -39,4 +39,20 @@ class ModelTests
       assertEquals(expected, actual)
     }
   }
+
+  @Nested
+  inner class TagTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createTagModel()
+
+      // then
+      val actual = createTagModel()
+
+      assertEquals(expected, actual)
+    }
+  }
 }

@@ -7,11 +7,13 @@ import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.helper.createCredentialModel
 import ch.barrierelos.backend.message.RegistrationMessage
+import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.CredentialRepository
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.service.CredentialService
+import ch.barrierelos.backend.service.TagService
 import ch.barrierelos.backend.service.UserService
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toJson
@@ -42,6 +44,8 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
   lateinit var userService: UserService
   @MockkBean
   lateinit var credentialService: CredentialService
+  @MockkBean
+  lateinit var tagService: TagService
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -263,10 +267,10 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       }
 
       @Test
-      fun `responds with 409 conflict, when service throws UserAlreadyExistsException`()
+      fun `responds with 409 conflict, when service throws AlreadyExistsException`()
       {
         // when
-        every { userService.addUser(user, credential) } throws UserAlreadyExistsException("")
+        every { userService.addUser(user, credential) } throws AlreadyExistsException("")
 
         // then
         mockMvc.post("/user") {
@@ -428,10 +432,10 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
 
       @Test
       @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
-      fun `responds with 409 conflict, when service throws UserAlreadyExistsException`()
+      fun `responds with 409 conflict, when service throws AlreadyExistsException`()
       {
         // when
-        every { userService.updateUser(adminUser) } throws UserAlreadyExistsException("")
+        every { userService.updateUser(adminUser) } throws AlreadyExistsException("")
 
         // then
         mockMvc.put("/user/1") {
@@ -840,6 +844,462 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         // then
         mockMvc.put("/credential/1").andExpect {
           status { isUnsupportedMediaType() }
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class TagControllerTests
+  {
+    private val tag = Tag(
+      id = 0,
+      name = "name",
+    )
+
+    @Nested
+    inner class AddTagTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { tagService.addTag(tag) } returns tag
+
+        // then
+        mockMvc.post("/tag").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives tag, when provided in body`()
+      {
+        // when
+        every { tagService.addTag(tag) } returns tag
+
+        // then
+        mockMvc.post("/tag") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          content {
+            contentType(EXPECTED_MEDIA_TYPE)
+            jsonPath("$.name") { value(tag.name) }
+          }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `returns tag, when added, given admin account`()
+      {
+        // when
+        val expected = tag.copy()
+
+        every { tagService.addTag(expected) } returns expected
+
+        // then
+        val actual = mockMvc.post("/tag") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isCreated() }
+        }.body<Tag>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { tagService.addTag(tag) } returns tag
+
+        // then
+        mockMvc.post("/tag") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given wrong account`()
+      {
+        // when
+        every { tagService.addTag(tag) } returns tag
+
+        // then
+        mockMvc.post("/tag") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { tagService.addTag(tag) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.post("/tag") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 409 conflict, when service throws AlreadyExistsException`()
+      {
+        // when
+        every { tagService.addTag(tag) } throws AlreadyExistsException("")
+
+        // then
+        mockMvc.post("/tag") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isConflict() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 415 unsupported media type, when no tag provided in body`()
+      {
+        // when
+        every { tagService.addTag(tag) } returns tag
+
+        // then
+        mockMvc.post("/tag").andExpect {
+          status { isUnsupportedMediaType() }
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateTagTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { tagService.updateTag(tag) } returns tag
+
+        // then
+        mockMvc.put("/tag/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives tag, when provided in body`()
+      {
+        // when
+        every { tagService.updateTag(tag.apply { id = 1 }) } returns tag
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          content {
+            contentType(EXPECTED_MEDIA_TYPE)
+            jsonPath("$.name") { value(tag.name) }
+          }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { tagService.updateTag(tag) } returns tag
+
+        // then
+        mockMvc.put("/tag/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `returns tag, when updated, given admin account`()
+      {
+        // when
+        val expected = tag.copy()
+
+        every { tagService.updateTag(expected.apply { id = 1 }) } returns expected
+
+        // then
+        val actual = mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isOk() }
+        }.body<Tag>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { tagService.updateTag(tag) } returns tag
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 403, given wrong account`()
+      {
+        // when
+        every { tagService.updateTag(tag) } returns tag
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { tagService.updateTag(tag.apply { id = 1 }) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 409 conflict, when service throws AlreadyExistsException`()
+      {
+        // when
+        every { tagService.updateTag(tag.apply { id = 1 }) } throws AlreadyExistsException("")
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isConflict() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 415 unsupported media type, when no tag provided in body`()
+      {
+        // when
+        every { tagService.updateTag(tag) } returns tag
+
+        // then
+        mockMvc.put("/tag/1").andExpect {
+          status { isUnsupportedMediaType() }
+        }
+      }
+    }
+
+    @Nested
+    inner class GetTagsTests
+    {
+      @Test
+      fun `uses correct media type`()
+      {
+        // when
+        every { tagService.getTags() } returns mutableSetOf(tag)
+
+        // then
+        mockMvc.get("/tag").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      fun `gets tags`()
+      {
+        // when
+        val expected = mutableSetOf(tag.copy())
+
+        every { tagService.getTags() } returns expected
+
+        // then
+        val actual = mockMvc.get("/tag").andExpect {
+          status { isOk() }
+        }.body<Set<Tag>>()
+
+        assertEquals(expected, actual)
+      }
+    }
+
+    @Nested
+    inner class GetTagTests
+    {
+      @Test
+      fun `uses correct media type`()
+      {
+        // when
+        every { tagService.getTag(1) } returns tag
+
+        // then
+        mockMvc.get("/tag/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { tagService.getTag(1) } returns tag
+
+        // then
+        mockMvc.get("/tag/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      fun `gets tag`()
+      {
+        // when
+        val expected = tag.copy()
+
+        every { tagService.getTag(1) } returns expected
+
+        // then
+        val actual = mockMvc.get("/tag/1").andExpect {
+          status { isOk() }
+        }.body<Tag>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 404 not found, when service throws NoSuchElementException`()
+      {
+        // when
+        every { tagService.getTag(1) } throws NoSuchElementException()
+
+        // then
+        mockMvc.get("/tag/1").andExpect {
+          status { isNotFound() }
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteTagTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { tagService.deleteTag(1) } returns Unit
+
+        // then
+        mockMvc.delete("/tag/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { tagService.deleteTag(1) } returns Unit
+
+        // then
+        mockMvc.delete("/tag/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 200 ok, given admin account`()
+      {
+        // when
+        every { tagService.deleteTag(1) } returns Unit
+
+        // then
+        mockMvc.delete("/tag/1").andExpect {
+          status { isOk() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { tagService.deleteTag(1) } returns Unit
+
+        // then
+        mockMvc.delete("/tag/1").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given wrong account`()
+      {
+        // when
+        every { tagService.deleteTag(1) } returns Unit
+
+        // then
+        mockMvc.delete("/tag/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { tagService.deleteTag(1) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.delete("/tag/1").andExpect {
+          status { isUnauthorized() }
         }
       }
     }

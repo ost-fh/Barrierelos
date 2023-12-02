@@ -4,15 +4,14 @@ import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.exceptions.*
-import ch.barrierelos.backend.helper.createCredentialEntity
-import ch.barrierelos.backend.helper.createCredentialModel
-import ch.barrierelos.backend.helper.createUserEntity
-import ch.barrierelos.backend.helper.createUserModel
+import ch.barrierelos.backend.helper.*
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.CredentialRepository
+import ch.barrierelos.backend.repository.TagRepository
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.service.CredentialService
+import ch.barrierelos.backend.service.TagService
 import ch.barrierelos.backend.service.UserService
 import io.kotest.matchers.collections.*
 import io.kotest.matchers.longs.shouldBeGreaterThan
@@ -36,11 +35,15 @@ class ServiceTests
   lateinit var userService: UserService
   @Autowired
   lateinit var credentialService: CredentialService
+  @Autowired
+  lateinit var tagService: TagService
 
   @Autowired
   lateinit var userRepository: UserRepository
   @Autowired
   lateinit var credentialRepository: CredentialRepository
+  @Autowired
+  lateinit var tagRepository: TagRepository
 
   @BeforeEach
   fun setUp()
@@ -128,7 +131,7 @@ class ServiceTests
         userService.addUser(user, createCredentialModel())
 
         // then
-        assertThrows(UserAlreadyExistsException::class.java) {
+        assertThrows(AlreadyExistsException::class.java) {
           userService.addUser(user, createCredentialModel())
         }
       }
@@ -257,7 +260,7 @@ class ServiceTests
         user.username = "admin"
 
         // then
-        assertThrows(UserAlreadyExistsException::class.java) {
+        assertThrows(AlreadyExistsException::class.java) {
           userService.updateUser(user)
         }
       }
@@ -804,6 +807,226 @@ class ServiceTests
       {
         assertThrows(NoSuchElementException::class.java) {
           credentialService.deleteCredential(5000000)
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class TagServiceTests
+  {
+    @BeforeEach
+    fun beforeEach()
+    {
+      tagRepository.deleteAll()
+    }
+
+    @Nested
+    inner class AddTagTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `adds tag, given admin account`()
+      {
+        // when
+        val expected = createTagModel()
+
+        // then
+        val actual = tagService.addTag(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertNotEquals(expected.id, actual.id)
+        assertEquals(expected.name, actual.name)
+      }
+
+      @Test
+      fun `cannot add tag, given no account`()
+      {
+        // when
+        val expected = createTagModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          tagService.addTag(expected)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot add tag, given wrong account`()
+      {
+        // when
+        val expected = createTagModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          tagService.addTag(expected)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot add tag, when name already exists`()
+      {
+        // when
+        tagService.addTag(createTagModel())
+
+        // then
+        assertThrows(AlreadyExistsException::class.java) {
+          tagService.addTag(createTagModel())
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateTagTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `updates tag, given admin account`()
+      {
+        // when
+        val expected = tagService.addTag(createTagModel())
+        expected.name = "new"
+
+        // then
+        val actual = tagService.updateTag(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.name, actual.name)
+      }
+
+      @Test
+      fun `cannot update tag, given no account`()
+      {
+        // when
+        val expected = tagRepository.save(createTagEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          tagService.updateTag(expected)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update tag, given wrong account`()
+      {
+        // when
+        val expected = tagRepository.save(createTagEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          tagService.updateTag(expected)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot update tag, when name already exists`()
+      {
+        // given
+        val existing = tagService.addTag(createTagModel())
+
+        // when
+        val expected = tagService.addTag(createTagModel().apply { name = "new" })
+        expected.name = existing.name
+
+        // then
+        assertThrows(AlreadyExistsException::class.java) {
+          tagService.updateTag(expected)
+        }
+      }
+    }
+
+    @Nested
+    inner class GetTagsTests
+    {
+      @Test
+      fun `gets tags`()
+      {
+        // given
+        tagRepository.save(createTagEntity().apply { name = "one" })
+        tagRepository.save(createTagEntity().apply { name = "two" })
+
+        // when
+        val tags = tagService.getTags()
+
+        // then
+        tags.shouldNotBeEmpty()
+        tags.shouldHaveSize(2)
+      }
+    }
+
+    @Nested
+    inner class GetTagTests
+    {
+      @Test
+      fun `gets tag`()
+      {
+        // when
+        val expected = tagRepository.save(createTagEntity()).toModel()
+
+        // then
+        val actual = tagService.getTag(expected.id)
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `cannot get tag, when tag not exists`()
+      {
+        assertThrows(NoSuchElementException::class.java) {
+          tagService.getTag(5000000)
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteTagTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `deletes tag, given admin account`()
+      {
+        // when
+        val tag = tagService.addTag(createTagModel())
+        val tagsBefore = tagService.getTags()
+
+        // then
+        assertDoesNotThrow {
+          tagService.deleteTag(tag.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          tagService.getTag(tag.id)
+        }
+
+        val tagsAfter = tagService.getTags()
+
+        tagsBefore.shouldContain(tag)
+        tagsAfter.shouldNotContain(tag)
+        tagsBefore.shouldContainAll(tagsAfter)
+        tagsAfter.shouldNotContainAll(tagsBefore)
+      }
+
+      @Test
+      fun `cannot delete tag, given no account`()
+      {
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          tagService.deleteTag(1)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot delete tag, given wrong account`()
+      {
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          tagService.deleteTag(1)
         }
       }
     }

@@ -6,7 +6,7 @@ import ch.barrierelos.backend.entity.UserEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.exceptions.InvalidEmailException
 import ch.barrierelos.backend.exceptions.NoRoleException
-import ch.barrierelos.backend.exceptions.UserAlreadyExistsException
+import ch.barrierelos.backend.exceptions.AlreadyExistsException
 import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.parameter.DefaultParameters
@@ -103,7 +103,7 @@ public class UserService
   {
     if(this.userRepository.findByUsername(user.username) != null)
     {
-      throw UserAlreadyExistsException("User with that username already exists.")
+      throw AlreadyExistsException("User with that username already exists.")
     }
   }
 

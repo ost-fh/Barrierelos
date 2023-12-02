@@ -17,4 +17,4 @@ public class NoAuthorizationException : ResponseStatusException(HttpStatus.UNAUT
 public class NoRoleException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class UserAlreadyExistsException(message: String) : ResponseStatusException(HttpStatus.CONFLICT, message)
+public class AlreadyExistsException(message: String) : ResponseStatusException(HttpStatus.CONFLICT, message)

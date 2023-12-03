@@ -29,7 +29,8 @@ public interface ScoringRepository : Repository<ScoringEntity>
             wr.path,
             100 - webpage_counts.summed_weighted_violated_count / (webpage_counts.summed_weighted_violated_count + webpage_counts.summed_passed_count) * 100 as score,
             webpage_counts.summed_passed_count + webpage_counts.summed_weighted_violated_count as total_count,
-            wr.modified
+            wr.modified,
+            wr.created
         from webpage_result as wr
         inner join webpage_counts on webpage_counts.webpage_result_id = wr.webpage_result_id
         order by wr.webpage_result_id

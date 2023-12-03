@@ -11,8 +11,9 @@ public class AnalysisJobEntity
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var analysisJobId: Long = 0,
   public val modelVersion: String,
+  public val locale: String,
   public val websiteBaseUrl: String,
-  @Suppress("JpaAttributeTypeInspection")
+  @Suppress("JpaAttributeTypeInspection", "RedundantSuppression")
   public val webpagePaths: MutableSet<String>,
   public var modified: Timestamp = Timestamp(0),
   public var created: Timestamp = Timestamp(0),

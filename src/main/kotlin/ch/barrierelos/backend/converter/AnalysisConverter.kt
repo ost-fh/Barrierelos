@@ -8,25 +8,22 @@ import ch.barrierelos.backend.model.scanner.*
 import kotlinx.datetime.Instant
 import java.sql.Timestamp
 
+
+private object Constants
+{
+  const val DEFAULT_LOCALE = "en"
+}
+
+
 public fun WebsiteMessage.toAnalysisJobEntity(): AnalysisJobEntity
 {
   return AnalysisJobEntity(
     modelVersion = MODEL_VERSION,
+    locale = this.locale ?: Constants.DEFAULT_LOCALE,
     websiteBaseUrl = this.website,
     webpagePaths = this.webpages,
     modified = Timestamp(System.currentTimeMillis()),
     created = Timestamp(System.currentTimeMillis()),
-  )
-}
-
-public fun AnalysisJobEntity.toAnalysisJobMessage(): AnalysisJobMessage
-{
-  return AnalysisJobMessage(
-    modelVersion = this.modelVersion,
-    jobId = this.analysisJobId,
-    jobTimestamp = this.modified.toInstant().toString(),
-    websiteBaseUrl = this.websiteBaseUrl,
-    webpagePaths = this.webpagePaths,
   )
 }
 
@@ -35,10 +32,23 @@ public fun AnalysisJobEntity.toModel(): AnalysisJob
   return AnalysisJob(
     id = this.analysisJobId,
     modelVersion = this.modelVersion,
+    locale = this.locale,
     websiteBaseUrl = this.websiteBaseUrl,
     webpagePaths = this.webpagePaths,
     modified = this.modified.time,
     created = this.created.time,
+  )
+}
+
+public fun AnalysisJob.toMessage(): AnalysisJobMessage
+{
+  return AnalysisJobMessage(
+    jobId = this.id,
+    jobTimestamp = this.jobTimestamp,
+    modelVersion = this.modelVersion,
+    locale = this.locale,
+    websiteBaseUrl = this.websiteBaseUrl,
+    webpagePaths = this.webpagePaths,
   )
 }
 
@@ -48,7 +58,7 @@ public fun AnalysisResultMessage.toEntity(analysisJobEntity: AnalysisJobEntity?)
     modelVersion = this.modelVersion,
     analysisJob = analysisJobEntity,
     website = this.website,
-    scanTimestamp = Timestamp(Instant.parse(this.scanTimestamp).toEpochMilliseconds()),
+    scanTimestamp = Timestamp(this.scanTimestamp.toEpochMilliseconds()),
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
     modified = Timestamp(System.currentTimeMillis()),

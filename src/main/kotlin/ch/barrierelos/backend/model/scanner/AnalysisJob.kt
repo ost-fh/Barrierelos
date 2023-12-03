@@ -7,8 +7,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class AnalysisJob(
   public val id: Long = 0,
-  public val jobTimestamp: Instant = Clock.System.now(),
   public val modelVersion: String,
+  public val jobTimestamp: Instant = Clock.System.now(),
+  public val locale: String,
   public val websiteBaseUrl: String,
   public val webpagePaths: MutableSet<String>,
   public var modified: Long = System.currentTimeMillis(),

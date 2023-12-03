@@ -83,6 +83,7 @@ CREATE TABLE "analysis_job"
 (
   "analysis_job_id" BIGSERIAL,
   "model_version" VARCHAR NOT NULL,
+  "locale" VARCHAR NOT NULL,
   "website_base_url" VARCHAR NOT NULL,
   "webpage_paths" VARCHAR ARRAY NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),

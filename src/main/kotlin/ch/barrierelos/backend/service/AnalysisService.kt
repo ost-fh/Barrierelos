@@ -2,8 +2,8 @@ package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.constants.Queueing
 import ch.barrierelos.backend.converter.toAnalysisJobEntity
-import ch.barrierelos.backend.converter.toAnalysisJobMessage
 import ch.barrierelos.backend.converter.toEntity
+import ch.barrierelos.backend.converter.toMessage
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.entity.scanner.AnalysisJobEntity
 import ch.barrierelos.backend.enums.RoleEnum
@@ -52,7 +52,7 @@ public class AnalysisService(private val queue: RabbitTemplate)
       throw IllegalArgumentException("webpagePaths must start with a slash")
 
     val analysisJobEntity = website.toAnalysisJobEntity()
-    val analysisJobMessage = this.analysisJobRepository.save(analysisJobEntity).toAnalysisJobMessage()
+    val analysisJobMessage = this.analysisJobRepository.save(analysisJobEntity).toModel().toMessage()
 
     this.queue.send(Queueing.QUEUE_JOB, analysisJobMessage.toJson())
   }

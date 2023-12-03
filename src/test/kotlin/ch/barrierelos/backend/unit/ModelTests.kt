@@ -1,6 +1,7 @@
 package ch.barrierelos.backend.unit
 
 import ch.barrierelos.backend.helper.createCredentialModel
+import ch.barrierelos.backend.helper.createTagModel
 import ch.barrierelos.backend.helper.createUserModel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested

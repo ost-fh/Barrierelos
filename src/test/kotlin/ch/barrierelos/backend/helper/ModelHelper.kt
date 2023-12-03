@@ -2,6 +2,7 @@ package ch.barrierelos.backend.helper
 
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.model.Credential
+import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.model.User
 
 fun createUserModel() = User(

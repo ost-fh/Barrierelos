@@ -8,6 +8,7 @@
     "start": "node dist/app.js --enable-source-maps",
     "build": "rimraf ./dist && tsc --project tsconfig.build.json",
     "test:lint": "eslint . --ext .ts",
+    "test:typecheck": "tsc --noEmit",
     "test:unittest": "c8 mocha"
   },
   "repository": {

@@ -9,11 +9,14 @@ interface AnalysisJob {
     modelVersion: string
     jobId: number
     jobTimestamp: string
+    locale: Locale
     websiteBaseUrl: string
     webpagePaths: string[]
 }
 
-interface AnalysisResult {
+type Locale = "en" | "de"
+
+interface WebsiteResult {
     modelVersion: string
     jobId: number
     website: string
@@ -71,7 +74,7 @@ interface CheckElement extends Element {
 export {
     AppProperties,
     AnalysisJob,
-    AnalysisResult,
+    WebsiteResult,
     ScanStatus,
     WebpageResult,
     Rule,

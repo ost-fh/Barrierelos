@@ -1,17 +1,17 @@
 import {AxeResults, CheckResult, NodeResult, Result} from "axe-core";
 import {
     AnalysisJob,
-    AnalysisResult,
     Check,
     CheckElement,
     CheckType,
     Impact,
     Rule,
     ScanStatus,
-    WebpageResult
+    WebpageResult,
+    WebsiteResult
 } from "./model.js";
 
-function formatAnalysisResults(job: AnalysisJob, webpageResults: WebpageResult[]): AnalysisResult {
+function formatWebsiteResults(job: AnalysisJob, webpageResults: WebpageResult[]): WebsiteResult {
     return {
         modelVersion: "0.0.0",
         jobId: job.jobId,
@@ -22,7 +22,7 @@ function formatAnalysisResults(job: AnalysisJob, webpageResults: WebpageResult[]
     }
 }
 
-function formatFailedAnalysisResult(error: unknown): AnalysisResult {
+function formatFailedWebsiteResult(error: unknown): WebsiteResult {
     return {
         modelVersion: "0.0.0",
         jobId: 0,
@@ -180,4 +180,4 @@ interface AxeCheck {
     result: AxeResultStatus
 }
 
-export {formatAnalysisResults, formatFailedAnalysisResult, formatWebpageResults, formatFailedWebpageResult}
+export {formatWebsiteResults, formatFailedWebsiteResult, formatWebpageResults, formatFailedWebpageResult}

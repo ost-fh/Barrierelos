@@ -1,7 +1,7 @@
 import {AMQPClient, AMQPMessage} from "@cloudamqp/amqp-client";
 import {AnalysisJob, AppProperties} from "./model.js";
 import {analyzeWebsite} from "./scanner.js";
-import {formatFailedAnalysisResult} from "./formatter.js";
+import {formatFailedWebsiteResult} from "./formatter.js";
 import Logger from "./logger.js";
 
 export async function subscribe(props: AppProperties) {
@@ -30,7 +30,7 @@ export async function subscribe(props: AppProperties) {
         if (bodyString === null) {
             const errorMessage = "Received a message without a body"
             Logger.error(errorMessage)
-            const failResult = formatFailedAnalysisResult(errorMessage)
+            const failResult = formatFailedWebsiteResult(errorMessage)
             await resultQueue.publish(JSON.stringify(failResult))
             await msg.reject(false)
             return

@@ -5,6 +5,7 @@ function getEmptyAnalysisJob(): AnalysisJob {
         jobId: 0,
         jobTimestamp: "",
         modelVersion: "",
+        locale: "en",
         webpagePaths: [],
         websiteBaseUrl: ""
     }

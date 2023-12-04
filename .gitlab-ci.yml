@@ -40,6 +40,12 @@ lint:
   script:
     - npm run test:lint
 
+type-check:
+  stage: test
+  needs: [ ]
+  script:
+    - npm run test:typecheck
+
 unit-test:
   stage: test
   needs: [ ]

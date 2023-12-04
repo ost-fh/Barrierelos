@@ -4,12 +4,12 @@ import jakarta.persistence.*
 import java.sql.Timestamp
 
 @Entity
-@Table(name = "analysis_job")
-public class AnalysisJobEntity
-(
+@Table(name = "scan_job")
+public class ScanJobEntity
+  (
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  public var analysisJobId: Long = 0,
+  public var scanJobId: Long = 0,
   public val modelVersion: String,
   public val locale: String,
   public val websiteBaseUrl: String,

@@ -5,7 +5,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class AnalysisJob(
+public data class ScanJob(
   public val id: Long = 0,
   public val modelVersion: String,
   public val jobTimestamp: Instant = Clock.System.now(),

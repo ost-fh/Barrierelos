@@ -1,25 +1,27 @@
 package ch.barrierelos.backend.controller
 
-import ch.barrierelos.backend.constants.Endpoint.WEBSITE
+import ch.barrierelos.backend.constants.Endpoint.WEBSITES
 import ch.barrierelos.backend.constants.MediaType
-import ch.barrierelos.backend.model.WebsiteDetails
-import ch.barrierelos.backend.service.DetailsService
+import ch.barrierelos.backend.message.WebsiteMessage
+import ch.barrierelos.backend.service.WebsiteService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 public class WebsiteController
 {
   @Autowired
-  private lateinit var detailsService: DetailsService
+  private lateinit var websiteService: WebsiteService
 
-  @GetMapping(value = ["${WEBSITE}/{id}"], produces = [MediaType.JSON])
-  public fun getWebsite(@PathVariable id: Long): ResponseEntity<WebsiteDetails>
+  @PostMapping(value = [WEBSITES], consumes = [MediaType.JSON], produces = [MediaType.JSON])
+  public fun addWebsite(@RequestBody website: WebsiteMessage): ResponseEntity<Any>
   {
-    val websiteDetails = detailsService.getWebsiteDetails(id)
+    this.websiteService.scanWebsite(website)
 
-    return ResponseEntity.status(HttpStatus.OK).body(websiteDetails)
+    return ResponseEntity.status(HttpStatus.OK).build()
   }
 }

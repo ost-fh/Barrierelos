@@ -49,8 +49,8 @@ CREATE TABLE "credential"
 -- Scan Results                                                          --
 ---------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS "analysis_job" CASCADE;
-DROP TABLE IF EXISTS "analysis_result" CASCADE;
+DROP TABLE IF EXISTS "scan_job" CASCADE;
+DROP TABLE IF EXISTS "website_result" CASCADE;
 DROP TABLE IF EXISTS "webpage_result" CASCADE;
 DROP TABLE IF EXISTS "rule" CASCADE;
 DROP TABLE IF EXISTS "check_violating_element" CASCADE;
@@ -79,22 +79,22 @@ CREATE CAST (VARCHAR AS CHECK_TYPE_ENUM) WITH INOUT AS IMPLICIT;
 CREATE CAST (VARCHAR AS IMPACT_ENUM) WITH INOUT AS IMPLICIT;
 CREATE CAST (VARCHAR AS SCAN_STATUS_ENUM) WITH INOUT AS IMPLICIT;
 
-CREATE TABLE "analysis_job"
+CREATE TABLE "scan_job"
 (
-  "analysis_job_id" BIGSERIAL,
+  "scan_job_id" BIGSERIAL,
   "model_version" VARCHAR NOT NULL,
   "locale" VARCHAR NOT NULL,
   "website_base_url" VARCHAR NOT NULL,
   "webpage_paths" VARCHAR ARRAY NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("analysis_job_id")
+  PRIMARY KEY ("scan_job_id")
 );
 
-CREATE TABLE "analysis_result"
+CREATE TABLE "website_result"
 (
-  "analysis_result_id" BIGSERIAL,
-  "analysis_job_fk" BIGINT,
+  "website_result_id" BIGSERIAL,
+  "scan_job_fk" BIGINT,
   "model_version" VARCHAR NOT NULL,
   "website" VARCHAR NOT NULL,
   "scan_timestamp" TIMESTAMP(3) NOT NULL,
@@ -102,21 +102,21 @@ CREATE TABLE "analysis_result"
   "error_message" VARCHAR DEFAULT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("analysis_result_id"),
-  FOREIGN KEY ("analysis_job_fk") REFERENCES "analysis_job" ("analysis_job_id") ON DELETE CASCADE
+  PRIMARY KEY ("website_result_id"),
+  FOREIGN KEY ("scan_job_fk") REFERENCES "scan_job" ("scan_job_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "webpage_result"
 (
   "webpage_result_id" BIGSERIAL,
-  "analysis_result_fk" BIGSERIAL NOT NULL,
+  "website_result_fk" BIGSERIAL NOT NULL,
   "path" VARCHAR NOT NULL,
   "scan_status" SCAN_STATUS_ENUM,
   "error_message" VARCHAR DEFAULT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("webpage_result_id"),
-  FOREIGN KEY ("analysis_result_fk") REFERENCES "analysis_result" ("analysis_result_id") ON DELETE CASCADE
+  FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "rule"
@@ -275,13 +275,13 @@ CREATE TABLE "website_scan"
   "website_scan_id" BIGSERIAL,
   "website_fk" BIGSERIAL,
   "user_fk" BIGSERIAL,
-  "analysis_result_fk" BIGSERIAL,
+  "website_result_fk" BIGSERIAL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("website_scan_id"),
   FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
-  FOREIGN KEY ("analysis_result_fk") REFERENCES "analysis_result" ("analysis_result_id")
+  FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id")
 );
 
 CREATE TABLE "website_statistic"

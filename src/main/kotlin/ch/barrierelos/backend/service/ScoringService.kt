@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.service
 
-import ch.barrierelos.backend.model.scanner.AnalysisResult
+import ch.barrierelos.backend.model.scanner.WebsiteResult
 import ch.barrierelos.backend.repository.ScoringRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,14 +16,14 @@ public class ScoringService
   private lateinit var scoringRepository: ScoringRepository
 
   /**
-   * Gets called after the analysis result from the scanner is stored in the database.
+   * Gets called after the result from the scanner is stored in the database.
    */
-  public fun onReceiveResult(analysisResult: AnalysisResult)
+  public fun onReceiveResult(websiteResult: WebsiteResult)
   {
-    val scorings = scoringRepository.calculateWebpageScores(analysisResult.id)
+    val scorings = scoringRepository.calculateWebpageScores(websiteResult.id)
     val websiteTotalCount = scorings.sumOf { it.totalCount }
     val websiteScore = scorings.sumOf { it.score * (it.totalCount / websiteTotalCount.toDouble()) }
-    logger.info("Website (${analysisResult.website} score: $websiteScore")
+    logger.info("Website (${websiteResult.website} score: $websiteScore")
     scorings.forEach { logger.info("Webpage (${it.path}) score: ${it.score}") }
     return
   }

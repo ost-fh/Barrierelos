@@ -19,19 +19,19 @@ public class QueueConfiguration(private val connectionFactory: ConnectionFactory
   @Bean
   public fun exchange(): DirectExchange
   {
-    return DirectExchange(Queueing.EXCHANGE_ANALYSIS)
+    return DirectExchange(Queueing.EXCHANGE_SCAN)
   }
 
   @Bean
   public fun jobQueue(): Queue
   {
-    return Queue(Queueing.QUEUE_JOB)
+    return Queue(Queueing.QUEUE_SCAN_JOB)
   }
 
   @Bean
   public fun resultQueue(): Queue
   {
-    return Queue(Queueing.QUEUE_RESULT)
+    return Queue(Queueing.QUEUE_SCAN_RESULT)
   }
 
   @Bean

@@ -1,11 +1,11 @@
 package ch.barrierelos.backend.configuration
 
-import ch.barrierelos.backend.constants.Endpoint.ANALYSIS
+import ch.barrierelos.backend.constants.Endpoint.WEBSITES
 import ch.barrierelos.backend.constants.Endpoint.CREDENTIAL
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.USER
-import ch.barrierelos.backend.constants.Endpoint.WEBSITE
+import ch.barrierelos.backend.constants.Endpoint.STATISTICS
 import ch.barrierelos.backend.constants.Endpoint.TAG
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.security.AuthenticationConverter
@@ -40,7 +40,7 @@ public class SecurityConfiguration
       .cors(withDefaults())
       .authorizeHttpRequests { authorize ->
         authorize
-          .requestMatchers("$ANALYSIS/**").permitAll()
+          .requestMatchers("$WEBSITES/**").permitAll()
           .requestMatchers(HttpMethod.POST, "$USER/**").permitAll()
           .requestMatchers(HttpMethod.PUT, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers(HttpMethod.HEAD, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
@@ -51,7 +51,7 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.HEAD, "$TAG/**").permitAll()
           .requestMatchers(HttpMethod.GET, "$TAG/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "$TAG/**").hasAnyRole(RoleEnum.ADMIN.name)
-          .requestMatchers("$WEBSITE/**").permitAll()
+          .requestMatchers("$STATISTICS/**").permitAll()
           .requestMatchers(HttpMethod.PUT, "$CREDENTIAL/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()
           .requestMatchers("$DOCUMENTATION_OPENAPI.yaml").permitAll()

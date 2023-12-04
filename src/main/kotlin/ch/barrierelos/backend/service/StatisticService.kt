@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-public class DetailsService {
-    @Autowired
-    private lateinit var analysisJobRepository: WebsiteDetailsRepository
+public class StatisticService
+{
+  @Autowired
+  private lateinit var websiteDetailsRepository: WebsiteDetailsRepository
 
-    public fun getWebsiteDetails(id: Long): WebsiteDetails = analysisJobRepository.findById(id).orElseThrow().toModel()
+  public fun getWebsiteDetails(id: Long): WebsiteDetails = websiteDetailsRepository.findById(id).orElseThrow().toModel()
 }

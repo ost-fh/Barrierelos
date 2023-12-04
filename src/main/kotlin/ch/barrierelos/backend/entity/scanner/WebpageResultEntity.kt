@@ -12,8 +12,8 @@ public class WebpageResultEntity
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var webpageResultId: Long = 0,
   @ManyToOne
-  @JoinColumn(name="analysis_result_fk", nullable=false)
-  public var analysisResult: AnalysisResultEntity,
+  @JoinColumn(name = "website_result_fk", nullable = false)
+  public var websiteResult: WebsiteResultEntity,
   public var path: String,
   @Enumerated(EnumType.STRING)
   public var scanStatus: ScanStatusEnum,

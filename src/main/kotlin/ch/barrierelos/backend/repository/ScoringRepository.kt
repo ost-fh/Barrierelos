@@ -21,7 +21,7 @@ public interface ScoringRepository : Repository<ScoringEntity>
             from "check" as c
             inner join rule as r on r.rule_id = c.rule_fk
             inner join webpage_result as wr on wr.webpage_result_id = r.webpage_result_fk
-            where wr.analysis_result_fk = :id
+            where wr.website_result_fk = :id
             group by wr.webpage_result_id
         )
         select
@@ -36,5 +36,5 @@ public interface ScoringRepository : Repository<ScoringEntity>
         order by wr.webpage_result_id
     """
   )
-  public fun calculateWebpageScores(@Param("id") analysisResultId: Long): List<ScoringEntity>
+  public fun calculateWebpageScores(@Param("id") websiteResultId: Long): List<ScoringEntity>
 }

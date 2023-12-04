@@ -5,10 +5,10 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class AnalysisResult(
+public data class WebsiteResult(
   public val id: Long,
   public val modelVersion: String,
-  public val analysisJob: AnalysisJob?,
+  public val scanJob: ScanJob?,
   public val website: String,
   public val scanStatus: ScanStatusEnum,
   public val scanTimestamp: Instant,

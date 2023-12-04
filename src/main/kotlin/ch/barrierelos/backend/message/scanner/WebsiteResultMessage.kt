@@ -5,7 +5,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class AnalysisResultMessage(
+public data class WebsiteResultMessage(
   public val modelVersion: String,
   public val jobId: Long,
   public val website: String,

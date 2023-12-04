@@ -6,14 +6,14 @@ import {
     formatWebpageResults,
     formatWebsiteResults
 } from "../formatter.js";
-import {AnalysisJob, ScanStatus, WebpageResult} from "../model.js";
+import {ScanJob, ScanStatus, WebpageResult} from "../model.js";
 import {getEmptyAxeResults, getPopulatedAxeResults} from "../__mocks__/axeResults.js";
-import {getEmptyAnalysisJob} from "../__mocks__/analysisJob.js";
+import {getEmptyScanJob} from "../__mocks__/scanJob.js";
 
 describe("formatWebsiteResults()", () => {
-    let job: AnalysisJob
+    let job: ScanJob
     beforeEach(() => {
-        job = getEmptyAnalysisJob()
+        job = getEmptyScanJob()
     })
     it("should contain the jobId and baseUrl as website property", () => {
         const jobId = 13

@@ -5,7 +5,7 @@ interface AppProperties {
     rabbitmqPort: string
 }
 
-interface AnalysisJob {
+interface ScanJob {
     modelVersion: string
     jobId: number
     jobTimestamp: string
@@ -73,7 +73,7 @@ interface CheckElement extends Element {
 
 export {
     AppProperties,
-    AnalysisJob,
+    ScanJob,
     WebsiteResult,
     ScanStatus,
     WebpageResult,

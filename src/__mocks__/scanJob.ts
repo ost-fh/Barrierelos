@@ -1,6 +1,6 @@
-import {AnalysisJob} from "../model.js";
+import {ScanJob} from "../model.js";
 
-function getEmptyAnalysisJob(): AnalysisJob {
+function getEmptyScanJob(): ScanJob {
     return {
         jobId: 0,
         jobTimestamp: "",
@@ -11,4 +11,4 @@ function getEmptyAnalysisJob(): AnalysisJob {
     }
 }
 
-export {getEmptyAnalysisJob}
+export {getEmptyScanJob}

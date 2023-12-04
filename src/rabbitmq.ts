@@ -1,5 +1,5 @@
 import {AMQPClient, AMQPMessage} from "@cloudamqp/amqp-client";
-import {AnalysisJob, AppProperties} from "./model.js";
+import {AppProperties, ScanJob} from "./model.js";
 import {analyzeWebsite} from "./scanner.js";
 import {formatFailedWebsiteResult} from "./formatter.js";
 import Logger from "./logger.js";
@@ -18,8 +18,8 @@ export async function subscribe(props: AppProperties) {
 
     const channel = await connection.channel()
     await channel.basicQos(1)
-    const jobQueue = await channel.queue("barrierelos.analysis.job")
-    const resultQueue = await channel.queue("barrierelos.analysis.result")
+    const jobQueue = await channel.queue("barrierelos.scan.job")
+    const resultQueue = await channel.queue("barrierelos.scan.result")
     const consumer = await jobQueue.subscribe({exclusive: true, noAck: false}, handleMessage)
 
     await consumer.wait()
@@ -36,7 +36,7 @@ export async function subscribe(props: AppProperties) {
             return
         }
 
-        const job: AnalysisJob = JSON.parse(bodyString) as AnalysisJob
+        const job: ScanJob = JSON.parse(bodyString) as ScanJob
         const result = await analyzeWebsite(job)
         await resultQueue.publish(JSON.stringify(result))
         await msg.ack()

@@ -1,17 +1,17 @@
 import {AxeResults, CheckResult, NodeResult, Result} from "axe-core";
 import {
-    AnalysisJob,
     Check,
     CheckElement,
     CheckType,
     Impact,
     Rule,
+    ScanJob,
     ScanStatus,
     WebpageResult,
     WebsiteResult
 } from "./model.js";
 
-function formatWebsiteResults(job: AnalysisJob, webpageResults: WebpageResult[]): WebsiteResult {
+function formatWebsiteResults(job: ScanJob, webpageResults: WebpageResult[]): WebsiteResult {
     return {
         modelVersion: "0.0.0",
         jobId: job.jobId,

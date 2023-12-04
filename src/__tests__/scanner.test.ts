@@ -2,7 +2,7 @@
 import {beforeEach, describe, it} from "mocha"
 import * as td from "testdouble"
 import {analyzeWebsite} from "../scanner.js";
-import {AnalysisJob} from "../model.js";
+import {ScanJob} from "../model.js";
 import puppeteer, {Browser} from "puppeteer";
 import logger from "../logger.js";
 
@@ -14,7 +14,7 @@ before(() => {
     logger.transports.forEach(value => value.silent = true)
 })
 describe("analyzeWebsite()", () => {
-    let job: AnalysisJob
+    let job: ScanJob
     beforeEach(() => {
         job = {
             modelVersion: "",

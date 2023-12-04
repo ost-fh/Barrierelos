@@ -1,7 +1,7 @@
 import puppeteer, {Browser, TimeoutError} from "puppeteer";
 import {AxePuppeteer} from "@axe-core/puppeteer";
 import {formatFailedWebpageResult, formatWebpageResults, formatWebsiteResults} from "./formatter.js";
-import {AnalysisJob, WebpageResult, WebsiteResult} from "./model.js";
+import {ScanJob, WebpageResult, WebsiteResult} from "./model.js";
 import Logger from "./logger.js";
 import {Locale, Spec} from "axe-core";
 import * as fs from "fs";
@@ -10,7 +10,7 @@ const locales: Record<string, Locale> = {
     "de": JSON.parse(fs.readFileSync("locales/de.json", "utf-8")) as Locale,
 }
 
-export async function analyzeWebsite(job: AnalysisJob): Promise<WebsiteResult> {
+export async function analyzeWebsite(job: ScanJob): Promise<WebsiteResult> {
     Logger.info(`Starting to scan ${job.websiteBaseUrl}, consisting of ${job.webpagePaths.length} webpages`)
     const browser = await puppeteer.launch({headless: "new", args: ["--no-sandbox"]});
     const webpageResults = await Promise.all(
@@ -24,7 +24,7 @@ export async function analyzeWebsite(job: AnalysisJob): Promise<WebsiteResult> {
     return formatWebsiteResults(job, webpageResults)
 }
 
-async function analyzeWebpage(browser: Browser, job: AnalysisJob, path: string, waitForNavigation = false, retries = 2, navigationTimeout = 10e3): Promise<WebpageResult> {
+async function analyzeWebpage(browser: Browser, job: ScanJob, path: string, waitForNavigation = false, retries = 2, navigationTimeout = 10e3): Promise<WebpageResult> {
     const context = await browser.createIncognitoBrowserContext()
     const page = await context.newPage()
     await page.setBypassCSP(true)

@@ -1,6 +1,8 @@
 import {WebsiteDetails} from "../../lib/api-client";
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip} from "@mui/material";
 import "./WebsiteOverview.css"
+import {useTranslation} from "react-i18next";
+import HelpIcon from '@mui/icons-material/Help';
 
 
 interface WebsiteOverviewProps {
@@ -8,20 +10,28 @@ interface WebsiteOverviewProps {
 }
 
 function WebsiteOverview(params: WebsiteOverviewProps) {
+  const {t} = useTranslation();
   const websiteDetails: WebsiteDetails = params.websiteDetails
 
   return (
     <>
-      <h2>Webpages</h2>
+      <h2>{t("WebsitePage.Overview.WepbagesHeader")}</h2>
       <TableContainer component={Paper}>
-        <Table sx={{minWidth: 650}} aria-label="Webpages Table">
+        <Table sx={{minWidth: 650}} aria-label={t("WebsitePage.Overview.WebpagesTableAriaLabel")}>
           <TableHead>
             <TableRow>
-              <TableCell>URL</TableCell>
+              <TableCell>{t("WebsitePage.Overview.WebpageUrl")}</TableCell>
               {websiteDetails.statistics ? (
                 <>
-                  <TableCell>Barrierelos-Score</TableCell>
-                  <TableCell>Weight</TableCell>
+                  <TableCell>{t("General.barrierelosScore")}</TableCell>
+                  <TableCell>
+                    <Tooltip title={t("WebsitePage.Overview.WebpageWeightTooltip")}>
+                      <Stack direction="row" alignItems="center" gap={1}>
+                        {t("WebsitePage.Overview.WebpageWeight")}
+                        <HelpIcon/>
+                      </Stack>
+                    </Tooltip>
+                  </TableCell>
                 </>
               ) : null}
             </TableRow>

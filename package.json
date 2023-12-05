@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run openapi:generate && vite dev",
+    "dev": "npm run openapi:generate && npm run i18n && vite dev",
     "preview": "npm run openapi:generate && vite preview",
     "openapi:fetch": "wget -O openapi.json http://localhost:8030/openapi",
     "openapi:generate": "npx openapi-typescript-codegen --input openapi.json --output src/lib/api-client",
-    "build": "npm run openapi:generate && vite build",
+    "i18n": "i18next-resources-for-ts interface -i ./public/locales/en -o ./src/@types/resources.d.ts",
+    "build": "npm run openapi:generate && npm run i18n && vite build",
     "test:unittest": "jest",
     "test:lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test:typecheck": "npm run openapi:generate && tsc --noEmit"
+    "test:typecheck": "npm run openapi:generate && npm run i18n && tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,16 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
-    "@mui/icons-material": "^5.14.14",
+    "@mui/icons-material": "^5.14.19",
     "@mui/lab": "^5.0.0-alpha.155",
     "@mui/material": "^5.14.14",
+    "i18next": "^23.7.7",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "i18next-http-backend": "^2.4.2",
+    "i18next-resources-for-ts": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^13.5.0",
     "react-router-dom": "^6.20.0",
     "swr": "^2.2.4"
   },

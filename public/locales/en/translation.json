@@ -1,0 +1,23 @@
+{
+  "General": {
+    "barrierelosScore": "Barrierelos-Score"
+  },
+  "WebsitePage": {
+    "websiteStatusLabel": "Status",
+    "tabsAriaLabel": "Tabs",
+    "tabOverviewLabel": "Overview",
+    "tabRulesLabel": "Rules",
+    "tabScanInfosLabel": "Scan Infos",
+    "Overview": {
+      "WepbagesHeader": "Webpages",
+      "WebpagesTableAriaLabel": "Webpages Table",
+      "WebpageUrl": "URL",
+      "WebpageWeight": "Weight",
+      "WebpageWeightTooltip": "Determines the influence of this webpage on the website score. The weight is based on the number of HTML elements on the webpage that are relevant for Accessibility."
+    },
+    "Rules": {
+    },
+    "ScanInfos": {
+    }
+  }
+}

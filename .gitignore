@@ -1,6 +1,9 @@
 # Generated OpenAPI schemas
 src/lib/
 
+# Generated i18n translation file types
+src/@types/resources.d.ts
+
 # Created by https://www.toptal.com/developers/gitignore/api/node,react,jetbrains,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,react,jetbrains,visualstudiocode
 

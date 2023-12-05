@@ -7,15 +7,18 @@ import {SyntheticEvent, useEffect, useState} from "react";
 import WebsiteOverview from "./WebsiteOverview.tsx";
 import WebsiteRules from "./WebsiteRules.tsx";
 import "./Website.css"
+import {useTranslation} from "react-i18next";
 import status = Website.status;
 
-async function getWebsiteDetails(id: string) {
-  return StatisticControllerService.getWebsiteDetails(parseInt(id));
+interface WebsitePageParams extends Record<string, string> {
+  websiteId: string
 }
 
 function WebsitePage() {
-  const params = useParams();
-  if (params.websiteId === undefined) throw Error()
+  const {t} = useTranslation();
+
+  const params = useParams<WebsitePageParams>();
+  if (params.websiteId === undefined) throw Error("Path param websiteId is missing")
   const {data: websiteDetails, error, isLoading} = useSWR<WebsiteDetails, Error>(params.websiteId, getWebsiteDetails)
 
   const [currentTabIndex, setCurrentTabIndex] = useState("1");
@@ -23,6 +26,7 @@ function WebsitePage() {
     setCurrentTabIndex(tabIndex);
   };
 
+  // Reset currentTabIndex on navigation
   const location = useLocation()
   useEffect(() => {
     if (currentTabIndex !== "1") setCurrentTabIndex("1")
@@ -37,18 +41,18 @@ function WebsitePage() {
       <h1>
         {websiteDetails.website.url}
         {websiteDetails.website.status !== status.READY ? (
-          <Chip label={`Status: ${websiteDetails.website.status}`}/>
+          <Chip label={`${t("WebsitePage.websiteStatusLabel")}: ${websiteDetails.website.status}`}/>
         ) : null}
         {websiteDetails.statistics ? (
-          <Chip label={`Barrierelos-Score: ${Math.round(websiteDetails.statistics.score)}`}/>
+          <Chip label={`${t("General.barrierelosScore")}: ${Math.round(websiteDetails.statistics.score)}`}/>
         ) : null}
       </h1>
       <TabContext value={currentTabIndex}>
         <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-          <TabList onChange={handleTabChange} aria-label="lab API tabs example">
-            <Tab label="Overview" value="1"/>
-            <Tab label="Rules" value="2"/>
-            <Tab label="Item Three" value="3"/>
+          <TabList onChange={handleTabChange} aria-label={t("WebsitePage.tabsAriaLabel")}>
+            <Tab label={t("WebsitePage.tabOverviewLabel")} value="1"/>
+            <Tab label={t("WebsitePage.tabRulesLabel")} value="2"/>
+            <Tab label={t("WebsitePage.tabScanInfosLabel")} value="3"/>
           </TabList>
         </Box>
         <TabPanel value="1"><WebsiteOverview websiteDetails={websiteDetails}/></TabPanel>
@@ -57,6 +61,10 @@ function WebsitePage() {
       </TabContext>
     </>
   )
+}
+
+function getWebsiteDetails(id: string) {
+  return StatisticControllerService.getWebsiteDetails(parseInt(id));
 }
 
 export default WebsitePage

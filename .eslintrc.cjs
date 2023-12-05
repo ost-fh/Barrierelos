@@ -36,6 +36,6 @@ module.exports = {
             "version": "detect"
         }
     },
-    "ignorePatterns": ["src/lib"],
+    "ignorePatterns": ["src/lib", "src/@types/resources.d.ts"],
     "rules": {}
 }

@@ -11,8 +11,9 @@ public class WebsiteScanEntity
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var websiteScanId: Long = 0,
   public var websiteFk: Long,
+  public var websiteResultFk: Long,
+  public var websiteStatisticFk: Long,
   public var userFk: Long,
-  public var scanResultFk: Long,
   public var modified: Timestamp = Timestamp(0),
   public var created: Timestamp = Timestamp(0),
 )

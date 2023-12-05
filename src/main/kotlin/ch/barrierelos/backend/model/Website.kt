@@ -14,6 +14,7 @@ public data class Website
   public var category: CategoryEnum,
   public var status: StatusEnum,
   public var tags: MutableSet<WebsiteTag> = mutableSetOf(),
+  public var webpageCount: Int,
   public var modified: Long = System.currentTimeMillis(),
   public var created: Long = System.currentTimeMillis(),
 )

@@ -8,6 +8,7 @@ public fun WebpageStatistic.toEntity(): WebpageStatisticEntity
 {
   return WebpageStatisticEntity(
     webpageStatisticId = this.id,
+    websiteStatisticFk = this.websiteStatisticFk,
     webpageFk = this.webpageId,
     userFk = this.userId,
     score = this.score,
@@ -20,6 +21,7 @@ public fun WebpageStatisticEntity.toModel(): WebpageStatistic
 {
   return WebpageStatistic(
     id = this.webpageStatisticId,
+    websiteStatisticFk = this.websiteStatisticFk,
     webpageId = this.webpageFk,
     userId = this.userFk,
     score = this.score,
@@ -32,6 +34,7 @@ public fun WebpageStatisticEntity.toModel(webpageStatistic: WebpageStatistic): W
 {
   return webpageStatistic.apply {
     id = this@toModel.webpageStatisticId
+    websiteStatisticFk = this@toModel.websiteStatisticFk
     webpageId = this@toModel.webpageFk
     userId = this@toModel.userFk
     score = this@toModel.score

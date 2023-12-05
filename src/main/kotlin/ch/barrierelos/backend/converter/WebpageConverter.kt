@@ -8,6 +8,7 @@ public fun Webpage.toEntity(): WebpageEntity
 {
   return WebpageEntity(
     webpageId = this.id,
+    websiteFk = this.websiteFk,
     userFk = this.userId,
     domain = this.domain,
     url = this.url,
@@ -22,6 +23,7 @@ public fun WebpageEntity.toModel(): Webpage
 {
   return Webpage(
     id = this.webpageId,
+    websiteFk = this.websiteFk,
     userId = this.userFk,
     domain = this.domain,
     url = this.url,
@@ -36,6 +38,7 @@ public fun WebpageEntity.toModel(webpage: Webpage): Webpage
 {
   return webpage.apply {
     id = this@toModel.webpageId
+    websiteFk = this@toModel.websiteFk
     userId = this@toModel.userFk
     domain = this@toModel.domain
     url = this@toModel.url

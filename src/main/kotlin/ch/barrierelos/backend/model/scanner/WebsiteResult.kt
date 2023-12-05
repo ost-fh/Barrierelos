@@ -13,7 +13,6 @@ public data class WebsiteResult(
   public val scanStatus: ScanStatusEnum,
   public val scanTimestamp: Instant,
   public val errorMessage: String? = null,
-  public val webpages: MutableSet<WebpageResult>,
   public var modified: Long = System.currentTimeMillis(),
   public var created: Long = System.currentTimeMillis(),
 )

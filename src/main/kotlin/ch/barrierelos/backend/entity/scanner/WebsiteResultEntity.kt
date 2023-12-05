@@ -19,8 +19,6 @@ public class WebsiteResultEntity(
   @JoinColumn(name = "scanJobFk", referencedColumnName = "scanJobId")
   @OneToOne(fetch = FetchType.EAGER)
   public var scanJob: ScanJobEntity? = null,
-  @OneToMany(mappedBy = "websiteResult", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
-  public var webpages: MutableSet<WebpageResultEntity> = mutableSetOf(),
   public var modified: Timestamp = Timestamp(0),
   public var created: Timestamp = Timestamp(0),
 )

@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 public data class Webpage
 (
   public var id: Long = 0,
+  public var websiteFk: Long,
   public var userId: Long,
   public var domain: String,
   public var url: String,

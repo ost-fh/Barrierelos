@@ -194,32 +194,6 @@ CREATE TABLE "element"
 
 
 ---------------------------------------------------------------------------
--- Reports                                                               --
----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "website_details" CASCADE;
-DROP TABLE IF EXISTS "webpage_details" CASCADE;
-
-CREATE TABLE "website_details"
-(
-  "website_details_id" BIGSERIAL,
-  "score" DOUBLE PRECISION NOT NULL,
-  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("website_details_id")
-);
-
-CREATE TABLE "webpage_details"
-(
-  "webpage_details_id" BIGSERIAL,
-  "website_details_fk" BIGSERIAL NOT NULL,
-  "path" VARCHAR NOT NULL,
-  "score" DOUBLE PRECISION NOT NULL,
-  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("webpage_details_id")
-);
-
-
----------------------------------------------------------------------------
 -- Structure                                                             --
 ---------------------------------------------------------------------------
 
@@ -264,24 +238,11 @@ CREATE TABLE "website"
   "url" VARCHAR NOT NULL,
   "category" CATEGORY_ENUM NOT NULL,
   "status" STATUS_ENUM NOT NULL DEFAULT 'PENDING_INITIAL',
+  "webpage_count" INTEGER NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("website_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
-);
-
-CREATE TABLE "website_scan"
-(
-  "website_scan_id" BIGSERIAL,
-  "website_fk" BIGSERIAL,
-  "user_fk" BIGSERIAL,
-  "website_result_fk" BIGSERIAL,
-  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("website_scan_id"),
-  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
-  FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id")
 );
 
 CREATE TABLE "website_statistic"
@@ -292,8 +253,25 @@ CREATE TABLE "website_statistic"
   "score" DOUBLE PRECISION NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  PRIMARY KEY ("website_statistic_id"),
   FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
+);
+
+CREATE TABLE "website_scan"
+(
+  "website_scan_id" BIGSERIAL,
+  "website_fk" BIGSERIAL,
+  "website_statistic_fk" BIGSERIAL,
+  "website_result_fk" BIGSERIAL,
+  "user_fk" BIGSERIAL,
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  PRIMARY KEY ("website_scan_id"),
+  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
+  FOREIGN KEY ("website_statistic_fk") REFERENCES "website_statistic" ("website_statistic_id"),
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
+  FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id")
 );
 
 ----------------------------------------------------------------------------------------------------
@@ -303,6 +281,7 @@ CREATE TABLE "website_statistic"
 CREATE TABLE "webpage"
 (
   "webpage_id" BIGSERIAL,
+  "website_fk" BIGSERIAL,
   "user_fk" BIGSERIAL,
   "domain" VARCHAR NOT NULL,
   "url" VARCHAR NOT NULL,
@@ -311,33 +290,41 @@ CREATE TABLE "webpage"
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("webpage_id"),
+  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
+);
+
+CREATE TABLE "webpage_statistic"
+(
+  "webpage_statistic_id" BIGSERIAL,
+  "website_statistic_fk" BIGSERIAL,
+  "webpage_fk" BIGSERIAL,
+  "user_fk" BIGSERIAL,
+  "score" DOUBLE PRECISION,
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  PRIMARY KEY ("webpage_statistic_id"),
+  FOREIGN KEY ("webpage_fk") REFERENCES "webpage" ("webpage_id"),
+  FOREIGN KEY ("website_statistic_fk") REFERENCES "website_statistic" ("website_statistic_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
 );
 
 CREATE TABLE "webpage_scan"
 (
   "webpage_scan_id" BIGSERIAL,
+  "website_scan_fk" BIGSERIAL,
   "webpage_fk" BIGSERIAL,
-  "user_fk" BIGSERIAL,
+  "webpage_statistic_fk" BIGSERIAL,
   "webpage_result_fk" BIGSERIAL,
+  "user_fk" BIGSERIAL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("webpage_scan_id"),
+  FOREIGN KEY ("website_scan_fk") REFERENCES "website_scan" ("website_scan_id"),
   FOREIGN KEY ("webpage_fk") REFERENCES "webpage" ("webpage_id"),
+  FOREIGN KEY ("webpage_statistic_fk") REFERENCES "webpage_statistic" ("webpage_statistic_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("webpage_result_fk") REFERENCES "webpage_result" ("webpage_result_id")
-);
-
-CREATE TABLE "webpage_statistic"
-(
-  "webpage_statistic_id" BIGSERIAL,
-  "webpage_fk" BIGSERIAL,
-  "user_fk" BIGSERIAL,
-  "score" DOUBLE PRECISION,
-  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  FOREIGN KEY ("webpage_fk") REFERENCES "webpage" ("webpage_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
 );
 
 ----------------------------------------------------------------------------------------------------

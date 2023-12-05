@@ -15,11 +15,14 @@ public class WebsiteEntity
   public var userFk: Long,
   public var domain: String,
   public var url: String,
+  @Enumerated(EnumType.STRING)
   public var category: CategoryEnum,
+  @Enumerated(EnumType.STRING)
   public var status: StatusEnum = StatusEnum.PENDING_INITIAL,
   @OneToMany(orphanRemoval=true, cascade=[CascadeType.ALL], fetch=FetchType.EAGER)
   @JoinColumn(name="websiteFk")
   public var tags: MutableSet<WebsiteTagEntity>,
+  public var webpageCount: Int,
   public var modified: Timestamp = Timestamp(0),
   public var created: Timestamp = Timestamp(0),
 )

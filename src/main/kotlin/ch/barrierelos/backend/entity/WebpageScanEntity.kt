@@ -10,9 +10,11 @@ public class WebpageScanEntity
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var webpageScanId: Long = 0,
+  public var websiteScanFk: Long,
   public var webpageFk: Long,
+  public var webpageStatisticFk: Long,
+  public var webpageResultFk: Long,
   public var userFk: Long,
-  public var scanResultFk: Long,
   public var modified: Timestamp = Timestamp(0),
   public var created: Timestamp = Timestamp(0),
 )

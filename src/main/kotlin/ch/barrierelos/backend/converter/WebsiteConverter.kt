@@ -15,6 +15,7 @@ public fun Website.toEntity(): WebsiteEntity
     category = this.category,
     status = this.status,
     tags = this.tags.toEntities(),
+    webpageCount = this.webpageCount,
     modified = Timestamp(this.modified),
     created = Timestamp(this.created),
   )
@@ -30,6 +31,7 @@ public fun WebsiteEntity.toModel(): Website
     category = this.category,
     status = this.status,
     tags = this.tags.toModels(),
+    webpageCount = this.webpageCount,
     modified = this.modified.time,
     created = this.created.time,
   )
@@ -45,6 +47,7 @@ public fun WebsiteEntity.toModel(website: Website): Website
     category = this@toModel.category
     status = this@toModel.status
     tags.clearAndAddAll(this@toModel.tags.toModels())
+    webpageCount = this@toModel.webpageCount
     modified = this@toModel.modified.time
     created = this@toModel.created.time
   }

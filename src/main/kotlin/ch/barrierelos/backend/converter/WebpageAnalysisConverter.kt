@@ -8,9 +8,11 @@ public fun WebpageScan.toEntity(): WebpageScanEntity
 {
   return WebpageScanEntity(
     webpageScanId = this.id,
+    websiteScanFk = this.websiteScanId,
     webpageFk = this.webpageId,
+    webpageStatisticFk = this.webpageStatisticId,
+    webpageResultFk = this.webpageResultId,
     userFk = this.userId,
-    scanResultFk = this.scanResultId,
     modified = Timestamp(this.modified),
     created = Timestamp(this.created),
   )
@@ -20,9 +22,11 @@ public fun WebpageScanEntity.toModel(): WebpageScan
 {
   return WebpageScan(
     id = this.webpageScanId,
+    websiteScanId = this.websiteScanFk,
     webpageId = this.webpageFk,
+    webpageStatisticId = this.webpageStatisticFk,
+    webpageResultId = this.webpageResultFk,
     userId = this.userFk,
-    scanResultId = this.scanResultFk,
     modified = this.modified.time,
     created = this.created.time,
   )
@@ -32,9 +36,11 @@ public fun WebpageScanEntity.toModel(webpageScan: WebpageScan): WebpageScan
 {
   return webpageScan.apply {
     id = this@toModel.webpageScanId
+    websiteScanId = this@toModel.websiteScanFk
     webpageId = this@toModel.webpageFk
+    webpageStatisticId = this@toModel.webpageStatisticFk
+    webpageResultId = this@toModel.webpageResultFk
     userId = this@toModel.userFk
-    scanResultId = this@toModel.scanResultFk
     modified = this@toModel.modified.time
     created = this@toModel.created.time
   }

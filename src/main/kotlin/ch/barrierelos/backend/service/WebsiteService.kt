@@ -1,10 +1,10 @@
 package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.constants.Queueing
-import ch.barrierelos.backend.converter.scanner.toScanJobEntity
 import ch.barrierelos.backend.converter.scanner.toEntity
 import ch.barrierelos.backend.converter.scanner.toMessage
 import ch.barrierelos.backend.converter.scanner.toModel
+import ch.barrierelos.backend.converter.scanner.toScanJobEntity
 import ch.barrierelos.backend.entity.scanner.ScanJobEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
@@ -46,9 +46,9 @@ public class WebsiteService(private val queue: RabbitTemplate)
 
   public fun scanWebsite(website: WebsiteMessage)
   {
-    if (website.website.endsWith("/"))
+    if(website.website.endsWith("/"))
       throw IllegalArgumentException("websiteBaseUrl must not end with a slash")
-    if (website.webpages.any { !it.startsWith("/") })
+    if(website.webpages.any { !it.startsWith("/") })
       throw IllegalArgumentException("webpagePaths must start with a slash")
 
     val scanJobEntity = website.toScanJobEntity()
@@ -63,14 +63,14 @@ public class WebsiteService(private val queue: RabbitTemplate)
   {
     val websiteResultMessage = message.fromJson<WebsiteResultMessage>()
 
-    if (websiteResultMessage.scanStatus == ScanStatusEnum.FAILED)
+    if(websiteResultMessage.scanStatus == ScanStatusEnum.FAILED)
     {
       logger.error("Scan failed with error: ${websiteResultMessage.errorMessage}, message: $message")
       return
     }
 
     val scanJobEntity = this.scanJobRepository.findById(websiteResultMessage.jobId).getOrDefault(null)
-    if (scanJobEntity != null)
+    if(scanJobEntity != null)
     {
       websiteResultRepository.deleteByScanJobFk(scanJobEntity.scanJobId)
     }
@@ -79,7 +79,7 @@ public class WebsiteService(private val queue: RabbitTemplate)
     this.scoringService.onReceiveResult(websiteResultEntity.toModel())
   }
 
-  public fun getJobs(defaultParameters: DefaultParameters = DefaultParameters()): Result<ScanJob>
+  public fun getScanJobs(defaultParameters: DefaultParameters = DefaultParameters()): Result<ScanJob>
   {
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR)
 
@@ -90,14 +90,14 @@ public class WebsiteService(private val queue: RabbitTemplate)
     )
   }
 
-  public fun getJob(jobId: Long): ScanJob
+  public fun getScanJob(jobId: Long): ScanJob
   {
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR)
 
     return this.scanJobRepository.findById(jobId).orElseThrow().toModel()
   }
 
-  public fun deleteJob(jobId: Long)
+  public fun deleteScanJob(jobId: Long)
   {
     Security.assertRole(RoleEnum.ADMIN)
 

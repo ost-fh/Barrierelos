@@ -9,20 +9,16 @@ import java.sql.Timestamp
 
 public fun WebsiteResultMessage.toEntity(scanJobEntity: ScanJobEntity?): WebsiteResultEntity
 {
-  val websiteResult = WebsiteResultEntity(
-    modelVersion = this.modelVersion,
+  return WebsiteResultEntity(
+    modelVersion = modelVersion,
     scanJob = scanJobEntity,
-    website = this.website,
-    scanTimestamp = Timestamp(this.scanTimestamp.toEpochMilliseconds()),
-    scanStatus = this.scanStatus,
-    errorMessage = this.errorMessage,
+    website = website,
+    scanTimestamp = Timestamp(scanTimestamp.toEpochMilliseconds()),
+    scanStatus = scanStatus,
+    errorMessage = errorMessage,
     modified = Timestamp(System.currentTimeMillis()),
     created = Timestamp(System.currentTimeMillis()),
   )
-
-  websiteResult.webpages = this.webpages.map { it.toEntity(websiteResult, websiteResult.modified) }.toMutableSet()
-
-  return websiteResult
 }
 
 public fun WebsiteResultEntity.toModel(): WebsiteResult
@@ -35,7 +31,6 @@ public fun WebsiteResultEntity.toModel(): WebsiteResult
     scanTimestamp = Instant.fromEpochMilliseconds(this.scanTimestamp.time),
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
-    webpages = this.webpages.map { it.toModel() }.toMutableSet(),
     modified = this.modified.time,
     created = this.created.time,
   )

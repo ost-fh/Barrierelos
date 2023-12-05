@@ -1,6 +1,6 @@
 import "./App.css"
 import {Route, Routes} from "react-router-dom";
-import Website from "./pages/Website.tsx";
+import WebsitePage from "./pages/website/WebsitePage.tsx";
 import Home from "./pages/Home.tsx";
 import {NotFound} from "./pages/NotFound.tsx";
 import NavBar from "./components/NavBar.tsx";
@@ -13,7 +13,7 @@ function App() {
       </header>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/website/:websiteId" element={<Website/>}/>
+        <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
     </>

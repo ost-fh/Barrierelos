@@ -10,7 +10,10 @@ function NavBar() {
             <NavLink to="/">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/website/1">Website</NavLink>
+            <NavLink to="/websites/1">Website 1</NavLink>
+          </li>
+          <li>
+            <NavLink to="/websites/2">Website 2</NavLink>
           </li>
         </ul>
       </nav>

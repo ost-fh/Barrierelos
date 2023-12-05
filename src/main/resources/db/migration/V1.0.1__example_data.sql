@@ -70,7 +70,16 @@ INSERT INTO "webpage"("webpage_id", "website_fk", "user_fk", "domain", "url", "c
 VALUES
   (1, 1, 3, 'galaxus.ch', 'https://www.galaxus.ch/', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
   (2, 1, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/tag/pc-komponenten-76', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
-  (3, 1, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/product/apple-earpods-kabelgebunden-kopfhoerer-6185119', 'PRIVATE_SHOP', 'READY', NOW(), NOW())
+  (3, 1, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/product/apple-earpods-kabelgebunden-kopfhoerer-6185119', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (4, 2, 3, 'galaxus.ch', 'https://www.galaxus.ch/', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (5, 2, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/tag/pc-komponenten-76', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (6, 2, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/product/apple-earpods-kabelgebunden-kopfhoerer-6185119', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (7, 3, 3, 'galaxus.ch', 'https://www.galaxus.ch/', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (8, 3, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/tag/pc-komponenten-76', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (9, 3, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/product/apple-earpods-kabelgebunden-kopfhoerer-6185119', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (10, 4, 3, 'galaxus.ch', 'https://www.galaxus.ch/', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (11, 4, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/tag/pc-komponenten-76', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
+  (12, 4, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/product/apple-earpods-kabelgebunden-kopfhoerer-6185119', 'PRIVATE_SHOP', 'READY', NOW(), NOW())
 ;
 
 SELECT SETVAL('"webpage_webpage_id_seq"', (SELECT MAX("webpage_id") FROM "webpage"));

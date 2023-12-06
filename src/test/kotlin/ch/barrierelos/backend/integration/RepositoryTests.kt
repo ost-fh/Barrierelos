@@ -24,6 +24,10 @@ class RepositoryTests
   lateinit var credentialRepository: CredentialRepository
   @Autowired
   lateinit var tagRepository: TagRepository
+  @Autowired
+  lateinit var websiteTagRepository: WebsiteTagRepository
+  @Autowired
+  lateinit var websiteRepository: WebsiteRepository
 
   @Nested
   inner class UserRepositoryTests
@@ -373,6 +377,60 @@ class RepositoryTests
 
       // then
       val actual = tagRepository.findByName(expected.name)
+
+      assertNull(actual)
+    }
+  }
+
+  @Nested
+  inner class WebsiteTagRepositoryTests
+  {
+    @Test
+    fun `finds websiteTag by id, when websiteTag exists`()
+    {
+      // given
+      val user = entityManager.persist(createUserEntity())
+
+      val website = createWebsiteEntity()
+      website.userFk = user.userId
+      website.tags.clear()
+
+      entityManager.persist(website)
+
+      // when
+      val expected = createWebsiteTagEntity()
+      expected.userFk = user.userId
+      expected.websiteFk = website.websiteId
+
+      entityManager.persist(expected.tag)
+      entityManager.persist(expected)
+      entityManager.flush()
+
+      // then
+      val actual = websiteTagRepository.findById(expected.websiteTagId).orElse(null)
+
+      assertNotNull(actual)
+
+      if(actual != null)
+      {
+        assertNotEquals(0, actual.websiteTagId)
+        assertEquals(expected.websiteTagId, actual.websiteTagId)
+        assertEquals(expected.userFk, actual.userFk)
+        assertEquals(expected.tag.tagId, actual.tag.tagId)
+        assertEquals(expected.tag.name, actual.tag.name)
+        assertEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+    }
+
+    @Test
+    fun `cannot find websiteTag by id, when websiteTag not exists`()
+    {
+      // when
+      val expected = createWebsiteTagEntity()
+
+      // then
+      val actual = websiteTagRepository.findById(expected.websiteTagId).orElse(null)
 
       assertNull(actual)
     }

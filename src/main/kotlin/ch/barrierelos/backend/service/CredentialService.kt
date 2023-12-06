@@ -12,7 +12,6 @@ import ch.barrierelos.backend.util.throwIfNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 public class CredentialService
@@ -39,16 +38,16 @@ public class CredentialService
   {
     Security.assertRoleOrId(credential.userId, RoleEnum.ADMIN)
 
-    throwIfNoValidCredentials(credential)
-
     val existingCredential = this.credentialRepository.findByUserFk(credential.userId).throwIfNull(NoSuchElementException()).toModel()
 
+    throwIfNoValidCredentials(credential)
     throwIfUserIdChanged(credential, existingCredential)
 
     encodePasswordIfExists(credential)
 
     credential.id = existingCredential.id
     credential.modified = System.currentTimeMillis()
+    credential.created = existingCredential.created
 
     return this.credentialRepository.save(credential.toEntity()).toModel()
   }
@@ -60,7 +59,6 @@ public class CredentialService
     return this.credentialRepository.findByUserFk(userId).throwIfNull(NoSuchElementException()).toModel()
   }
 
-  @Transactional
   public fun deleteCredential(userId: Long)
   {
     Security.assertRoleOrId(userId, RoleEnum.ADMIN)

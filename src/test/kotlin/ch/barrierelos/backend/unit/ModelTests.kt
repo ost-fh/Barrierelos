@@ -56,4 +56,21 @@ class ModelTests
       assertEquals(expected, actual)
     }
   }
+
+  @Nested
+  inner class WebsiteTagTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createWebsiteTagModel()
+
+      // then
+      val actual = createWebsiteTagModel()
+
+      assertEquals(expected, actual)
+      assertEquals(expected, actual)
+    }
+  }
 }

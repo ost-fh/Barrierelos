@@ -1,22 +1,30 @@
 package ch.barrierelos.backend.integration
 
+import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.TagEntity
+import ch.barrierelos.backend.enums.CategoryEnum
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.RoleEnum
+import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.helper.*
+import ch.barrierelos.backend.model.Tag
+import ch.barrierelos.backend.model.User
+import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.parameter.DefaultParameters
-import ch.barrierelos.backend.repository.CredentialRepository
-import ch.barrierelos.backend.repository.TagRepository
-import ch.barrierelos.backend.repository.UserRepository
+import ch.barrierelos.backend.repository.*
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.service.CredentialService
 import ch.barrierelos.backend.service.TagService
 import ch.barrierelos.backend.service.UserService
+import ch.barrierelos.backend.service.WebsiteService
 import io.kotest.matchers.collections.*
 import io.kotest.matchers.longs.shouldBeGreaterThan
+import io.kotest.matchers.optional.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import io.mockk.junit5.MockKExtension
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -37,6 +45,8 @@ class ServiceTests
   lateinit var credentialService: CredentialService
   @Autowired
   lateinit var tagService: TagService
+  @Autowired
+  lateinit var websiteService: WebsiteService
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -44,34 +54,72 @@ class ServiceTests
   lateinit var credentialRepository: CredentialRepository
   @Autowired
   lateinit var tagRepository: TagRepository
+  @Autowired
+  lateinit var websiteTagRepository: WebsiteTagRepository
+  @Autowired
+  lateinit var websiteRepository: WebsiteRepository
+
+  lateinit var admin: User
+  lateinit var moderator: User
+  lateinit var contributor: User
+  lateinit var viewer: User
 
   @BeforeEach
-  fun setUp()
+  fun beforeEach()
   {
-    // Delete all users
-    userRepository.deleteAll()
-
     // Add admin user
     val adminUser = createUserEntity()
     adminUser.username = "admin"
     adminUser.roles = mutableSetOf(RoleEnum.ADMIN)
-    userRepository.save(adminUser)
+    admin = userRepository.save(adminUser).toModel()
+
+    // Add moderator user
+    val moderatorUser = createUserEntity()
+    moderatorUser.username = "moderator"
+    moderatorUser.roles = mutableSetOf(RoleEnum.MODERATOR)
+    moderator = userRepository.save(moderatorUser).toModel()
 
     // Add contributor user
     val contributorUser = createUserEntity()
     contributorUser.username = "contributor"
     contributorUser.roles = mutableSetOf(RoleEnum.CONTRIBUTOR)
-    userRepository.save(contributorUser)
+    contributor = userRepository.save(contributorUser).toModel()
+
+    // Add viewer user
+    val viewerUser = createUserEntity()
+    viewerUser.username = "viewer"
+    viewerUser.roles = mutableSetOf(RoleEnum.VIEWER)
+    viewer = userRepository.save(viewerUser).toModel()
 
     // Add admin credential
     val adminCredential = createCredentialEntity()
     adminCredential.userFk = adminUser.userId
     credentialRepository.save(adminCredential)
 
+    // Add moderator credential
+    val moderatorCredential = createCredentialEntity()
+    moderatorCredential.userFk = moderatorUser.userId
+    credentialRepository.save(moderatorCredential)
+
     // Add contributor credential
     val contributorCredential = createCredentialEntity()
     contributorCredential.userFk = contributorUser.userId
     credentialRepository.save(contributorCredential)
+
+    // Add viewer credential
+    val viewerCredential = createCredentialEntity()
+    viewerCredential.userFk = viewerUser.userId
+    credentialRepository.save(viewerCredential)
+  }
+
+  @AfterEach
+  fun afterEach()
+  {
+    userRepository.deleteAll()
+    credentialRepository.deleteAll()
+    websiteTagRepository.deleteAll()
+    websiteRepository.deleteAll()
+    tagRepository.deleteAll()
   }
 
   @Nested
@@ -331,7 +379,7 @@ class ServiceTests
 
         // then
         users.shouldNotBeEmpty()
-        users.shouldHaveSize(2)
+        users.shouldHaveSize(4)
       }
 
       @Test
@@ -343,12 +391,12 @@ class ServiceTests
 
         // then
         users.page.shouldBe(0)
-        users.size.shouldBe(2)
-        users.totalElements.shouldBe(2)
+        users.size.shouldBe(4)
+        users.totalElements.shouldBe(4)
         users.totalPages.shouldBe(1)
-        users.count.shouldBe(2)
+        users.count.shouldBe(4)
         users.lastModified.shouldBeGreaterThan(0)
-        users.content.shouldHaveSize(2)
+        users.content.shouldHaveSize(4)
       }
 
       @Test
@@ -366,9 +414,9 @@ class ServiceTests
         // then
         users.page.shouldBe(1)
         users.size.shouldBe(1)
-        users.totalElements.shouldBe(2)
-        users.totalPages.shouldBe(2)
-        users.count.shouldBe(2)
+        users.totalElements.shouldBe(4)
+        users.totalPages.shouldBe(4)
+        users.count.shouldBe(4)
         users.lastModified.shouldBeGreaterThan(0)
         users.content.shouldHaveSize(1)
       }
@@ -626,14 +674,14 @@ class ServiceTests
       fun `cannot update credential, when no credentials`()
       {
         // when
-        val expected = credentialService.addCredential(createCredentialModel())
-        expected.password = null
-        expected.issuer = null
-        expected.subject = null
+        val credential = credentialService.addCredential(createCredentialModel())
+        credential.password = null
+        credential.issuer = null
+        credential.subject = null
 
         // then
         assertThrows(InvalidCredentialsException::class.java) {
-          credentialService.updateCredential(expected)
+          credentialService.updateCredential(credential)
         }
       }
 
@@ -642,14 +690,14 @@ class ServiceTests
       fun `cannot update credential, when invalid credentials`()
       {
         // when
-        val expected = credentialService.addCredential(createCredentialModel())
-        expected.password = ""
-        expected.issuer = ""
-        expected.subject = ""
+        val credential = credentialService.addCredential(createCredentialModel())
+        credential.password = ""
+        credential.issuer = ""
+        credential.subject = ""
 
         // then
         assertThrows(InvalidCredentialsException::class.java) {
-          credentialService.updateCredential(expected)
+          credentialService.updateCredential(credential)
         }
       }
 
@@ -840,7 +888,8 @@ class ServiceTests
       }
 
       @Test
-      fun `cannot add tag, given no account`()
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot add tag, given wrong account`()
       {
         // when
         val expected = createTagModel()
@@ -852,8 +901,7 @@ class ServiceTests
       }
 
       @Test
-      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot add tag, given wrong account`()
+      fun `cannot add tag, given no account`()
       {
         // when
         val expected = createTagModel()
@@ -898,7 +946,8 @@ class ServiceTests
       }
 
       @Test
-      fun `cannot update tag, given no account`()
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update tag, given wrong account`()
       {
         // when
         val expected = tagRepository.save(createTagEntity()).toModel()
@@ -910,8 +959,7 @@ class ServiceTests
       }
 
       @Test
-      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot update tag, given wrong account`()
+      fun `cannot update tag, given no account`()
       {
         // when
         val expected = tagRepository.save(createTagEntity()).toModel()
@@ -956,6 +1004,8 @@ class ServiceTests
         // then
         tags.shouldNotBeEmpty()
         tags.shouldHaveSize(2)
+        assertTrue(tags.any { it.name == "one" })
+        assertTrue(tags.any { it.name == "two" })
       }
     }
 
@@ -1012,7 +1062,8 @@ class ServiceTests
       }
 
       @Test
-      fun `cannot delete tag, given no account`()
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot delete tag, given wrong account`()
       {
         // then
         assertThrows(NoAuthorizationException::class.java) {
@@ -1021,12 +1072,519 @@ class ServiceTests
       }
 
       @Test
-      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot delete tag, given wrong account`()
+      fun `cannot delete tag, given no account`()
       {
         // then
         assertThrows(NoAuthorizationException::class.java) {
           tagService.deleteTag(1)
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class WebsiteServiceTests
+  {
+    lateinit var tag: Tag
+
+    @BeforeEach
+    fun beforeEach()
+    {
+      tag = tagRepository.save(TagEntity(name = "test")).toModel()
+    }
+
+    fun createAndAddWebsite(userId: Long, domain: String, tag: Tag? = null): Website
+    {
+      return websiteRepository.save(createWebsiteEntity(userId).also {
+        it.domain = domain
+        it.url = domain
+        it.tags.clear()
+      }).also { website ->
+        if(tag != null)
+        {
+          website.tags.add(createWebsiteTagEntity(admin.id, website.websiteId).also { it.tag = tag.toEntity() })
+          websiteRepository.save(website)
+        }
+      }.toModel()
+    }
+
+    @Nested
+    inner class AddWebsiteTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `adds admin website, given admin account`()
+      {
+        // when
+        val expected = createWebsiteModel(1, 0)
+        expected.tags.first().tag = tag
+        val expectedTag = expected.tags.first()
+
+        // then
+        val actual = websiteService.addWebsite(expected.copy())
+        val actualTag = actual.tags.first()
+
+        assertNotEquals(0, actual.id)
+        assertNotEquals(expected.id, actual.id)
+        assertEquals(expected.userId, actual.userId)
+        assertEquals(expected.domain, actual.domain)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.category, actual.category)
+        assertEquals(expected.status, actual.status)
+        assertEquals(expected.tags.size, actual.tags.size)
+        assertNotEquals(expected.modified, actual.modified)
+        assertNotEquals(expected.created, actual.created)
+
+        actual.tags.shouldHaveSize(1)
+        assertNotEquals(0, actualTag.id)
+        assertNotEquals(expectedTag.id, actualTag.id)
+        assertEquals(actual.id, actualTag.websiteId)
+        assertEquals(expectedTag.userId, actualTag.userId)
+        assertEquals(expectedTag.tag.id, actualTag.tag.id)
+        assertEquals(expectedTag.tag.name, actualTag.tag.name)
+        assertEquals(expectedTag.modified, actualTag.modified)
+        assertEquals(expectedTag.created, actualTag.created)
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot add admin website, given wrong account`()
+      {
+        // when
+        val website = createWebsiteModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          websiteService.addWebsite(website)
+        }
+      }
+
+      @Test
+      fun `cannot add admin website, given no account`()
+      {
+        // when
+        val website = createWebsiteModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          websiteService.addWebsite(website)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot add website, when domain already exists`()
+      {
+        // when
+        val website = createWebsiteModel()
+        website.tags.clear()
+        websiteService.addWebsite(website)
+
+        // then
+        assertThrows(AlreadyExistsException::class.java) {
+          websiteService.addWebsite(website)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot add website, when duplicate tags`()
+      {
+        // when
+        val website = createWebsiteModel()
+        website.tags.clear()
+        website.tags.add(createWebsiteTagModel().apply { this.modified = 1 })
+        website.tags.add(createWebsiteTagModel().apply { this.modified = 2 })
+
+        // then
+        assertThrows(AlreadyExistsException::class.java) {
+          websiteService.addWebsite(website)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot add website, when invalid domain`()
+      {
+        // when
+        val websiteEmail = createWebsiteModel()
+        websiteEmail.tags.clear()
+        websiteEmail.domain = "email@barrierelos.ch"
+
+        val websiteNoToplevel = createWebsiteModel()
+        websiteNoToplevel.tags.clear()
+        websiteNoToplevel.domain = "barrierelos"
+
+        val websiteSpecialCharacter = createWebsiteModel()
+        websiteSpecialCharacter.tags.clear()
+        websiteSpecialCharacter.domain = "barrierelos?ch"
+
+        // then
+        assertThrows(InvalidDomainException::class.java) {
+          websiteService.addWebsite(websiteEmail)
+        }
+
+        assertThrows(InvalidDomainException::class.java) {
+          websiteService.addWebsite(websiteEmail)
+        }
+
+        assertThrows(InvalidDomainException::class.java) {
+          websiteService.addWebsite(websiteEmail)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot add website, when invalid url`()
+      {
+        // when
+        val website = createWebsiteModel()
+        website.tags.clear()
+        website.domain = "barrierelos.ch"
+        website.url = "barrierefrei.ch/test"
+
+        // then
+        assertThrows(InvalidUrlException::class.java) {
+          websiteService.addWebsite(website)
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateWebsiteTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `updates website, given admin account`()
+      {
+        // when
+        val expected = websiteRepository.save(createWebsiteEntity().also { it.tags.clear() }).toModel()
+        expected.domain = "admin2.ch"
+        expected.url = "https://admin2.ch"
+        expected.category = CategoryEnum.GOVERNMENT_CANTONAL
+        expected.status = StatusEnum.PENDING_RESCAN
+        expected.tags = mutableSetOf()
+
+        // then
+        val actual = websiteService.updateWebsite(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.domain, actual.domain)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.category, actual.category)
+        assertEquals(expected.status, actual.status)
+        assertEquals(expected.tags, actual.tags)
+        assertNotEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot update website, given wrong account`()
+      {
+        // when
+        val website = websiteRepository.save(createWebsiteEntity().also { it.tags.clear() }).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          websiteService.updateWebsite(website)
+        }
+      }
+
+      @Test
+      fun `cannot update website, given no account`()
+      {
+        // when
+        val website = websiteRepository.save(createWebsiteEntity().also { it.tags.clear() }).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          websiteService.updateWebsite(website)
+        }
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot update website, when illegally modified, given moderator account`()
+      {
+        // when
+        val website = websiteRepository.save(createWebsiteEntity().also {
+          it.tags.clear()
+          it.status = StatusEnum.READY
+        }).toModel()
+        website.domain = "newdomain.org"
+
+        // then
+        assertThrows(IllegalArgumentException::class.java) {
+          websiteService.updateWebsite(website)
+        }
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot change status of website, when current status is pending, given moderator account`()
+      {
+        // when
+        val website = websiteRepository.save(createWebsiteEntity().also {
+          it.tags.clear()
+          it.status = StatusEnum.PENDING_INITIAL
+        }).toModel()
+        website.status = StatusEnum.READY
+
+        // then
+        assertThrows(IllegalArgumentException::class.java) {
+          websiteService.updateWebsite(website)
+        }
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot update website, when tags illegally modified, given moderator account`()
+      {
+        // when
+        val website = createAndAddWebsite(moderator.id, "barrierelos.ch", tag)
+        website.tags.first().modified = 1000000
+
+        // then
+        assertThrows(IllegalArgumentException::class.java) {
+          websiteService.updateWebsite(website)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update website, when status changed, given contributor account`()
+      {
+        // when
+        val website = websiteRepository.save(createWebsiteEntity().also {
+          it.tags.clear()
+          it.status = StatusEnum.BLOCKED
+        }).toModel()
+        website.status = StatusEnum.READY
+
+        // then
+        assertThrows(IllegalArgumentException::class.java) {
+          websiteService.updateWebsite(website)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot update website, when website not exists`()
+      {
+        // when
+        val website = createWebsiteModel()
+
+        // then
+        assertThrows(NoSuchElementException::class.java) {
+          websiteService.updateWebsite(website)
+        }
+      }
+    }
+
+    @Nested
+    inner class GetWebsitesTests
+    {
+      @Test
+      fun `gets websites`()
+      {
+        // given
+        createAndAddWebsite(admin.id, "barrierelos.ch", tag)
+        createAndAddWebsite(moderator.id, "barrierelos.org")
+
+        // when
+        val websites = websiteService.getWebsites().content
+
+        // then
+        websites.shouldNotBeEmpty()
+        websites.shouldHaveSize(2)
+        assertTrue(websites.any { it.domain == "barrierelos.ch" })
+        assertTrue(websites.any { it.domain == "barrierelos.org" })
+        assertTrue(websites.any { website -> website.tags.any { websiteTag -> websiteTag.tag.id == tag.id } })
+        assertTrue(websites.any { it.tags.isEmpty() })
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `gets websites with headers, when no parameters`()
+      {
+        // given
+        websiteRepository.save(createWebsiteEntity().also {
+          it.domain = "barrierelos.ch"
+          it.url = "barrierelos.ch"
+          it.tags.clear()
+        })
+        websiteRepository.save(createWebsiteEntity().also {
+          it.domain = "barrierelos.org"
+          it.url = "barrierelos.org"
+          it.tags.clear()
+        })
+
+        // when
+        val websites = websiteService.getWebsites()
+
+        // then
+        websites.page.shouldBe(0)
+        websites.size.shouldBe(2)
+        websites.totalElements.shouldBe(2)
+        websites.totalPages.shouldBe(1)
+        websites.count.shouldBe(2)
+        websites.lastModified.shouldBeGreaterThan(0)
+        websites.content.shouldHaveSize(2)
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `gets websites with headers, when with parameters`()
+      {
+        // given
+        websiteRepository.save(createWebsiteEntity().also {
+          it.domain = "barrierelos.ch"
+          it.url = "barrierelos.ch"
+          it.tags.clear()
+        })
+        websiteRepository.save(createWebsiteEntity().also {
+          it.domain = "barrierelos.org"
+          it.url = "barrierelos.org"
+          it.tags.clear()
+        })
+
+        // when
+        val websites = websiteService.getWebsites(DefaultParameters(
+          page = 1,
+          size = 1,
+          sort = "domain",
+          order = OrderEnum.ASC
+        ))
+
+        // then
+        websites.page.shouldBe(1)
+        websites.size.shouldBe(1)
+        websites.totalElements.shouldBe(2)
+        websites.totalPages.shouldBe(2)
+        websites.count.shouldBe(2)
+        websites.lastModified.shouldBeGreaterThan(0)
+        websites.content.shouldHaveSize(1)
+      }
+    }
+
+    @Nested
+    inner class GetWebsiteTests
+    {
+      @Test
+      fun `gets website`()
+      {
+        // when
+        val expected = websiteRepository.save(createWebsiteEntity().also {
+          it.domain = "barrierelos.ch"
+          it.url = "barrierelos.ch"
+          it.tags.clear()
+        }).toModel()
+
+        // then
+        val actual = websiteService.getWebsite(expected.id)
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `cannot get website, when website not exists`()
+      {
+        assertThrows(NoSuchElementException::class.java) {
+          websiteService.getWebsite(5000000)
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteWebsiteTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `deletes website, given admin account`()
+      {
+        // when
+        val website = createAndAddWebsite(admin.id, "barrierelos.ch", tag)
+        val websitesBefore = websiteService.getWebsites().content
+
+        // then
+        assertDoesNotThrow {
+          websiteService.deleteWebsite(website.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          websiteService.getWebsite(website.id)
+        }
+
+        websiteTagRepository.findById(website.tags.first().id).shouldBeEmpty()
+
+        val websitesAfter = websiteService.getWebsites().content
+
+        websitesBefore.shouldContain(website)
+        websitesAfter.shouldNotContain(website)
+        websitesBefore.shouldContainAll(websitesAfter)
+        websitesAfter.shouldNotContainAll(websitesBefore)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `deletes website, given correct account`()
+      {
+        // when
+        val website = createAndAddWebsite(contributor.id, "barrierelos.ch", tag)
+        val websitesBefore = websiteService.getWebsites().content
+
+        // then
+        assertDoesNotThrow {
+          websiteService.deleteWebsite(website.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          websiteService.getWebsite(website.id)
+        }
+
+        websiteTagRepository.findById(website.tags.first().id).shouldBeEmpty()
+
+        val websitesAfter = websiteService.getWebsites().content
+
+        websitesBefore.shouldContain(website)
+        websitesAfter.shouldNotContain(website)
+        websitesBefore.shouldContainAll(websitesAfter)
+        websitesAfter.shouldNotContainAll(websitesBefore)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot delete website, given wrong account`()
+      {
+        // when
+        val website = createAndAddWebsite(moderator.id, "barrierelos.ch", tag)
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          websiteService.deleteWebsite(website.id)
+        }
+      }
+
+      @Test
+      fun `cannot delete website, given no account`()
+      {
+        // when
+        val website = createAndAddWebsite(contributor.id, "barrierelos.ch", tag)
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          websiteService.deleteWebsite(website.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot delete website, when website not exists`()
+      {
+        assertThrows(NoSuchElementException::class.java) {
+          websiteService.deleteWebsite(5000000)
         }
       }
     }

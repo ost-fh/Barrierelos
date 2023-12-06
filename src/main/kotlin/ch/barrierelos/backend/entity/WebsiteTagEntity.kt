@@ -12,9 +12,9 @@ public class WebsiteTagEntity
   public var websiteTagId: Long = 0,
   public var websiteFk: Long,
   public var userFk: Long,
-  @OneToOne(cascade=[CascadeType.ALL], fetch=FetchType.EAGER)
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "tag_fk", referencedColumnName = "tagId")
   public var tag: TagEntity,
-  public var modified: Timestamp = Timestamp(0),
-  public var created: Timestamp = Timestamp(0),
+  public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
+  public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

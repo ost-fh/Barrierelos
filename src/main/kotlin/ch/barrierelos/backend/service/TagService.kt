@@ -24,7 +24,7 @@ public class TagService
 
     throwIfNameAlreadyExists(tag)
 
-    return this.tagRepository.save(tag.toEntity()).toModel(tag)
+    return this.tagRepository.save(tag.toEntity()).toModel()
   }
 
   public fun updateTag(tag: Tag): Tag
@@ -33,7 +33,7 @@ public class TagService
 
     throwIfNameChangedAndAlreadyExists(tag)
 
-    return this.tagRepository.save(tag.toEntity()).toModel(tag)
+    return this.tagRepository.save(tag.toEntity()).toModel()
   }
 
   public fun getTags(): Set<Tag>

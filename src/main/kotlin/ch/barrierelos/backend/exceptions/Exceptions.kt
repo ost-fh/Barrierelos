@@ -10,6 +10,12 @@ public class InvalidCredentialsException(message: String) : ResponseStatusExcept
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class InvalidEmailException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
 
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class InvalidDomainException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class InvalidUrlException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
+
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class NoAuthorizationException : ResponseStatusException(HttpStatus.UNAUTHORIZED, "No authorization.")
 

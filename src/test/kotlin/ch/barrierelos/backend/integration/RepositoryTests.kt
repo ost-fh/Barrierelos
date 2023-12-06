@@ -435,4 +435,102 @@ class RepositoryTests
       assertNull(actual)
     }
   }
+
+  @Nested
+  inner class WebsiteRepositoryTests
+  {
+    @Test
+    fun `finds website by id, when website exists`()
+    {
+      // given
+      val user = entityManager.persist(createUserEntity())
+
+      // when
+      val expected = createWebsiteEntity()
+      expected.userFk = user.userId
+      expected.tags.clear()
+
+      entityManager.persist(expected)
+      entityManager.flush()
+
+      // then
+      val actual = websiteRepository.findById(expected.websiteId).orElse(null)
+
+      assertNotNull(actual)
+
+      if(actual != null)
+      {
+        assertNotEquals(0, actual.websiteId)
+        assertEquals(expected.websiteId, actual.websiteId)
+        assertEquals(expected.userFk, actual.userFk)
+        assertEquals(expected.domain, actual.domain)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.category, actual.category)
+        assertEquals(expected.status, actual.status)
+        assertEquals(expected.tags.size, actual.tags.size)
+        assertEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+    }
+
+    @Test
+    fun `cannot find website by id, when website not exists`()
+    {
+      // when
+      val expected = createWebsiteEntity()
+
+      // then
+      val actual = websiteRepository.findById(expected.websiteId).orElse(null)
+
+      assertNull(actual)
+    }
+
+    @Test
+    fun `finds website by domain, when website exists`()
+    {
+      // given
+      val user = entityManager.persist(createUserEntity())
+
+      // when
+      val expected = createWebsiteEntity()
+      expected.userFk = user.userId
+      expected.tags.clear()
+
+      entityManager.persist(expected)
+      entityManager.flush()
+
+      // then
+      val actual = websiteRepository.findByDomainContaining(expected.domain)
+
+      assertNotNull(actual)
+      actual.shouldNotBeEmpty()
+      actual.shouldHaveSize(1)
+      actual.first()
+
+      assertNotEquals(0, actual.first().websiteId)
+      assertEquals(expected.websiteId, actual.first().websiteId)
+      assertEquals(expected.userFk, actual.first().userFk)
+      assertEquals(expected.domain, actual.first().domain)
+      assertEquals(expected.url, actual.first().url)
+      assertEquals(expected.category, actual.first().category)
+      assertEquals(expected.status, actual.first().status)
+      assertEquals(expected.tags.size, actual.first().tags.size)
+      assertEquals(expected.modified, actual.first().modified)
+      assertEquals(expected.created, actual.first().created)
+    }
+
+    @Test
+    fun `cannot find website by domain, when website not exists`()
+    {
+      // when
+      val expected = createWebsiteEntity()
+
+      // then
+      val actual = websiteRepository.findByDomainContaining(expected.domain)
+
+      assertNotNull(actual)
+      actual.shouldBeEmpty()
+      actual.shouldHaveSize(0)
+    }
+  }
 }

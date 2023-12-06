@@ -45,3 +45,13 @@ public fun UserEntity.toModel(user: User): User
     created = this@toModel.created.time
   }
 }
+
+public fun Collection<User>.toEntities(): MutableSet<UserEntity>
+{
+  return this.map { user -> user.toEntity() }.toMutableSet()
+}
+
+public fun Collection<UserEntity>.toModels(): MutableSet<User>
+{
+  return this.map { user -> user.toModel() }.toMutableSet()
+}

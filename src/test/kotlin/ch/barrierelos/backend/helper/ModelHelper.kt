@@ -1,9 +1,9 @@
 package ch.barrierelos.backend.helper
 
+import ch.barrierelos.backend.enums.CategoryEnum
 import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.model.Credential
-import ch.barrierelos.backend.model.Tag
-import ch.barrierelos.backend.model.User
+import ch.barrierelos.backend.enums.StatusEnum
+import ch.barrierelos.backend.model.*
 
 fun createUserModel() = User(
   username = "username",
@@ -15,9 +15,9 @@ fun createUserModel() = User(
   created = 5000,
 )
 
-fun createCredentialModel() = Credential(
+fun createCredentialModel(userId: Long = 0) = Credential(
+  userId = userId,
   password = "password",
-  userId = 1,
   issuer = "issuer",
   subject = "subject",
   modified = 5000,
@@ -25,5 +25,25 @@ fun createCredentialModel() = Credential(
 )
 
 fun createTagModel() = Tag(
-  name = "Something",
+  name = "something",
+)
+
+fun createWebsiteTagModel(userId: Long = 0, websiteId: Long = 0) = WebsiteTag(
+  websiteId = websiteId,
+  userId = userId,
+  tag = createTagModel(),
+  modified = 5000,
+  created = 5000,
+)
+
+fun createWebsiteModel(userId: Long = 0, websiteId: Long = 0) = Website(
+  userId = userId,
+  domain = "admin.ch",
+  url = "https://admin.ch",
+  category = CategoryEnum.GOVERNMENT_FEDERAL,
+  status = StatusEnum.PENDING_INITIAL,
+  tags = mutableSetOf(createWebsiteTagModel(userId, websiteId)),
+  webpageCount = 10,
+  modified = 5000,
+  created = 5000,
 )

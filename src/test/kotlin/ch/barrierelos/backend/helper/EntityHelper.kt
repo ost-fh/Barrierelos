@@ -16,8 +16,8 @@ fun createUserEntity() = UserEntity(
   created = Timestamp(5000),
 )
 
-fun createCredentialEntity() = CredentialEntity(
-  userFk = 1,
+fun createCredentialEntity(userFk: Long = 0) = CredentialEntity(
+  userFk = userFk,
   password = "password",
   issuer = "issuer",
   subject = "subject",
@@ -26,5 +26,24 @@ fun createCredentialEntity() = CredentialEntity(
 )
 
 fun createTagEntity() = TagEntity(
-  name = "Something"
+  name = "something"
+)
+
+fun createWebsiteTagEntity(userFk: Long = 0, websiteFk: Long = 0) = WebsiteTagEntity(
+  websiteFk = websiteFk,
+  userFk = userFk,
+  tag = createTagEntity(),
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)
+
+fun createWebsiteEntity(userFk: Long = 0, websiteFk: Long = 0) = WebsiteEntity(
+  userFk = userFk,
+  domain = "admin.ch",
+  url = "https://admin.ch",
+  category = CategoryEnum.GOVERNMENT_FEDERAL,
+  status = StatusEnum.PENDING_INITIAL,
+  tags = mutableSetOf(createWebsiteTagEntity(userFk, websiteFk)),
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
 )

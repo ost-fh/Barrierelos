@@ -1,12 +1,13 @@
 package ch.barrierelos.backend.configuration
 
-import ch.barrierelos.backend.constants.Endpoint.WEBSITES
+import ch.barrierelos.backend.constants.Endpoint
 import ch.barrierelos.backend.constants.Endpoint.CREDENTIAL
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
-import ch.barrierelos.backend.constants.Endpoint.USER
-import ch.barrierelos.backend.constants.Endpoint.STATISTICS
 import ch.barrierelos.backend.constants.Endpoint.TAG
+import ch.barrierelos.backend.constants.Endpoint.USER
+import ch.barrierelos.backend.constants.Endpoint.WEBSITE
+import ch.barrierelos.backend.constants.Endpoint.WEBSITES
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.security.AuthenticationConverter
 import org.springframework.beans.factory.annotation.Autowired
@@ -46,12 +47,20 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.HEAD, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers(HttpMethod.GET, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers(HttpMethod.DELETE, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
+
           .requestMatchers(HttpMethod.POST, "$TAG/**").hasAnyRole(RoleEnum.ADMIN.name)
           .requestMatchers(HttpMethod.PUT, "$TAG/**").hasAnyRole(RoleEnum.ADMIN.name)
           .requestMatchers(HttpMethod.HEAD, "$TAG/**").permitAll()
           .requestMatchers(HttpMethod.GET, "$TAG/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "$TAG/**").hasAnyRole(RoleEnum.ADMIN.name)
-          .requestMatchers("$STATISTICS/**").permitAll()
+
+          .requestMatchers(HttpMethod.POST, "$WEBSITE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBSITE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.HEAD, "$WEBSITE/**").permitAll()
+          .requestMatchers(HttpMethod.GET, "$WEBSITE/**").permitAll()
+          .requestMatchers(HttpMethod.DELETE, "$WEBSITE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+
+          .requestMatchers("${Endpoint.STATISTICS}/**").permitAll()
           .requestMatchers(HttpMethod.PUT, "$CREDENTIAL/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()
           .requestMatchers("$DOCUMENTATION_OPENAPI.yaml").permitAll()

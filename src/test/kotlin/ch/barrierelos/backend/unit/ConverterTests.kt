@@ -147,4 +147,42 @@ class ConverterTests
       assertEquals(expected.created, actual.created)
     }
   }
+
+  @Nested
+  inner class WebsiteTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createWebsiteEntity()
+
+      // then
+      val model = createWebsiteModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createWebsiteModel()
+
+      // then
+      val expected = createWebsiteEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.websiteId, actual.websiteId)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.domain, actual.domain)
+      assertEquals(expected.url, actual.url)
+      assertEquals(expected.category, actual.category)
+      assertEquals(expected.status, actual.status)
+      assertEquals(expected.tags.size, actual.tags.size)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+  }
 }

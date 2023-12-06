@@ -89,4 +89,28 @@ class EntityTests
       assertEquals(expected.created, actual.created)
     }
   }
+
+  @Nested
+  inner class WebsiteTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createWebsiteEntity()
+
+      // then
+      val actual = createWebsiteEntity()
+
+      assertEquals(expected.websiteId, actual.websiteId)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.domain, actual.domain)
+      assertEquals(expected.url, actual.url)
+      assertEquals(expected.category, actual.category)
+      assertEquals(expected.status, actual.status)
+      assertEquals(expected.tags.size, actual.tags.size)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+  }
 }

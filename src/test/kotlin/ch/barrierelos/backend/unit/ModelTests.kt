@@ -1,8 +1,6 @@
 package ch.barrierelos.backend.unit
 
-import ch.barrierelos.backend.helper.createCredentialModel
-import ch.barrierelos.backend.helper.createTagModel
-import ch.barrierelos.backend.helper.createUserModel
+import ch.barrierelos.backend.helper.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -70,6 +68,21 @@ class ModelTests
       val actual = createWebsiteTagModel()
 
       assertEquals(expected, actual)
+    }
+  }
+
+  @Nested
+  inner class WebsiteTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createWebsiteModel()
+
+      // then
+      val actual = createWebsiteModel()
+
       assertEquals(expected, actual)
     }
   }

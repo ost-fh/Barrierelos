@@ -2,24 +2,31 @@ package ch.barrierelos.backend.integration
 
 import body
 import ch.barrierelos.backend.converter.toEntity
+import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.exceptions.*
+import ch.barrierelos.backend.helper.createCredentialEntity
 import ch.barrierelos.backend.helper.createCredentialModel
+import ch.barrierelos.backend.helper.createUserEntity
+import ch.barrierelos.backend.helper.createWebsiteModel
 import ch.barrierelos.backend.message.RegistrationMessage
 import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.model.User
+import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.CredentialRepository
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.service.CredentialService
 import ch.barrierelos.backend.service.TagService
 import ch.barrierelos.backend.service.UserService
+import ch.barrierelos.backend.service.WebsiteService
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toJson
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.url.haveParameterValue
 import io.mockk.every
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -46,80 +53,117 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
   lateinit var credentialService: CredentialService
   @MockkBean
   lateinit var tagService: TagService
+  @MockkBean
+  lateinit var websiteService: WebsiteService
 
   @Autowired
   lateinit var userRepository: UserRepository
   @Autowired
   lateinit var credentialRepository: CredentialRepository
 
-  private fun createAdminUser(id: Long) = User(
-    id = id,
-    username = "admin",
-    firstname = "Hans",
-    lastname = "Admin",
-    email = "admin@barrierelos.ch",
-    roles = mutableSetOf(RoleEnum.ADMIN),
-    modified = 5000,
-  )
-
-  private fun createContributorUser(id: Long) = User(
-    id = id,
-    username = "contributor",
-    firstname = "Peter",
-    lastname = "Contributor",
-    email = "contributor@barrierelos.ch",
-    roles = mutableSetOf(RoleEnum.CONTRIBUTOR),
-    modified = 5000,
-  )
-
-  private fun createCredential(userId: Long) = createCredentialModel().apply { this.userId = userId }
-
-  private val user = createContributorUser(0)
-  private val adminUser = createAdminUser(1)
-  private val contributorUser = createContributorUser(2)
-  private val credential = createCredential(user.id)
-  private val adminCredential = createCredential(adminUser.id)
-  private val contributorCredential = createCredential(contributorUser.id)
-  private val registration = RegistrationMessage(
-    user = user,
-    credential = credential,
-  )
-  private val result = Result(
-    page = 0,
-    size = 2,
-    totalElements = 3,
-    totalPages = 2,
-    count = 3,
-    lastModified = 5000,
-    content = listOf(
-      adminUser,
-      contributorUser,
-      user,
-    ),
-  )
+  lateinit var admin: User
+  lateinit var moderator: User
+  lateinit var contributor: User
+  lateinit var viewer: User
 
   @BeforeEach
-  fun setUp()
+  fun beforeEach()
   {
-    // Delete all users
-    userRepository.deleteAll()
-
     // Add admin user
-    val adminId = userRepository.save(adminUser.toEntity()).userId
+    val adminUser = createUserEntity()
+    adminUser.username = "admin"
+    adminUser.roles = mutableSetOf(RoleEnum.ADMIN)
+    admin = userRepository.save(adminUser).toModel()
+
+    // Add moderator user
+    val moderatorUser = createUserEntity()
+    moderatorUser.username = "moderator"
+    moderatorUser.roles = mutableSetOf(RoleEnum.MODERATOR)
+    moderator = userRepository.save(moderatorUser).toModel()
 
     // Add contributor user
-    val contributorId = userRepository.save(contributorUser.toEntity()).userId
+    val contributorUser = createUserEntity()
+    contributorUser.username = "contributor"
+    contributorUser.roles = mutableSetOf(RoleEnum.CONTRIBUTOR)
+    contributor = userRepository.save(contributorUser).toModel()
+
+    // Add viewer user
+    val viewerUser = createUserEntity()
+    viewerUser.username = "viewer"
+    viewerUser.roles = mutableSetOf(RoleEnum.VIEWER)
+    viewer = userRepository.save(viewerUser).toModel()
 
     // Add admin credential
-    credentialRepository.save(adminCredential.apply { userId = adminId }.toEntity())
+    val adminCredential = createCredentialEntity()
+    adminCredential.userFk = adminUser.userId
+    credentialRepository.save(adminCredential)
+
+    // Add moderator credential
+    val moderatorCredential = createCredentialEntity()
+    moderatorCredential.userFk = moderatorUser.userId
+    credentialRepository.save(moderatorCredential)
 
     // Add contributor credential
-    credentialRepository.save(contributorCredential.apply { userId = contributorId }.toEntity())
+    val contributorCredential = createCredentialEntity()
+    contributorCredential.userFk = contributorUser.userId
+    credentialRepository.save(contributorCredential)
+
+    // Add viewer credential
+    val viewerCredential = createCredentialEntity()
+    viewerCredential.userFk = viewerUser.userId
+    credentialRepository.save(viewerCredential)
+  }
+
+  @AfterEach
+  fun afterEach()
+  {
+    userRepository.deleteAll()
+    credentialRepository.deleteAll()
   }
 
   @Nested
   inner class UserControllerTests
   {
+    var user = User(
+      username = "user",
+      firstname = "Peter",
+      lastname = "Contributor",
+      email = "contributor@barrierelos.ch",
+      roles = mutableSetOf(RoleEnum.CONTRIBUTOR),
+      modified = 5000,
+    )
+    val credential = createCredentialModel()
+    lateinit var registration: RegistrationMessage
+    lateinit var result: Result<User>
+
+    @BeforeEach
+    fun beforeEach()
+    {
+      // Add user
+      userRepository.save(user.toEntity()).toModel(user)
+
+      // Add credential
+      credential.userId = user.id
+      credentialRepository.save(credential.toEntity()).toModel(credential)
+
+      // Other
+      registration = RegistrationMessage(user, credential)
+      println(registration)
+      result = Result(
+        page = 0,
+        size = 2,
+        totalElements = 3,
+        totalPages = 2,
+        count = 3,
+        lastModified = 5000,
+        content = listOf(
+          admin,
+          contributor,
+          user,
+        ),
+      )
+    }
+
     @Nested
     inner class AddUserTests
     {
@@ -139,12 +183,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `receives user, when provided in body`()
       {
         // when
-        val registration = RegistrationMessage(
-          user = user,
-          credential = credential
-        )
-
-        every { userService.addUser(user, credential) } returns user
+        every { userService.addUser(user.apply { id = 0 }, credential) } returns user
 
         // then
         mockMvc.post("/user") {
@@ -166,10 +205,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns user, when added, given account`()
       {
         // when
-        val expected = RegistrationMessage(
-          user = createContributorUser(0),
-          credential = createCredential(0)
-        )
+        val expected = registration.copy().apply { user.id = 0 }
 
         every { userService.addUser(expected.user, expected.credential) } returns expected.user
 
@@ -188,10 +224,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns user, when added, given no account`()
       {
         // when
-        val expected = RegistrationMessage(
-          user = createContributorUser(0),
-          credential = createCredential(0)
-        )
+        val expected = registration.copy().apply { user.id = 0 }
 
         every { userService.addUser(expected.user, expected.credential) } returns expected.user
 
@@ -210,7 +243,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 400 bad request, when service throws InvalidCredentialsException`()
       {
         // when
-        every { userService.addUser(user, credential) } throws InvalidCredentialsException("")
+        every { userService.addUser(user.apply { id = 0 }, credential) } throws InvalidCredentialsException("")
 
         // then
         mockMvc.post("/user") {
@@ -225,7 +258,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 400 bad request, when service throws InvalidEmailException`()
       {
         // when
-        every { userService.addUser(user, credential) } throws InvalidEmailException("")
+        every { userService.addUser(user.apply { id = 0 }, credential) } throws InvalidEmailException("")
 
         // then
         mockMvc.post("/user") {
@@ -240,7 +273,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 400 bad request, when service throws NoRoleException`()
       {
         // when
-        every { userService.addUser(user, credential) } throws NoRoleException("")
+        every { userService.addUser(user.apply { id = 0 }, credential) } throws NoRoleException("")
 
         // then
         mockMvc.post("/user") {
@@ -255,7 +288,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
       {
         // when
-        every { userService.addUser(user, credential) } throws NoAuthorizationException()
+        every { userService.addUser(user.apply { id = 0 }, credential) } throws NoAuthorizationException()
 
         // then
         mockMvc.post("/user") {
@@ -270,7 +303,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 409 conflict, when service throws AlreadyExistsException`()
       {
         // when
-        every { userService.addUser(user, credential) } throws AlreadyExistsException("")
+        every { userService.addUser(user.apply { id = 0 }, credential) } throws AlreadyExistsException("")
 
         // then
         mockMvc.post("/user") {
@@ -302,7 +335,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `uses correct media type`()
       {
         // when
-        every { userService.updateUser(adminUser) } returns adminUser
+        every { userService.updateUser(admin) } returns admin
 
         // then
         mockMvc.put("/user/1").andExpect {
@@ -315,9 +348,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `receives user, when provided in body`()
       {
         // when
-        val user = createContributorUser(1)
-
-        every { userService.updateUser(user) } returns user
+        every { userService.updateUser(user.apply { id = 1 }) } returns user
 
         // then
         mockMvc.put("/user/1") {
@@ -339,7 +370,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `receives path variable, when path variable provided`()
       {
         // when
-        every { userService.updateUser(adminUser) } returns adminUser
+        every { userService.updateUser(admin) } returns admin
 
         // then
         mockMvc.put("/user/1").andExpect {
@@ -352,7 +383,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns user, when updated, given account`()
       {
         // when
-        val expected = createContributorUser(1)
+        val expected = user.copy().apply { id = 1 }
 
         every { userService.updateUser(expected) } returns expected
 
@@ -371,12 +402,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, given no account`()
       {
         // when
-        every { userService.updateUser(adminUser) } returns adminUser
+        every { userService.updateUser(admin) } returns admin
 
         // then
         mockMvc.put("/user/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = adminUser.toJson()
+          content = admin.toJson()
         }.andExpect {
           status { isUnauthorized() }
         }
@@ -387,12 +418,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 400 bad request, when service throws InvalidEmailException`()
       {
         // when
-        every { userService.updateUser(adminUser) } throws InvalidEmailException("")
+        every { userService.updateUser(admin.apply { id = 1 }) } throws InvalidEmailException("")
 
         // then
         mockMvc.put("/user/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = adminUser.toJson()
+          content = admin.toJson()
         }.andExpect {
           status { isBadRequest() }
         }
@@ -403,12 +434,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 400 bad request, when service throws NoRoleException`()
       {
         // when
-        every { userService.updateUser(adminUser) } throws NoRoleException("")
+        every { userService.updateUser(admin.apply { id = 1 }) } throws NoRoleException("")
 
         // then
         mockMvc.put("/user/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = adminUser.toJson()
+          content = admin.toJson()
         }.andExpect {
           status { isBadRequest() }
         }
@@ -419,12 +450,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
       {
         // when
-        every { userService.updateUser(adminUser) } throws NoAuthorizationException()
+        every { userService.updateUser(admin.apply { id = 1 }) } throws NoAuthorizationException()
 
         // then
         mockMvc.put("/user/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = adminUser.toJson()
+          content = admin.toJson()
         }.andExpect {
           status { isUnauthorized() }
         }
@@ -435,12 +466,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 409 conflict, when service throws AlreadyExistsException`()
       {
         // when
-        every { userService.updateUser(adminUser) } throws AlreadyExistsException("")
+        every { userService.updateUser(admin.apply { id = 1 }) } throws AlreadyExistsException("")
 
         // then
         mockMvc.put("/user/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = adminUser.toJson()
+          content = admin.toJson()
         }.andExpect {
           status { isConflict() }
         }
@@ -451,7 +482,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 415 unsupported media type, when no user provided in body`()
       {
         // when
-        every { userService.updateUser(adminUser) } returns user
+        every { userService.updateUser(admin) } returns user
 
         // then
         mockMvc.put("/user/1").andExpect {
@@ -556,7 +587,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `uses correct media type`()
       {
         // when
-        every { userService.getUser(1) } returns adminUser
+        every { userService.getUser(1) } returns admin
 
         // then
         mockMvc.get("/user/1").andExpect {
@@ -569,7 +600,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `receives path variable, when path variable provided`()
       {
         // when
-        every { userService.getUser(1) } returns adminUser
+        every { userService.getUser(1) } returns admin
 
         // then
         mockMvc.get("/user/1").andExpect {
@@ -582,14 +613,14 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `gets user, given account`()
       {
         // when
-        every { userService.getUser(1) } returns adminUser
+        every { userService.getUser(1) } returns admin
 
         // then
         val actual = mockMvc.get("/user/1").andExpect {
           status { isOk() }
         }.body<User>()
 
-        assertEquals(adminUser, actual)
+        assertEquals(admin, actual)
       }
 
       @Test
@@ -716,6 +747,8 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
   @Nested
   inner class CredentialControllerTests
   {
+    val credential = createCredentialModel()
+
     @Nested
     inner class UpdateCredentialTests
     {
@@ -724,7 +757,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `uses correct media type`()
       {
         // when
-        every { credentialService.updateCredential(adminCredential) } returns adminCredential
+        every { credentialService.updateCredential(credential) } returns credential
 
         // then
         mockMvc.put("/credential/1").andExpect {
@@ -737,11 +770,13 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `receives credential, when provided in body`()
       {
         // when
-        val credential = createCredential(1)
-        credential.id = 1
-        credential.password = "password"
-        credential.issuer = "issuer"
-        credential.subject = "subject"
+        val credential = credential.copy().apply {
+          id = 1
+          userId = 1
+          password = "password"
+          issuer = "issuer"
+          subject = "subject"
+        }
 
         every { credentialService.updateCredential(credential) } returns credential
 
@@ -759,7 +794,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `receives path variable, when path variable provided`()
       {
         // when
-        every { credentialService.updateCredential(adminCredential) } returns adminCredential
+        every { credentialService.updateCredential(credential) } returns credential
 
         // then
         mockMvc.put("/credential/1").andExpect {
@@ -772,7 +807,10 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 200 ok, when updated, given account`()
       {
         // when
-        val expected = createCredential(1).apply { id = 1 }
+        val expected = credential.copy().apply {
+          id = 1
+          userId = 1
+        }
 
         every { credentialService.updateCredential(expected) } returns expected
 
@@ -791,12 +829,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, given no account`()
       {
         // when
-        every { credentialService.updateCredential(adminCredential) } returns adminCredential
+        every { credentialService.updateCredential(credential) } returns credential
 
         // then
         mockMvc.put("/credential/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = adminCredential.toJson()
+          content = credential.toJson()
         }.andExpect {
           status { isUnauthorized() }
         }
@@ -807,12 +845,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 400 bad request, when service throws InvalidCredentialsException`()
       {
         // when
-        every { credentialService.updateCredential(adminCredential.copy(userId = 1)) } throws InvalidCredentialsException("")
+        every { credentialService.updateCredential(credential.copy(userId = 1)) } throws InvalidCredentialsException("")
 
         // then
         mockMvc.put("/credential/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = adminCredential.toJson()
+          content = credential.toJson()
         }.andExpect {
           status { isBadRequest() }
         }
@@ -823,12 +861,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
       {
         // when
-        every { credentialService.updateCredential(adminCredential.copy(userId = 1)) } throws NoAuthorizationException()
+        every { credentialService.updateCredential(credential.copy(userId = 1)) } throws NoAuthorizationException()
 
         // then
         mockMvc.put("/credential/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = adminCredential.toJson()
+          content = credential.toJson()
         }.andExpect {
           status { isUnauthorized() }
         }
@@ -839,7 +877,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 415 unsupported media type, when no credential provided in body`()
       {
         // when
-        every { credentialService.updateCredential(adminCredential.copy(userId = 1)) } returns credential
+        every { credentialService.updateCredential(credential.copy(userId = 1)) } returns credential
 
         // then
         mockMvc.put("/credential/1").andExpect {
@@ -1058,6 +1096,22 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       }
 
       @Test
+      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
+      fun `responds with 403, given wrong account`()
+      {
+        // when
+        every { tagService.updateTag(tag) } returns tag
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = tag.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
       fun `responds with 401 unauthorized, given no account`()
       {
         // when
@@ -1069,22 +1123,6 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
           content = tag.toJson()
         }.andExpect {
           status { isUnauthorized() }
-        }
-      }
-
-      @Test
-      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
-      fun `responds with 403 403, given wrong account`()
-      {
-        // when
-        every { tagService.updateTag(tag) } returns tag
-
-        // then
-        mockMvc.put("/tag/1") {
-          contentType = EXPECTED_MEDIA_TYPE
-          content = tag.toJson()
-        }.andExpect {
-          status { isForbidden() }
         }
       }
 
@@ -1299,6 +1337,523 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
 
         // then
         mockMvc.delete("/tag/1").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class WebsiteControllerTests
+  {
+    private val website = createWebsiteModel(1, 0)
+
+    @Nested
+    inner class AddWebsiteTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteService.addWebsite(website) } returns website
+
+        // then
+        mockMvc.post("/website").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives website, when provided in body`()
+      {
+        // when
+        every { websiteService.addWebsite(website) } returns website
+
+        // then
+        mockMvc.post("/website") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          content {
+            contentType(EXPECTED_MEDIA_TYPE)
+            jsonPath("$.userId") { value(website.userId) }
+            jsonPath("$.domain") { value(website.domain) }
+            jsonPath("$.url") { value(website.url) }
+            jsonPath("$.category") { value(website.category.toString()) }
+            jsonPath("$.status") { value(website.status.toString()) }
+            jsonPath("$.tags[0].tag.name") { value(website.tags.first().tag.name) }
+            jsonPath("$.modified") { value(website.modified) }
+            jsonPath("$.created") { value(website.created) }
+          }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `returns website, when added, given admin account`()
+      {
+        // when
+        val expected = website.copy()
+
+        every { websiteService.addWebsite(expected) } returns expected
+
+        // then
+        val actual = mockMvc.post("/website") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isCreated() }
+        }.body<Website>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { websiteService.addWebsite(website) } returns website
+
+        // then
+        mockMvc.post("/website") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { websiteService.addWebsite(website) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.post("/website") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 409 conflict, when service throws AlreadyExistsException`()
+      {
+        // when
+        every { websiteService.addWebsite(website) } throws AlreadyExistsException("")
+
+        // then
+        mockMvc.post("/website") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          status { isConflict() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 415 unsupported media type, when no website provided in body`()
+      {
+        // when
+        every { websiteService.addWebsite(website) } returns website
+
+        // then
+        mockMvc.post("/website").andExpect {
+          status { isUnsupportedMediaType() }
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateWebsiteTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteService.updateWebsite(website) } returns website
+
+        // then
+        mockMvc.put("/website/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives website, when provided in body`()
+      {
+        // when
+        every { websiteService.updateWebsite(website.apply { id = 1 }) } returns website
+
+        // then
+        mockMvc.put("/website/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          content {
+            contentType(EXPECTED_MEDIA_TYPE)
+            jsonPath("$.userId") { value(website.userId) }
+            jsonPath("$.domain") { value(website.domain) }
+            jsonPath("$.url") { value(website.url) }
+            jsonPath("$.category") { value(website.category.toString()) }
+            jsonPath("$.status") { value(website.status.toString()) }
+            jsonPath("$.tags[0].tag.name") { value(website.tags.first().tag.name) }
+            jsonPath("$.modified") { value(website.modified) }
+            jsonPath("$.created") { value(website.created) }
+          }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { websiteService.updateWebsite(website) } returns website
+
+        // then
+        mockMvc.put("/website/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `returns website, when updated, given admin account`()
+      {
+        // when
+        val expected = website.copy()
+
+        every { websiteService.updateWebsite(expected.apply { id = 1 }) } returns expected
+
+        // then
+        val actual = mockMvc.put("/website/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isOk() }
+        }.body<Website>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { websiteService.updateWebsite(website) } returns website
+
+        // then
+        mockMvc.put("/website/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore= TEST_EXECUTION)
+      fun `responds with 403, given wrong account`()
+      {
+        // when
+        every { websiteService.updateWebsite(website) } returns website
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { websiteService.updateWebsite(website.apply { id = 1 }) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.put("/website/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 409 conflict, when service throws AlreadyExistsException`()
+      {
+        // when
+        every { websiteService.updateWebsite(website.apply { id = 1 }) } throws AlreadyExistsException("")
+
+        // then
+        mockMvc.put("/website/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = website.toJson()
+        }.andExpect {
+          status { isConflict() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 415 unsupported media type, when no website provided in body`()
+      {
+        // when
+        every { websiteService.updateWebsite(website) } returns website
+
+        // then
+        mockMvc.put("/website/1").andExpect {
+          status { isUnsupportedMediaType() }
+        }
+      }
+    }
+
+    @Nested
+    inner class GetWebsitesTests
+    {
+      val result = Result(
+        page = 0,
+        size = 1,
+        totalElements = 1,
+        totalPages = 1,
+        count = 1,
+        lastModified = 5000,
+        content = listOf(
+          website
+        ),
+      )
+
+      @Test
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteService.getWebsites() } returns result
+
+        // then
+        mockMvc.get("/website").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      fun `receives default parameters, when default parameters provided`()
+      {
+        // when
+        val defaultParameters = DefaultParameters(
+          page = 0,
+          size = 2,
+          sort = "domain",
+          order = OrderEnum.ASC,
+          modifiedAfter = 4000
+        )
+
+        every { websiteService.getWebsites(defaultParameters) } returns result
+
+        // then
+        mockMvc.get("/website") {
+          param("page", defaultParameters.page.toString())
+          param("size", defaultParameters.size.toString())
+          param("sort", defaultParameters.sort.toString())
+          param("order", defaultParameters.order.toString())
+          param("modifiedAfter", defaultParameters.modifiedAfter.toString())
+        }.andExpect {
+          haveParameterValue("page", defaultParameters.page.toString())
+          haveParameterValue("size", defaultParameters.size.toString())
+          haveParameterValue("sort", defaultParameters.sort.toString())
+          haveParameterValue("order", defaultParameters.order.toString())
+          haveParameterValue("modifiedAfter", defaultParameters.modifiedAfter.toString())
+        }
+      }
+
+      @Test
+      fun `gets websites`()
+      {
+        // when
+        every { websiteService.getWebsites() } returns result
+
+        // then
+        val actual = mockMvc.get("/website").andExpect {
+          status { isOk() }
+        }.body<List<Website>>()
+
+        assertEquals(result.content, actual)
+      }
+    }
+
+    @Nested
+    inner class GetWebsiteTests
+    {
+      @Test
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteService.getWebsite(1) } returns website
+
+        // then
+        mockMvc.get("/website/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { websiteService.getWebsite(1) } returns website
+
+        // then
+        mockMvc.get("/website/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      fun `gets website, given account`()
+      {
+        // when
+        val expected = website.copy()
+
+        every { websiteService.getWebsite(1) } returns expected
+
+        // then
+        val actual = mockMvc.get("/website/1").andExpect {
+          status { isOk() }
+        }.body<Website>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 404 not found, when service throws NoSuchElementException`()
+      {
+        // when
+        every { websiteService.getWebsite(1) } throws NoSuchElementException()
+
+        // then
+        mockMvc.get("/website/1").andExpect {
+          status { isNotFound() }
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteWebsiteTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteService.deleteWebsite(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { websiteService.deleteWebsite(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 200 ok, given admin account`()
+      {
+        // when
+        every { websiteService.deleteWebsite(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website/1").andExpect {
+          status { isOk() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `responds with 200 ok, given moderator account`()
+      {
+        // when
+        every { websiteService.deleteWebsite(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website/1").andExpect {
+          status { isOk() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `responds with 200 ok, given contributor account`()
+      {
+        // when
+        every { websiteService.deleteWebsite(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website/1").andExpect {
+          status { isOk() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { websiteService.deleteWebsite(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { websiteService.deleteWebsite(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website/1").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { websiteService.deleteWebsite(1) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.delete("/website/1").andExpect {
           status { isUnauthorized() }
         }
       }

@@ -4,5 +4,7 @@ import ch.barrierelos.backend.entity.WebsiteEntity
 
 public interface WebsiteRepository : Repository<WebsiteEntity>
 {
-  public fun findByDomainLike(domain: String): WebsiteEntity?
+  public fun findByDomainContaining(domain: String): Set<WebsiteEntity>
+
+  public fun existsByDomain(domain: String): Boolean
 }

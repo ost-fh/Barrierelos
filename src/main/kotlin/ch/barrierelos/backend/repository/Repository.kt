@@ -36,7 +36,19 @@ public interface Repository<E> : JpaRepository<E, Long>
   {
     public fun <E> Repository<E>.lastModified(): Long = this.lastModifiedTimestamp()?.time ?: 0
 
+    @Deprecated(
+      message="Use throwIfNotExists instead.",
+      replaceWith = ReplaceWith(
+        expression = "this.throwIfNotExists(id)",
+        imports = ["ch.barrierelos.backend.repository.Repository.throwIfNotExists"]
+      ),
+    )
     public fun <E> Repository<E>.checkIfExists(id: Long)
+    {
+      if(!this.existsById(id)) throw NoSuchElementException()
+    }
+
+    public fun <E> Repository<E>.throwIfNotExists(id: Long)
     {
       if(!this.existsById(id)) throw NoSuchElementException()
     }

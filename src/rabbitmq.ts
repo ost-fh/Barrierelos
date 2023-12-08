@@ -1,6 +1,6 @@
 import {AMQPClient, AMQPMessage} from "@cloudamqp/amqp-client";
 import {AppProperties, ScanJob} from "./model.js";
-import {analyzeWebsite} from "./scanner.js";
+import {scanWebsite} from "./scanner.js";
 import {formatFailedWebsiteResult} from "./formatter.js";
 import Logger from "./logger.js";
 
@@ -37,7 +37,7 @@ export async function subscribe(props: AppProperties) {
         }
 
         const job: ScanJob = JSON.parse(bodyString) as ScanJob
-        const result = await analyzeWebsite(job)
+        const result = await scanWebsite(job)
         await resultQueue.publish(JSON.stringify(result))
         await msg.ack()
     }

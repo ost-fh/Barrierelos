@@ -17,10 +17,8 @@ describe("formatWebsiteResults()", () => {
     })
     it("should contain the jobId and baseUrl as website property", () => {
         const jobId = 13
-        const locale = "de"
         const baseUrl = "testBaseUrl"
         job.jobId = jobId
-        job.locale = locale
         job.websiteBaseUrl = baseUrl
         const result = formatWebsiteResults(job, [])
         expect(result.jobId).to.equal(jobId)

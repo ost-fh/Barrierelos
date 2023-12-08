@@ -9,12 +9,9 @@ interface ScanJob {
     modelVersion: string
     jobId: number
     jobTimestamp: string
-    locale: Locale
     websiteBaseUrl: string
     webpagePaths: string[]
 }
-
-type Locale = "en" | "de"
 
 interface WebsiteResult {
     modelVersion: string

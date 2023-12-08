@@ -3,17 +3,12 @@ import {AxePuppeteer} from "@axe-core/puppeteer";
 import {formatFailedWebpageResult, formatWebpageResults, formatWebsiteResults} from "./formatter.js";
 import {ScanJob, WebpageResult, WebsiteResult} from "./model.js";
 import Logger from "./logger.js";
-import {Locale} from "axe-core";
-import * as fs from "fs";
 
-const additionalLocales: Record<string, Locale> = {
-    // Translations downloaded from: https://github.com/dequelabs/axe-core/tree/develop/locales
-    "de": JSON.parse(fs.readFileSync("locales/de.json", "utf-8")) as Locale,
-}
 
 export async function scanWebsite(job: ScanJob): Promise<WebsiteResult> {
     Logger.info(`Starting to scan ${job.websiteBaseUrl}, consisting of ${job.webpagePaths.length} webpages`)
     const browser = await puppeteer.launch({headless: "new", args: ["--no-sandbox"]});
+
     const webpageResults = await Promise.all(
         job.webpagePaths.map(async path => {
             return await scanWebpage({
@@ -24,8 +19,8 @@ export async function scanWebsite(job: ScanJob): Promise<WebsiteResult> {
         })
     )
     await browser.close();
-    Logger.info(`Finished scanning ${job.websiteBaseUrl}`)
 
+    Logger.info(`Finished scanning ${job.websiteBaseUrl}`)
     return formatWebsiteResults(job, webpageResults)
 }
 
@@ -48,9 +43,6 @@ async function scanWebpage(webpageScanProperties: WebpageScanProperties): Promis
     const context = await props.browser.createIncognitoBrowserContext()
     const page = await context.newPage()
     await page.setBypassCSP(true)
-    await page.setExtraHTTPHeaders({
-        'Accept-Language': props.job.locale
-    });
     page.setDefaultNavigationTimeout(props.navigationTimeoutMs)
     // One of the most common desktop user agents, taken from https://www.useragents.me/
     await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36");
@@ -62,13 +54,10 @@ async function scanWebpage(webpageScanProperties: WebpageScanProperties): Promis
         if (props.waitForNavigation) {
             await page.waitForNavigation()
         }
+
         const axePuppeteer = new AxePuppeteer(page)
-
-        if (props.job.locale !== "en") {
-            axePuppeteer.configure({locale: additionalLocales[props.job.locale]})
-        }
-
         const results = await axePuppeteer.analyze();
+
         return formatWebpageResults(props.path, results)
     } catch (e) {
         if (
@@ -84,7 +73,8 @@ async function scanWebpage(webpageScanProperties: WebpageScanProperties): Promis
         Logger.error(e)
 
         if (props.retries > 0) {
-            Logger.info(`Retrying to scan ${url}, ${props.retries - 1} remaining retries`)
+            props.retries -= 1
+            Logger.info(`Retrying to scan ${url}, ${props.retries} remaining retries`)
             if (e instanceof TimeoutError) props.navigationTimeoutMs += 10e3
             return scanWebpage(props)
         }

@@ -8,15 +8,27 @@ import ch.barrierelos.backend.model.scanner.ScanJob
 import java.sql.Timestamp
 
 
-public fun WebsiteMessage.toScanJobEntity(): ScanJobEntity
+public fun WebsiteMessage.toScanJob(): ScanJob
 {
-  return ScanJobEntity(
+  return ScanJob(
     modelVersion = Scanner.MODEL_VERSION,
     locale = this.locale ?: Scanner.DEFAULT_LOCALE,
     websiteBaseUrl = this.website,
     webpagePaths = this.webpages,
-    modified = Timestamp(System.currentTimeMillis()),
-    created = Timestamp(System.currentTimeMillis()),
+    modified = 0,
+    created = 0,
+  )
+}
+
+public fun ScanJob.toEntity(): ScanJobEntity
+{
+  return ScanJobEntity(
+    modelVersion = Scanner.MODEL_VERSION,
+    locale = this.locale,
+    websiteBaseUrl = this.websiteBaseUrl,
+    webpagePaths = this.webpagePaths,
+    modified = Timestamp(this.modified),
+    created = Timestamp(this.created),
   )
 }
 

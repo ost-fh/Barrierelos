@@ -10,14 +10,14 @@ import java.sql.Timestamp
 public fun WebsiteResultMessage.toEntity(scanJobEntity: ScanJobEntity?): WebsiteResultEntity
 {
   return WebsiteResultEntity(
-    modelVersion = modelVersion,
+    modelVersion = this.modelVersion,
     scanJob = scanJobEntity,
-    website = website,
-    scanTimestamp = Timestamp(scanTimestamp.toEpochMilliseconds()),
-    scanStatus = scanStatus,
-    errorMessage = errorMessage,
-    modified = Timestamp(System.currentTimeMillis()),
-    created = Timestamp(System.currentTimeMillis()),
+    website = this.website,
+    scanTimestamp = Timestamp(this.scanTimestamp.toEpochMilliseconds()),
+    scanStatus = this.scanStatus,
+    errorMessage = this.errorMessage,
+    modified = Timestamp(0),
+    created = Timestamp(0),
   )
 }
 

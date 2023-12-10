@@ -4,7 +4,7 @@ import ch.barrierelos.backend.constants.Queueing
 import ch.barrierelos.backend.converter.scanner.toEntity
 import ch.barrierelos.backend.converter.scanner.toMessage
 import ch.barrierelos.backend.converter.scanner.toModel
-import ch.barrierelos.backend.converter.scanner.toScanJobEntity
+import ch.barrierelos.backend.converter.scanner.toScanJob
 import ch.barrierelos.backend.entity.scanner.ScanJobEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
@@ -51,7 +51,7 @@ public class WebsiteService(private val queue: RabbitTemplate)
     if(website.webpages.any { !it.startsWith("/") })
       throw IllegalArgumentException("webpagePaths must start with a slash")
 
-    val scanJobEntity = website.toScanJobEntity()
+    val scanJobEntity = website.toScanJob().toEntity()
     val scanJobMessage = this.scanJobRepository.save(scanJobEntity).toModel().toMessage()
 
     this.queue.send(Queueing.QUEUE_SCAN_JOB, scanJobMessage.toJson())

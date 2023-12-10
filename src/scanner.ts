@@ -1,4 +1,4 @@
-import puppeteer, {Browser, TimeoutError} from "puppeteer";
+import puppeteer, {Browser, Page, TimeoutError} from "puppeteer";
 import {AxePuppeteer} from "@axe-core/puppeteer";
 import {formatFailedWebpageResult, formatWebpageResults, formatWebsiteResults} from "./formatter.js";
 import {ScanJob, WebpageResult, WebsiteResult} from "./model.js";
@@ -49,7 +49,7 @@ async function scanWebpage(webpageScanProperties: WebpageScanProperties): Promis
     const url = props.job.websiteBaseUrl + props.path
 
     try {
-        await navigateToUrl()
+        await navigateToUrl(page, url)
         // This prevents problems with JS redirects
         if (props.waitForNavigation) {
             await page.waitForNavigation()
@@ -81,24 +81,24 @@ async function scanWebpage(webpageScanProperties: WebpageScanProperties): Promis
 
         return formatFailedWebpageResult(props.path, e)
     }
+}
 
-    async function navigateToUrl() {
-        try {
-            await page.goto(url, {waitUntil: "networkidle0"})
-        } catch (e) {
-            if (e instanceof TimeoutError) {
-                // Stop long / infinitely loading pages and continue processing with what's already been loaded
-                Logger.info(`Terminating loading and continuing processing ${url} `)
-                await page.evaluate(() => {
-                    window.stop()
-                })
-                // Wait for frame to be ready because there is no callback for that
-                await new Promise((resolve) => {
-                    setTimeout(resolve, 3e3)
-                })
-                return
-            }
-            throw e
+async function navigateToUrl(page: Page, url: string) {
+    try {
+        await page.goto(url, {waitUntil: "networkidle0"})
+    } catch (e) {
+        if (e instanceof TimeoutError) {
+            // Stop long / infinitely loading pages and continue processing with what's already been loaded
+            Logger.info(`Terminating loading and continuing processing ${url} `)
+            await page.evaluate(() => {
+                window.stop()
+            })
+            // Wait for frame to be ready because there is no callback for that
+            await new Promise((resolve) => {
+                setTimeout(resolve, 3e3)
+            })
+            return
         }
+        throw e
     }
 }

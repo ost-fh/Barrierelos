@@ -10,6 +10,7 @@ default:
       - .gradle/caches
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
+    - ./gradlew clean
 
 workflow:
   rules:
@@ -37,3 +38,7 @@ check:
   needs: [ ]
   script:
     - ./gradlew check
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml

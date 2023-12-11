@@ -38,6 +38,7 @@ check:
   needs: [ ]
   script:
     - ./gradlew check
+  coverage: '/    - Line Coverage: ([0-9.]+)%/'
   artifacts:
     when: always
     reports:

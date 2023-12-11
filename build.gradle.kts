@@ -7,6 +7,7 @@ plugins {
   kotlin("plugin.spring") version "1.8.22"
   id("org.springframework.boot") version "3.1.5"
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
+  id("org.barfuin.gradle.jacocolog") version "3.1.0"
 }
 
 group = "ch.barrierelos"
@@ -78,6 +79,11 @@ tasks {
 
   test {
     useJUnitPlatform()
+    finalizedBy(jacocoTestReport)
+  }
+
+  jacocoTestReport {
+    dependsOn(test)
   }
 }
 

@@ -1,5 +1,8 @@
 # Barrierelos Backend
 
+[![pipeline status](https://gitlab.ost.ch/barrierelos/backend/badges/main/pipeline.svg)](https://gitlab.ost.ch/barrierelos/backend/-/commits/main)
+[![coverage report](https://gitlab.ost.ch/barrierelos/backend/badges/main/coverage.svg)](https://gitlab.ost.ch/barrierelos/backend/-/commits/main)
+
 ## Documentation
 
 ### OpenAPI

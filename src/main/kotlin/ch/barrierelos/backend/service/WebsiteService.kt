@@ -267,7 +267,7 @@ public class WebsiteService
 
   private fun throwIfNoValidDomain(website: Website)
   {
-    if(!website.domain.matches("^(((?!-))(xn--|_)?[a-z0-9-]{0,61}[a-z0-9]{1,1}\\.)*(xn--)?([a-z0-9][a-z0-9\\-]{0,60}|[a-z0-9-]{1,30}\\.[a-z]{2,})\$".toRegex()))
+    if(!website.domain.matches("^[0-9\\p{L}][0-9\\p{L}-\\.]{1,61}[0-9\\p{L}]\\.[0-9\\p{L}][\\p{L}-]*[0-9\\p{L}]+\$".toRegex()))
     {
       throw InvalidDomainException("Domain is not valid.")
     }

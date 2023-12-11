@@ -12,7 +12,7 @@ public data class Website
   public var domain: String,
   public var url: String,
   public var category: CategoryEnum,
-  public var status: StatusEnum,
+  public var status: StatusEnum = StatusEnum.PENDING_INITIAL,
   public var tags: MutableSet<WebsiteTag> = mutableSetOf(),
   public var webpageCount: Int,
   public var modified: Long = System.currentTimeMillis(),

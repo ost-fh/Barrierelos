@@ -52,3 +52,13 @@ public fun WebsiteEntity.toModel(website: Website): Website
     created = this@toModel.created.time
   }
 }
+
+public fun Collection<Website>.toEntities(): MutableSet<WebsiteEntity>
+{
+  return this.map { website -> website.toEntity() }.toMutableSet()
+}
+
+public fun Collection<WebsiteEntity>.toModels(): MutableSet<Website>
+{
+  return this.map { website -> website.toModel() }.toMutableSet()
+}

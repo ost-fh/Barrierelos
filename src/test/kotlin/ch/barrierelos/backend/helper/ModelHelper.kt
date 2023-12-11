@@ -47,3 +47,13 @@ fun createWebsiteModel(userId: Long = 0, websiteId: Long = 0) = Website(
   modified = 5000,
   created = 5000,
 )
+
+fun createWebpageModel(userId: Long = 0, websiteId: Long = 0) = Webpage(
+  websiteId = websiteId,
+  userId = userId,
+  path = "/vbs/infos",
+  url = "https://admin.ch/vbs/infos",
+  status = StatusEnum.PENDING_INITIAL,
+  modified = 5000,
+  created = 5000,
+)

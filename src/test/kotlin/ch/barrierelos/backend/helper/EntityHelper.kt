@@ -47,3 +47,13 @@ fun createWebsiteEntity(userFk: Long = 0, websiteFk: Long = 0) = WebsiteEntity(
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
+
+fun createWebpageEntity(userFk: Long = 0, websiteFk: Long = 0) = WebpageEntity(
+  websiteFk = websiteFk,
+  userFk = userFk,
+  path = "/vbs/infos",
+  url = "https://admin.ch/vbs/infos",
+  status = StatusEnum.PENDING_INITIAL,
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)

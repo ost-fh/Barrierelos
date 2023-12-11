@@ -82,6 +82,7 @@ class EntityTests
       val actual = createWebsiteTagEntity()
 
       assertEquals(expected.websiteTagId, actual.websiteTagId)
+      assertEquals(expected.websiteFk, actual.websiteFk)
       assertEquals(expected.userFk, actual.userFk)
       assertEquals(expected.tag.tagId, actual.tag.tagId)
       assertEquals(expected.tag.name, actual.tag.name)
@@ -109,6 +110,29 @@ class EntityTests
       assertEquals(expected.category, actual.category)
       assertEquals(expected.status, actual.status)
       assertEquals(expected.tags.size, actual.tags.size)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+  }
+
+  @Nested
+  inner class WebpageTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createWebpageEntity()
+
+      // then
+      val actual = createWebpageEntity()
+
+      assertEquals(expected.webpageId, actual.webpageId)
+      assertEquals(expected.websiteFk, actual.websiteFk)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.path, actual.path)
+      assertEquals(expected.url, actual.url)
+      assertEquals(expected.status, actual.status)
       assertEquals(expected.modified, actual.modified)
       assertEquals(expected.created, actual.created)
     }

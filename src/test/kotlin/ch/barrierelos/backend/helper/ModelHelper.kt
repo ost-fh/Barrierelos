@@ -43,7 +43,7 @@ fun createWebsiteModel(userId: Long = 0, websiteId: Long = 0) = Website(
   category = CategoryEnum.GOVERNMENT_FEDERAL,
   status = StatusEnum.PENDING_INITIAL,
   tags = mutableSetOf(createWebsiteTagModel(userId, websiteId)),
-  webpageCount = 10,
+  webpageCount = 0,
   modified = 5000,
   created = 5000,
 )

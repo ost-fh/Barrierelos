@@ -11,14 +11,12 @@ import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.helper.*
 import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.model.User
+import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.*
 import ch.barrierelos.backend.security.Security
-import ch.barrierelos.backend.service.CredentialService
-import ch.barrierelos.backend.service.TagService
-import ch.barrierelos.backend.service.UserService
-import ch.barrierelos.backend.service.WebsiteService
+import ch.barrierelos.backend.service.*
 import io.kotest.matchers.collections.*
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.optional.shouldBeEmpty
@@ -47,6 +45,8 @@ class ServiceTests
   lateinit var tagService: TagService
   @Autowired
   lateinit var websiteService: WebsiteService
+  @Autowired
+  lateinit var webpageService: WebpageService
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -58,6 +58,8 @@ class ServiceTests
   lateinit var websiteTagRepository: WebsiteTagRepository
   @Autowired
   lateinit var websiteRepository: WebsiteRepository
+  @Autowired
+  lateinit var webpageRepository: WebpageRepository
 
   lateinit var admin: User
   lateinit var moderator: User
@@ -117,6 +119,7 @@ class ServiceTests
   {
     userRepository.deleteAll()
     credentialRepository.deleteAll()
+    webpageRepository.deleteAll()
     websiteTagRepository.deleteAll()
     websiteRepository.deleteAll()
     tagRepository.deleteAll()
@@ -652,10 +655,12 @@ class ServiceTests
       fun `updates credential, given admin user`()
       {
         // when
-        val expected = credentialService.addCredential(createCredentialModel().apply { userId = 10000 })
-        expected.password = "password2"
-        expected.issuer = "issuer2"
-        expected.subject = "subject2"
+        val expected = credentialService.addCredential(createCredentialModel().apply {
+          userId = 10000
+          password = "password2"
+          issuer = "issuer2"
+          subject = "subject2"
+        })
 
         // then
         val actual = credentialService.updateCredential(expected.copy())
@@ -863,12 +868,6 @@ class ServiceTests
   @Nested
   inner class TagServiceTests
   {
-    @BeforeEach
-    fun beforeEach()
-    {
-      tagRepository.deleteAll()
-    }
-
     @Nested
     inner class AddTagTests
     {
@@ -1113,7 +1112,7 @@ class ServiceTests
     {
       @Test
       @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
-      fun `adds admin website, given admin account`()
+      fun `adds website, given admin account`()
       {
         // when
         val expected = createWebsiteModel(1, 0)
@@ -1148,7 +1147,7 @@ class ServiceTests
 
       @Test
       @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
-      fun `cannot add admin website, given wrong account`()
+      fun `cannot add website, given wrong account`()
       {
         // when
         val website = createWebsiteModel()
@@ -1160,7 +1159,7 @@ class ServiceTests
       }
 
       @Test
-      fun `cannot add admin website, given no account`()
+      fun `cannot add website, given no account`()
       {
         // when
         val website = createWebsiteModel()
@@ -1225,11 +1224,11 @@ class ServiceTests
         }
 
         assertThrows(InvalidDomainException::class.java) {
-          websiteService.addWebsite(websiteEmail)
+          websiteService.addWebsite(websiteNoToplevel)
         }
 
         assertThrows(InvalidDomainException::class.java) {
-          websiteService.addWebsite(websiteEmail)
+          websiteService.addWebsite(websiteSpecialCharacter)
         }
       }
 
@@ -1585,6 +1584,463 @@ class ServiceTests
       {
         assertThrows(NoSuchElementException::class.java) {
           websiteService.deleteWebsite(5000000)
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class WebpageServiceTests
+  {
+    @Nested
+    inner class AddWebpageTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `adds webpage, given admin account`()
+      {
+        // when
+        val expected = createWebpageModel(1, 0)
+
+        // then
+        val actual = webpageService.addWebpage(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertNotEquals(expected.id, actual.id)
+        assertEquals(expected.userId, actual.userId)
+        assertEquals(expected.path, actual.path)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.status, actual.status)
+        assertNotEquals(expected.modified, actual.modified)
+        assertNotEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage, given wrong account`()
+      {
+        // when
+        val webpage = createWebpageModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageService.addWebpage(webpage)
+        }
+      }
+
+      @Test
+      fun `cannot add webpage, given no account`()
+      {
+        // when
+        val webpage = createWebpageModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageService.addWebpage(webpage)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage, when path already exists`()
+      {
+        // when
+        val webpage = createWebpageModel()
+        webpageService.addWebpage(webpage)
+
+        // then
+        assertThrows(AlreadyExistsException::class.java) {
+          webpageService.addWebpage(webpage)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage, when invalid path`()
+      {
+        // when
+        val webpageEmail = createWebpageModel()
+        webpageEmail.path = "email@barrierelos.ch"
+
+        val webpageNoToplevel = createWebpageModel()
+        webpageNoToplevel.path = "barrierelos"
+
+        val webpageSpecialCharacter = createWebpageModel()
+        webpageSpecialCharacter.path = "barrierelos?ch"
+
+        // then
+        assertThrows(InvalidPathException::class.java) {
+          webpageService.addWebpage(webpageEmail)
+        }
+
+        assertThrows(InvalidPathException::class.java) {
+          webpageService.addWebpage(webpageNoToplevel)
+        }
+
+        assertThrows(InvalidPathException::class.java) {
+          webpageService.addWebpage(webpageSpecialCharacter)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage, when invalid url`()
+      {
+        // when
+        val webpage = createWebpageModel()
+        webpage.path = "/barrierelos"
+        webpage.url = "https://barrierelos.ch/test"
+
+        // then
+        assertThrows(InvalidUrlException::class.java) {
+          webpageService.addWebpage(webpage)
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateWebpageTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `updates webpage, given admin account`()
+      {
+        // when
+        val expected = webpageRepository.save(createWebpageEntity()).toModel()
+        expected.path = "/test"
+        expected.url = "https://barrierelos.ch/test"
+        expected.status = StatusEnum.PENDING_RESCAN
+
+        // then
+        val actual = webpageService.updateWebpage(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.path, actual.path)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.status, actual.status)
+        assertNotEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage, given contributor account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageService.updateWebpage(webpage)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage, given viewer account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageService.updateWebpage(webpage)
+        }
+      }
+
+      @Test
+      fun `cannot update webpage, given no account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageService.updateWebpage(webpage)
+        }
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage, when illegally modified, given moderator account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity().also {
+          it.status = StatusEnum.READY
+        }).toModel()
+        webpage.path = "/newpath"
+
+        // then
+        assertThrows(IllegalArgumentException::class.java) {
+          webpageService.updateWebpage(webpage)
+        }
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot change status of webpage, when current status is pending, given moderator account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity().also {
+          it.status = StatusEnum.PENDING_INITIAL
+        }).toModel()
+        webpage.status = StatusEnum.READY
+
+        // then
+        assertThrows(IllegalArgumentException::class.java) {
+          webpageService.updateWebpage(webpage)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage, when webpage not exists`()
+      {
+        // when
+        val webpage = createWebpageModel()
+
+        // then
+        assertThrows(NoSuchElementException::class.java) {
+          webpageService.updateWebpage(webpage)
+        }
+      }
+    }
+
+    @Nested
+    inner class GetWebpagesTests
+    {
+      @Test
+      fun `gets webpages`()
+      {
+        // given
+        webpageRepository.save(createWebpageEntity().apply {
+          path = "/one"
+          url = "https://barrierelos.ch/one"
+        })
+        webpageRepository.save(createWebpageEntity().apply {
+          path = "/two"
+          url = "https://barrierelos.ch/two"
+        })
+
+        // when
+        val webpages = webpageService.getWebpages().content
+
+        // then
+        webpages.shouldNotBeEmpty()
+        webpages.shouldHaveSize(2)
+        assertTrue(webpages.any { it.path == "/one" })
+        assertTrue(webpages.any { it.path == "/two" })
+      }
+
+      @Test
+      fun `gets webpages with headers, when no parameters`()
+      {
+        // given
+        webpageRepository.save(createWebpageEntity().apply {
+          path = "/one"
+          url = "https://barrierelos.ch/one"
+        })
+        webpageRepository.save(createWebpageEntity().apply {
+          path = "/two"
+          url = "https://barrierelos.ch/two"
+        })
+
+        // when
+        val webpages = webpageService.getWebpages()
+
+        // then
+        webpages.page.shouldBe(0)
+        webpages.size.shouldBe(2)
+        webpages.totalElements.shouldBe(2)
+        webpages.totalPages.shouldBe(1)
+        webpages.count.shouldBe(2)
+        webpages.lastModified.shouldBeGreaterThan(0)
+        webpages.content.shouldHaveSize(2)
+      }
+
+      @Test
+      fun `gets webpages with headers, when with parameters`()
+      {
+        // given
+        webpageRepository.save(createWebpageEntity().apply {
+          path = "/one"
+          url = "https://barrierelos.ch/one"
+        })
+        webpageRepository.save(createWebpageEntity().apply {
+          path = "/two"
+          url = "https://barrierelos.ch/two"
+        })
+
+        // when
+        val webpages = webpageService.getWebpages(DefaultParameters(
+          page = 1,
+          size = 1,
+          sort = "path",
+          order = OrderEnum.ASC
+        ))
+
+        // then
+        webpages.page.shouldBe(1)
+        webpages.size.shouldBe(1)
+        webpages.totalElements.shouldBe(2)
+        webpages.totalPages.shouldBe(2)
+        webpages.count.shouldBe(2)
+        webpages.lastModified.shouldBeGreaterThan(0)
+        webpages.content.shouldHaveSize(1)
+      }
+    }
+
+    @Nested
+    inner class GetWebpageTests
+    {
+      @Test
+      fun `gets webpage`()
+      {
+        // when
+        val expected = webpageRepository.save(createWebpageEntity()).toModel()
+
+        // then
+        val actual = webpageService.getWebpage(expected.id)
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `cannot get webpage, when webpage not exists`()
+      {
+        assertThrows(NoSuchElementException::class.java) {
+          webpageService.getWebpage(5000000)
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteWebpageTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `deletes webpage, given admin account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+        val webpagesBefore = webpageService.getWebpages().content
+
+        // then
+        assertDoesNotThrow {
+          webpageService.deleteWebpage(webpage.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          webpageService.getWebpage(webpage.id)
+        }
+
+        val webpagesAfter = webpageService.getWebpages().content
+
+        webpagesBefore.shouldContain(webpage)
+        webpagesAfter.shouldNotContain(webpage)
+        webpagesBefore.shouldContainAll(webpagesAfter)
+        webpagesAfter.shouldNotContainAll(webpagesBefore)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `deletes webpage, given moderator account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+        val webpagesBefore = webpageService.getWebpages().content
+
+        // then
+        assertDoesNotThrow {
+          webpageService.deleteWebpage(webpage.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          webpageService.getWebpage(webpage.id)
+        }
+
+        val webpagesAfter = webpageService.getWebpages().content
+
+        webpagesBefore.shouldContain(webpage)
+        webpagesAfter.shouldNotContain(webpage)
+        webpagesBefore.shouldContainAll(webpagesAfter)
+        webpagesAfter.shouldNotContainAll(webpagesBefore)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage, given correct contributor account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity().apply {
+          userFk = contributor.id
+        }).toModel()
+        val webpagesBefore = webpageService.getWebpages().content
+
+        // then
+        assertDoesNotThrow {
+          webpageService.deleteWebpage(webpage.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          webpageService.getWebpage(webpage.id)
+        }
+
+        val webpagesAfter = webpageService.getWebpages().content
+
+        webpagesBefore.shouldContain(webpage)
+        webpagesAfter.shouldNotContain(webpage)
+        webpagesBefore.shouldContainAll(webpagesAfter)
+        webpagesAfter.shouldNotContainAll(webpagesBefore)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage, given wrong contributor account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity().apply {
+          userFk = admin.id
+        }).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageService.deleteWebpage(webpage.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage, given viewer account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageService.deleteWebpage(webpage.id)
+        }
+      }
+
+      @Test
+      fun `cannot delete webpage, given no account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageService.deleteWebpage(webpage.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage, when webpage not exists`()
+      {
+        assertThrows(NoSuchElementException::class.java) {
+          webpageService.deleteWebpage(5000000)
         }
       }
     }

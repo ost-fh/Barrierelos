@@ -2,14 +2,17 @@
   "General": {
     "barrierelosScore": "Barrierelos-Score"
   },
+  "Navbar": {
+    "languageSelectionLabel": "Language Selection"
+  },
   "WebsitePage": {
     "websiteStatusLabel": "Status",
     "tabsAriaLabel": "Tabs",
     "tabOverviewLabel": "Overview",
-    "tabRulesLabel": "Rules",
+    "tabRulesLabel": "Tested Rules",
     "tabScanInfosLabel": "Scan Infos",
     "Overview": {
-      "WepbagesHeader": "Webpages",
+      "WebpagesHeader": "Webpages",
       "WebpagesTableAriaLabel": "Webpages Table",
       "WebpageUrl": "URL",
       "WebpageWeight": "Weight",

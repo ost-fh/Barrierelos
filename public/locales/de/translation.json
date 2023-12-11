@@ -1,0 +1,26 @@
+{
+  "General": {
+    "barrierelosScore": "Barrierelos-Score"
+  },
+  "Navbar": {
+    "languageSelectionLabel": "Sprachauswahl"
+  },
+  "WebsitePage": {
+    "websiteStatusLabel": "Status",
+    "tabsAriaLabel": "Tabs",
+    "tabOverviewLabel": "Übersicht",
+    "tabRulesLabel": "Geprüfte Regeln",
+    "tabScanInfosLabel": "Scan Infos",
+    "Overview": {
+      "WebpagesHeader": "Webpages",
+      "WebpagesTableAriaLabel": "Webpages Tabelle",
+      "WebpageUrl": "URL",
+      "WebpageWeight": "Gewichtung",
+      "WebpageWeightTooltip": "Bestimmt den Einfluss dieser Webpage auf den Website Score. Die Gewichtung basiert auf der Anzahl HTML Elemente auf der Webpage die relevant für die Barrierefreiheit sind."
+    },
+    "Rules": {
+    },
+    "ScanInfos": {
+    }
+  }
+}

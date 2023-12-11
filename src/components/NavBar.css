@@ -25,3 +25,12 @@ nav li a:hover {
 nav .active {
     background-color: #355e62;
 }
+
+.navbar .languageSelection {
+    float: right;
+}
+
+.navbar .langBtn:disabled {
+    color: #1976d2;
+    text-decoration: underline;
+}

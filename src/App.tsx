@@ -37,11 +37,13 @@ function App() {
         <header>
           <NavBar/>
         </header>
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
-          <Route path="*" element={<NotFound/>}/>
-        </Routes>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
+            <Route path="*" element={<NotFound/>}/>
+          </Routes>
+        </main>
       </ThemeProvider>
     </>
   )

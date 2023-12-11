@@ -652,6 +652,12 @@
               "$ref": "#/components/schemas/HttpRange"
             }
           },
+          "connection": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "ifModifiedSince": {
             "type": "integer",
             "format": "int64"
@@ -662,12 +668,6 @@
           "contentLength": {
             "type": "integer",
             "format": "int64"
-          },
-          "connection": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           "empty": {
             "type": "boolean"
@@ -1198,6 +1198,12 @@
                   "$ref": "#/components/schemas/HttpRange"
                 }
               },
+              "connection": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "ifModifiedSince": {
                 "type": "integer",
                 "format": "int64"
@@ -1208,12 +1214,6 @@
               "contentLength": {
                 "type": "integer",
                 "format": "int64"
-              },
-              "connection": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
               },
               "empty": {
                 "type": "boolean"
@@ -2151,6 +2151,7 @@
       },
       "Rule": {
         "required": [
+          "axeUrl",
           "checks",
           "code",
           "created",
@@ -2169,6 +2170,12 @@
           },
           "description": {
             "type": "string"
+          },
+          "axeUrl": {
+            "type": "string"
+          },
+          "wcagReferences": {
+            "$ref": "#/components/schemas/WcagReferences"
           },
           "checks": {
             "uniqueItems": true,
@@ -2230,6 +2237,34 @@
           "created": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "WcagReferences": {
+        "required": [
+          "criteria",
+          "id",
+          "level",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "version": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string"
+          },
+          "criteria": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -2538,6 +2573,7 @@
           "id",
           "modelVersion",
           "modified",
+          "scanJob",
           "scanStatus",
           "scanTimestamp",
           "website"

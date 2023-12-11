@@ -6,6 +6,7 @@ import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.TAG
 import ch.barrierelos.backend.constants.Endpoint.USER
+import ch.barrierelos.backend.constants.Endpoint.WEBPAGE
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE
 import ch.barrierelos.backend.constants.Endpoint.WEBSITES
 import ch.barrierelos.backend.enums.RoleEnum
@@ -42,6 +43,7 @@ public class SecurityConfiguration
       .authorizeHttpRequests { authorize ->
         authorize
           .requestMatchers("$WEBSITES/**").permitAll()
+
           .requestMatchers(HttpMethod.POST, "$USER/**").permitAll()
           .requestMatchers(HttpMethod.PUT, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers(HttpMethod.HEAD, "$USER/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
@@ -60,7 +62,14 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.GET, "$WEBSITE/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "$WEBSITE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
 
+          .requestMatchers(HttpMethod.POST, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name)
+          .requestMatchers(HttpMethod.HEAD, "$WEBPAGE/**").permitAll()
+          .requestMatchers(HttpMethod.GET, "$WEBPAGE/**").permitAll()
+          .requestMatchers(HttpMethod.DELETE, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+
           .requestMatchers("${Endpoint.STATISTICS}/**").permitAll()
+
           .requestMatchers(HttpMethod.PUT, "$CREDENTIAL/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()
           .requestMatchers("$DOCUMENTATION_OPENAPI.yaml").permitAll()

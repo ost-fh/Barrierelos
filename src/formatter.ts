@@ -7,6 +7,8 @@ import {
     Rule,
     ScanJob,
     ScanStatus,
+    WcagLevel,
+    WcagReferences,
     WebpageResult,
     WebsiteResult
 } from "./model.js";
@@ -114,10 +116,48 @@ function formatRuleOccurrences(axeRuleOccurrences: [string, AxeRule[]]): Rule {
 
     const checks = Array.from(checkOccurrencesMap.entries(), formatCheckOccurrences)
 
+    const tags = occurrences[0].rule.tags
+    const wcagReference = extractWcagReference(tags)
+
     return {
         id,
         description: occurrences[0].rule.description,
+        axeUrl: occurrences[0].rule.helpUrl,
+        wcagReferences: wcagReference,
         checks
+    }
+}
+
+function extractWcagReference(tags: string[]): WcagReferences | undefined {
+    let wcagVersion: string | undefined
+    let wcagLevel: WcagLevel | undefined
+    const wcagCriteria: string[] = []
+
+    // AxeCore defines that a WCAG criterion id can only consist of three numbers (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#axe-core-tags)
+    // Even though this mean that some WCAG criteria cannot be represented (e.g. 1.4.10 -> Axe Tag: 'wcag1410'
+    const tagWcagRegExp = /wcag(?<criterion>[0-9]{3})?((?<version>[0-9]{1,2})(?<level>a{1,3}))?/;
+    tags.forEach((tag) => {
+        const match = tag.match(tagWcagRegExp)
+        if (match?.groups === undefined) return
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (match.groups.criterion === undefined) {
+            wcagVersion = match.groups.version.split("").join(".")
+            wcagLevel = match.groups.level.toUpperCase() as WcagLevel
+        } else {
+            wcagCriteria.push(match.groups.criterion.split("").join("."))
+        }
+    })
+
+    if (wcagCriteria.length === 0) return undefined
+    if (wcagLevel === undefined) throw new Error("Tags contained WCAG criterion but no WCAG level")
+    if (wcagVersion === undefined) throw new Error("Tags contained WCAG criterion but no WCAG version")
+    if (wcagVersion.length === 1) wcagVersion = wcagVersion + ".0"
+
+    return {
+        version: wcagVersion,
+        level: wcagLevel as WcagLevel,
+        criteria: wcagCriteria,
     }
 }
 

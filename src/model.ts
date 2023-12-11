@@ -38,8 +38,18 @@ enum ScanStatus {
 interface Rule {
     id: string
     description: string
+    axeUrl: string
+    wcagReferences?: WcagReferences
     checks: Check[]
 }
+
+interface WcagReferences {
+    version: string,
+    level: WcagLevel
+    criteria: string[]
+}
+
+type WcagLevel = "A" | "AA" | "AAA"
 
 interface Check {
     id: string
@@ -75,6 +85,8 @@ export {
     ScanStatus,
     WebpageResult,
     Rule,
+    WcagReferences,
+    WcagLevel,
     Check,
     CheckType,
     Impact,

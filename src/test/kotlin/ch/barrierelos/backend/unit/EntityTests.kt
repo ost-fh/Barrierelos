@@ -110,6 +110,7 @@ class EntityTests
       assertEquals(expected.category, actual.category)
       assertEquals(expected.status, actual.status)
       assertEquals(expected.tags.size, actual.tags.size)
+      assertEquals(expected.deleted, actual.deleted)
       assertEquals(expected.modified, actual.modified)
       assertEquals(expected.created, actual.created)
     }
@@ -133,6 +134,7 @@ class EntityTests
       assertEquals(expected.path, actual.path)
       assertEquals(expected.url, actual.url)
       assertEquals(expected.status, actual.status)
+      assertEquals(expected.deleted, actual.deleted)
       assertEquals(expected.modified, actual.modified)
       assertEquals(expected.created, actual.created)
     }

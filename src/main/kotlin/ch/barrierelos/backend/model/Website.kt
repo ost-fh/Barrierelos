@@ -15,6 +15,7 @@ public data class Website
   public var status: StatusEnum = StatusEnum.PENDING_INITIAL,
   public var tags: MutableSet<WebsiteTag> = mutableSetOf(),
   public var webpageCount: Int,
+  public var deleted: Boolean = false,
   public var modified: Long = System.currentTimeMillis(),
   public var created: Long = System.currentTimeMillis(),
 )

@@ -1130,6 +1130,7 @@ class ServiceTests
         assertEquals(expected.category, actual.category)
         assertEquals(expected.status, actual.status)
         assertEquals(expected.tags.size, actual.tags.size)
+        assertEquals(expected.deleted, actual.deleted)
         assertNotEquals(expected.modified, actual.modified)
         assertNotEquals(expected.created, actual.created)
 
@@ -1140,6 +1141,7 @@ class ServiceTests
         assertEquals(expectedTag.userId, actualTag.userId)
         assertEquals(expectedTag.tag.id, actualTag.tag.id)
         assertEquals(expectedTag.tag.name, actualTag.tag.name)
+        assertEquals(expected.deleted, actual.deleted)
         assertEquals(expectedTag.modified, actualTag.modified)
         assertEquals(expectedTag.created, actualTag.created)
       }
@@ -1273,6 +1275,7 @@ class ServiceTests
         assertEquals(expected.category, actual.category)
         assertEquals(expected.status, actual.status)
         assertEquals(expected.tags, actual.tags)
+        assertEquals(expected.deleted, actual.deleted)
         assertNotEquals(expected.modified, actual.modified)
         assertEquals(expected.created, actual.created)
       }
@@ -1295,17 +1298,18 @@ class ServiceTests
         assertEquals(expected.category, actual.category)
         assertEquals(expected.status, actual.status)
         assertEquals(expected.tags, actual.tags)
+        assertEquals(expected.deleted, actual.deleted)
         assertNotEquals(expected.modified, actual.modified)
         assertEquals(expected.created, actual.created)
       }
 
       @Test
       @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot update website, given correct contributor account`()
+      fun `updates website, given correct contributor account`()
       {
         // when
         val expected = websiteRepository.save(createWebsiteEntity(contributor.id).also { it.tags.clear() }).toModel()
-        expected.status = StatusEnum.DELETED
+        expected.deleted = true
 
         // then
         val actual = websiteService.updateWebsite(expected.copy())
@@ -1317,6 +1321,7 @@ class ServiceTests
         assertEquals(expected.category, actual.category)
         assertEquals(expected.status, actual.status)
         assertEquals(expected.tags, actual.tags)
+        assertEquals(expected.deleted, actual.deleted)
         assertNotEquals(expected.modified, actual.modified)
         assertEquals(expected.created, actual.created)
       }
@@ -1327,10 +1332,10 @@ class ServiceTests
       {
         // when
         val website = websiteRepository.save(createWebsiteEntity(moderator.id).also { it.tags.clear() }).toModel()
-        website.status = StatusEnum.DELETED
+        website.deleted = true
 
         // then
-        assertThrows(IllegalArgumentException::class.java) {
+        assertThrows(NoAuthorizationException::class.java) {
           websiteService.updateWebsite(website)
         }
       }
@@ -1681,6 +1686,7 @@ class ServiceTests
         assertEquals(expected.path, actual.path)
         assertEquals(expected.url, actual.url)
         assertEquals(expected.status, actual.status)
+        assertEquals(expected.deleted, actual.deleted)
         assertNotEquals(expected.modified, actual.modified)
         assertNotEquals(expected.created, actual.created)
       }
@@ -1789,6 +1795,7 @@ class ServiceTests
         assertEquals(expected.path, actual.path)
         assertEquals(expected.url, actual.url)
         assertEquals(expected.status, actual.status)
+        assertEquals(expected.deleted, actual.deleted)
         assertNotEquals(expected.modified, actual.modified)
         assertEquals(expected.created, actual.created)
       }
@@ -1809,17 +1816,18 @@ class ServiceTests
         assertEquals(expected.path, actual.path)
         assertEquals(expected.url, actual.url)
         assertEquals(expected.status, actual.status)
+        assertEquals(expected.deleted, actual.deleted)
         assertNotEquals(expected.modified, actual.modified)
         assertEquals(expected.created, actual.created)
       }
 
       @Test
       @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot update webpage, given correct contributor account`()
+      fun `updates webpage, given correct contributor account`()
       {
         // when
         val expected = webpageRepository.save(createWebpageEntity(contributor.id)).toModel()
-        expected.status = StatusEnum.DELETED
+        expected.deleted = true
 
         // then
         val actual = webpageService.updateWebpage(expected.copy())
@@ -1829,6 +1837,7 @@ class ServiceTests
         assertEquals(expected.path, actual.path)
         assertEquals(expected.url, actual.url)
         assertEquals(expected.status, actual.status)
+        assertEquals(expected.deleted, actual.deleted)
         assertNotEquals(expected.modified, actual.modified)
         assertEquals(expected.created, actual.created)
       }
@@ -1839,6 +1848,7 @@ class ServiceTests
       {
         // when
         val webpage = webpageRepository.save(createWebpageEntity(moderator.id)).toModel()
+        webpage.deleted = true
 
         // then
         assertThrows(NoAuthorizationException::class.java) {

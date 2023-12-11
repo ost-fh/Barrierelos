@@ -8,6 +8,7 @@ import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.exceptions.AlreadyExistsException
 import ch.barrierelos.backend.exceptions.InvalidPathException
 import ch.barrierelos.backend.exceptions.InvalidUrlException
+import ch.barrierelos.backend.exceptions.NoAuthorizationException
 import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
@@ -56,6 +57,11 @@ public class WebpageService
     }
     else if(Security.hasRole(RoleEnum.CONTRIBUTOR))
     {
+      if(!Security.hasId(webpage.userId))
+      {
+        throwIfDeleted(webpage)
+      }
+
       throwIfStatusIllegallyChanged(webpage, existingWebpage)
       throwIfIllegallyModified(webpage, existingWebpage)
     }
@@ -84,15 +90,21 @@ public class WebpageService
     this.webpageRepository.deleteById(webpageId)
   }
 
+  private fun throwIfDeleted(webpage: Webpage)
+  {
+    if(webpage.deleted)
+    {
+      throw NoAuthorizationException()
+    }
+  }
+
   private fun throwIfIllegallyModified(webpage: Webpage, existingWebpage: Webpage)
   {
     if((webpage.userId != existingWebpage.userId)
       || (webpage.path != existingWebpage.path)
       || (webpage.url != existingWebpage.url)
       || (webpage.created != existingWebpage.created)
-      || (webpage.status == StatusEnum.PENDING_INITIAL)
-      || (webpage.status == StatusEnum.PENDING_RESCAN)
-      || (webpage.status == StatusEnum.READY))
+      || (webpage.status != existingWebpage.status && (webpage.status == StatusEnum.PENDING_INITIAL || webpage.status == StatusEnum.PENDING_RESCAN || webpage.status == StatusEnum.READY)))
     {
       throw IllegalArgumentException("Webpage illegally modified.")
     }

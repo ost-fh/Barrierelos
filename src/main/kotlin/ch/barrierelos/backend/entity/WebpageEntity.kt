@@ -18,6 +18,7 @@ public class WebpageEntity
   public var url: String,
   @Enumerated(EnumType.STRING)
   public var status: StatusEnum = StatusEnum.PENDING_INITIAL,
+  public var deleted: Boolean = false,
   public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
   public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

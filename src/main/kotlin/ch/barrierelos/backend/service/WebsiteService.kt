@@ -14,6 +14,7 @@ import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
 import ch.barrierelos.backend.exceptions.AlreadyExistsException
 import ch.barrierelos.backend.exceptions.InvalidDomainException
 import ch.barrierelos.backend.exceptions.InvalidUrlException
+import ch.barrierelos.backend.exceptions.NoAuthorizationException
 import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.message.scanner.WebsiteResultMessage
 import ch.barrierelos.backend.model.Website
@@ -152,10 +153,10 @@ public class WebsiteService
     {
       if(!Security.hasId(website.userId))
       {
-        throwIfStatusChangedToDeleted(website, existingWebsite)
+        throwIfDeleted(website)
       }
 
-      throwIfStatusChangedToBlocked(website, existingWebsite)
+      throwIfStatusIllegallyChanged(website, existingWebsite)
       throwIfIllegallyModified(website, existingWebsite)
       throwIfTagsIllegallyModified(website, existingWebsite)
     }
@@ -186,6 +187,14 @@ public class WebsiteService
     this.websiteTagRepository.deleteAllByWebsiteFk(websiteId)
 
     this.websiteRepository.deleteById(websiteId)
+  }
+
+  private fun throwIfDeleted(website: Website)
+  {
+    if(website.deleted)
+    {
+      throw NoAuthorizationException()
+    }
   }
 
   private fun throwIfTagsIllegallyModified(website: Website, existingWebsite: Website)
@@ -221,25 +230,15 @@ public class WebsiteService
       || (website.domain != existingWebsite.domain)
       || (website.url != existingWebsite.url)
       || (website.created != existingWebsite.created)
-      || (website.status == StatusEnum.PENDING_INITIAL)
-      || (website.status == StatusEnum.PENDING_RESCAN)
-      || (website.status == StatusEnum.READY))
+      || (website.status != existingWebsite.status && (website.status == StatusEnum.PENDING_INITIAL || website.status == StatusEnum.PENDING_RESCAN || website.status == StatusEnum.READY)))
     {
       throw IllegalArgumentException("Website illegally modified.")
     }
   }
 
-  private fun throwIfStatusChangedToBlocked(website: Website, existingWebsite: Website)
+  private fun throwIfStatusIllegallyChanged(website: Website, existingWebsite: Website)
   {
     if(website.status != existingWebsite.status && website.status == StatusEnum.BLOCKED)
-    {
-      throw IllegalArgumentException("Website illegally modified.")
-    }
-  }
-
-  private fun throwIfStatusChangedToDeleted(website: Website, existingWebsite: Website)
-  {
-    if(website.status != existingWebsite.status && website.status == StatusEnum.DELETED)
     {
       throw IllegalArgumentException("Website illegally modified.")
     }

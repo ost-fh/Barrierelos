@@ -24,6 +24,7 @@ public class WebsiteEntity
   @OneToMany(orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
   @JoinColumn(name = "websiteFk", referencedColumnName = "websiteId")
   public var tags: MutableSet<WebsiteTagEntity>,
+  public var deleted: Boolean = false,
   public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
   public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

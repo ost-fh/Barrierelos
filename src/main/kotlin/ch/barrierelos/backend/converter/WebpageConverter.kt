@@ -13,6 +13,7 @@ public fun Webpage.toEntity(): WebpageEntity
     path = this.path,
     url = this.url,
     status = this.status,
+    deleted = this.deleted,
     modified = Timestamp(this.modified),
     created = Timestamp(this.created),
   )
@@ -27,6 +28,7 @@ public fun WebpageEntity.toModel(): Webpage
     path = this.path,
     url = this.url,
     status = this.status,
+    deleted = this.deleted,
     modified = this.modified.time,
     created = this.created.time,
   )
@@ -41,6 +43,7 @@ public fun WebpageEntity.toModel(webpage: Webpage): Webpage
     path = this@toModel.path
     url = this@toModel.url
     status = this@toModel.status
+    deleted = this@toModel.deleted
     modified = this@toModel.modified.time
     created = this@toModel.created.time
   }

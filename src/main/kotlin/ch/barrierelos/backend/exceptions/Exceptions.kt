@@ -14,6 +14,9 @@ public class InvalidEmailException(message: String) : ResponseStatusException(Ht
 public class InvalidDomainException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
+public class InvalidPathException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class InvalidUrlException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)

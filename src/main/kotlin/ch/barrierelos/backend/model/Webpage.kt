@@ -1,6 +1,5 @@
 package ch.barrierelos.backend.model
 
-import ch.barrierelos.backend.enums.CategoryEnum
 import ch.barrierelos.backend.enums.StatusEnum
 import kotlinx.serialization.Serializable
 
@@ -8,12 +7,11 @@ import kotlinx.serialization.Serializable
 public data class Webpage
 (
   public var id: Long = 0,
-  public var websiteFk: Long,
+  public var websiteId: Long,
   public var userId: Long,
-  public var domain: String,
+  public var path: String,
   public var url: String,
-  public var category: CategoryEnum,
-  public var status: StatusEnum,
+  public var status: StatusEnum = StatusEnum.PENDING_INITIAL,
   public var modified: Long = System.currentTimeMillis(),
   public var created: Long = System.currentTimeMillis(),
 )

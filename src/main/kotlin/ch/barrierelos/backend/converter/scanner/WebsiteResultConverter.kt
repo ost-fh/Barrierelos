@@ -7,7 +7,7 @@ import ch.barrierelos.backend.model.scanner.WebsiteResult
 import kotlinx.datetime.Instant
 import java.sql.Timestamp
 
-public fun WebsiteResultMessage.toEntity(scanJobEntity: ScanJobEntity?): WebsiteResultEntity
+public fun WebsiteResultMessage.toEntity(scanJobEntity: ScanJobEntity): WebsiteResultEntity
 {
   return WebsiteResultEntity(
     modelVersion = this.modelVersion,
@@ -26,7 +26,7 @@ public fun WebsiteResultEntity.toModel(): WebsiteResult
   return WebsiteResult(
     id = this.websiteResultId,
     modelVersion = this.modelVersion,
-    scanJob = this.scanJob?.toModel(),
+    scanJob = this.scanJob.toModel(),
     website = this.website,
     scanTimestamp = Instant.fromEpochMilliseconds(this.scanTimestamp.time),
     scanStatus = this.scanStatus,

@@ -4,20 +4,17 @@ import ch.barrierelos.backend.entity.scanner.WebpageResultEntity
 import ch.barrierelos.backend.entity.scanner.WebsiteResultEntity
 import ch.barrierelos.backend.message.scanner.WebpageResultMessage
 import ch.barrierelos.backend.model.scanner.WebpageResult
-import java.sql.Timestamp
 
-public fun WebpageResultMessage.toEntity(websiteResult: WebsiteResultEntity, timestamp: Timestamp): WebpageResultEntity
+public fun WebpageResultMessage.toEntity(websiteResult: WebsiteResultEntity): WebpageResultEntity
 {
   val webpageResult = WebpageResultEntity(
     websiteResult = websiteResult,
     path = this.path,
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
-    modified = timestamp,
-    created = timestamp,
   )
 
-  webpageResult.rules = this.rules.map { it.toEntity(webpageResult, timestamp) }.toMutableSet()
+  webpageResult.rules = this.rules.map { it.toEntity(webpageResult) }.toMutableSet()
 
   return webpageResult
 }

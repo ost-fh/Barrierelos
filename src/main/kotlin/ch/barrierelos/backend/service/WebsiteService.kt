@@ -15,12 +15,10 @@ import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.checkIfExists
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.scanner.ScanJobRepository
+import ch.barrierelos.backend.repository.scanner.WebpageResultRepository
 import ch.barrierelos.backend.repository.scanner.WebsiteResultRepository
 import ch.barrierelos.backend.security.Security
-import ch.barrierelos.backend.util.Result
-import ch.barrierelos.backend.util.fromJson
-import ch.barrierelos.backend.util.send
-import ch.barrierelos.backend.util.toJson
+import ch.barrierelos.backend.util.*
 import jakarta.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -28,7 +26,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import kotlin.jvm.optionals.getOrDefault
 
 @Service
 public class WebsiteService(private val queue: RabbitTemplate)
@@ -43,6 +40,9 @@ public class WebsiteService(private val queue: RabbitTemplate)
 
   @Autowired
   private lateinit var websiteResultRepository: WebsiteResultRepository
+
+  @Autowired
+  private lateinit var webpageResultRepository: WebpageResultRepository
 
   public fun scanWebsite(website: WebsiteMessage)
   {
@@ -69,12 +69,9 @@ public class WebsiteService(private val queue: RabbitTemplate)
       return
     }
 
-    val scanJobEntity = this.scanJobRepository.findById(websiteResultMessage.jobId).getOrDefault(null)
-    if(scanJobEntity != null)
-    {
-      websiteResultRepository.deleteByScanJobFk(scanJobEntity.scanJobId)
-    }
+    val scanJobEntity = this.scanJobRepository.findById(websiteResultMessage.jobId).orThrow(NoSuchElementException())
     val websiteResultEntity = this.websiteResultRepository.save(websiteResultMessage.toEntity(scanJobEntity))
+    webpageResultRepository.saveAll(websiteResultMessage.webpages.map { it.toEntity(websiteResultEntity) })
 
     this.scoringService.onReceiveResult(websiteResultEntity.toModel())
   }

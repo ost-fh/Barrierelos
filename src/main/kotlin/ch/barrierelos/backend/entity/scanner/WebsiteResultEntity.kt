@@ -18,7 +18,7 @@ public class WebsiteResultEntity(
   public var errorMessage: String? = null,
   @JoinColumn(name = "scanJobFk", referencedColumnName = "scanJobId")
   @OneToOne(fetch = FetchType.EAGER)
-  public var scanJob: ScanJobEntity? = null,
+  public var scanJob: ScanJobEntity,
   public var modified: Timestamp = Timestamp(0),
   public var created: Timestamp = Timestamp(0),
 )

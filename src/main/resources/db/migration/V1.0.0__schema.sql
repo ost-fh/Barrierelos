@@ -53,6 +53,7 @@ DROP TABLE IF EXISTS "scan_job" CASCADE;
 DROP TABLE IF EXISTS "website_result" CASCADE;
 DROP TABLE IF EXISTS "webpage_result" CASCADE;
 DROP TABLE IF EXISTS "rule" CASCADE;
+DROP TABLE IF EXISTS "wcag_references" CASCADE;
 DROP TABLE IF EXISTS "check_violating_element" CASCADE;
 DROP TABLE IF EXISTS "check_incomplete_element" CASCADE;
 DROP TABLE IF EXISTS "check" CASCADE;
@@ -125,10 +126,22 @@ CREATE TABLE "rule"
   "webpage_result_fk" BIGSERIAL NOT NULL,
   "code" VARCHAR NOT NULL,
   "description" VARCHAR NOT NULL,
+  "axe_url" VARCHAR NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("rule_id"),
   FOREIGN KEY ("webpage_result_fk") REFERENCES "webpage_result" ("webpage_result_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "wcag_references"
+(
+  "wcag_references_id" BIGSERIAL,
+  "rule_fk" BIGSERIAL NOT NULL,
+  "version" VARCHAR NOT NULL,
+  "level" VARCHAR NOT NULL,
+  "criteria" VARCHAR ARRAY NOT NULL,
+  PRIMARY KEY ("wcag_references_id"),
+  FOREIGN KEY ("rule_fk") REFERENCES "rule" ("rule_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "check"

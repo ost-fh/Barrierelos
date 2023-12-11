@@ -1,19 +1,17 @@
 package ch.barrierelos.backend.converter.scanner
 
-import ch.barrierelos.backend.entity.scanner.*
-import ch.barrierelos.backend.message.scanner.*
-import ch.barrierelos.backend.model.scanner.*
-import java.sql.Timestamp
+import ch.barrierelos.backend.entity.scanner.CheckElementEntity
+import ch.barrierelos.backend.entity.scanner.ElementEntity
+import ch.barrierelos.backend.message.scanner.ElementMessage
+import ch.barrierelos.backend.model.scanner.Element
 
 
-public fun ElementMessage.toEntity(checkElement: CheckElementEntity, timestamp: Timestamp): ElementEntity
+public fun ElementMessage.toEntity(checkElement: CheckElementEntity): ElementEntity
 {
   return ElementEntity(
     checkElement = checkElement,
     target = this.target,
     html = this.html,
-    modified = timestamp,
-    created = timestamp,
   )
 }
 

@@ -24,7 +24,7 @@ public class ScoringService
     val websiteTotalCount = scorings.sumOf { it.totalCount }
     val websiteScore = scorings.sumOf { it.score * (it.totalCount / websiteTotalCount.toDouble()) }
     logger.info("Website (${websiteResult.website} score: $websiteScore")
-    scorings.forEach { logger.info("Webpage (${it.path}) score: ${it.score}") }
+    scorings.forEach { logger.info("Webpage (${it.path}) Score: ${it.score})") }
     return
   }
 }

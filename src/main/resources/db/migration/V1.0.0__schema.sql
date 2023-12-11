@@ -247,8 +247,8 @@ CREATE TABLE "website"
 (
   "website_id" BIGSERIAL,
   "user_fk" BIGSERIAL,
-  "domain" VARCHAR NOT NULL,
-  "url" VARCHAR NOT NULL,
+  "domain" VARCHAR NOT NULL UNIQUE,
+  "url" VARCHAR NOT NULL UNIQUE,
   "category" CATEGORY_ENUM NOT NULL,
   "status" STATUS_ENUM NOT NULL DEFAULT 'PENDING_INITIAL',
   "webpage_count" INTEGER NOT NULL,

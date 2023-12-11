@@ -1,6 +1,8 @@
 import {Rule, WebsiteDetails} from "../../lib/api-client";
-import {Accordion, AccordionDetails, AccordionSummary, Typography} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Chip, Typography} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {useTranslation} from "react-i18next";
+import "./WebsiteRules.css"
 
 
 interface WebsiteRulesProps {
@@ -8,6 +10,8 @@ interface WebsiteRulesProps {
 }
 
 function WebsiteRules(props: WebsiteRulesProps) {
+  const {t} = useTranslation();
+
   const websiteDetails: WebsiteDetails = props.websiteDetails
   const webpages = websiteDetails.webpages?.map(webpageDetails => {
     const rules = webpageDetails.scanResult?.rules
@@ -27,6 +31,8 @@ function WebsiteRules(props: WebsiteRulesProps) {
             id="panel1a-header"
           >
             <Typography>Webpage: {webpageDetails.webpage.url}</Typography>
+            <Chip label={`${t("General.barrierelosScore")}: ${Math.round(websiteDetails.statistics?.score ?? 0)}`}/>
+            <Chip label={`${t("General.webpageWeight")}: 10`}/>
           </AccordionSummary>
           <AccordionDetails>
             <ul>

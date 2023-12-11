@@ -1,6 +1,7 @@
 {
   "General": {
-    "barrierelosScore": "Barrierelos-Score"
+    "barrierelosScore": "Barrierelos-Score",
+    "webpageWeight": "Weight"
   },
   "Navbar": {
     "languageSelectionLabel": "Language Selection"
@@ -20,7 +21,6 @@
       "WebpagesHeader": "Webpages",
       "WebpagesTableAriaLabel": "Webpages Table",
       "WebpageUrl": "URL",
-      "WebpageWeight": "Weight",
       "WebpageWeightTooltip": "Determines the influence of this webpage on the website score. The weight is based on the number of HTML elements on the webpage that are relevant for Accessibility."
     },
     "Rules": {

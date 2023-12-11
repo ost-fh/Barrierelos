@@ -1,6 +1,7 @@
 {
   "General": {
-    "barrierelosScore": "Barrierelos-Score"
+    "barrierelosScore": "Barrierelos-Score",
+    "webpageWeight": "Gewichtung"
   },
   "Navbar": {
     "languageSelectionLabel": "Sprachauswahl"
@@ -20,7 +21,6 @@
       "WebpagesHeader": "Webpages",
       "WebpagesTableAriaLabel": "Webpages Tabelle",
       "WebpageUrl": "URL",
-      "WebpageWeight": "Gewichtung",
       "WebpageWeightTooltip": "Bestimmt den Einfluss dieser Webpage auf den Website Score. Die Gewichtung basiert auf der Anzahl HTML Elemente auf der Webpage die relevant für die Barrierefreiheit sind."
     },
     "Rules": {

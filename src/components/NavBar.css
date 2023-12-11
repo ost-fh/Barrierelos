@@ -1,36 +1,36 @@
 nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
 }
 
 nav li {
-    float: left;
+  float: left;
 }
 
 nav li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 nav li a:hover {
-    background-color: #111;
+  background-color: #111;
 }
 
 nav .active {
-    background-color: #355e62;
+  background-color: #355e62;
 }
 
 .navbar .languageSelection {
-    float: right;
+  float: right;
 }
 
 .navbar .langBtn:disabled {
-    color: #1976d2;
-    text-decoration: underline;
+  color: #1976d2;
+  text-decoration: underline;
 }

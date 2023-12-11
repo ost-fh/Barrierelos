@@ -38,12 +38,13 @@ function WebsiteOverview(params: WebsiteOverviewProps) {
           <h2>{t("WebsitePage.Overview.PrincipleViolationHeader")}</h2>
           <Stack
             direction={{xs: "column", md: "row"}}
-            spacing={{xs: 1, sm: 2, md: 4}}
+            spacing={2}
           >
             <Card variant="outlined" sx={{minWidth: 275}}>
               <CardContent>
                 <Stack direction="row" spacing={2}>
-                  <Typography align="center" sx={{fontSize: 80}}>{getViolationsPerPrinciple("perceivable")}</Typography>
+                  <Typography align="center"
+                              sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("perceivable")}</Typography>
                   <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
                     <PerceivableIcon sx={{fontSize: 80}}/>
                     <Typography
@@ -55,7 +56,8 @@ function WebsiteOverview(params: WebsiteOverviewProps) {
             <Card variant="outlined" sx={{minWidth: 275}}>
               <CardContent>
                 <Stack direction="row" spacing={2}>
-                  <Typography align="center" sx={{fontSize: 80}}>{getViolationsPerPrinciple("operable")}</Typography>
+                  <Typography align="center"
+                              sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("operable")}</Typography>
                   <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
                     <OperableIcon sx={{fontSize: 80}}/>
                     <Typography align="center">{t("WebsitePage.Overview.PrincipleViolationOperableLabel")}</Typography>
@@ -69,7 +71,7 @@ function WebsiteOverview(params: WebsiteOverviewProps) {
                   <Typography align="center"
                               sx={{fontSize: 80}}>{getViolationsPerPrinciple("understandable")}</Typography>
                   <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
-                    <UnderstandableIcon sx={{fontSize: 80}}/>
+                    <UnderstandableIcon sx={{fontSize: 80, minWidth: 100}}/>
                     <Typography
                       align="center">{t("WebsitePage.Overview.PrincipleViolationUnderstandableLabel")}</Typography>
                   </Grid>
@@ -79,7 +81,8 @@ function WebsiteOverview(params: WebsiteOverviewProps) {
             <Card variant="outlined" sx={{minWidth: 275}}>
               <CardContent>
                 <Stack direction="row" spacing={2}>
-                  <Typography align="center" sx={{fontSize: 80}}>{getViolationsPerPrinciple("robust")}</Typography>
+                  <Typography align="center"
+                              sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("robust")}</Typography>
                   <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
                     <RobustIcon sx={{fontSize: 80}}/>
                     <Typography align="center">{t("WebsitePage.Overview.PrincipleViolationRobustLabel")}</Typography>
@@ -102,7 +105,7 @@ function WebsiteOverview(params: WebsiteOverviewProps) {
                   <TableCell>
                     <Tooltip title={t("WebsitePage.Overview.WebpageWeightTooltip")}>
                       <Stack direction="row" alignItems="center" gap={1}>
-                        {t("WebsitePage.Overview.WebpageWeight")}
+                        {t("General.webpageWeight")}
                         <HelpIcon/>
                       </Stack>
                     </Tooltip>

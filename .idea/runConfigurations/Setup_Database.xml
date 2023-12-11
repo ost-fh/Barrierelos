@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Setup Database" type="DatabaseScript" editBeforeRun="true">
+    <script-file value="$PROJECT_DIR$/src/main/resources/db/migration/V1.0.0__schema.sql" />
+    <script-file value="$PROJECT_DIR$/src/main/resources/db/migration/V1.0.1__example_data.sql" />
+    <script-mode>FILE</script-mode>
+    <data-source id="c27d0bcf-054d-4e74-b0ff-bea60ae4dcc8" />
+    <method v="2" />
+  </configuration>
+</component>

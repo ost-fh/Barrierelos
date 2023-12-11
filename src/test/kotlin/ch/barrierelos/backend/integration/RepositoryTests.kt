@@ -28,6 +28,8 @@ class RepositoryTests
   lateinit var websiteTagRepository: WebsiteTagRepository
   @Autowired
   lateinit var websiteRepository: WebsiteRepository
+  @Autowired
+  lateinit var webpageRepository: WebpageRepository
 
   @Nested
   inner class UserRepositoryTests
@@ -531,6 +533,78 @@ class RepositoryTests
       assertNotNull(actual)
       actual.shouldBeEmpty()
       actual.shouldHaveSize(0)
+    }
+  }
+
+  @Nested
+  inner class WebpageRepositoryTests
+  {
+    @Test
+    fun `exists by path and website fk, when path and website fk exists`()
+    {
+      // when
+      val webpage = createWebpageEntity()
+      webpage.websiteFk = 25
+      webpage.path = "/path"
+
+      entityManager.persist(webpage)
+      entityManager.flush()
+
+      // then
+      val exists = webpageRepository.existsByPathAndWebsiteFk(webpage.path, webpage.websiteFk)
+
+      assertTrue(exists)
+    }
+
+    @Test
+    fun `not exists by path and website fk, when path not exists`()
+    {
+      // when
+      val webpage = createWebpageEntity()
+      webpage.websiteFk = 25
+      webpage.path = "/path"
+
+      entityManager.persist(webpage)
+      entityManager.flush()
+
+      // then
+      val exists = webpageRepository.existsByPathAndWebsiteFk("/test", webpage.websiteFk)
+
+      assertFalse(exists)
+    }
+
+    @Test
+    fun `not exists by path and website fk, when website fk not exists`()
+    {
+      // when
+      val webpage = createWebpageEntity()
+      webpage.websiteFk = 25
+      webpage.path = "/path"
+
+      entityManager.persist(webpage)
+      entityManager.flush()
+
+      // then
+      val exists = webpageRepository.existsByPathAndWebsiteFk(webpage.path, 5000)
+
+      assertFalse(exists)
+    }
+
+    @Test
+    fun `not exists by path and website fk, when path and website fk not exists`()
+    {
+      // when
+      val webpage = createWebpageEntity()
+      webpage.websiteFk = 25
+      webpage.path = "/path"
+
+      entityManager.persist(webpage)
+      entityManager.flush()
+
+      // then
+      val exists = webpageRepository.existsByPathAndWebsiteFk("/test", 5000)
+
+      assertFalse(exists)
     }
   }
 }

@@ -11,7 +11,6 @@ import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.helper.*
 import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.*
@@ -1279,8 +1278,66 @@ class ServiceTests
       }
 
       @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `updates website, given moderator account`()
+      {
+        // when
+        val expected = websiteRepository.save(createWebsiteEntity().also { it.tags.clear() }).toModel()
+        expected.status = StatusEnum.BLOCKED
+
+        // then
+        val actual = websiteService.updateWebsite(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.domain, actual.domain)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.category, actual.category)
+        assertEquals(expected.status, actual.status)
+        assertEquals(expected.tags, actual.tags)
+        assertNotEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update website, given correct contributor account`()
+      {
+        // when
+        val expected = websiteRepository.save(createWebsiteEntity(contributor.id).also { it.tags.clear() }).toModel()
+        expected.status = StatusEnum.DELETED
+
+        // then
+        val actual = websiteService.updateWebsite(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.domain, actual.domain)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.category, actual.category)
+        assertEquals(expected.status, actual.status)
+        assertEquals(expected.tags, actual.tags)
+        assertNotEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update website status, given wrong contributor account`()
+      {
+        // when
+        val website = websiteRepository.save(createWebsiteEntity(moderator.id).also { it.tags.clear() }).toModel()
+        website.status = StatusEnum.DELETED
+
+        // then
+        assertThrows(IllegalArgumentException::class.java) {
+          websiteService.updateWebsite(website)
+        }
+      }
+
+      @Test
       @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
-      fun `cannot update website, given wrong account`()
+      fun `cannot update website, given viewer account`()
       {
         // when
         val website = websiteRepository.save(createWebsiteEntity().also { it.tags.clear() }).toModel()
@@ -1527,11 +1584,11 @@ class ServiceTests
       }
 
       @Test
-      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `deletes website, given correct account`()
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `deletes website, given moderator account`()
       {
         // when
-        val website = createAndAddWebsite(contributor.id, "barrierelos.ch", tag)
+        val website = createAndAddWebsite(admin.id, "barrierelos.ch", tag)
         val websitesBefore = websiteService.getWebsites().content
 
         // then
@@ -1555,10 +1612,23 @@ class ServiceTests
 
       @Test
       @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot delete website, given wrong account`()
+      fun `cannot delete website, given contributor account`()
       {
         // when
-        val website = createAndAddWebsite(moderator.id, "barrierelos.ch", tag)
+        val website = createAndAddWebsite(contributor.id, "barrierelos.ch", tag)
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          websiteService.deleteWebsite(website.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot delete website, given viewer account`()
+      {
+        // when
+        val website = createAndAddWebsite(viewer.id, "barrierelos.ch", tag)
 
         // then
         assertThrows(NoAuthorizationException::class.java) {
@@ -1724,11 +1794,51 @@ class ServiceTests
       }
 
       @Test
-      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot update webpage, given contributor account`()
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `updates webpage, given moderator account`()
       {
         // when
-        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+        val expected = webpageRepository.save(createWebpageEntity()).toModel()
+        expected.status = StatusEnum.BLOCKED
+
+        // then
+        val actual = webpageService.updateWebpage(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.path, actual.path)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.status, actual.status)
+        assertNotEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage, given correct contributor account`()
+      {
+        // when
+        val expected = webpageRepository.save(createWebpageEntity(contributor.id)).toModel()
+        expected.status = StatusEnum.DELETED
+
+        // then
+        val actual = webpageService.updateWebpage(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.path, actual.path)
+        assertEquals(expected.url, actual.url)
+        assertEquals(expected.status, actual.status)
+        assertNotEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage status, given wrong contributor account`()
+      {
+        // when
+        val webpage = webpageRepository.save(createWebpageEntity(moderator.id)).toModel()
 
         // then
         assertThrows(NoAuthorizationException::class.java) {
@@ -1970,38 +2080,11 @@ class ServiceTests
 
       @Test
       @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot delete webpage, given correct contributor account`()
+      fun `cannot delete webpage, given contributor account`()
       {
         // when
         val webpage = webpageRepository.save(createWebpageEntity().apply {
           userFk = contributor.id
-        }).toModel()
-        val webpagesBefore = webpageService.getWebpages().content
-
-        // then
-        assertDoesNotThrow {
-          webpageService.deleteWebpage(webpage.id)
-        }
-
-        assertThrows(NoSuchElementException::class.java) {
-          webpageService.getWebpage(webpage.id)
-        }
-
-        val webpagesAfter = webpageService.getWebpages().content
-
-        webpagesBefore.shouldContain(webpage)
-        webpagesAfter.shouldNotContain(webpage)
-        webpagesBefore.shouldContainAll(webpagesAfter)
-        webpagesAfter.shouldNotContainAll(webpagesBefore)
-      }
-
-      @Test
-      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `cannot delete webpage, given wrong contributor account`()
-      {
-        // when
-        val webpage = webpageRepository.save(createWebpageEntity().apply {
-          userFk = admin.id
         }).toModel()
 
         // then
@@ -2015,7 +2098,9 @@ class ServiceTests
       fun `cannot delete webpage, given viewer account`()
       {
         // when
-        val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+        val webpage = webpageRepository.save(createWebpageEntity().apply {
+          userFk = viewer.id
+        }).toModel()
 
         // then
         assertThrows(NoAuthorizationException::class.java) {

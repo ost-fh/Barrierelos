@@ -148,9 +148,14 @@ public class WebsiteService
       throwIfIllegallyModified(website, existingWebsite)
       throwIfTagsIllegallyModified(website, existingWebsite)
     }
-    else if(!Security.hasRole(RoleEnum.ADMIN))
+    else if(Security.hasRole(RoleEnum.CONTRIBUTOR))
     {
-      throwIfStatusChanged(website, existingWebsite)
+      if(!Security.hasId(website.userId))
+      {
+        throwIfStatusChangedToDeleted(website, existingWebsite)
+      }
+
+      throwIfStatusChangedToBlocked(website, existingWebsite)
       throwIfIllegallyModified(website, existingWebsite)
       throwIfTagsIllegallyModified(website, existingWebsite)
     }
@@ -174,9 +179,9 @@ public class WebsiteService
 
   public fun deleteWebsite(websiteId: Long)
   {
-    val existingWebsite = this.websiteRepository.findById(websiteId).orElseThrow().toModel()
+    Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR)
 
-    Security.assertAnyRolesOrId(existingWebsite.userId, RoleEnum.ADMIN, RoleEnum.MODERATOR)
+    throwIfNotExists(websiteId)
 
     this.websiteTagRepository.deleteAllByWebsiteFk(websiteId)
 
@@ -215,20 +220,26 @@ public class WebsiteService
     if((website.userId != existingWebsite.userId)
       || (website.domain != existingWebsite.domain)
       || (website.url != existingWebsite.url)
-      || (website.status != existingWebsite.status)
       || (website.created != existingWebsite.created)
       || (website.status == StatusEnum.PENDING_INITIAL)
       || (website.status == StatusEnum.PENDING_RESCAN)
-      || (existingWebsite.status == StatusEnum.PENDING_INITIAL)
-      || (existingWebsite.status == StatusEnum.PENDING_RESCAN))
+      || (website.status == StatusEnum.READY))
     {
       throw IllegalArgumentException("Website illegally modified.")
     }
   }
 
-  private fun throwIfStatusChanged(website: Website, existingWebsite: Website)
+  private fun throwIfStatusChangedToBlocked(website: Website, existingWebsite: Website)
   {
-    if(website.status != existingWebsite.status)
+    if(website.status != existingWebsite.status && website.status == StatusEnum.BLOCKED)
+    {
+      throw IllegalArgumentException("Website illegally modified.")
+    }
+  }
+
+  private fun throwIfStatusChangedToDeleted(website: Website, existingWebsite: Website)
+  {
+    if(website.status != existingWebsite.status && website.status == StatusEnum.DELETED)
     {
       throw IllegalArgumentException("Website illegally modified.")
     }
@@ -278,6 +289,14 @@ public class WebsiteService
     if(website.url != "http://${website.domain}" && website.url != "https://${website.domain}")
     {
       throw InvalidUrlException("Domain and url do not match.")
+    }
+  }
+
+  private fun throwIfNotExists(websiteId: Long)
+  {
+    if(!this.websiteRepository.existsById(websiteId))
+    {
+      throw NoSuchElementException("Website with such id does not exist.")
     }
   }
 }

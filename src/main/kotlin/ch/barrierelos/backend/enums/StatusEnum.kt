@@ -5,5 +5,6 @@ public enum class StatusEnum
   BLOCKED,
   READY,
   PENDING_INITIAL,
-  PENDING_RESCAN
+  PENDING_RESCAN,
+  DELETED
 }

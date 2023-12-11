@@ -1905,14 +1905,14 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
 
       @Test
       @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `responds with 200 ok, given contributor account`()
+      fun `responds with 403 forbidden, given contributor account`()
       {
         // when
         every { websiteService.deleteWebsite(1) } returns Unit
 
         // then
         mockMvc.delete("/website/1").andExpect {
-          status { isOk() }
+          status { isForbidden() }
         }
       }
 
@@ -1983,8 +1983,6 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       {
         // when
         every { webpageService.addWebpage(webpage) } returns webpage
-
-        println(webpage) // TODO: DELETE
 
         // then
         mockMvc.post("/webpage") {
@@ -2514,14 +2512,14 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
 
       @Test
       @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
-      fun `responds with 200 ok, given contributor account`()
+      fun `responds with 403 forbidden, given contributor account`()
       {
         // when
         every { webpageService.deleteWebpage(1) } returns Unit
 
         // then
         mockMvc.delete("/webpage/1").andExpect {
-          status { isOk() }
+          status { isForbidden() }
         }
       }
 

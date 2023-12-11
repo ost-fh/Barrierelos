@@ -46,12 +46,17 @@ public class WebpageService
 
   public fun updateWebpage(webpage: Webpage): Webpage
   {
-    Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR)
+    Security.assertAnyRolesOrId(webpage.userId, RoleEnum.ADMIN, RoleEnum.MODERATOR)
 
     val existingWebpage = this.webpageRepository.findById(webpage.id).orElseThrow().toModel()
 
     if(Security.hasRole(RoleEnum.MODERATOR))
     {
+      throwIfIllegallyModified(webpage, existingWebpage)
+    }
+    else if(Security.hasRole(RoleEnum.CONTRIBUTOR))
+    {
+      throwIfStatusIllegallyChanged(webpage, existingWebpage)
       throwIfIllegallyModified(webpage, existingWebpage)
     }
 
@@ -72,9 +77,9 @@ public class WebpageService
 
   public fun deleteWebpage(webpageId: Long)
   {
-    val existingWebpage = this.webpageRepository.findById(webpageId).orElseThrow().toModel()
+    Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR)
 
-    Security.assertAnyRolesOrId(existingWebpage.userId, RoleEnum.ADMIN, RoleEnum.MODERATOR)
+    throwIfNotExists(webpageId)
 
     this.webpageRepository.deleteById(webpageId)
   }
@@ -84,12 +89,18 @@ public class WebpageService
     if((webpage.userId != existingWebpage.userId)
       || (webpage.path != existingWebpage.path)
       || (webpage.url != existingWebpage.url)
-      || (webpage.status != existingWebpage.status)
       || (webpage.created != existingWebpage.created)
       || (webpage.status == StatusEnum.PENDING_INITIAL)
       || (webpage.status == StatusEnum.PENDING_RESCAN)
-      || (existingWebpage.status == StatusEnum.PENDING_INITIAL)
-      || (existingWebpage.status == StatusEnum.PENDING_RESCAN))
+      || (webpage.status == StatusEnum.READY))
+    {
+      throw IllegalArgumentException("Webpage illegally modified.")
+    }
+  }
+
+  private fun throwIfStatusIllegallyChanged(webpage: Webpage, existingWebpage: Webpage)
+  {
+    if(webpage.status != existingWebpage.status && webpage.status == StatusEnum.BLOCKED)
     {
       throw IllegalArgumentException("Webpage illegally modified.")
     }
@@ -116,6 +127,14 @@ public class WebpageService
     if(!webpage.url.matches("^http://.*${webpage.path}.*\$".toRegex()) && !webpage.url.matches("^https://.*${webpage.path}.*\$".toRegex()))
     {
       throw InvalidUrlException("Path and url do not match.")
+    }
+  }
+
+  private fun throwIfNotExists(webpageId: Long)
+  {
+    if(!this.webpageRepository.existsById(webpageId))
+    {
+      throw NoSuchElementException("Webpage with such id does not exist.")
     }
   }
 }

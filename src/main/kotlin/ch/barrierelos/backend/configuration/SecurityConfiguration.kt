@@ -60,13 +60,13 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.PUT, "$WEBSITE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
           .requestMatchers(HttpMethod.HEAD, "$WEBSITE/**").permitAll()
           .requestMatchers(HttpMethod.GET, "$WEBSITE/**").permitAll()
-          .requestMatchers(HttpMethod.DELETE, "$WEBSITE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.DELETE, "$WEBSITE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name)
 
           .requestMatchers(HttpMethod.POST, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
-          .requestMatchers(HttpMethod.PUT, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
           .requestMatchers(HttpMethod.HEAD, "$WEBPAGE/**").permitAll()
           .requestMatchers(HttpMethod.GET, "$WEBPAGE/**").permitAll()
-          .requestMatchers(HttpMethod.DELETE, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.DELETE, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name)
 
           .requestMatchers("${Endpoint.STATISTICS}/**").permitAll()
 

@@ -52,6 +52,8 @@ class ServiceTests
   lateinit var webpageService: WebpageService
   @Autowired
   lateinit var websiteStatisticService: WebsiteStatisticService
+  @Autowired
+  lateinit var webpageStatisticService: WebpageStatisticService
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -72,6 +74,8 @@ class ServiceTests
   lateinit var webpageRepository: WebpageRepository
   @Autowired
   lateinit var websiteStatisticRepository: WebsiteStatisticRepository
+  @Autowired
+  lateinit var webpageStatisticRepository: WebpageStatisticRepository
 
   @Autowired
   lateinit var websiteScanRepository: WebsiteScanRepository
@@ -149,6 +153,7 @@ class ServiceTests
     websiteRepository.deleteAll()
     tagRepository.deleteAll()
     websiteStatisticRepository.deleteAll()
+    webpageStatisticRepository.deleteAll()
   }
 
   @Nested
@@ -2479,6 +2484,350 @@ class ServiceTests
         // then
         assertThrows(NoAuthorizationException::class.java) {
           websiteStatisticService.deleteWebsiteStatistic(websiteStatistic.id)
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class WebpageStatisticServiceTests
+  {
+    @Nested
+    inner class AddWebpageStatisticTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `adds webpage statistic, given admin account`()
+      {
+        // when
+        val expected = createWebpageStatisticModel()
+
+        // then
+        val actual = webpageStatisticService.addWebpageStatistic(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertNotEquals(expected.id, actual.id)
+        assertEquals(expected.score, actual.score)
+        assertNotEquals(expected.modified, actual.modified)
+        assertNotEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage statistic, given moderator account`()
+      {
+        // when
+        val webpageStatistic = createWebpageStatisticModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.addWebpageStatistic(webpageStatistic)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage statistic, given contributor account`()
+      {
+        // when
+        val webpageStatistic = createWebpageStatisticModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.addWebpageStatistic(webpageStatistic)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage statistic, given viewer account`()
+      {
+        // when
+        val webpageStatistic = createWebpageStatisticModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.addWebpageStatistic(webpageStatistic)
+        }
+      }
+
+      @Test
+      fun `cannot add webpageStatistic, given no account`()
+      {
+        // when
+        val webpageStatistic = createWebpageStatisticModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.addWebpageStatistic(webpageStatistic)
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateWebpageStatisticTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `updates webpage statistic, given admin account`()
+      {
+        // when
+        val expected = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+        expected.score = 20.0
+
+        // then
+        val actual = webpageStatisticService.updateWebpageStatistic(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.score, actual.score)
+        assertNotEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage statistic, given moderator account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.updateWebpageStatistic(webpageStatistic)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage statistic, given contributor account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.updateWebpageStatistic(webpageStatistic)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage statistic, given viewer account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.updateWebpageStatistic(webpageStatistic)
+        }
+      }
+
+      @Test
+      fun `cannot update webpage statistic, given no account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.updateWebpageStatistic(webpageStatistic)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage statistic, when webpage statistic not exists`()
+      {
+        // when
+        val webpageStatistic = createWebpageStatisticModel()
+
+        // then
+        assertThrows(NoSuchElementException::class.java) {
+          webpageStatisticService.updateWebpageStatistic(webpageStatistic)
+        }
+      }
+    }
+
+    @Nested
+    inner class GetWebpageStatisticsTests
+    {
+      @Test
+      fun `gets webpage statistics`()
+      {
+        // given
+        webpageStatisticRepository.save(createWebpageStatisticEntity().apply {
+          score = 40.0
+        })
+        webpageStatisticRepository.save(createWebpageStatisticEntity().apply {
+          score = 60.0
+        })
+
+        // when
+        val webpageStatistics = webpageStatisticService.getWebpageStatistics().content
+
+        // then
+        webpageStatistics.shouldNotBeEmpty()
+        webpageStatistics.shouldHaveSize(2)
+        assertTrue(webpageStatistics.any { it.score == 40.0 })
+        assertTrue(webpageStatistics.any { it.score == 60.0 })
+      }
+
+      @Test
+      fun `gets webpage statistics with headers, when no parameters`()
+      {
+        // given
+        webpageStatisticRepository.save(createWebpageStatisticEntity().apply {
+          score = 40.0
+        })
+        webpageStatisticRepository.save(createWebpageStatisticEntity().apply {
+          score = 60.0
+        })
+
+        // when
+        val webpageStatistics = webpageStatisticService.getWebpageStatistics()
+
+        // then
+        webpageStatistics.page.shouldBe(0)
+        webpageStatistics.size.shouldBe(2)
+        webpageStatistics.totalElements.shouldBe(2)
+        webpageStatistics.totalPages.shouldBe(1)
+        webpageStatistics.count.shouldBe(2)
+        webpageStatistics.lastModified.shouldBeGreaterThan(0)
+        webpageStatistics.content.shouldHaveSize(2)
+      }
+
+      @Test
+      fun `gets webpage statistics with headers, when with parameters`()
+      {
+        // given
+        webpageStatisticRepository.save(createWebpageStatisticEntity().apply {
+          score = 40.0
+        })
+        webpageStatisticRepository.save(createWebpageStatisticEntity().apply {
+          score = 60.0
+        })
+
+        // when
+        val webpageStatistics = webpageStatisticService.getWebpageStatistics(DefaultParameters(
+          page = 1,
+          size = 1,
+          sort = "score",
+          order = OrderEnum.ASC
+        ))
+
+        // then
+        webpageStatistics.page.shouldBe(1)
+        webpageStatistics.size.shouldBe(1)
+        webpageStatistics.totalElements.shouldBe(2)
+        webpageStatistics.totalPages.shouldBe(2)
+        webpageStatistics.count.shouldBe(2)
+        webpageStatistics.lastModified.shouldBeGreaterThan(0)
+        webpageStatistics.content.shouldHaveSize(1)
+      }
+    }
+
+    @Nested
+    inner class GetWebpageStatisticTests
+    {
+      @Test
+      fun `gets webpage statistic`()
+      {
+        // when
+        val expected = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        val actual = webpageStatisticService.getWebpageStatistic(expected.id)
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `cannot get webpage statistic, when webpage statistic not exists`()
+      {
+        assertThrows(NoSuchElementException::class.java) {
+          webpageStatisticService.getWebpageStatistic(5000000)
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteWebpageStatisticTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `deletes webpage statistic, given admin account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+        val webpageStatisticsBefore = webpageStatisticService.getWebpageStatistics().content
+
+        // then
+        assertDoesNotThrow {
+          webpageStatisticService.deleteWebpageStatistic(webpageStatistic.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          webpageStatisticService.getWebpageStatistic(webpageStatistic.id)
+        }
+
+        val webpageStatisticsAfter = webpageStatisticService.getWebpageStatistics().content
+
+        webpageStatisticsBefore.shouldContain(webpageStatistic)
+        webpageStatisticsAfter.shouldNotContain(webpageStatistic)
+        webpageStatisticsBefore.shouldContainAll(webpageStatisticsAfter)
+        webpageStatisticsAfter.shouldNotContainAll(webpageStatisticsBefore)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage statistic, given moderator account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.deleteWebpageStatistic(webpageStatistic.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage statistic, given contributor account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.deleteWebpageStatistic(webpageStatistic.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage statistic, given viewer account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.deleteWebpageStatistic(webpageStatistic.id)
+        }
+      }
+
+      @Test
+      fun `cannot delete webpageStatistic, given no account`()
+      {
+        // when
+        val webpageStatistic = webpageStatisticRepository.save(createWebpageStatisticEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageStatisticService.deleteWebpageStatistic(webpageStatistic.id)
         }
       }
     }

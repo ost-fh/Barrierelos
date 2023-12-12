@@ -60,9 +60,9 @@ SELECT SETVAL('"scan_job_scan_job_id_seq"', (SELECT MAX("scan_job_id") FROM "sca
 INSERT INTO "website"("website_id", "user_fk", "domain", "url", "category", "status", "webpage_count", "modified", "created")
 VALUES
   (1, 3, 'localhost', 'galaxus.ch', 'PRIVATE_SHOP', 'READY', 3, NOW(), NOW()),
-  (2, 3, 'localhost', 'galaxus.ch', 'PRIVATE_SHOP', 'PENDING_INITIAL', 3, NOW(), NOW()),
-  (3, 3, 'localhost', 'galaxus.ch', 'PRIVATE_SHOP', 'PENDING_RESCAN', 3, NOW(), NOW()),
-  (4, 3, 'localhost', 'galaxus.ch', 'PRIVATE_SHOP', 'BLOCKED', 3, NOW(), NOW())
+  (2, 3, 'localhost2', 'galaxus2.ch', 'PRIVATE_SHOP', 'PENDING_INITIAL', 3, NOW(), NOW()),
+  (3, 3, 'localhost3', 'galaxus3.ch', 'PRIVATE_SHOP', 'PENDING_RESCAN', 3, NOW(), NOW()),
+  (4, 3, 'localhost4', 'galaxus4.ch', 'PRIVATE_SHOP', 'BLOCKED', 3, NOW(), NOW())
 ;
 
 SELECT SETVAL('"website_website_id_seq"', (SELECT MAX("website_id") FROM "website"));

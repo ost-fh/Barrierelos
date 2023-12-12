@@ -6,3 +6,9 @@ update-compose:
 
 update-images:
 	docker compose -f compose-prod.yml -f compose-dev.yml pull
+
+dependencies-up:
+	docker compose -f compose-prod.yml -f compose-dev.yml up -d
+
+dependencies-down:
+	docker compose -f compose-prod.yml -f compose-dev.yml down

@@ -56,3 +56,9 @@ fun createWebpageModel(user: User = createUserModel(), website: Website = create
   modified = 5000,
   created = 5000,
 )
+
+fun createWebsiteStatisticModel() = WebsiteStatistic(
+  score = 80.0,
+  modified = 5000,
+  created = 5000,
+)

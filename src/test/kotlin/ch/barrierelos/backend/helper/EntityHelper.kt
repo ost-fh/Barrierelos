@@ -57,3 +57,9 @@ fun createWebpageEntity(user: UserEntity = createUserEntity(), website: WebsiteE
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
+
+fun createWebsiteStatisticEntity() = WebsiteStatisticEntity(
+  score = 80.0,
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)

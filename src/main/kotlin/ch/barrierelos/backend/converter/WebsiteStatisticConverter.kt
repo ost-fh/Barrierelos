@@ -33,3 +33,13 @@ public fun WebsiteStatisticEntity.toModel(websiteStatistic: WebsiteStatistic): W
     created = this@toModel.created.time
   }
 }
+
+public fun Collection<WebsiteStatistic>.toEntities(): MutableSet<WebsiteStatisticEntity>
+{
+  return this.map { websiteStatistic -> websiteStatistic.toEntity() }.toMutableSet()
+}
+
+public fun Collection<WebsiteStatisticEntity>.toModels(): MutableSet<WebsiteStatistic>
+{
+  return this.map { websiteStatistic -> websiteStatistic.toModel() }.toMutableSet()
+}

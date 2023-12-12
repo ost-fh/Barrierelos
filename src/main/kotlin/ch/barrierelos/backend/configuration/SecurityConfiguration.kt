@@ -7,6 +7,7 @@ import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.TAG
 import ch.barrierelos.backend.constants.Endpoint.USER
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE
+import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_STATISTIC
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE
 import ch.barrierelos.backend.constants.Endpoint.WEBSITES
 import ch.barrierelos.backend.enums.RoleEnum
@@ -69,6 +70,12 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.DELETE, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name)
 
           .requestMatchers("${Endpoint.STATISTICS}/**").permitAll()
+
+          .requestMatchers(HttpMethod.POST, "$WEBPAGE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBPAGE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.HEAD, "$WEBPAGE_STATISTIC/**").permitAll()
+          .requestMatchers(HttpMethod.GET, "$WEBPAGE_STATISTIC/**").permitAll()
+          .requestMatchers(HttpMethod.DELETE, "$WEBPAGE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
 
           .requestMatchers(HttpMethod.PUT, "$CREDENTIAL/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()

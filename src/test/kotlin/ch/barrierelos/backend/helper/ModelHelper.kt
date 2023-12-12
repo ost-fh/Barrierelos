@@ -62,3 +62,9 @@ fun createWebsiteStatisticModel() = WebsiteStatistic(
   modified = 5000,
   created = 5000,
 )
+
+fun createWebpageStatisticModel() = WebpageStatistic(
+  score = 80.0,
+  modified = 5000,
+  created = 5000,
+)

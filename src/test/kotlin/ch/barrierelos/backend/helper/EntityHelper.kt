@@ -63,3 +63,9 @@ fun createWebsiteStatisticEntity() = WebsiteStatisticEntity(
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
+
+fun createWebpageStatisticEntity() = WebpageStatisticEntity(
+  score = 80.0,
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)

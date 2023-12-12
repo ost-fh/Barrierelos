@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS "website" CASCADE;
+DROP TABLE IF EXISTS "website_statistic" CASCADE;
 DROP TABLE IF EXISTS "webpage" CASCADE;
 DROP TABLE IF EXISTS "webpage_statistic" CASCADE;
 DROP TABLE IF EXISTS "tag" CASCADE;
@@ -59,6 +60,14 @@ CREATE TABLE "webpage"
   PRIMARY KEY ("webpage_id"),
   FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
+);
+
+CREATE TABLE "webpage_statistic"
+(
+  "webpage_statistic_id" BIGSERIAL,
+  "score" DOUBLE PRECISION,
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now()
 );
 
 ----------------------------------------------------------------------------------------------------

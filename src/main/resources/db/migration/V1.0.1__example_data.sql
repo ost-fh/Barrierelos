@@ -67,7 +67,7 @@ VALUES
 
 SELECT SETVAL('"website_website_id_seq"', (SELECT MAX("website_id") FROM "website"));
 
-INSERT INTO "webpage"("webpage_id", "website_fk", "user_fk", "domain", "url", "category", "status", "modified", "created")
+INSERT INTO "webpage"("webpage_id", "website_fk", "user_fk", "path", "url", "category", "status", "modified", "created")
 VALUES
   (1, 1, 3, 'galaxus.ch', 'https://www.galaxus.ch/', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),
   (2, 1, 3, 'galaxus.ch', 'https://www.galaxus.ch/de/s1/tag/pc-komponenten-76', 'PRIVATE_SHOP', 'READY', NOW(), NOW()),

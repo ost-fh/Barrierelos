@@ -254,6 +254,7 @@ CREATE TABLE "website"
   "webpage_count" INTEGER NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  "deleted" BOOLEAN DEFAULT FALSE,
   PRIMARY KEY ("website_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
 );
@@ -296,10 +297,11 @@ CREATE TABLE "webpage"
   "webpage_id" BIGSERIAL,
   "website_fk" BIGSERIAL,
   "user_fk" BIGSERIAL,
-  "domain" VARCHAR NOT NULL,
+  "path" VARCHAR NOT NULL,
   "url" VARCHAR NOT NULL,
   "category" CATEGORY_ENUM NOT NULL,
   "status" STATUS_ENUM NOT NULL,
+  "deleted" BOOLEAN DEFAULT FALSE,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("webpage_id"),

@@ -455,4 +455,76 @@ class ConverterTests
       actual.shouldHaveSingleElement { it.score == 60.0 }
     }
   }
+
+  @Nested
+  inner class WebpageStatisticTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createWebpageStatisticEntity()
+
+      // then
+      val model = createWebpageStatisticModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createWebpageStatisticModel()
+
+      // then
+      val expected = createWebpageStatisticEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.webpageStatisticId, actual.webpageStatisticId)
+      assertEquals(expected.score, actual.score)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+
+    @Test
+    fun `converts to models, when entities`()
+    {
+      // when
+      val entities = setOf(
+        createWebpageStatisticEntity().apply { score = 40.0 },
+        createWebpageStatisticEntity().apply { score = 60.0 }
+      )
+
+      // then
+      val models = setOf(
+        createWebpageStatisticModel().apply { score = 40.0 },
+        createWebpageStatisticModel().apply { score = 60.0 }
+      )
+
+      assertEquals(models, entities.toModels())
+    }
+
+    @Test
+    fun `converts to entities, when models`()
+    {
+      // when
+      val models = setOf(
+        createWebpageStatisticModel().apply { score = 40.0 },
+        createWebpageStatisticModel().apply { score = 60.0 }
+      )
+
+      // then
+      val expected = setOf(
+        createWebpageStatisticEntity().apply { score = 40.0 },
+        createWebpageStatisticEntity().apply { score = 60.0 }
+      )
+      val actual = models.toEntities()
+
+      actual.shouldHaveSize(expected.size)
+      actual.shouldHaveSingleElement { it.score == 40.0 }
+      actual.shouldHaveSingleElement { it.score == 60.0 }
+    }
+  }
 }

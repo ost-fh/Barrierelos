@@ -383,4 +383,76 @@ class ConverterTests
       actual.shouldHaveSingleElement { it.displayUrl == "admin.ch/vbs/infos/two" }
     }
   }
+
+  @Nested
+  inner class WebsiteStatisticTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createWebsiteStatisticEntity()
+
+      // then
+      val model = createWebsiteStatisticModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createWebsiteStatisticModel()
+
+      // then
+      val expected = createWebsiteStatisticEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.websiteStatisticId, actual.websiteStatisticId)
+      assertEquals(expected.score, actual.score)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+
+    @Test
+    fun `converts to models, when entities`()
+    {
+      // when
+      val entities = setOf(
+        createWebsiteStatisticEntity().apply { score = 40.0 },
+        createWebsiteStatisticEntity().apply { score = 60.0 }
+      )
+
+      // then
+      val models = setOf(
+        createWebsiteStatisticModel().apply { score = 40.0 },
+        createWebsiteStatisticModel().apply { score = 60.0 }
+      )
+
+      assertEquals(models, entities.toModels())
+    }
+
+    @Test
+    fun `converts to entities, when models`()
+    {
+      // when
+      val models = setOf(
+        createWebsiteStatisticModel().apply { score = 40.0 },
+        createWebsiteStatisticModel().apply { score = 60.0 }
+      )
+
+      // then
+      val expected = setOf(
+        createWebsiteStatisticEntity().apply { score = 40.0 },
+        createWebsiteStatisticEntity().apply { score = 60.0 }
+      )
+      val actual = models.toEntities()
+
+      actual.shouldHaveSize(expected.size)
+      actual.shouldHaveSingleElement { it.score == 40.0 }
+      actual.shouldHaveSingleElement { it.score == 60.0 }
+    }
+  }
 }

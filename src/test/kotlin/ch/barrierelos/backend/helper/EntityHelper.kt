@@ -69,3 +69,12 @@ fun createWebpageStatisticEntity() = WebpageStatisticEntity(
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
+
+fun createWebsiteScanEntity(userFk: Long = 0, websiteFk: Long = 0, websiteStatisticFk: Long = 0, websiteResultFk: Long = 0) = WebsiteScanEntity(
+  websiteFk = websiteFk,
+  websiteStatisticFk = websiteStatisticFk,
+  websiteResultFk = websiteResultFk,
+  userFk = userFk,
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)

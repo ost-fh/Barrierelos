@@ -54,6 +54,8 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
   lateinit var websiteStatisticService: WebsiteStatisticService
   @MockkBean
   lateinit var webpageStatisticService: WebpageStatisticService
+  @MockkBean
+  lateinit var websiteScanService: WebsiteScanService
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -3658,6 +3660,567 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
 
         // then
         mockMvc.delete("/webpage-statistic/1").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class WebsiteScanControllerTests
+  {
+    private val websiteScan = createWebsiteScanModel()
+
+    @Nested
+    inner class AddWebsiteScanTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteScanService.addWebsiteScan(websiteScan) } returns websiteScan
+
+        // then
+        mockMvc.post("/website-scan").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives website scan, when provided in body`()
+      {
+        // when
+        every { websiteScanService.addWebsiteScan(websiteScan) } returns websiteScan
+
+        // then
+        mockMvc.post("/website-scan") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          content {
+            contentType(EXPECTED_MEDIA_TYPE)
+            jsonPath("$.websiteId") { value(websiteScan.websiteId) }
+            jsonPath("$.userId") { value(websiteScan.userId) }
+            jsonPath("$.websiteStatisticId") { value(websiteScan.websiteStatisticId) }
+            jsonPath("$.websiteResultId") { value(websiteScan.websiteResultId) }
+            jsonPath("$.modified") { value(websiteScan.modified) }
+            jsonPath("$.created") { value(websiteScan.created) }
+          }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `returns website scan, when added, given admin account`()
+      {
+        // when
+        val expected = websiteScan.copy()
+
+        every { websiteScanService.addWebsiteScan(expected) } returns expected
+
+        // then
+        val actual = mockMvc.post("/website-scan") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isCreated() }
+        }.body<WebsiteScan>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given moderator account`()
+      {
+        // when
+        every { websiteScanService.addWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.post("/website-scan") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given contributor account`()
+      {
+        // when
+        every { websiteScanService.addWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.post("/website-scan") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { websiteScanService.addWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.post("/website-scan") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { websiteScanService.addWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.post("/website-scan") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { websiteScanService.addWebsiteScan(any()) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.post("/website-scan") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 415 unsupported media type, when no website scan provided in body`()
+      {
+        // when
+        every { websiteScanService.addWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.post("/website-scan").andExpect {
+          status { isUnsupportedMediaType() }
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateWebsiteScanTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(websiteScan) } returns websiteScan
+
+        // then
+        mockMvc.put("/website-scan/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives website scan, when provided in body`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(websiteScan.apply { id = 1 }) } returns websiteScan
+
+        // then
+        mockMvc.put("/website-scan/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          content {
+            contentType(EXPECTED_MEDIA_TYPE)
+            jsonPath("$.websiteId") { value(websiteScan.websiteId) }
+            jsonPath("$.userId") { value(websiteScan.userId) }
+            jsonPath("$.websiteStatisticId") { value(websiteScan.websiteStatisticId) }
+            jsonPath("$.websiteResultId") { value(websiteScan.websiteResultId) }
+            jsonPath("$.modified") { value(websiteScan.modified) }
+            jsonPath("$.created") { value(websiteScan.created) }
+          }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(websiteScan) } returns websiteScan
+
+        // then
+        mockMvc.put("/website-scan/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `returns website scan, when updated, given admin account`()
+      {
+        // when
+        val expected = websiteScan.copy()
+
+        every { websiteScanService.updateWebsiteScan(expected.apply { id = 1 }) } returns expected
+
+        // then
+        val actual = mockMvc.put("/website-scan/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isOk() }
+        }.body<WebsiteScan>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given moderator account`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given contributor account`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.put("/tag/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.put("/website-scan/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(any()) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.put("/website-scan/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = websiteScan.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 415 unsupported media type, when no website scan provided in body`()
+      {
+        // when
+        every { websiteScanService.updateWebsiteScan(any()) } returns websiteScan
+
+        // then
+        mockMvc.put("/website-scan/1").andExpect {
+          status { isUnsupportedMediaType() }
+        }
+      }
+    }
+
+    @Nested
+    inner class GetWebsiteScansTests
+    {
+      private val result = Result(
+        page = 0,
+        size = 1,
+        totalElements = 1,
+        totalPages = 1,
+        count = 1,
+        lastModified = 5000,
+        content = listOf(
+          websiteScan
+        ),
+      )
+
+      @Test
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteScanService.getWebsiteScans() } returns result
+
+        // then
+        mockMvc.get("/website-scan").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      fun `receives default parameters, when default parameters provided`()
+      {
+        // when
+        val defaultParameters = DefaultParameters(
+          page = 0,
+          size = 2,
+          sort = "score",
+          order = OrderEnum.ASC,
+          modifiedAfter = 4000
+        )
+
+        every { websiteScanService.getWebsiteScans(defaultParameters) } returns result
+
+        // then
+        mockMvc.get("/website-scan") {
+          param("page", defaultParameters.page.toString())
+          param("size", defaultParameters.size.toString())
+          param("sort", defaultParameters.sort.toString())
+          param("order", defaultParameters.order.toString())
+          param("modifiedAfter", defaultParameters.modifiedAfter.toString())
+        }.andExpect {
+          haveParameterValue("page", defaultParameters.page.toString())
+          haveParameterValue("size", defaultParameters.size.toString())
+          haveParameterValue("sort", defaultParameters.sort.toString())
+          haveParameterValue("order", defaultParameters.order.toString())
+          haveParameterValue("modifiedAfter", defaultParameters.modifiedAfter.toString())
+        }
+      }
+
+      @Test
+      fun `gets website scans`()
+      {
+        // when
+        every { websiteScanService.getWebsiteScans() } returns result
+
+        // then
+        val actual = mockMvc.get("/website-scan").andExpect {
+          status { isOk() }
+        }.body<List<WebsiteScan>>()
+
+        assertEquals(result.content, actual)
+      }
+    }
+
+    @Nested
+    inner class GetWebsiteScanTests
+    {
+      @Test
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteScanService.getWebsiteScan(1) } returns websiteScan
+
+        // then
+        mockMvc.get("/website-scan/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { websiteScanService.getWebsiteScan(1) } returns websiteScan
+
+        // then
+        mockMvc.get("/website-scan/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      fun `gets website scan`()
+      {
+        // when
+        val expected = websiteScan.copy()
+
+        every { websiteScanService.getWebsiteScan(1) } returns expected
+
+        // then
+        val actual = mockMvc.get("/website-scan/1").andExpect {
+          status { isOk() }
+        }.body<WebsiteScan>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 404 not found, when service throws NoSuchElementException`()
+      {
+        // when
+        every { websiteScanService.getWebsiteScan(1) } throws NoSuchElementException()
+
+        // then
+        mockMvc.get("/website-scan/1").andExpect {
+          status { isNotFound() }
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteWebsiteScanTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { websiteScanService.deleteWebsiteScan(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website-scan/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { websiteScanService.deleteWebsiteScan(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website-scan/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 200 ok, given admin account`()
+      {
+        // when
+        every { websiteScanService.deleteWebsiteScan(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website-scan/1").andExpect {
+          status { isOk() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given moderator account`()
+      {
+        // when
+        every { websiteScanService.deleteWebsiteScan(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website-scan/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given contributor account`()
+      {
+        // when
+        every { websiteScanService.deleteWebsiteScan(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website-scan/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { websiteScanService.deleteWebsiteScan(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website-scan/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { websiteScanService.deleteWebsiteScan(1) } returns Unit
+
+        // then
+        mockMvc.delete("/website-scan/1").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { websiteScanService.deleteWebsiteScan(1) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.delete("/website-scan/1").andExpect {
           status { isUnauthorized() }
         }
       }

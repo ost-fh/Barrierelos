@@ -10,6 +10,8 @@ import ch.barrierelos.backend.constants.Endpoint.WEBPAGE
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_STATISTIC
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE
 import ch.barrierelos.backend.constants.Endpoint.WEBSITES
+import ch.barrierelos.backend.constants.Endpoint.WEBSITE_SCAN
+import ch.barrierelos.backend.constants.Endpoint.WEBSITE_STATISTIC
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.security.AuthenticationConverter
 import org.springframework.beans.factory.annotation.Autowired
@@ -71,11 +73,23 @@ public class SecurityConfiguration
 
           .requestMatchers("${Endpoint.STATISTICS}/**").permitAll()
 
+          .requestMatchers(HttpMethod.POST, "$WEBSITE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBSITE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.HEAD, "$WEBSITE_STATISTIC/**").permitAll()
+          .requestMatchers(HttpMethod.GET, "$WEBSITE_STATISTIC/**").permitAll()
+          .requestMatchers(HttpMethod.DELETE, "$WEBSITE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
+
           .requestMatchers(HttpMethod.POST, "$WEBPAGE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
           .requestMatchers(HttpMethod.PUT, "$WEBPAGE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
           .requestMatchers(HttpMethod.HEAD, "$WEBPAGE_STATISTIC/**").permitAll()
           .requestMatchers(HttpMethod.GET, "$WEBPAGE_STATISTIC/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "$WEBPAGE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
+
+          .requestMatchers(HttpMethod.POST, "$WEBSITE_SCAN/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBSITE_SCAN/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.HEAD, "$WEBSITE_SCAN/**").permitAll()
+          .requestMatchers(HttpMethod.GET, "$WEBSITE_SCAN/**").permitAll()
+          .requestMatchers(HttpMethod.DELETE, "$WEBSITE_SCAN/**").hasAnyRole(RoleEnum.ADMIN.name)
 
           .requestMatchers(HttpMethod.PUT, "$CREDENTIAL/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()

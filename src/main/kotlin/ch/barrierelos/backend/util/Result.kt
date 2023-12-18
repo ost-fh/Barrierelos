@@ -1,8 +1,8 @@
 package ch.barrierelos.backend.util
 
 import ch.barrierelos.backend.constants.Header
-import org.springframework.http.HttpHeaders
 import org.springframework.data.domain.Page
+import org.springframework.http.HttpHeaders
 
 public fun <E, M> Page<E>.toResult(count:Long, lastModified: Long, toModel: E.() -> M): Result<M>
 {

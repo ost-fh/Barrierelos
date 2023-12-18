@@ -65,41 +65,19 @@ public interface Repository<E> : JpaRepository<E, Long>
 
     private fun <E> Repository<E>.findAllByModifiedAfter(modified: Long, sort: Sort): List<E> = findAllByModifiedAfter(Timestamp(modified), sort)
 
-    public fun <E, M> Repository<E>.findAll(defaultParameters: DefaultParameters, entity: Class<E>, toModel: E.() -> M): Result<M> = findAll(defaultParameters.page, defaultParameters.size, defaultParameters.sort, defaultParameters.order, defaultParameters.createdAfter, defaultParameters.modifiedAfter, entity, toModel)
-
-    public fun <E, M> Repository<E>.findAll(page: Int?, size: Int?, sort: String?, order: OrderEnum?, createdAfter: Long?, modifiedAfter: Long?, entity: Class<E>, toModel: E.() -> M): Result<M>
+    public fun <E, M> Repository<E>.findAll(defaultParameters: DefaultParameters, entity: Class<E>, toModel: E.() -> M): Result<M>
     {
-      var sortStr = (if (sort == "id") null else sort)
-        ?: (entity.declaredFields.find { it.isAnnotationPresent(Id::class.java) })?.name
-
-      val fields = entity.declaredFields.map { it.name }
-
-      if (sortStr != null && !fields.contains(sortStr))
-      {
-        if (sortStr.startsWith("is"))
-        {
-          sortStr = sortStr.substringAfter("is").replaceFirstChar { it.lowercase() }
-        } else if (sortStr.endsWith("Id"))
-        {
-          sortStr = sortStr.substringBeforeLast("Id") + "Fk"
-        }
-      }
-
-      var sorting = if (sortStr != null) Sort.by(sortStr) else Sort.unsorted()
-
-      sorting = when(order)
-      {
-        OrderEnum.ASC -> sorting.ascending()
-        OrderEnum.DESC -> sorting.descending()
-        else -> sorting
-      }
-
       val count = this.count()
       val lastModified = this.lastModified()
 
+      val page = defaultParameters.page
+      val size = defaultParameters.size
+      val createdAfter = defaultParameters.createdAfter
+      val modifiedAfter = defaultParameters.modifiedAfter
+
       return if(page != null && size != null && size > 0)
       {
-        val pageable = PageRequest.of(page, size).withSort(sorting)
+        val pageable = defaultParameters.toPageable(count, entity)
 
         if(createdAfter != null && modifiedAfter != null)
         {
@@ -120,6 +98,8 @@ public interface Repository<E> : JpaRepository<E, Long>
       }
       else
       {
+        val sorting = defaultParameters.toSorting(entity)
+
         if(createdAfter != null && modifiedAfter != null)
         {
           Result(this.findAllByCreatedAfterAndModifiedAfter(createdAfter, modifiedAfter, sorting).map { it.toModel() }, count, lastModified)
@@ -137,6 +117,48 @@ public interface Repository<E> : JpaRepository<E, Long>
           Result(this.findAll(sorting).map { it.toModel() }, count, lastModified)
         }
       }
+    }
+
+    public fun <E> DefaultParameters.toSorting(entity: Class<E>): Sort
+    {
+      var sortStr = (if (sort == "id") null else sort) ?: (entity.declaredFields.find { it.isAnnotationPresent(Id::class.java) })?.name
+
+      val fields = entity.declaredFields.map { it.name }
+
+      if(sortStr != null && !fields.contains(sortStr))
+      {
+        if (sortStr.startsWith("is"))
+        {
+          sortStr = sortStr.substringAfter("is").replaceFirstChar { it.lowercase() }
+        }
+        else if(sortStr.endsWith("Id"))
+        {
+          sortStr = sortStr.substringBeforeLast("Id") + "Fk"
+        }
+      }
+
+      var sorting = if(sortStr != null) Sort.by(sortStr) else Sort.unsorted()
+
+      sorting = when(order)
+      {
+        OrderEnum.ASC -> sorting.ascending()
+        OrderEnum.DESC -> sorting.descending()
+        else -> sorting
+      }
+
+      return sorting
+    }
+
+    public fun <E> DefaultParameters.toPageable(count: Long, entity: Class<E>): Pageable
+    {
+      val page = this.page ?: 0
+      var size = this.size ?: count.toInt()
+
+      if(size < 1) size = 1
+
+      val sorting = this.toSorting(entity)
+
+      return PageRequest.of(page, size).withSort(sorting)
     }
   }
 }

@@ -7,6 +7,7 @@ import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.TAG
 import ch.barrierelos.backend.constants.Endpoint.USER
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE
+import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_SCAN
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_STATISTIC
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE
 import ch.barrierelos.backend.constants.Endpoint.WEBSITES
@@ -90,6 +91,12 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.HEAD, "$WEBSITE_SCAN/**").permitAll()
           .requestMatchers(HttpMethod.GET, "$WEBSITE_SCAN/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "$WEBSITE_SCAN/**").hasAnyRole(RoleEnum.ADMIN.name)
+
+          .requestMatchers(HttpMethod.POST, "$WEBPAGE_SCAN/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBPAGE_SCAN/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.HEAD, "$WEBPAGE_SCAN/**").permitAll()
+          .requestMatchers(HttpMethod.GET, "$WEBPAGE_SCAN/**").permitAll()
+          .requestMatchers(HttpMethod.DELETE, "$WEBPAGE_SCAN/**").hasAnyRole(RoleEnum.ADMIN.name)
 
           .requestMatchers(HttpMethod.PUT, "$CREDENTIAL/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()

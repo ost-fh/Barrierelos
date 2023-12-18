@@ -56,6 +56,8 @@ class ServiceTests
   lateinit var webpageStatisticService: WebpageStatisticService
   @Autowired
   lateinit var websiteScanService: WebsiteScanService
+  @Autowired
+  lateinit var webpageScanService: WebpageScanService
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -80,6 +82,8 @@ class ServiceTests
   lateinit var webpageStatisticRepository: WebpageStatisticRepository
   @Autowired
   lateinit var websiteScanRepository: WebsiteScanRepository
+  @Autowired
+  lateinit var webpageScanRepository: WebpageScanRepository
 
   @Autowired
   lateinit var websiteScanRepository: WebsiteScanRepository
@@ -159,6 +163,7 @@ class ServiceTests
     websiteStatisticRepository.deleteAll()
     webpageStatisticRepository.deleteAll()
     websiteScanRepository.deleteAll()
+    webpageScanRepository.deleteAll()
   }
 
   @Nested
@@ -3181,6 +3186,354 @@ class ServiceTests
         // then
         assertThrows(NoAuthorizationException::class.java) {
           websiteScanService.deleteWebsiteScan(websiteScan.id)
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class WebpageScanServiceTests
+  {
+    @Nested
+    inner class AddWebpageScanTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `adds webpage scan, given admin account`()
+      {
+        // when
+        val expected = createWebpageScanModel()
+
+        // then
+        val actual = webpageScanService.addWebpageScan(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.webpageId, actual.webpageId)
+        assertEquals(expected.webpageStatisticId, actual.webpageStatisticId)
+        assertEquals(expected.webpageResultId, actual.webpageResultId)
+        assertEquals(expected.userId, actual.userId)
+        assertNotEquals(expected.modified, actual.modified)
+        assertNotEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage scan, given moderator account`()
+      {
+        // when
+        val webpageScan = createWebpageScanModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.addWebpageScan(webpageScan)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage scan, given contributor account`()
+      {
+        // when
+        val webpageScan = createWebpageScanModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.addWebpageScan(webpageScan)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot add webpage scan, given viewer account`()
+      {
+        // when
+        val webpageScan = createWebpageScanModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.addWebpageScan(webpageScan)
+        }
+      }
+
+      @Test
+      fun `cannot add webpageScan, given no account`()
+      {
+        // when
+        val webpageScan = createWebpageScanModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.addWebpageScan(webpageScan)
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateWebpageScanTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `updates webpage scan, given admin account`()
+      {
+        // when
+        val expected = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        val actual = webpageScanService.updateWebpageScan(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.webpageId, actual.webpageId)
+        assertEquals(expected.webpageStatisticId, actual.webpageStatisticId)
+        assertEquals(expected.webpageResultId, actual.webpageResultId)
+        assertEquals(expected.userId, actual.userId)
+        assertNotEquals(expected.modified, actual.modified)
+        assertEquals(expected.created, actual.created)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage scan, given moderator account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.updateWebpageScan(webpageScan)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage scan, given contributor account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.updateWebpageScan(webpageScan)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage scan, given viewer account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.updateWebpageScan(webpageScan)
+        }
+      }
+
+      @Test
+      fun `cannot update webpage scan, given no account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.updateWebpageScan(webpageScan)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot update webpage scan, when webpage scan not exists`()
+      {
+        // when
+        val webpageScan = createWebpageScanModel()
+
+        // then
+        assertThrows(NoSuchElementException::class.java) {
+          webpageScanService.updateWebpageScan(webpageScan)
+        }
+      }
+    }
+
+    @Nested
+    inner class GetWebpageScansTests
+    {
+      @Test
+      fun `gets webpage scans`()
+      {
+        // given
+        webpageScanRepository.save(createWebpageScanEntity().apply {
+          webpageFk = 40
+        })
+        webpageScanRepository.save(createWebpageScanEntity().apply {
+          webpageFk = 60
+        })
+
+        // when
+        val webpageScans = webpageScanService.getWebpageScans().content
+
+        // then
+        webpageScans.shouldNotBeEmpty()
+        webpageScans.shouldHaveSize(2)
+        assertTrue(webpageScans.any { it.webpageId == 40L })
+        assertTrue(webpageScans.any { it.webpageId == 60L })
+      }
+
+      @Test
+      fun `gets webpage scans with headers, when no parameters`()
+      {
+        // given
+        webpageScanRepository.save(createWebpageScanEntity().apply {
+          webpageFk = 40
+        })
+        webpageScanRepository.save(createWebpageScanEntity().apply {
+          webpageFk = 60
+        })
+
+        // when
+        val webpageScans = webpageScanService.getWebpageScans()
+
+        // then
+        webpageScans.page.shouldBe(0)
+        webpageScans.size.shouldBe(2)
+        webpageScans.totalElements.shouldBe(2)
+        webpageScans.totalPages.shouldBe(1)
+        webpageScans.count.shouldBe(2)
+        webpageScans.lastModified.shouldBeGreaterThan(0)
+        webpageScans.content.shouldHaveSize(2)
+      }
+
+      @Test
+      fun `gets webpage scans with headers, when with parameters`()
+      {
+        // given
+        webpageScanRepository.save(createWebpageScanEntity().apply {
+          webpageFk = 40
+        })
+        webpageScanRepository.save(createWebpageScanEntity().apply {
+          webpageFk = 60
+        })
+
+        // when
+        val webpageScans = webpageScanService.getWebpageScans(DefaultParameters(
+          page = 1,
+          size = 1,
+          sort = "webpageId",
+          order = OrderEnum.ASC
+        ))
+
+        // then
+        webpageScans.page.shouldBe(1)
+        webpageScans.size.shouldBe(1)
+        webpageScans.totalElements.shouldBe(2)
+        webpageScans.totalPages.shouldBe(2)
+        webpageScans.count.shouldBe(2)
+        webpageScans.lastModified.shouldBeGreaterThan(0)
+        webpageScans.content.shouldHaveSize(1)
+      }
+    }
+
+    @Nested
+    inner class GetWebpageScanTests
+    {
+      @Test
+      fun `gets webpage scan`()
+      {
+        // when
+        val expected = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        val actual = webpageScanService.getWebpageScan(expected.id)
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      fun `cannot get webpage scan, when webpage scan not exists`()
+      {
+        assertThrows(NoSuchElementException::class.java) {
+          webpageScanService.getWebpageScan(5000000)
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteWebpageScanTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `deletes webpage scan, given admin account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+        val webpageScansBefore = webpageScanService.getWebpageScans().content
+
+        // then
+        assertDoesNotThrow {
+          webpageScanService.deleteWebpageScan(webpageScan.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          webpageScanService.getWebpageScan(webpageScan.id)
+        }
+
+        val webpageScansAfter = webpageScanService.getWebpageScans().content
+
+        webpageScansBefore.shouldContain(webpageScan)
+        webpageScansAfter.shouldNotContain(webpageScan)
+        webpageScansBefore.shouldContainAll(webpageScansAfter)
+        webpageScansAfter.shouldNotContainAll(webpageScansBefore)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage scan, given moderator account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.deleteWebpageScan(webpageScan.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage scan, given contributor account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.deleteWebpageScan(webpageScan.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot delete webpage scan, given viewer account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.deleteWebpageScan(webpageScan.id)
+        }
+      }
+
+      @Test
+      fun `cannot delete webpageScan, given no account`()
+      {
+        // when
+        val webpageScan = webpageScanRepository.save(createWebpageScanEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          webpageScanService.deleteWebpageScan(webpageScan.id)
         }
       }
     }

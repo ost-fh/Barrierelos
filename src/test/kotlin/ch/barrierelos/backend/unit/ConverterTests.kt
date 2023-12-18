@@ -602,4 +602,79 @@ class ConverterTests
       actual.shouldHaveSingleElement { it.websiteFk == 2L }
     }
   }
+
+  @Nested
+  inner class WebpageScanTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createWebpageScanEntity()
+
+      // then
+      val model = createWebpageScanModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createWebpageScanModel()
+
+      // then
+      val expected = createWebpageScanEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.webpageScanId, actual.webpageScanId)
+      assertEquals(expected.webpageFk, actual.webpageFk)
+      assertEquals(expected.webpageStatisticFk, actual.webpageStatisticFk)
+      assertEquals(expected.webpageResultFk, actual.webpageResultFk)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+
+    @Test
+    fun `converts to models, when entities`()
+    {
+      // when
+      val entities = setOf(
+        createWebpageScanEntity().apply { webpageFk = 1L },
+        createWebpageScanEntity().apply { webpageFk = 2L }
+      )
+
+      // then
+      val models = setOf(
+        createWebpageScanModel().apply { webpageId = 1L },
+        createWebpageScanModel().apply { webpageId = 2L }
+      )
+
+      assertEquals(models, entities.toModels())
+    }
+
+    @Test
+    fun `converts to entities, when models`()
+    {
+      // when
+      val models = setOf(
+        createWebpageScanModel().apply { webpageId = 1L },
+        createWebpageScanModel().apply { webpageId = 2L }
+      )
+
+      // then
+      val expected = setOf(
+        createWebpageScanEntity().apply { webpageFk = 1L },
+        createWebpageScanEntity().apply { webpageFk = 2L }
+      )
+      val actual = models.toEntities()
+
+      actual.shouldHaveSize(expected.size)
+      actual.shouldHaveSingleElement { it.webpageFk == 1L }
+      actual.shouldHaveSingleElement { it.webpageFk == 2L }
+    }
+  }
 }

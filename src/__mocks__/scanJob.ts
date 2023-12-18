@@ -5,8 +5,8 @@ function getEmptyScanJob(): ScanJob {
         jobId: 0,
         jobTimestamp: "",
         modelVersion: "",
-        webpagePaths: [],
-        websiteBaseUrl: ""
+        webpages: [],
+        domain: ""
     }
 }
 

@@ -17,7 +17,7 @@ function formatWebsiteResults(job: ScanJob, webpageResults: WebpageResult[]): We
     return {
         modelVersion: "0.0.0",
         jobId: job.jobId,
-        website: job.websiteBaseUrl,
+        domain: job.domain,
         scanTimestamp: new Date().toISOString(),
         scanStatus: ScanStatus.Success,
         webpages: webpageResults
@@ -28,7 +28,7 @@ function formatFailedWebsiteResult(error: unknown): WebsiteResult {
     return {
         modelVersion: "0.0.0",
         jobId: 0,
-        website: "N/A",
+        domain: "N/A",
         scanTimestamp: new Date().toISOString(),
         scanStatus: ScanStatus.Failed,
         errorMessage: errorToErrorMessage(error),
@@ -36,7 +36,7 @@ function formatFailedWebsiteResult(error: unknown): WebsiteResult {
     }
 }
 
-function formatWebpageResults(path: string, results: AxeResults): WebpageResult {
+function formatWebpageResults(url: string, results: AxeResults): WebpageResult {
     const ruleOccurrencesMap = new Map<string, AxeRule[]>()
 
     results.passes.forEach(rule => {
@@ -55,15 +55,15 @@ function formatWebpageResults(path: string, results: AxeResults): WebpageResult 
     const rules = Array.from(ruleOccurrencesMap.entries(), formatRuleOccurrences)
 
     return {
-        path,
+        url: url,
         scanStatus: ScanStatus.Success,
         rules
     }
 }
 
-function formatFailedWebpageResult(path: string, error: unknown): WebpageResult {
+function formatFailedWebpageResult(url: string, error: unknown): WebpageResult {
     return {
-        path,
+        url: url,
         scanStatus: ScanStatus.Failed,
         errorMessage: errorToErrorMessage(error),
         rules: []

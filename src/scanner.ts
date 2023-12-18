@@ -6,28 +6,28 @@ import Logger from "./logger.js";
 
 
 export async function scanWebsite(job: ScanJob): Promise<WebsiteResult> {
-    Logger.info(`Starting to scan ${job.websiteBaseUrl}, consisting of ${job.webpagePaths.length} webpages`)
+    Logger.info(`Starting to scan ${job.domain}, consisting of ${job.webpages.length} webpages`)
     const browser = await puppeteer.launch({headless: "new", args: ["--no-sandbox"]});
 
     const webpageResults = await Promise.all(
-        job.webpagePaths.map(async path => {
+        job.webpages.map(async url => {
             return await scanWebpage({
                 browser,
                 job,
-                path,
+                url: url,
             })
         })
     )
     await browser.close();
 
-    Logger.info(`Finished scanning ${job.websiteBaseUrl}`)
+    Logger.info(`Finished scanning ${job.domain}`)
     return formatWebsiteResults(job, webpageResults)
 }
 
 interface WebpageScanProperties {
     browser: Browser,
     job: ScanJob,
-    path: string
+    url: string
     waitForNavigation?: boolean,
     retries?: number,
     navigationTimeoutMs?: number,
@@ -46,10 +46,9 @@ async function scanWebpage(webpageScanProperties: WebpageScanProperties): Promis
     page.setDefaultNavigationTimeout(props.navigationTimeoutMs)
     // One of the most common desktop user agents, taken from https://www.useragents.me/
     await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36");
-    const url = props.job.websiteBaseUrl + props.path
 
     try {
-        await navigateToUrl(page, url)
+        await navigateToUrl(page, props.url)
         // This prevents problems with JS redirects
         if (props.waitForNavigation) {
             await page.waitForNavigation()
@@ -58,7 +57,7 @@ async function scanWebpage(webpageScanProperties: WebpageScanProperties): Promis
         const axePuppeteer = new AxePuppeteer(page)
         const results = await axePuppeteer.analyze();
 
-        return formatWebpageResults(props.path, results)
+        return formatWebpageResults(props.url, results)
     } catch (e) {
         if (
             !props.waitForNavigation &&
@@ -69,17 +68,17 @@ async function scanWebpage(webpageScanProperties: WebpageScanProperties): Promis
             return scanWebpage(props)
         }
 
-        Logger.error(`Failed to scan ${url}`)
+        Logger.error(`Failed to scan ${props.url}`)
         Logger.error(e)
 
         if (props.retries > 0) {
             props.retries -= 1
-            Logger.info(`Retrying to scan ${url}, ${props.retries} remaining retries`)
+            Logger.info(`Retrying to scan ${props.url}, ${props.retries} remaining retries`)
             if (e instanceof TimeoutError) props.navigationTimeoutMs += 10e3
             return scanWebpage(props)
         }
 
-        return formatFailedWebpageResult(props.path, e)
+        return formatFailedWebpageResult(props.url, e)
     }
 }
 

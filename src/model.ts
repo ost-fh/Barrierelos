@@ -9,14 +9,14 @@ interface ScanJob {
     modelVersion: string
     jobId: number
     jobTimestamp: string
-    websiteBaseUrl: string
-    webpagePaths: string[]
+    domain: string
+    webpages: string[]
 }
 
 interface WebsiteResult {
     modelVersion: string
     jobId: number
-    website: string
+    domain: string
     scanTimestamp: string
     scanStatus: ScanStatus
     errorMessage?: string
@@ -24,7 +24,7 @@ interface WebsiteResult {
 }
 
 interface WebpageResult {
-    path: string
+    url: string
     scanStatus: ScanStatus
     errorMessage?: string
     rules: Rule[]

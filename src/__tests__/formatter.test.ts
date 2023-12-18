@@ -15,14 +15,14 @@ describe("formatWebsiteResults()", () => {
     beforeEach(() => {
         job = getEmptyScanJob()
     })
-    it("should contain the jobId and baseUrl as website property", () => {
+    it("should contain the jobId and domain as website property", () => {
         const jobId = 13
-        const baseUrl = "testBaseUrl"
+        const domain = "testdomain"
         job.jobId = jobId
-        job.websiteBaseUrl = baseUrl
+        job.domain = domain
         const result = formatWebsiteResults(job, [])
         expect(result.jobId).to.equal(jobId)
-        expect(result.website).to.equal(baseUrl)
+        expect(result.domain).to.equal(domain)
     })
     it("should return the webpageResults as webpages property", () => {
         const webpages = [
@@ -48,10 +48,10 @@ describe("formatWebsiteResults()", () => {
 })
 
 describe("formatFailedWebsiteResult()", () => {
-    it("should contain jobId 0 and baseUrl N/A as website properties", () => {
+    it("should contain jobId 0 and domain N/A as website properties", () => {
         const failedResult = formatFailedWebsiteResult("")
         expect(failedResult.jobId).to.equal(0)
-        expect(failedResult.website).to.equal("N/A")
+        expect(failedResult.domain).to.equal("N/A")
     })
     it("should return a failed scanStatus and an errorMessage", () => {
         const failedResult = formatFailedWebsiteResult("")
@@ -71,10 +71,10 @@ describe("formatFailedWebsiteResult()", () => {
 })
 
 describe("formatWebpageResults()", () => {
-    it("should return the path as a property", () => {
-        const path = "testPath"
-        const result = formatWebpageResults(path, getEmptyAxeResults())
-        expect(result.path).to.equal(path)
+    it("should return the url as a property", () => {
+        const url = "testUrl"
+        const result = formatWebpageResults(url, getEmptyAxeResults())
+        expect(result.url).to.equal(url)
     })
     it("should return a success scanStatus and no errorMessage", () => {
         const result = formatWebpageResults("", getEmptyAxeResults())
@@ -98,10 +98,10 @@ describe("formatWebpageResults()", () => {
 })
 
 describe("formatFailedWebpageResult()", () => {
-    it("should still return the path as a property", () => {
-        const path = "testPath"
-        const failedResult = formatFailedWebpageResult(path, "")
-        expect(failedResult.path).to.equal(path)
+    it("should still return the url as a property", () => {
+        const url = "testUrl"
+        const failedResult = formatFailedWebpageResult(url, "")
+        expect(failedResult.url).to.equal(url)
     })
     it("should return a failed scanStatus and an errorMessage", () => {
         const failedResult = formatFailedWebpageResult("", "")

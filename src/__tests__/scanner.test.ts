@@ -26,8 +26,8 @@ describe("scanWebsite()", () => {
             modelVersion: "",
             jobId: 0,
             jobTimestamp: "",
-            websiteBaseUrl: "",
-            webpagePaths: ["", ""]
+            domain: "",
+            webpages: ["", ""]
         }
 
         td.reset()

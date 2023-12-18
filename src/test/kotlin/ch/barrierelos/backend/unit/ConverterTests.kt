@@ -527,4 +527,79 @@ class ConverterTests
       actual.shouldHaveSingleElement { it.score == 60.0 }
     }
   }
+
+  @Nested
+  inner class WebsiteScanTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createWebsiteScanEntity()
+
+      // then
+      val model = createWebsiteScanModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createWebsiteScanModel()
+
+      // then
+      val expected = createWebsiteScanEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.websiteScanId, actual.websiteScanId)
+      assertEquals(expected.websiteFk, actual.websiteFk)
+      assertEquals(expected.websiteStatisticFk, actual.websiteStatisticFk)
+      assertEquals(expected.websiteResultFk, actual.websiteResultFk)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+
+    @Test
+    fun `converts to models, when entities`()
+    {
+      // when
+      val entities = setOf(
+        createWebsiteScanEntity().apply { websiteFk = 1L },
+        createWebsiteScanEntity().apply { websiteFk = 2L }
+      )
+
+      // then
+      val models = setOf(
+        createWebsiteScanModel().apply { websiteId = 1L },
+        createWebsiteScanModel().apply { websiteId = 2L }
+      )
+
+      assertEquals(models, entities.toModels())
+    }
+
+    @Test
+    fun `converts to entities, when models`()
+    {
+      // when
+      val models = setOf(
+        createWebsiteScanModel().apply { websiteId = 1L },
+        createWebsiteScanModel().apply { websiteId = 2L }
+      )
+
+      // then
+      val expected = setOf(
+        createWebsiteScanEntity().apply { websiteFk = 1L },
+        createWebsiteScanEntity().apply { websiteFk = 2L }
+      )
+      val actual = models.toEntities()
+
+      actual.shouldHaveSize(expected.size)
+      actual.shouldHaveSingleElement { it.websiteFk == 1L }
+      actual.shouldHaveSingleElement { it.websiteFk == 2L }
+    }
+  }
 }

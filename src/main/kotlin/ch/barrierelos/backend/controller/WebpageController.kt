@@ -38,9 +38,9 @@ public class WebpageController
   }
 
   @GetMapping(value = [WEBPAGE], produces = [MediaType.JSON])
-  public fun getWebpages(@ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<Webpage>>
+  public fun getWebpages(showDeleted: Boolean = false, showBlocked: Boolean = false, @ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<Webpage>>
   {
-    val webpagePage = this.webpageService.getWebpages(defaultParameters)
+    val webpagePage = this.webpageService.getWebpages(showDeleted, showBlocked, defaultParameters)
 
     return ResponseEntity.status(HttpStatus.OK).headers(webpagePage.toHeaders()).body(webpagePage.content)
   }

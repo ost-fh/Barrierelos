@@ -1520,8 +1520,8 @@ class ServiceTests
         })
 
         // when
-        val websites = websiteService.getWebsites(
-          DefaultParameters(
+        val websites = websiteService.getWebsites(defaultParameters =
+        DefaultParameters(
             page = 1,
             size = 1,
             sort = "domain",
@@ -1995,8 +1995,8 @@ class ServiceTests
         })
 
         // when
-        val webpages = webpageService.getWebpages(
-          DefaultParameters(
+        val webpages = webpageService.getWebpages(defaultParameters =
+        DefaultParameters(
             page = 1,
             size = 1,
             sort = "url",

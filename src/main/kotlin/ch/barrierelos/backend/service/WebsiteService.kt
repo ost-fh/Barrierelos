@@ -8,7 +8,6 @@ import ch.barrierelos.backend.converter.scanner.toScanJob
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.converter.toModels
-import ch.barrierelos.backend.entity.WebsiteEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
@@ -20,10 +19,10 @@ import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.model.WebsiteTag
 import ch.barrierelos.backend.model.scanner.ScanJob
 import ch.barrierelos.backend.parameter.DefaultParameters
-import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.TagRepository
 import ch.barrierelos.backend.repository.WebpageRepository
 import ch.barrierelos.backend.repository.WebsiteRepository
+import ch.barrierelos.backend.repository.WebsiteRepository.Companion.findAll
 import ch.barrierelos.backend.repository.WebsiteTagRepository
 import ch.barrierelos.backend.repository.scanner.ScanJobRepository
 import ch.barrierelos.backend.repository.scanner.WebpageResultRepository
@@ -188,9 +187,9 @@ public class WebsiteService
     return this.websiteRepository.save(website.toEntity()).toModel()
   }
 
-  public fun getWebsites(defaultParameters: DefaultParameters = DefaultParameters()): Result<Website>
+  public fun getWebsites(showDeleted: Boolean = false, showBlocked: Boolean = false, defaultParameters: DefaultParameters = DefaultParameters()): Result<Website>
   {
-    return this.websiteRepository.findAll(defaultParameters, WebsiteEntity::class.java, WebsiteEntity::toModel)
+    return this.websiteRepository.findAll(showDeleted, showBlocked, defaultParameters)
   }
 
   public fun getWebsite(websiteId: Long): Website

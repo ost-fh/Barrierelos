@@ -1,24 +1,26 @@
 package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.converter.toEntity
-import ch.barrierelos.backend.converter.toModel
-import ch.barrierelos.backend.entity.WebpageEntity
-import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.enums.StatusEnum
-import ch.barrierelos.backend.exceptions.InvalidUrlException
 import ch.barrierelos.backend.exceptions.NoAuthorizationException
 import ch.barrierelos.backend.exceptions.ReferenceNotExistsException
 import ch.barrierelos.backend.exceptions.UrlNotMatchingWebsiteDomainException
 import ch.barrierelos.backend.message.WebpageMessage
-import ch.barrierelos.backend.model.Webpage
-import ch.barrierelos.backend.parameter.DefaultParameters
-import ch.barrierelos.backend.repository.Repository.Companion.findAll
-import ch.barrierelos.backend.repository.WebpageRepository
 import ch.barrierelos.backend.repository.WebsiteRepository
-import ch.barrierelos.backend.security.Security
-import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.orThrow
 import ch.barrierelos.backend.util.throwIfNoValidUrl
+import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.enums.RoleEnum
+import ch.barrierelos.backend.enums.StatusEnum
+import ch.barrierelos.backend.exceptions.AlreadyExistsException
+import ch.barrierelos.backend.exceptions.InvalidPathException
+import ch.barrierelos.backend.exceptions.InvalidUrlException
+import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.model.Webpage
+import ch.barrierelos.backend.parameter.DefaultParameters
+import ch.barrierelos.backend.repository.WebpageRepository
+import ch.barrierelos.backend.repository.WebpageRepository.Companion.findAll
+import ch.barrierelos.backend.security.Security
+import ch.barrierelos.backend.util.Result
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -87,9 +89,9 @@ public class WebpageService
     return this.webpageRepository.save(webpage.toEntity()).toModel()
   }
 
-  public fun getWebpages(defaultParameters: DefaultParameters = DefaultParameters()): Result<Webpage>
+  public fun getWebpages(showDeleted: Boolean = false, showBlocked: Boolean = false, defaultParameters: DefaultParameters = DefaultParameters()): Result<Webpage>
   {
-    return this.webpageRepository.findAll(defaultParameters, WebpageEntity::class.java, WebpageEntity::toModel)
+    return this.webpageRepository.findAll(showDeleted, showBlocked, defaultParameters)
   }
 
   public fun getWebpage(webpageId: Long): Webpage

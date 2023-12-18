@@ -1754,7 +1754,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
           modifiedAfter = 4000
         )
 
-        every { websiteService.getWebsites(defaultParameters) } returns result
+        every { websiteService.getWebsites(defaultParameters = defaultParameters) } returns result
 
         // then
         mockMvc.get("/website") {
@@ -2356,7 +2356,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
           modifiedAfter = 4000
         )
 
-        every { webpageService.getWebpages(defaultParameters) } returns result
+        every { webpageService.getWebpages(defaultParameters = defaultParameters) } returns result
 
         // then
         mockMvc.get("/webpage") {

@@ -39,9 +39,9 @@ public class WebsiteController
   }
 
   @GetMapping(value = [WEBSITE], produces = [MediaType.JSON])
-  public fun getWebsites(@ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<Website>>
+  public fun getWebsites(showDeleted: Boolean = false, showBlocked: Boolean = false, @ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<Website>>
   {
-    val websitePage = this.websiteService.getWebsites(defaultParameters)
+    val websitePage = this.websiteService.getWebsites(showDeleted, showBlocked, defaultParameters)
 
     return ResponseEntity.status(HttpStatus.OK).headers(websitePage.toHeaders()).body(websitePage.content)
   }

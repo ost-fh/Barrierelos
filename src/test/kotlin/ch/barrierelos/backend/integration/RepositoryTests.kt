@@ -38,6 +38,8 @@ class RepositoryTests
   lateinit var webpageRepository: WebpageRepository
   @Autowired
   lateinit var websiteScanRepository: WebsiteScanRepository
+  @Autowired
+  lateinit var webpageScanRepository: WebpageScanRepository
 
   @Nested
   inner class UserRepositoryTests
@@ -625,6 +627,42 @@ class RepositoryTests
       val websiteScans = websiteScanRepository.findAllByWebsiteFk(5000)
 
       websiteScans.shouldBeEmpty()
+    }
+  }
+
+  @Nested
+  inner class WebpageScanRepositoryTests
+  {
+    @Test
+    fun `finds by webpage fk, when webpage fk exists`()
+    {
+      // given
+      val webpageFk = 25L
+
+      // when
+      entityManager.persist(createWebpageScanEntity(webpageFk = webpageFk, webpageStatisticFk = 1))
+      entityManager.persist(createWebpageScanEntity(webpageFk = webpageFk, webpageStatisticFk = 2))
+      entityManager.flush()
+
+      // then
+      val actual = webpageScanRepository.findAllByWebpageFk(webpageFk)
+
+      actual.shouldHaveSize(2)
+      actual.shouldHaveSingleElement { it.webpageStatisticFk == 1L }
+      actual.shouldHaveSingleElement { it.webpageStatisticFk == 2L }
+    }
+
+    @Test
+    fun `not exists by webpage fk, when webpage fk not exists`()
+    {
+      // when
+      entityManager.persist(createWebpageScanEntity(webpageFk = 25))
+      entityManager.flush()
+
+      // then
+      val webpageScans = webpageScanRepository.findAllByWebpageFk(5000)
+
+      webpageScans.shouldBeEmpty()
     }
   }
 }

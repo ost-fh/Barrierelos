@@ -1,16 +1,32 @@
 package ch.barrierelos.backend.converter
 
 import ch.barrierelos.backend.entity.WebpageEntity
+import ch.barrierelos.backend.enums.StatusEnum
+import ch.barrierelos.backend.message.WebpageMessage
 import ch.barrierelos.backend.model.Webpage
+import ch.barrierelos.backend.model.Website
+import ch.barrierelos.backend.security.Security
 import java.sql.Timestamp
+
+
+public fun WebpageMessage.toModel(website: Website, displayUrl: String): Webpage
+{
+  return Webpage(
+    user = Security.getUser(),
+    website = website,
+    displayUrl = displayUrl,
+    url = this.url,
+    status = StatusEnum.PENDING_INITIAL,
+  )
+}
 
 public fun Webpage.toEntity(): WebpageEntity
 {
   return WebpageEntity(
     webpageId = this.id,
-    websiteFk = this.websiteId,
-    userFk = this.userId,
-    path = this.path,
+    website = this.website.toEntity(),
+    user = this.user.toEntity(),
+    displayUrl = this.displayUrl,
     url = this.url,
     status = this.status,
     deleted = this.deleted,
@@ -23,9 +39,9 @@ public fun WebpageEntity.toModel(): Webpage
 {
   return Webpage(
     id = this.webpageId,
-    websiteId = this.websiteFk,
-    userId = this.userFk,
-    path = this.path,
+    website = this.website.toModel(),
+    user = this.user.toModel(),
+    displayUrl = this.displayUrl,
     url = this.url,
     status = this.status,
     deleted = this.deleted,
@@ -38,9 +54,9 @@ public fun WebpageEntity.toModel(webpage: Webpage): Webpage
 {
   return webpage.apply {
     id = this@toModel.webpageId
-    websiteId = this@toModel.websiteFk
-    userId = this@toModel.userFk
-    path = this@toModel.path
+    website = this@toModel.website.toModel()
+    user = this@toModel.user.toModel()
+    displayUrl = this@toModel.displayUrl
     url = this@toModel.url
     status = this@toModel.status
     deleted = this@toModel.deleted

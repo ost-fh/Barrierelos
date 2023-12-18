@@ -10,11 +10,12 @@ public class ScanJobEntity
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var scanJobId: Long = 0,
+  public var websiteFk: Long,
+  public var userFk: Long,
   public val modelVersion: String,
-  public val locale: String,
-  public val websiteBaseUrl: String,
+  public val domain: String,
   @Suppress("JpaAttributeTypeInspection", "RedundantSuppression")
-  public val webpagePaths: MutableSet<String>,
-  public var modified: Timestamp = Timestamp(0),
-  public var created: Timestamp = Timestamp(0),
+  public val webpages: MutableSet<String>,
+  public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
+  public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

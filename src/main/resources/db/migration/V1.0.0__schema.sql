@@ -34,7 +34,7 @@ CREATE TABLE "user"
 CREATE TABLE "credential"
 (
   "credential_id" BIGSERIAL,
-  "user_fk" BIGSERIAL,
+  "user_fk" BIGINT NOT NULL,
   "password" VARCHAR,
   "issuer" VARCHAR,
   "subject" VARCHAR,
@@ -83,13 +83,16 @@ CREATE CAST (VARCHAR AS SCAN_STATUS_ENUM) WITH INOUT AS IMPLICIT;
 CREATE TABLE "scan_job"
 (
   "scan_job_id" BIGSERIAL,
+  "website_fk" BIGINT NOT NULL,
+  "user_fk" BIGINT NOT NULL,
   "model_version" VARCHAR NOT NULL,
-  "locale" VARCHAR NOT NULL,
-  "website_base_url" VARCHAR NOT NULL,
-  "webpage_paths" VARCHAR ARRAY NOT NULL,
+  "domain" VARCHAR NOT NULL,
+  "webpages" VARCHAR ARRAY NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("scan_job_id")
+  PRIMARY KEY ("scan_job_id"),
+  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id") ON DELETE CASCADE,
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "website_result"
@@ -97,7 +100,7 @@ CREATE TABLE "website_result"
   "website_result_id" BIGSERIAL,
   "scan_job_fk" BIGINT,
   "model_version" VARCHAR NOT NULL,
-  "website" VARCHAR NOT NULL,
+  "domain" VARCHAR NOT NULL,
   "scan_timestamp" TIMESTAMP(3) NOT NULL,
   "scan_status" SCAN_STATUS_ENUM,
   "error_message" VARCHAR DEFAULT NULL,
@@ -110,8 +113,8 @@ CREATE TABLE "website_result"
 CREATE TABLE "webpage_result"
 (
   "webpage_result_id" BIGSERIAL,
-  "website_result_fk" BIGSERIAL NOT NULL,
-  "path" VARCHAR NOT NULL,
+  "website_result_fk" BIGINT NOT NULL,
+  "url" VARCHAR NOT NULL,
   "scan_status" SCAN_STATUS_ENUM,
   "error_message" VARCHAR DEFAULT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
@@ -123,7 +126,7 @@ CREATE TABLE "webpage_result"
 CREATE TABLE "rule"
 (
   "rule_id" BIGSERIAL,
-  "webpage_result_fk" BIGSERIAL NOT NULL,
+  "webpage_result_fk" BIGINT NOT NULL,
   "code" VARCHAR NOT NULL,
   "description" VARCHAR NOT NULL,
   "axe_url" VARCHAR NOT NULL,
@@ -136,7 +139,7 @@ CREATE TABLE "rule"
 CREATE TABLE "wcag_references"
 (
   "wcag_references_id" BIGSERIAL,
-  "rule_fk" BIGSERIAL NOT NULL,
+  "rule_fk" BIGINT NOT NULL,
   "version" VARCHAR NOT NULL,
   "level" VARCHAR NOT NULL,
   "criteria" VARCHAR ARRAY NOT NULL,
@@ -147,7 +150,7 @@ CREATE TABLE "wcag_references"
 CREATE TABLE "check"
 (
   "check_id" BIGSERIAL,
-  "rule_fk" BIGSERIAL NOT NULL,
+  "rule_fk" BIGINT NOT NULL,
   "code" VARCHAR NOT NULL,
   "type" CHECK_TYPE_ENUM,
   "impact" IMPACT_ENUM,
@@ -176,8 +179,8 @@ CREATE TABLE "check_element"
 CREATE TABLE "check_violating_element"
 (
   "check_violating_element_id" BIGSERIAL,
-  "check_fk" BIGSERIAL NOT NULL,
-  "check_element_fk" BIGSERIAL NOT NULL,
+  "check_fk" BIGINT NOT NULL,
+  "check_element_fk" BIGINT NOT NULL,
   PRIMARY KEY ("check_violating_element_id"),
   FOREIGN KEY ("check_fk") REFERENCES "check" ("check_id") ON DELETE CASCADE,
   FOREIGN KEY ("check_element_fk") REFERENCES "check_element" ("check_element_id") ON DELETE CASCADE
@@ -186,8 +189,8 @@ CREATE TABLE "check_violating_element"
 CREATE TABLE "check_incomplete_element"
 (
   "check_incomplete_element_id" BIGSERIAL,
-  "check_fk" BIGSERIAL NOT NULL,
-  "check_element_fk" BIGSERIAL NOT NULL,
+  "check_fk" BIGINT NOT NULL,
+  "check_element_fk" BIGINT NOT NULL,
   PRIMARY KEY ("check_incomplete_element_id"),
   FOREIGN KEY ("check_fk") REFERENCES "check" ("check_id") ON DELETE CASCADE,
   FOREIGN KEY ("check_element_fk") REFERENCES "check_element" ("check_element_id") ON DELETE CASCADE
@@ -196,7 +199,7 @@ CREATE TABLE "check_incomplete_element"
 CREATE TABLE "element"
 (
   "element_id" BIGSERIAL,
-  "check_element_fk" BIGSERIAL NOT NULL,
+  "check_element_fk" BIGINT NOT NULL,
   "target" VARCHAR NOT NULL,
   "html" VARCHAR NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
@@ -246,12 +249,11 @@ CREATE CAST (VARCHAR AS REASON_ENUM) WITH INOUT AS IMPLICIT;
 CREATE TABLE "website"
 (
   "website_id" BIGSERIAL,
-  "user_fk" BIGSERIAL,
-  "domain" VARCHAR NOT NULL UNIQUE,
+  "user_fk" BIGINT NOT NULL,
   "url" VARCHAR NOT NULL UNIQUE,
+  "domain" VARCHAR NOT NULL UNIQUE,
   "category" CATEGORY_ENUM NOT NULL,
   "status" STATUS_ENUM NOT NULL DEFAULT 'PENDING_INITIAL',
-  "webpage_count" INTEGER NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "deleted" BOOLEAN DEFAULT FALSE,
@@ -262,30 +264,24 @@ CREATE TABLE "website"
 CREATE TABLE "website_statistic"
 (
   "website_statistic_id" BIGSERIAL,
-  "website_fk" BIGSERIAL,
-  "user_fk" BIGSERIAL,
   "score" DOUBLE PRECISION NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("website_statistic_id"),
-  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
+  PRIMARY KEY ("website_statistic_id")
 );
 
 CREATE TABLE "website_scan"
 (
   "website_scan_id" BIGSERIAL,
-  "website_fk" BIGSERIAL,
-  "website_statistic_fk" BIGSERIAL,
-  "website_result_fk" BIGSERIAL,
-  "user_fk" BIGSERIAL,
+  "website_fk" BIGINT NOT NULL,
+  "website_statistic_fk" BIGINT,
+  "website_result_fk" BIGINT,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("website_scan_id"),
-  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
-  FOREIGN KEY ("website_statistic_fk") REFERENCES "website_statistic" ("website_statistic_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
-  FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id")
+  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id") ON DELETE CASCADE,
+  FOREIGN KEY ("website_statistic_fk") REFERENCES "website_statistic" ("website_statistic_id") ON DELETE CASCADE,
+  FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id") ON DELETE CASCADE
 );
 
 ----------------------------------------------------------------------------------------------------
@@ -295,51 +291,43 @@ CREATE TABLE "website_scan"
 CREATE TABLE "webpage"
 (
   "webpage_id" BIGSERIAL,
-  "website_fk" BIGSERIAL,
-  "user_fk" BIGSERIAL,
-  "path" VARCHAR NOT NULL,
+  "website_fk" BIGINT NOT NULL,
+  "user_fk" BIGINT NOT NULL,
   "url" VARCHAR NOT NULL,
-  "category" CATEGORY_ENUM NOT NULL,
+  "display_url" VARCHAR NOT NULL,
   "status" STATUS_ENUM NOT NULL,
   "deleted" BOOLEAN DEFAULT FALSE,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("webpage_id"),
-  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
+  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id") ON DELETE CASCADE,
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "webpage_statistic"
 (
   "webpage_statistic_id" BIGSERIAL,
-  "website_statistic_fk" BIGSERIAL,
-  "webpage_fk" BIGSERIAL,
-  "user_fk" BIGSERIAL,
   "score" DOUBLE PRECISION,
+  "weight" DOUBLE PRECISION,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("webpage_statistic_id"),
-  FOREIGN KEY ("webpage_fk") REFERENCES "webpage" ("webpage_id"),
-  FOREIGN KEY ("website_statistic_fk") REFERENCES "website_statistic" ("website_statistic_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
+  PRIMARY KEY ("webpage_statistic_id")
 );
 
 CREATE TABLE "webpage_scan"
 (
   "webpage_scan_id" BIGSERIAL,
-  "website_scan_fk" BIGSERIAL,
-  "webpage_fk" BIGSERIAL,
-  "webpage_statistic_fk" BIGSERIAL,
-  "webpage_result_fk" BIGSERIAL,
-  "user_fk" BIGSERIAL,
+  "website_scan_fk" BIGINT NOT NULL,
+  "webpage_fk" BIGINT NOT NULL,
+  "webpage_statistic_fk" BIGINT,
+  "webpage_result_fk" BIGINT,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("webpage_scan_id"),
-  FOREIGN KEY ("website_scan_fk") REFERENCES "website_scan" ("website_scan_id"),
-  FOREIGN KEY ("webpage_fk") REFERENCES "webpage" ("webpage_id"),
-  FOREIGN KEY ("webpage_statistic_fk") REFERENCES "webpage_statistic" ("webpage_statistic_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
-  FOREIGN KEY ("webpage_result_fk") REFERENCES "webpage_result" ("webpage_result_id")
+  FOREIGN KEY ("website_scan_fk") REFERENCES "website_scan" ("website_scan_id") ON DELETE CASCADE,
+  FOREIGN KEY ("webpage_fk") REFERENCES "webpage" ("webpage_id") ON DELETE CASCADE,
+  FOREIGN KEY ("webpage_statistic_fk") REFERENCES "webpage_statistic" ("webpage_statistic_id") ON DELETE CASCADE,
+  FOREIGN KEY ("webpage_result_fk") REFERENCES "webpage_result" ("webpage_result_id") ON DELETE CASCADE
 );
 
 ----------------------------------------------------------------------------------------------------
@@ -374,7 +362,7 @@ CREATE TABLE "website_tag"
 CREATE TABLE "report"
 (
   "report_id" BIGSERIAL,
-  "user_fk" BIGSERIAL,
+  "user_fk" BIGINT NOT NULL,
   "reason" REASON_ENUM NOT NULL,
   "status" STATUS_ENUM NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
@@ -386,8 +374,8 @@ CREATE TABLE "report"
 CREATE TABLE "report_message"
 (
   "report_message_id" BIGSERIAL,
-  "user_fk" BIGSERIAL,
-  "report_fk" BIGSERIAL,
+  "user_fk" BIGINT NOT NULL,
+  "report_fk" BIGINT NOT NULL,
   "message" TEXT NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
@@ -399,8 +387,8 @@ CREATE TABLE "report_message"
 CREATE TABLE "user_report"
 (
   "user_report_id" BIGSERIAL,
-  "user_fk" BIGSERIAL,
-  "report_fk" BIGSERIAL,
+  "user_fk" BIGINT NOT NULL,
+  "report_fk" BIGINT NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("user_report_id"),
@@ -411,8 +399,8 @@ CREATE TABLE "user_report"
 CREATE TABLE "website_report"
 (
   "website_report_id" BIGSERIAL,
-  "website_fk" BIGSERIAL,
-  "report_fk" BIGSERIAL,
+  "website_fk" BIGINT NOT NULL,
+  "report_fk" BIGINT NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("website_report_id"),
@@ -423,8 +411,8 @@ CREATE TABLE "website_report"
 CREATE TABLE "webpage_report"
 (
   "webpage_report_id" BIGSERIAL,
-  "webpage_fk" BIGSERIAL,
-  "report_fk" BIGSERIAL,
+  "webpage_fk" BIGINT NOT NULL,
+  "report_fk" BIGINT NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("webpage_report_id"),

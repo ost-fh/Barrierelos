@@ -4,5 +4,7 @@ import ch.barrierelos.backend.entity.WebpageEntity
 
 public interface WebpageRepository : Repository<WebpageEntity>
 {
-  public fun existsByPathAndWebsiteFk(path: String, websiteFk: Long): Boolean
+  public fun existsByDisplayUrl(displayUrl: String): Boolean
+
+  public fun findAllByWebsiteWebsiteId(id: Long): MutableSet<WebpageEntity>
 }

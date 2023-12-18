@@ -11,10 +11,9 @@ public class ScoringEntity
 (
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  public var scoringId: Long = 0,
-  public var path: String,
+  public var webpageResultId: Long = 0,
   public var score: Double,
-  public var totalCount: Int,
+  public var totalCount: Long,
   public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
   public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

@@ -37,21 +37,21 @@ fun createWebsiteTagEntity(userFk: Long = 0, websiteFk: Long = 0) = WebsiteTagEn
   created = Timestamp(5000),
 )
 
-fun createWebsiteEntity(userFk: Long = 0, websiteFk: Long = 0) = WebsiteEntity(
-  userFk = userFk,
+fun createWebsiteEntity(user: UserEntity = createUserEntity(), websiteFk: Long = 0) = WebsiteEntity(
+  user = user,
   domain = "admin.ch",
   url = "https://admin.ch",
   category = CategoryEnum.GOVERNMENT_FEDERAL,
   status = StatusEnum.PENDING_INITIAL,
-  tags = mutableSetOf(createWebsiteTagEntity(userFk, websiteFk)),
+  tags = mutableSetOf(createWebsiteTagEntity(user.userId, websiteFk)),
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
 
-fun createWebpageEntity(userFk: Long = 0, websiteFk: Long = 0) = WebpageEntity(
-  websiteFk = websiteFk,
-  userFk = userFk,
-  path = "/vbs/infos",
+fun createWebpageEntity(user: UserEntity = createUserEntity(), website: WebsiteEntity = createWebsiteEntity()) = WebpageEntity(
+  website = website,
+  user = user,
+  displayUrl = "admin.ch/vbs/infos",
   url = "https://admin.ch/vbs/infos",
   status = StatusEnum.PENDING_INITIAL,
   modified = Timestamp(5000),

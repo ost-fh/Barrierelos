@@ -23,6 +23,21 @@ public fun RuleMessage.toEntity(webpageResult: WebpageResultEntity): RuleEntity
   return rule
 }
 
+public fun Rule.toEntity(webpageResult: WebpageResultEntity): RuleEntity
+{
+  val rule = RuleEntity(
+    webpageResult = webpageResult,
+    code = this.code,
+    axeUrl = this.axeUrl,
+    description = this.description,
+  )
+
+  rule.wcagReferences = this.wcagReferences?.toEntity(rule)
+  rule.checks = this.checks.map { it.toEntity(rule) }.toMutableSet()
+
+  return rule
+}
+
 public fun RuleEntity.toModel(): Rule
 {
   return Rule(
@@ -41,6 +56,16 @@ public fun WcagReferencesMessage.toEntity(ruleEntity: RuleEntity): WcagReference
 {
   return WcagReferencesEntity(
     rule = ruleEntity,
+    version = this.version,
+    level = this.level,
+    criteria = this.criteria.toMutableSet(),
+  )
+}
+
+public fun WcagReferences.toEntity(rule: RuleEntity): WcagReferencesEntity
+{
+  return WcagReferencesEntity(
+    rule = rule,
     version = this.version,
     level = this.level,
     criteria = this.criteria.toMutableSet(),

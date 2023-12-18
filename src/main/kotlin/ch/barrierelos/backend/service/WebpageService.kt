@@ -5,16 +5,19 @@ import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.entity.WebpageEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StatusEnum
-import ch.barrierelos.backend.exceptions.AlreadyExistsException
-import ch.barrierelos.backend.exceptions.InvalidPathException
 import ch.barrierelos.backend.exceptions.InvalidUrlException
 import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exceptions.ReferenceNotExistsException
+import ch.barrierelos.backend.message.WebpageMessage
 import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.WebpageRepository
+import ch.barrierelos.backend.repository.WebsiteRepository
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.util.Result
+import ch.barrierelos.backend.util.orThrow
+import ch.barrierelos.backend.util.throwIfNoValidUrl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -22,32 +25,39 @@ import org.springframework.stereotype.Service
 public class WebpageService
 {
   @Autowired
+  private lateinit var websiteRepository: WebsiteRepository
+
+  @Autowired
   private lateinit var webpageRepository: WebpageRepository
 
-  public fun addWebpage(webpage: Webpage): Webpage
+  @Autowired
+  private lateinit var statisticService: StatisticService
+
+  public fun addWebpage(webpageMessage: WebpageMessage): Webpage
   {
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
 
-    if(!Security.hasRole(RoleEnum.ADMIN))
-    {
-      Security.assertId(webpage.userId)
-    }
+    val website = websiteRepository.findById(webpageMessage.websiteId)
+      .orThrow(ReferenceNotExistsException("Website with this websiteId does not exist."))
+      .toModel()
 
-    throwIfNoValidPath(webpage)
-    throwIfUrlNotMatchesPath(webpage)
-    throwIfPathAlreadyExists(webpage)
+    throwIfNoValidUrl(webpageMessage.url)
+    throwIfUrlNotMatchesWebsiteDomain(webpageMessage.url, website.domain)
 
-    val timestamp = System.currentTimeMillis()
-    webpage.created = timestamp
-    webpage.modified = timestamp
-    webpage.status = StatusEnum.PENDING_INITIAL
+    val displayUrl = "https?://([^?]+).*".toRegex().find(webpageMessage.url)?.groups?.get(1)?.value ?: throw InvalidUrlException("Url is not valid.")
 
-    return this.webpageRepository.save(webpage.toEntity()).toModel()
+    throwIfDisplayUrlAlreadyExists(displayUrl)
+
+    var webpage = webpageMessage.toModel(website, displayUrl)
+    webpage = this.webpageRepository.save(webpage.toEntity()).toModel()
+    statisticService.addWebpageScan(webpage)
+
+    return webpage
   }
 
   public fun updateWebpage(webpage: Webpage): Webpage
   {
-    Security.assertAnyRolesOrId(webpage.userId, RoleEnum.ADMIN, RoleEnum.MODERATOR)
+    Security.assertAnyRolesOrId(webpage.user.id, RoleEnum.ADMIN, RoleEnum.MODERATOR)
 
     val existingWebpage = this.webpageRepository.findById(webpage.id).orElseThrow().toModel()
 
@@ -57,7 +67,7 @@ public class WebpageService
     }
     else if(Security.hasRole(RoleEnum.CONTRIBUTOR))
     {
-      if(!Security.hasId(webpage.userId))
+      if(!Security.hasId(webpage.user.id))
       {
         throwIfDeleted(webpage)
       }
@@ -100,11 +110,12 @@ public class WebpageService
 
   private fun throwIfIllegallyModified(webpage: Webpage, existingWebpage: Webpage)
   {
-    if((webpage.userId != existingWebpage.userId)
-      || (webpage.path != existingWebpage.path)
+    if((webpage.user != existingWebpage.user)
+      || (webpage.displayUrl != existingWebpage.displayUrl)
       || (webpage.url != existingWebpage.url)
       || (webpage.created != existingWebpage.created)
-      || (webpage.status != existingWebpage.status && (webpage.status == StatusEnum.PENDING_INITIAL || webpage.status == StatusEnum.PENDING_RESCAN || webpage.status == StatusEnum.READY)))
+      || (webpage.status != existingWebpage.status && (webpage.status == StatusEnum.PENDING_INITIAL || webpage.status == StatusEnum.PENDING_RESCAN || webpage.status == StatusEnum.READY))
+    )
     {
       throw IllegalArgumentException("Webpage illegally modified.")
     }
@@ -118,27 +129,19 @@ public class WebpageService
     }
   }
 
-  private fun throwIfPathAlreadyExists(webpage: Webpage)
+  private fun throwIfDisplayUrlAlreadyExists(displayUrl: String)
   {
-    if(this.webpageRepository.existsByPathAndWebsiteFk(webpage.path, webpage.websiteId))
+    if(this.webpageRepository.existsByDisplayUrl(displayUrl))
     {
-      throw AlreadyExistsException("Webpage with that path already exists.")
+      throw ReferenceNotExistsException("Webpage with this displayUrl already exists.")
     }
   }
 
-  private fun throwIfNoValidPath(webpage: Webpage)
+  private fun throwIfUrlNotMatchesWebsiteDomain(url: String, domain: String)
   {
-    if(!webpage.path.matches("^(/[A-Za-z0-9-]+)+\$".toRegex()))
+    if(!url.matches("^https?://([^/]*\\.)?${domain}(/.*)?\$".toRegex()))
     {
-      throw InvalidPathException("Path is not valid.")
-    }
-  }
-
-  private fun throwIfUrlNotMatchesPath(webpage: Webpage)
-  {
-    if(!webpage.url.matches("^http://.*${webpage.path}.*\$".toRegex()) && !webpage.url.matches("^https://.*${webpage.path}.*\$".toRegex()))
-    {
-      throw InvalidUrlException("Path and url do not match.")
+      throw InvalidUrlException("Url doesn't match website domain.")
     }
   }
 

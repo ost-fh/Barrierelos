@@ -9,7 +9,7 @@ public data class WebsiteResult(
   public val id: Long,
   public val modelVersion: String,
   public val scanJob: ScanJob,
-  public val website: String,
+  public val domain: String,
   public val scanStatus: ScanStatusEnum,
   public val scanTimestamp: Instant,
   public val errorMessage: String? = null,

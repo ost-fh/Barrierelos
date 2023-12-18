@@ -1344,7 +1344,8 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
   @Nested
   inner class WebsiteControllerTests
   {
-    private val website = createWebsiteModel(1, 0)
+    private val websiteMessage = createWebsiteMessage()
+    private val website = createWebsiteModel()
 
     @Nested
     inner class AddWebsiteTests
@@ -1354,7 +1355,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `uses correct media type`()
       {
         // when
-        every { websiteService.addWebsite(website) } returns website
+        every { websiteService.addWebsite(websiteMessage) } returns website
 
         // then
         mockMvc.post("/website").andExpect {
@@ -1367,16 +1368,16 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `receives website, when provided in body`()
       {
         // when
-        every { websiteService.addWebsite(website) } returns website
+        every { websiteService.addWebsite(websiteMessage) } returns website
 
         // then
         mockMvc.post("/website") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = website.toJson()
+          content = websiteMessage.toJson()
         }.andExpect {
           content {
             contentType(EXPECTED_MEDIA_TYPE)
-            jsonPath("$.userId") { value(website.userId) }
+            jsonPath("$.user.username") { value(website.user.username) }
             jsonPath("$.domain") { value(website.domain) }
             jsonPath("$.url") { value(website.url) }
             jsonPath("$.category") { value(website.category.toString()) }
@@ -1392,19 +1393,17 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns website, when added, given admin account`()
       {
         // when
-        val expected = website.copy()
-
-        every { websiteService.addWebsite(expected) } returns expected
+        every { websiteService.addWebsite(websiteMessage) } returns website
 
         // then
         val actual = mockMvc.post("/website") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = expected.toJson()
+          content = websiteMessage.toJson()
         }.andExpect {
           status { isCreated() }
         }.body<Website>()
 
-        assertEquals(expected, actual)
+        assertEquals(website, actual)
       }
 
       @Test
@@ -1412,19 +1411,17 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns website, when added, given moderator account`()
       {
         // when
-        val expected = website.copy()
-
-        every { websiteService.addWebsite(expected) } returns expected
+        every { websiteService.addWebsite(websiteMessage) } returns website
 
         // then
         val actual = mockMvc.post("/website") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = expected.toJson()
+          content = websiteMessage.toJson()
         }.andExpect {
           status { isCreated() }
         }.body<Website>()
 
-        assertEquals(expected, actual)
+        assertEquals(website, actual)
       }
 
       @Test
@@ -1432,19 +1429,17 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns website, when added, given contributor account`()
       {
         // when
-        val expected = website.copy()
-
-        every { websiteService.addWebsite(expected) } returns expected
+        every { websiteService.addWebsite(websiteMessage) } returns website
 
         // then
         val actual = mockMvc.post("/website") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = expected.toJson()
+          content = websiteMessage.toJson()
         }.andExpect {
           status { isCreated() }
         }.body<Website>()
 
-        assertEquals(expected, actual)
+        assertEquals(website, actual)
       }
 
       @Test
@@ -1452,12 +1447,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 403 forbidden, given viewer account`()
       {
         // when
-        every { websiteService.addWebsite(website) } returns website
+        every { websiteService.addWebsite(websiteMessage) } returns website
 
         // then
         mockMvc.post("/website") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = website.toJson()
+          content = websiteMessage.toJson()
         }.andExpect {
           status { isForbidden() }
         }
@@ -1467,12 +1462,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, given no account`()
       {
         // when
-        every { websiteService.addWebsite(website) } returns website
+        every { websiteService.addWebsite(websiteMessage) } returns website
 
         // then
         mockMvc.post("/website") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = website.toJson()
+          content = websiteMessage.toJson()
         }.andExpect {
           status { isUnauthorized() }
         }
@@ -1483,12 +1478,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
       {
         // when
-        every { websiteService.addWebsite(website) } throws NoAuthorizationException()
+        every { websiteService.addWebsite(websiteMessage) } throws NoAuthorizationException()
 
         // then
         mockMvc.post("/website") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = website.toJson()
+          content = websiteMessage.toJson()
         }.andExpect {
           status { isUnauthorized() }
         }
@@ -1499,12 +1494,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 409 conflict, when service throws AlreadyExistsException`()
       {
         // when
-        every { websiteService.addWebsite(website) } throws AlreadyExistsException("")
+        every { websiteService.addWebsite(websiteMessage) } throws AlreadyExistsException("")
 
         // then
         mockMvc.post("/website") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = website.toJson()
+          content = websiteMessage.toJson()
         }.andExpect {
           status { isConflict() }
         }
@@ -1515,7 +1510,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 415 unsupported media type, when no website provided in body`()
       {
         // when
-        every { websiteService.addWebsite(website) } returns website
+        every { websiteService.addWebsite(websiteMessage) } returns website
 
         // then
         mockMvc.post("/website").andExpect {
@@ -1557,7 +1552,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         }.andExpect {
           content {
             contentType(EXPECTED_MEDIA_TYPE)
-            jsonPath("$.userId") { value(website.userId) }
+            jsonPath("$.user.username") { value(website.user.username) }
             jsonPath("$.domain") { value(website.domain) }
             jsonPath("$.url") { value(website.url) }
             jsonPath("$.category") { value(website.category.toString()) }
@@ -1722,7 +1717,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
     @Nested
     inner class GetWebsitesTests
     {
-      val result = Result(
+      private val result = Result(
         page = 0,
         size = 1,
         totalElements = 1,
@@ -1959,7 +1954,8 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
   @Nested
   inner class WebpageControllerTests
   {
-    private val webpage = createWebpageModel(1, 0)
+    private val webpageMessage = createWebpageMessage()
+    private val webpage = createWebpageModel()
 
     @Nested
     inner class AddWebpageTests
@@ -1969,7 +1965,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `uses correct media type`()
       {
         // when
-        every { webpageService.addWebpage(webpage) } returns webpage
+        every { webpageService.addWebpage(webpageMessage) } returns webpage
 
         // then
         mockMvc.post("/webpage").andExpect {
@@ -1982,17 +1978,17 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `receives webpage, when provided in body`()
       {
         // when
-        every { webpageService.addWebpage(webpage) } returns webpage
+        every { webpageService.addWebpage(webpageMessage) } returns webpage
 
         // then
         mockMvc.post("/webpage") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = webpage.toJson()
+          content = webpageMessage.toJson()
         }.andExpect {
           content {
             contentType(EXPECTED_MEDIA_TYPE)
-            jsonPath("$.userId") { value(webpage.userId) }
-            jsonPath("$.path") { value(webpage.path) }
+            jsonPath("$.user.username") { value(webpage.user.username) }
+            jsonPath("$.displayUrl") { value(webpage.displayUrl) }
             jsonPath("$.url") { value(webpage.url) }
             jsonPath("$.modified") { value(webpage.modified) }
             jsonPath("$.created") { value(webpage.created) }
@@ -2005,19 +2001,17 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns webpage, when added, given admin account`()
       {
         // when
-        val expected = webpage.copy()
-
-        every { webpageService.addWebpage(expected) } returns expected
+        every { webpageService.addWebpage(webpageMessage) } returns webpage
 
         // then
         val actual = mockMvc.post("/webpage") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = expected.toJson()
+          content = webpageMessage.toJson()
         }.andExpect {
           status { isCreated() }
         }.body<Webpage>()
 
-        assertEquals(expected, actual)
+        assertEquals(webpage, actual)
       }
 
       @Test
@@ -2025,19 +2019,17 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns webpage, when added, given moderator account`()
       {
         // when
-        val expected = webpage.copy()
-
-        every { webpageService.addWebpage(expected) } returns expected
+        every { webpageService.addWebpage(webpageMessage) } returns webpage
 
         // then
         val actual = mockMvc.post("/webpage") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = expected.toJson()
+          content = webpageMessage.toJson()
         }.andExpect {
           status { isCreated() }
         }.body<Webpage>()
 
-        assertEquals(expected, actual)
+        assertEquals(webpage, actual)
       }
 
       @Test
@@ -2045,19 +2037,17 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `returns webpage, when added, given contributor account`()
       {
         // when
-        val expected = webpage.copy()
-
-        every { webpageService.addWebpage(expected) } returns expected
+        every { webpageService.addWebpage(webpageMessage) } returns webpage
 
         // then
         val actual = mockMvc.post("/webpage") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = expected.toJson()
+          content = webpageMessage.toJson()
         }.andExpect {
           status { isCreated() }
         }.body<Webpage>()
 
-        assertEquals(expected, actual)
+        assertEquals(webpage, actual)
       }
 
       @Test
@@ -2065,12 +2055,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 403 forbidden, given viewer account`()
       {
         // when
-        every { webpageService.addWebpage(webpage) } returns webpage
+        every { webpageService.addWebpage(webpageMessage) } returns webpage
 
         // then
         mockMvc.post("/webpage") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = webpage.toJson()
+          content = webpageMessage.toJson()
         }.andExpect {
           status { isForbidden() }
         }
@@ -2080,12 +2070,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, given no account`()
       {
         // when
-        every { webpageService.addWebpage(webpage) } returns webpage
+        every { webpageService.addWebpage(webpageMessage) } returns webpage
 
         // then
         mockMvc.post("/webpage") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = webpage.toJson()
+          content = webpageMessage.toJson()
         }.andExpect {
           status { isUnauthorized() }
         }
@@ -2096,12 +2086,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
       {
         // when
-        every { webpageService.addWebpage(webpage) } throws NoAuthorizationException()
+        every { webpageService.addWebpage(webpageMessage) } throws NoAuthorizationException()
 
         // then
         mockMvc.post("/webpage") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = webpage.toJson()
+          content = webpageMessage.toJson()
         }.andExpect {
           status { isUnauthorized() }
         }
@@ -2112,12 +2102,12 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 409 conflict, when service throws AlreadyExistsException`()
       {
         // when
-        every { webpageService.addWebpage(webpage) } throws AlreadyExistsException("")
+        every { webpageService.addWebpage(webpageMessage) } throws AlreadyExistsException("")
 
         // then
         mockMvc.post("/webpage") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = webpage.toJson()
+          content = webpageMessage.toJson()
         }.andExpect {
           status { isConflict() }
         }
@@ -2128,7 +2118,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
       fun `responds with 415 unsupported media type, when no webpage provided in body`()
       {
         // when
-        every { webpageService.addWebpage(webpage) } returns webpage
+        every { webpageService.addWebpage(webpageMessage) } returns webpage
 
         // then
         mockMvc.post("/webpage").andExpect {
@@ -2170,8 +2160,8 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         }.andExpect {
           content {
             contentType(EXPECTED_MEDIA_TYPE)
-            jsonPath("$.userId") { value(webpage.userId) }
-            jsonPath("$.path") { value(webpage.path) }
+            jsonPath("$.user.username") { value(webpage.user.username) }
+            jsonPath("$.displayUrl") { value(webpage.displayUrl) }
             jsonPath("$.url") { value(webpage.url) }
             jsonPath("$.status") { value(webpage.status.toString()) }
             jsonPath("$.modified") { value(webpage.modified) }

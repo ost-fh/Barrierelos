@@ -104,7 +104,7 @@ class EntityTests
       val actual = createWebsiteEntity()
 
       assertEquals(expected.websiteId, actual.websiteId)
-      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.user.userId, actual.user.userId)
       assertEquals(expected.domain, actual.domain)
       assertEquals(expected.url, actual.url)
       assertEquals(expected.category, actual.category)
@@ -129,9 +129,9 @@ class EntityTests
       val actual = createWebpageEntity()
 
       assertEquals(expected.webpageId, actual.webpageId)
-      assertEquals(expected.websiteFk, actual.websiteFk)
-      assertEquals(expected.userFk, actual.userFk)
-      assertEquals(expected.path, actual.path)
+      assertEquals(expected.website.websiteId, actual.website.websiteId)
+      assertEquals(expected.user.userId, actual.user.userId)
+      assertEquals(expected.displayUrl, actual.displayUrl)
       assertEquals(expected.url, actual.url)
       assertEquals(expected.status, actual.status)
       assertEquals(expected.deleted, actual.deleted)

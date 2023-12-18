@@ -15,6 +15,6 @@ public class ElementEntity
   public var checkElement: CheckElementEntity,
   public var target: String,
   public var html: String,
-  public var modified: Timestamp = Timestamp(0),
-  public var created: Timestamp = Timestamp(0),
+  public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
+  public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

@@ -2,6 +2,7 @@ package ch.barrierelos.backend.controller
 
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE
 import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.message.WebpageMessage
 import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebpageService
@@ -19,11 +20,9 @@ public class WebpageController
   private lateinit var webpageService: WebpageService
 
   @PostMapping(value = [WEBPAGE], consumes = [MediaType.JSON], produces = [MediaType.JSON])
-  public fun addWebpage(@RequestBody webpage: Webpage): ResponseEntity<Webpage>
+  public fun addWebpage(@RequestBody webpageMessage: WebpageMessage): ResponseEntity<Webpage>
   {
-    webpage.id = 0
-
-    this.webpageService.addWebpage(webpage)
+    val webpage = this.webpageService.addWebpage(webpageMessage)
 
     return ResponseEntity.status(HttpStatus.CREATED).body(webpage)
   }

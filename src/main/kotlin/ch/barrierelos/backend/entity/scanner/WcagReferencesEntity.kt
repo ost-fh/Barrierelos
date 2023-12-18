@@ -8,7 +8,7 @@ public class WcagReferencesEntity(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var wcagReferencesId: Long = 0,
-  @OneToOne
+  @OneToOne(cascade = [CascadeType.ALL])
   @JoinColumn(name = "rule_fk", nullable = false)
   public var rule: RuleEntity,
   public val version: String,

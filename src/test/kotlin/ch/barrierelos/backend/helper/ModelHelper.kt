@@ -36,22 +36,21 @@ fun createWebsiteTagModel(userId: Long = 0, websiteId: Long = 0) = WebsiteTag(
   created = 5000,
 )
 
-fun createWebsiteModel(userId: Long = 0, websiteId: Long = 0) = Website(
-  userId = userId,
+fun createWebsiteModel(user: User = createUserModel(), websiteId: Long = 0) = Website(
+  user = user,
   domain = "admin.ch",
   url = "https://admin.ch",
   category = CategoryEnum.GOVERNMENT_FEDERAL,
   status = StatusEnum.PENDING_INITIAL,
-  tags = mutableSetOf(createWebsiteTagModel(userId, websiteId)),
-  webpageCount = 0,
+  tags = mutableSetOf(createWebsiteTagModel(user.id, websiteId)),
   modified = 5000,
   created = 5000,
 )
 
-fun createWebpageModel(userId: Long = 0, websiteId: Long = 0) = Webpage(
-  websiteId = websiteId,
-  userId = userId,
-  path = "/vbs/infos",
+fun createWebpageModel(user: User = createUserModel(), website: Website = createWebsiteModel()) = Webpage(
+  website = website,
+  user = user,
+  displayUrl = "admin.ch/vbs/infos",
   url = "https://admin.ch/vbs/infos",
   status = StatusEnum.PENDING_INITIAL,
   modified = 5000,

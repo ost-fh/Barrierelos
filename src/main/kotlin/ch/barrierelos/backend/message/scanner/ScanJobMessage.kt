@@ -8,7 +8,6 @@ public data class ScanJobMessage(
   public val jobId: Long,
   public val modelVersion: String,
   public var jobTimestamp: Instant,
-  public val locale: String,
-  public val websiteBaseUrl: String,
-  public val webpagePaths: MutableSet<String>,
+  public val domain: String,
+  public val webpages: MutableSet<String>,
 )

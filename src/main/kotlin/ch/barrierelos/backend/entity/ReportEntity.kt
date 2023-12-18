@@ -17,6 +17,6 @@ public class ReportEntity
   public var reason: ReasonEnum,
   @Enumerated(EnumType.STRING)
   public var status: StatusEnum,
-  public var modified: Timestamp = Timestamp(0),
-  public var created: Timestamp = Timestamp(0),
+  public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
+  public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

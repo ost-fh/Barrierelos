@@ -1,5 +1,7 @@
 package ch.barrierelos.backend.util
 
+import ch.barrierelos.backend.exceptions.InvalidUrlException
+import org.apache.commons.validator.routines.UrlValidator
 import java.util.*
 
 public fun <T> T?.throwIfNull(exception: Exception): T
@@ -17,6 +19,12 @@ public fun <T> T?.throwIfNull(exception: Exception): T
 public fun <T> Optional<T>.orThrow(exception: Exception): T
 {
   return this.orElseThrow { exception }
+}
+
+public fun throwIfNoValidUrl(url: String)
+{
+  val urlValidator = UrlValidator(arrayOf("http", "https"))
+  if(!urlValidator.isValid(url)) throw InvalidUrlException("Invalid URL.")
 }
 
 public fun <T> MutableCollection<T>.clearAndAdd(element: T): Boolean

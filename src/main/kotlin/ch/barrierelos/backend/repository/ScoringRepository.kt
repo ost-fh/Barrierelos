@@ -1,11 +1,13 @@
 package ch.barrierelos.backend.repository
 
 import ch.barrierelos.backend.entity.ScoringEntity
+import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 public interface ScoringRepository : Repository<ScoringEntity>
 {
+  @Transactional
   @Query(
     nativeQuery = true, value = """
         WITH "webpage_counts" AS (
@@ -21,12 +23,11 @@ public interface ScoringRepository : Repository<ScoringEntity>
             FROM "check" AS "c"
             INNER JOIN "rule" AS "r" ON "r"."rule_id" = "c"."rule_fk"
             INNER JOIN "webpage_result" AS "wr" ON "wr"."webpage_result_id" = "r"."webpage_result_fk"
-            WHERE "wr"."website_result_fk" = :id
+            WHERE "wr"."website_result_fk" = :id AND wr."scan_status" = 'SUCCESS'
             GROUP BY "wr"."webpage_result_id"
         )
         SELECT
-            "wr"."webpage_result_id" AS "scoring_id",
-            "wr"."path",
+            "wr"."webpage_result_id",
             100 - "webpage_counts"."summed_weighted_violated_count" / ("webpage_counts"."summed_weighted_violated_count" + "webpage_counts"."summed_passed_count") * 100 AS "score",
             "webpage_counts"."summed_passed_count" + "webpage_counts"."summed_weighted_violated_count" AS "total_count",
             "wr"."modified",
@@ -36,5 +37,5 @@ public interface ScoringRepository : Repository<ScoringEntity>
         ORDER BY "wr"."webpage_result_id"
     """
   )
-  public fun calculateWebpageScores(@Param("id") websiteResultId: Long): List<ScoringEntity>
+  public fun calculateWebpageScores(@Param("id") websiteResultId: Long): MutableSet<ScoringEntity>
 }

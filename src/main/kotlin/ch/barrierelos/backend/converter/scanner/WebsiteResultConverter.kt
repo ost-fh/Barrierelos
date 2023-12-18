@@ -12,12 +12,27 @@ public fun WebsiteResultMessage.toEntity(scanJobEntity: ScanJobEntity): WebsiteR
   return WebsiteResultEntity(
     modelVersion = this.modelVersion,
     scanJob = scanJobEntity,
-    website = this.website,
+    domain = this.domain,
     scanTimestamp = Timestamp(this.scanTimestamp.toEpochMilliseconds()),
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
-    modified = Timestamp(0),
-    created = Timestamp(0),
+    modified = Timestamp(System.currentTimeMillis()),
+    created = Timestamp(System.currentTimeMillis()),
+  )
+}
+
+public fun WebsiteResult.toEntity(): WebsiteResultEntity
+{
+  return WebsiteResultEntity(
+    websiteResultId = this.id,
+    modelVersion = this.modelVersion,
+    scanJob = this.scanJob.toEntity(),
+    domain = this.domain,
+    scanTimestamp = Timestamp(this.scanTimestamp.toEpochMilliseconds()),
+    scanStatus = this.scanStatus,
+    errorMessage = this.errorMessage,
+    modified = Timestamp(this.modified),
+    created = Timestamp(this.created),
   )
 }
 
@@ -27,7 +42,7 @@ public fun WebsiteResultEntity.toModel(): WebsiteResult
     id = this.websiteResultId,
     modelVersion = this.modelVersion,
     scanJob = this.scanJob.toModel(),
-    website = this.website,
+    domain = this.domain,
     scanTimestamp = Instant.fromEpochMilliseconds(this.scanTimestamp.time),
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,

@@ -12,11 +12,13 @@ public class WebsiteEntity
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var websiteId: Long = 0,
-  public var userFk: Long,
-  @Column(unique = true)
-  public var domain: String,
+  @ManyToOne
+  @JoinColumn(name = "userFk", referencedColumnName = "userId", nullable = false)
+  public var user: UserEntity,
   @Column(unique = true)
   public var url: String,
+  @Column(unique = true)
+  public var domain: String,
   @Enumerated(EnumType.STRING)
   public var category: CategoryEnum,
   @Enumerated(EnumType.STRING)
@@ -24,7 +26,6 @@ public class WebsiteEntity
   @OneToMany(orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
   @JoinColumn(name = "websiteFk", referencedColumnName = "websiteId")
   public var tags: MutableSet<WebsiteTagEntity>,
-  public var webpageCount: Int = 0,
   public var deleted: Boolean = false,
   public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
   public var created: Timestamp = Timestamp(System.currentTimeMillis()),

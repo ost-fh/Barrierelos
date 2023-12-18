@@ -15,6 +15,15 @@ public fun ElementMessage.toEntity(checkElement: CheckElementEntity): ElementEnt
   )
 }
 
+public fun Element.toEntity(checkElement: CheckElementEntity): ElementEntity
+{
+  return ElementEntity(
+    checkElement = checkElement,
+    target = this.target,
+    html = this.html,
+  )
+}
+
 public fun ElementEntity.toModel(): Element
 {
   return Element(

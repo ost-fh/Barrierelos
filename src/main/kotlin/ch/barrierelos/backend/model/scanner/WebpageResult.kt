@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 public data class WebpageResult
 (
   public val id: Long,
-  public val path: String,
+  public val url: String,
   public val scanStatus: ScanStatusEnum,
   public val errorMessage: String? = null,
   public val rules: MutableSet<Rule>,

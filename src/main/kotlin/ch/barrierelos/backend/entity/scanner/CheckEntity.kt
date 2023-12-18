@@ -38,6 +38,6 @@ public class CheckEntity
     inverseJoinColumns = [JoinColumn(name = "checkElementFk")]
   )
   public var incompleteElements: MutableSet<CheckElementEntity> = mutableSetOf(),
-  public var modified: Timestamp = Timestamp(0),
-  public var created: Timestamp = Timestamp(0),
+  public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
+  public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 public interface TagRepository : JpaRepository<TagEntity, Long>
 {
   public fun findByName(name: String): TagEntity?
+
+  public fun findAllByNameIn(tags: MutableSet<String>): MutableSet<TagEntity>
 }

@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 public data class Webpage
 (
   public var id: Long = 0,
-  public var websiteId: Long,
-  public var userId: Long,
-  public var path: String,
+  public var website: Website,
+  public var user: User,
+  public var displayUrl: String,
   public var url: String,
   public var status: StatusEnum = StatusEnum.PENDING_INITIAL,
   public var deleted: Boolean = false,

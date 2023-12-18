@@ -1,21 +1,35 @@
 package ch.barrierelos.backend.converter
 
 import ch.barrierelos.backend.entity.WebsiteEntity
+import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.model.Website
+import ch.barrierelos.backend.model.WebsiteTag
+import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.util.clearAndAddAll
 import java.sql.Timestamp
+
+
+public fun WebsiteMessage.toModel(domain: String, tags: MutableSet<WebsiteTag>): Website
+{
+  return Website(
+    user = Security.getUser(),
+    domain = domain,
+    url = this.url,
+    category = this.category,
+    tags = tags,
+  )
+}
 
 public fun Website.toEntity(): WebsiteEntity
 {
   return WebsiteEntity(
     websiteId = this.id,
-    userFk = this.userId,
+    user = this.user.toEntity(),
     domain = this.domain,
     url = this.url,
     category = this.category,
     status = this.status,
     tags = this.tags.toEntities(),
-    webpageCount = this.webpageCount,
     deleted = this.deleted,
     modified = Timestamp(this.modified),
     created = Timestamp(this.created),
@@ -26,13 +40,12 @@ public fun WebsiteEntity.toModel(): Website
 {
   return Website(
     id = this.websiteId,
-    userId = this.userFk,
+    user = this.user.toModel(),
     domain = this.domain,
     url = this.url,
     category = this.category,
     status = this.status,
     tags = this.tags.toModels(),
-    webpageCount = this.webpageCount,
     deleted = this.deleted,
     modified = this.modified.time,
     created = this.created.time,
@@ -43,13 +56,12 @@ public fun WebsiteEntity.toModel(website: Website): Website
 {
   return website.apply {
     id = this@toModel.websiteId
-    userId = this@toModel.userFk
+    user = this@toModel.user.toModel()
     domain = this@toModel.domain
     url = this@toModel.url
     category = this@toModel.category
     status = this@toModel.status
     tags.clearAndAddAll(this@toModel.tags.toModels())
-    webpageCount = this@toModel.webpageCount
     deleted = this@toModel.deleted
     modified = this@toModel.modified.time
     created = this@toModel.created.time

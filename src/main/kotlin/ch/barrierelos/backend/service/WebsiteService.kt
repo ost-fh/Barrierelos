@@ -7,20 +7,22 @@ import ch.barrierelos.backend.converter.scanner.toModel
 import ch.barrierelos.backend.converter.scanner.toScanJob
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.converter.toModels
 import ch.barrierelos.backend.entity.WebsiteEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
-import ch.barrierelos.backend.exceptions.AlreadyExistsException
-import ch.barrierelos.backend.exceptions.InvalidDomainException
-import ch.barrierelos.backend.exceptions.InvalidUrlException
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.message.scanner.WebsiteResultMessage
+import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.model.Website
+import ch.barrierelos.backend.model.WebsiteTag
+import ch.barrierelos.backend.model.scanner.ScanJob
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
-import ch.barrierelos.backend.repository.Repository.Companion.throwIfNotExists
+import ch.barrierelos.backend.repository.TagRepository
+import ch.barrierelos.backend.repository.WebpageRepository
 import ch.barrierelos.backend.repository.WebsiteRepository
 import ch.barrierelos.backend.repository.WebsiteTagRepository
 import ch.barrierelos.backend.repository.scanner.ScanJobRepository
@@ -45,6 +47,12 @@ public class WebsiteService
   private lateinit var websiteRepository: WebsiteRepository
 
   @Autowired
+  private lateinit var webpageRepository: WebpageRepository
+
+  @Autowired
+  private lateinit var tagRepository: TagRepository
+
+  @Autowired
   private lateinit var websiteTagRepository: WebsiteTagRepository
 
   @Autowired
@@ -60,49 +68,61 @@ public class WebsiteService
   private lateinit var queue: RabbitTemplate
 
   @Autowired
-  private lateinit var scoringService: ScoringService
+  private lateinit var statisticService: StatisticService
 
-  public fun addWebsite(website: Website): Website
+
+  @Transactional
+  public fun addWebsite(websiteMessage: WebsiteMessage): Website
   {
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
 
-    if(!Security.hasRole(RoleEnum.ADMIN))
-    {
-      Security.assertId(website.userId)
+    throwIfNoValidUrl(websiteMessage.url)
+    val domain = "https?://([^/?]+([^/?]/)*)/?.*".toRegex()
+      .find(websiteMessage.url)?.groups?.get(1)?.value ?: throw InvalidUrlException("Url is not valid.")
+    throwIfDomainAlreadyExists(domain)
 
-      throwIfNewTagWithDifferentUser(website)
+    val tags = tagRepository.findAllByNameIn(websiteMessage.tags).toModels()
+    if(tags.size != websiteMessage.tags.size)
+    {
+      throw NoSuchElementException("Tag with that name does not exist.")
     }
 
-    throwIfNoValidDomain(website)
-    throwIfUrlNotMatchesDomain(website)
-    throwIfDuplicateTags(website)
-    throwIfDomainAlreadyExists(website)
+    var website = websiteMessage.toModel(domain, mutableSetOf())
+    website = websiteRepository.save(website.toEntity()).toModel()
 
-    val timestamp = System.currentTimeMillis()
-    website.created = timestamp
-    website.modified = timestamp
-    website.status = StatusEnum.PENDING_INITIAL
+    val websiteTags = tags.map {
+      WebsiteTag(
+        websiteId = website.id,
+        userId = Security.getUserId(),
+        tag = it,
+      )
+    }.toMutableSet()
+    website.tags = websiteTagRepository.saveAll(websiteTags.map { it.toEntity() }).toModels()
 
-    val tags = website.tags.toSet()
-    this.websiteRepository.save(website.apply { this.tags.clear() }.toEntity()).toModel(website)
+    statisticService.addWebsiteScan(website)
 
-    website.tags.addAll(tags)
-    website.tags.forEach { it.websiteId = website.id }
-
-    return this.websiteRepository.save(website.toEntity()).toModel()
+    return website
   }
 
-  public fun scanWebsite(website: WebsiteMessage)
+  @Transactional
+  public fun scanWebsite(website: Website, webpages: MutableSet<Webpage>? = null): ScanJob
   {
-    if(website.website.endsWith("/"))
-      throw IllegalArgumentException("websiteBaseUrl must not end with a slash")
-    if(website.webpages.any { !it.startsWith("/") })
-      throw IllegalArgumentException("webpagePaths must start with a slash")
+    throwIfDeleted(website)
 
-    val scanJobEntity = website.toScanJob().toEntity()
-    val scanJobMessage = this.scanJobRepository.save(scanJobEntity).toModel().toMessage()
+    val scanWebpages = webpages ?: webpageRepository.findAllByWebsiteWebsiteId(website.id).map { it.toModel() }.toMutableSet()
+    if(scanWebpages.isEmpty()) throw InvalidStateException("Website has no webpages.")
+
+    val scanJob = website.toScanJob(scanWebpages)
+    val scanJobMessage = this.scanJobRepository.save(scanJob.toEntity()).toModel().toMessage()
 
     this.queue.send(Queueing.QUEUE_SCAN_JOB, scanJobMessage.toJson())
+    return scanJob
+  }
+
+  @Transactional
+  public fun scanWebsite(id: Long): ScanJob
+  {
+    return scanWebsite(this.websiteRepository.findById(id).orElseThrow().toModel())
   }
 
   @RabbitListener(queues = [Queueing.QUEUE_SCAN_RESULT])
@@ -117,11 +137,12 @@ public class WebsiteService
       return
     }
 
-    val scanJobEntity = this.scanJobRepository.findById(websiteResultMessage.jobId).orThrow(NoSuchElementException())
-    val websiteResultEntity = this.websiteResultRepository.save(websiteResultMessage.toEntity(scanJobEntity))
-    webpageResultRepository.saveAll(websiteResultMessage.webpages.map { it.toEntity(websiteResultEntity) })
+    val scanJobEntity = this.scanJobRepository.findById(websiteResultMessage.jobId).orElseThrow()
+    val websiteResult = this.websiteResultRepository.save(websiteResultMessage.toEntity(scanJobEntity)).toModel()
+    val webpageResults = this.webpageResultRepository.saveAll(websiteResultMessage.webpages.map { it.toEntity(websiteResult.toEntity()) })
+      .map { it.toModel() }.toMutableSet()
 
-    this.scoringService.onReceiveResult(websiteResultEntity.toModel())
+    this.statisticService.onReceiveResult(websiteResult, webpageResults)
   }
 
   public fun updateWebsite(website: Website): Website
@@ -151,7 +172,7 @@ public class WebsiteService
     }
     else if(Security.hasRole(RoleEnum.CONTRIBUTOR))
     {
-      if(!Security.hasId(website.userId))
+      if(!Security.hasId(website.user.id))
       {
         throwIfDeleted(website)
       }
@@ -160,8 +181,6 @@ public class WebsiteService
       throwIfIllegallyModified(website, existingWebsite)
       throwIfTagsIllegallyModified(website, existingWebsite)
     }
-
-    throwIfDuplicateTags(website)
 
     website.modified = timestamp
 
@@ -178,6 +197,7 @@ public class WebsiteService
     return this.websiteRepository.findById(websiteId).orElseThrow().toModel()
   }
 
+  @Transactional
   public fun deleteWebsite(websiteId: Long)
   {
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR)
@@ -205,7 +225,7 @@ public class WebsiteService
       {
         if(existingWebsite.tags.any { it.tag.id == tag.tag.id })
         {
-          throw AlreadyExistsException("Tag for that website already exists.")
+          throw ReferenceNotExistsException("This tag already exists for this website.")
         }
       }
       else
@@ -226,11 +246,12 @@ public class WebsiteService
 
   private fun throwIfIllegallyModified(website: Website, existingWebsite: Website)
   {
-    if((website.userId != existingWebsite.userId)
+    if((website.user != existingWebsite.user)
       || (website.domain != existingWebsite.domain)
       || (website.url != existingWebsite.url)
       || (website.created != existingWebsite.created)
-      || (website.status != existingWebsite.status && (website.status == StatusEnum.PENDING_INITIAL || website.status == StatusEnum.PENDING_RESCAN || website.status == StatusEnum.READY)))
+      || (website.status != existingWebsite.status && (website.status == StatusEnum.PENDING_INITIAL || website.status == StatusEnum.PENDING_RESCAN || website.status == StatusEnum.READY))
+    )
     {
       throw IllegalArgumentException("Website illegally modified.")
     }
@@ -244,50 +265,11 @@ public class WebsiteService
     }
   }
 
-  private fun throwIfNewTagWithDifferentUser(website: Website)
+  private fun throwIfDomainAlreadyExists(domain: String)
   {
-    for(websiteTag in website.tags)
+    if(this.websiteRepository.existsByDomain(domain))
     {
-      if(websiteTag.id == 0L)
-      {
-        Security.assertId(websiteTag.userId)
-      }
-      else
-      {
-        this.websiteTagRepository.throwIfNotExists(websiteTag.id)
-      }
-    }
-  }
-
-  private fun throwIfDomainAlreadyExists(website: Website)
-  {
-    if(this.websiteRepository.existsByDomain(website.domain))
-    {
-      throw AlreadyExistsException("Website with that domain already exists.")
-    }
-  }
-
-  private fun throwIfDuplicateTags(website: Website)
-  {
-    if(website.tags.containsDuplicates { tag -> tag.tag.id })
-    {
-      throw AlreadyExistsException("Duplicate tags found.")
-    }
-  }
-
-  private fun throwIfNoValidDomain(website: Website)
-  {
-    if(!website.domain.matches("^[0-9\\p{L}][0-9\\p{L}-\\.]{1,61}[0-9\\p{L}]\\.[0-9\\p{L}][\\p{L}-]*[0-9\\p{L}]+\$".toRegex()))
-    {
-      throw InvalidDomainException("Domain is not valid.")
-    }
-  }
-
-  private fun throwIfUrlNotMatchesDomain(website: Website)
-  {
-    if(website.url != "http://${website.domain}" && website.url != "https://${website.domain}")
-    {
-      throw InvalidUrlException("Domain and url do not match.")
+      throw AlreadyExistsException("Website with this domain already exists.")
     }
   }
 
@@ -295,7 +277,7 @@ public class WebsiteService
   {
     if(!this.websiteRepository.existsById(websiteId))
     {
-      throw NoSuchElementException("Website with such id does not exist.")
+      throw NoSuchElementException("Website with this id does not exist.")
     }
   }
 }

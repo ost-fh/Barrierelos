@@ -24,6 +24,22 @@ public fun CheckMessage.toEntity(rule: RuleEntity): CheckEntity
   return check
 }
 
+public fun Check.toEntity(rule: RuleEntity): CheckEntity
+{
+  return CheckEntity(
+    rule = rule,
+    code = this.code,
+    type = this.type,
+    impact = this.impact,
+    testedCount = this.testedCount,
+    passedCount = this.passedCount,
+    violatedCount = this.violatedCount,
+    incompleteCount = this.incompleteCount,
+    violatingElements = this.violatingElements.map { it.toEntity() }.toMutableSet(),
+    incompleteElements = this.incompleteElements.map { it.toEntity() }.toMutableSet(),
+  )
+}
+
 public fun CheckEntity.toModel(): Check
 {
   return Check(

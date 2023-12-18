@@ -12,6 +12,6 @@ public class UserReportEntity
   public var userReportId: Long = 0,
   public var userFk: Long,
   public var reportFk: Long,
-  public var modified: Timestamp = Timestamp(0),
-  public var created: Timestamp = Timestamp(0),
+  public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
+  public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

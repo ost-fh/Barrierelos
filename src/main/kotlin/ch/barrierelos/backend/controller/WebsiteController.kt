@@ -1,10 +1,10 @@
 package ch.barrierelos.backend.controller
 
-import ch.barrierelos.backend.constants.Endpoint
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE
 import ch.barrierelos.backend.constants.MediaType
 import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.model.Website
+import ch.barrierelos.backend.model.scanner.ScanJob
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebsiteService
 import ch.barrierelos.backend.util.toHeaders
@@ -21,11 +21,9 @@ public class WebsiteController
   private lateinit var websiteService: WebsiteService
 
   @PostMapping(value = [WEBSITE], consumes = [MediaType.JSON], produces = [MediaType.JSON])
-  public fun addWebsite(@RequestBody website: Website): ResponseEntity<Website>
+  public fun addWebsite(@RequestBody websiteMessage: WebsiteMessage): ResponseEntity<Website>
   {
-    website.id = 0
-
-    this.websiteService.addWebsite(website)
+    val website = this.websiteService.addWebsite(websiteMessage)
 
     return ResponseEntity.status(HttpStatus.CREATED).body(website)
   }
@@ -64,11 +62,11 @@ public class WebsiteController
     return ResponseEntity.status(HttpStatus.OK).build()
   }
 
-  @PostMapping(value = [Endpoint.WEBSITES], consumes = [MediaType.JSON], produces = [MediaType.JSON])
-  public fun addWebsite(@RequestBody website: WebsiteMessage): ResponseEntity<Any>
+  @PostMapping(value = ["${WEBSITE}/{id}/scans"], produces = [MediaType.JSON])
+  public fun scanWebsite(@PathVariable id: Long): ResponseEntity<ScanJob>
   {
-    this.websiteService.scanWebsite(website)
+    val scanJob = this.websiteService.scanWebsite(id)
 
-    return ResponseEntity.status(HttpStatus.OK).build()
+    return ResponseEntity.status(HttpStatus.OK).body(scanJob)
   }
 }

@@ -14,12 +14,12 @@ public class WebpageResultEntity
   @ManyToOne
   @JoinColumn(name = "website_result_fk", nullable = false)
   public var websiteResult: WebsiteResultEntity,
-  public var path: String,
+  public var url: String,
   @Enumerated(EnumType.STRING)
   public var scanStatus: ScanStatusEnum,
   public var errorMessage: String? = null,
-  @OneToMany(mappedBy = "webpageResult", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "webpageResult", orphanRemoval = true, fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
   public var rules: MutableSet<RuleEntity> = mutableSetOf(),
-  public var modified: Timestamp = Timestamp(0),
-  public var created: Timestamp = Timestamp(0),
+  public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
+  public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

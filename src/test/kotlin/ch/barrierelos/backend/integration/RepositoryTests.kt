@@ -20,14 +20,19 @@ class RepositoryTests
 
   @Autowired
   lateinit var userRepository: UserRepository
+
   @Autowired
   lateinit var credentialRepository: CredentialRepository
+
   @Autowired
   lateinit var tagRepository: TagRepository
+
   @Autowired
   lateinit var websiteTagRepository: WebsiteTagRepository
+
   @Autowired
   lateinit var websiteRepository: WebsiteRepository
+
   @Autowired
   lateinit var webpageRepository: WebpageRepository
 
@@ -394,7 +399,7 @@ class RepositoryTests
       val user = entityManager.persist(createUserEntity())
 
       val website = createWebsiteEntity()
-      website.userFk = user.userId
+      website.user = user
       website.tags.clear()
 
       entityManager.persist(website)
@@ -449,7 +454,7 @@ class RepositoryTests
 
       // when
       val expected = createWebsiteEntity()
-      expected.userFk = user.userId
+      expected.user = user
       expected.tags.clear()
 
       entityManager.persist(expected)
@@ -464,7 +469,7 @@ class RepositoryTests
       {
         assertNotEquals(0, actual.websiteId)
         assertEquals(expected.websiteId, actual.websiteId)
-        assertEquals(expected.userFk, actual.userFk)
+        assertEquals(expected.user, actual.user)
         assertEquals(expected.domain, actual.domain)
         assertEquals(expected.url, actual.url)
         assertEquals(expected.category, actual.category)
@@ -495,7 +500,7 @@ class RepositoryTests
 
       // when
       val expected = createWebsiteEntity()
-      expected.userFk = user.userId
+      expected.user = user
       expected.tags.clear()
 
       entityManager.persist(expected)
@@ -511,7 +516,7 @@ class RepositoryTests
 
       assertNotEquals(0, actual.first().websiteId)
       assertEquals(expected.websiteId, actual.first().websiteId)
-      assertEquals(expected.userFk, actual.first().userFk)
+      assertEquals(expected.user, actual.first().user)
       assertEquals(expected.domain, actual.first().domain)
       assertEquals(expected.url, actual.first().url)
       assertEquals(expected.category, actual.first().category)
@@ -540,69 +545,45 @@ class RepositoryTests
   inner class WebpageRepositoryTests
   {
     @Test
-    fun `exists by path and website fk, when path and website fk exists`()
+    fun `exists by displayUrl, when displayUrl exists`()
     {
       // when
-      val webpage = createWebpageEntity()
-      webpage.websiteFk = 25
-      webpage.path = "/path"
+      val user = createUserEntity()
+      val website = createWebsiteEntity(user)
+      website.tags.clear()
+      val webpage = createWebpageEntity(user)
+      webpage.website = website
 
+      entityManager.persist(user)
+      entityManager.persist(website)
       entityManager.persist(webpage)
       entityManager.flush()
 
       // then
-      val exists = webpageRepository.existsByPathAndWebsiteFk(webpage.path, webpage.websiteFk)
+      val exists = webpageRepository.existsByDisplayUrl(webpage.displayUrl)
 
       assertTrue(exists)
     }
 
     @Test
-    fun `not exists by path and website fk, when path not exists`()
+    fun `exists by displayUrl, when displayUrl not exists`()
     {
       // when
-      val webpage = createWebpageEntity()
-      webpage.websiteFk = 25
-      webpage.path = "/path"
+      val user = createUserEntity()
+      val website = createWebsiteEntity(user)
+      website.tags.clear()
+      val webpage = createWebpageEntity(user)
+      webpage.website = website
+      val expected = webpage.displayUrl
+      webpage.displayUrl = "test.$expected"
 
+      entityManager.persist(user)
+      entityManager.persist(website)
       entityManager.persist(webpage)
       entityManager.flush()
 
       // then
-      val exists = webpageRepository.existsByPathAndWebsiteFk("/test", webpage.websiteFk)
-
-      assertFalse(exists)
-    }
-
-    @Test
-    fun `not exists by path and website fk, when website fk not exists`()
-    {
-      // when
-      val webpage = createWebpageEntity()
-      webpage.websiteFk = 25
-      webpage.path = "/path"
-
-      entityManager.persist(webpage)
-      entityManager.flush()
-
-      // then
-      val exists = webpageRepository.existsByPathAndWebsiteFk(webpage.path, 5000)
-
-      assertFalse(exists)
-    }
-
-    @Test
-    fun `not exists by path and website fk, when path and website fk not exists`()
-    {
-      // when
-      val webpage = createWebpageEntity()
-      webpage.websiteFk = 25
-      webpage.path = "/path"
-
-      entityManager.persist(webpage)
-      entityManager.flush()
-
-      // then
-      val exists = webpageRepository.existsByPathAndWebsiteFk("/test", 5000)
+      val exists = webpageRepository.existsByDisplayUrl(expected)
 
       assertFalse(exists)
     }

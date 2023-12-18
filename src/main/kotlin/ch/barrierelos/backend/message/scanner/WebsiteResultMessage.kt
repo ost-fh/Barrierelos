@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 public data class WebsiteResultMessage(
   public val modelVersion: String,
   public val jobId: Long,
-  public val website: String,
+  public val domain: String,
   public var scanTimestamp: Instant,
   public val scanStatus: ScanStatusEnum,
   public val errorMessage: String? = null,

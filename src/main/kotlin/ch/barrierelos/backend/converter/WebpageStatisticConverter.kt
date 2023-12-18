@@ -8,10 +8,8 @@ public fun WebpageStatistic.toEntity(): WebpageStatisticEntity
 {
   return WebpageStatisticEntity(
     webpageStatisticId = this.id,
-    websiteStatisticFk = this.websiteStatisticFk,
-    webpageFk = this.webpageId,
-    userFk = this.userId,
     score = this.score,
+    weight = this.weight,
     modified = Timestamp(this.modified),
     created = Timestamp(this.created),
   )
@@ -21,10 +19,8 @@ public fun WebpageStatisticEntity.toModel(): WebpageStatistic
 {
   return WebpageStatistic(
     id = this.webpageStatisticId,
-    websiteStatisticFk = this.websiteStatisticFk,
-    webpageId = this.webpageFk,
-    userId = this.userFk,
     score = this.score,
+    weight = this.weight,
     modified = this.modified.time,
     created = this.created.time,
   )
@@ -34,10 +30,8 @@ public fun WebpageStatisticEntity.toModel(webpageStatistic: WebpageStatistic): W
 {
   return webpageStatistic.apply {
     id = this@toModel.webpageStatisticId
-    websiteStatisticFk = this@toModel.websiteStatisticFk
-    webpageId = this@toModel.webpageFk
-    userId = this@toModel.userFk
     score = this@toModel.score
+    weight = this@toModel.weight
     modified = this@toModel.modified.time
     created = this@toModel.created.time
   }

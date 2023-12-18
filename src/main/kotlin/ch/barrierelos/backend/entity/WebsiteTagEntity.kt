@@ -10,9 +10,9 @@ public class WebsiteTagEntity
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var websiteTagId: Long = 0,
-  public var websiteFk: Long,
-  public var userFk: Long,
-  @OneToOne(fetch = FetchType.EAGER)
+  public var websiteFk: Long? = null,
+  public var userFk: Long? = null,
+  @OneToOne
   @JoinColumn(name = "tag_fk", referencedColumnName = "tagId")
   public var tag: TagEntity,
   public var modified: Timestamp = Timestamp(System.currentTimeMillis()),

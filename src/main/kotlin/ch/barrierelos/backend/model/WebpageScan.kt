@@ -1,7 +1,9 @@
 package ch.barrierelos.backend.model
 
 import ch.barrierelos.backend.model.scanner.WebpageResult
+import kotlinx.serialization.Serializable
 
+@Serializable
 public data class WebpageScan
 (
   public var id: Long = 0,

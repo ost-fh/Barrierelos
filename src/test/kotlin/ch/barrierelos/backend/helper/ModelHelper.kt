@@ -77,3 +77,12 @@ fun createWebsiteScanModel(userId: Long = 0, websiteId: Long = 0, websiteStatist
   modified = 5000,
   created = 5000,
 )
+
+fun createWebpageScanModel(userId: Long = 0, webpageId: Long = 0, webpageStatisticId: Long = 0, webpageResultId: Long = 0) = WebpageScan(
+  webpageId = webpageId,
+  webpageStatisticId = webpageStatisticId,
+  webpageResultId = webpageResultId,
+  userId = userId,
+  modified = 5000,
+  created = 5000,
+)

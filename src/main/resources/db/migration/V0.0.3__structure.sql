@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS "website" CASCADE;
+DROP TABLE IF EXISTS "website_scan" CASCADE;
 DROP TABLE IF EXISTS "website_statistic" CASCADE;
 DROP TABLE IF EXISTS "webpage" CASCADE;
 DROP TABLE IF EXISTS "webpage_statistic" CASCADE;
@@ -42,6 +43,22 @@ CREATE TABLE "website_statistic"
   "score" DOUBLE PRECISION NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "website_scan"
+(
+  "website_scan_id" BIGSERIAL,
+  "website_fk" BIGSERIAL,
+  "user_fk" BIGSERIAL,
+  "website_statistic_fk" BIGSERIAL,
+  "website_result_fk" BIGSERIAL,
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  PRIMARY KEY ("website_scan_id"),
+  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
+  FOREIGN KEY ("website_statistic_fk") REFERENCES "website_statistic" ("website_statistic_id"),
+  FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id"),
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
 );
 
 ----------------------------------------------------------------------------------------------------

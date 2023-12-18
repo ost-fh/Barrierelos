@@ -1,5 +1,5 @@
 import {useLocation, useParams} from "react-router-dom";
-import {StatisticControllerService, Website, WebsiteDetails} from "../../lib/api-client";
+import {StatisticControllerService, Website, WebsiteScanMessage} from "../../lib/api-client";
 import useSWR from "swr"
 import {Box, Chip, Tab} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
@@ -19,7 +19,7 @@ function WebsitePage() {
 
   const params = useParams<WebsitePageParams>();
   if (params.websiteId === undefined) throw Error("Path param websiteId is missing")
-  const {data: websiteDetails, error, isLoading} = useSWR<WebsiteDetails, Error>(params.websiteId, getWebsiteDetails)
+  const {data: websiteScan, error, isLoading} = useSWR<WebsiteScanMessage, Error>(params.websiteId, getWebsiteScan)
 
   const [currentTabIndex, setCurrentTabIndex] = useState("1");
   const handleTabChange = (_e: SyntheticEvent, tabIndex: string) => {
@@ -34,32 +34,32 @@ function WebsitePage() {
 
   if (isLoading) return "Loading..."
   if (error) return `Error occurred:\n${error}`
-  if (websiteDetails === undefined) return "Couldn't load."
+  if (websiteScan === undefined) return "Couldn't load."
 
   return (
     <>
       <h1>
-        {websiteDetails.website.url}
-        {websiteDetails.website.status !== status.READY ? (
-          <Chip label={`${t("WebsitePage.websiteStatusLabel")}: ${websiteDetails.website.status}`}/>
+        {websiteScan.website.url}
+        {websiteScan.website.status !== status.READY ? (
+          <Chip label={`${t("WebsitePage.websiteStatusLabel")}: ${websiteScan.website.status}`}/>
         ) : null}
-        {websiteDetails.statistics ? (
-          <Chip label={`${t("General.barrierelosScore")}: ${Math.round(websiteDetails.statistics.score)}`}/>
+        {websiteScan.websiteStatistic ? (
+          <Chip label={`${t("General.barrierelosScore")}: ${Math.round(websiteScan.websiteStatistic.score)}`}/>
         ) : null}
       </h1>
       <TabContext value={currentTabIndex}>
         <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
           <TabList onChange={handleTabChange} aria-label={t("WebsitePage.tabsAriaLabel")}>
             <Tab label={t("WebsitePage.tabOverviewLabel")} value="1"/>
-            {websiteDetails.website.status === status.READY ? (
+            {websiteScan.website.status === status.READY ? (
               <Tab label={t("WebsitePage.tabRulesLabel")} value="2"/>
             ) : null}
             <Tab label={t("WebsitePage.tabScanInfosLabel")} value="3"/>
           </TabList>
         </Box>
-        <TabPanel value="1"><WebsiteOverview websiteDetails={websiteDetails}/></TabPanel>
-        {websiteDetails.website.status === status.READY ? (
-          <TabPanel value="2"><WebsiteRules websiteDetails={websiteDetails}/></TabPanel>
+        <TabPanel value="1"><WebsiteOverview websiteScan={websiteScan}/></TabPanel>
+        {websiteScan.website.status === status.READY ? (
+          <TabPanel value="2"><WebsiteRules websiteScan={websiteScan}/></TabPanel>
         ) : null}
         <TabPanel value="3">Scan Infos</TabPanel>
       </TabContext>
@@ -67,8 +67,8 @@ function WebsitePage() {
   )
 }
 
-function getWebsiteDetails(id: string) {
-  return StatisticControllerService.getWebsiteDetails(parseInt(id));
+function getWebsiteScan(id: string) {
+  return StatisticControllerService.getWebsiteScan(parseInt(id));
 }
 
 export default WebsitePage

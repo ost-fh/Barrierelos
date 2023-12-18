@@ -1,20 +1,16 @@
-import {Rule, WebsiteDetails} from "../../lib/api-client";
+import {Rule, WebsiteScanMessage} from "../../lib/api-client";
 import {Accordion, AccordionDetails, AccordionSummary, Chip, Typography} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useTranslation} from "react-i18next";
 import "./WebsiteRules.css"
 
 
-interface WebsiteRulesProps {
-  websiteDetails: WebsiteDetails
-}
-
-function WebsiteRules(props: WebsiteRulesProps) {
+function WebsiteRules(props: { websiteScan: WebsiteScanMessage }) {
   const {t} = useTranslation();
 
-  const websiteDetails: WebsiteDetails = props.websiteDetails
-  const webpages = websiteDetails.webpages?.map(webpageDetails => {
-    const rules = webpageDetails.scanResult?.rules
+  const websiteScan = props.websiteScan
+  const webpages = websiteScan.webpageScans?.map(webpageScan => {
+    const rules = webpageScan.webpageResult?.rules
       ?.filter(rule => rule.checks.some(check => check.violatedCount > 0))
       ?.map(rule => (
           <RuleElement rule={rule} key={rule.id}/>
@@ -30,9 +26,15 @@ function WebsiteRules(props: WebsiteRulesProps) {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>Webpage: {webpageDetails.webpage.url}</Typography>
-            <Chip label={`${t("General.barrierelosScore")}: ${Math.round(websiteDetails.statistics?.score ?? 0)}`}/>
-            <Chip label={`${t("General.webpageWeight")}: 10`}/>
+            <Typography>Webpage: {webpageScan.webpage.url}</Typography>
+            {webpageScan.webpageStatistic ? (
+              <>
+                <Chip
+                  label={`${t("General.barrierelosScore")}: ${Math.round(webpageScan.webpageStatistic?.score ?? 0)}`}/>
+                <Chip
+                  label={`${t("General.webpageWeight")}: ${Math.round(webpageScan.webpageStatistic.weight * 100)}%`}/>
+              </>
+            ) : null}
           </AccordionSummary>
           <AccordionDetails>
             <ul>

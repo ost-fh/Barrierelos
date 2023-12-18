@@ -11,6 +11,250 @@
     }
   ],
   "paths": {
+    "/website/{id}": {
+      "get": {
+        "tags": [
+          "website-controller"
+        ],
+        "operationId": "getWebsite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Website"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "website-controller"
+        ],
+        "operationId": "updateWebsite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Website"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Website"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "website-controller"
+        ],
+        "operationId": "deleteWebsite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/webpage/{id}": {
+      "get": {
+        "tags": [
+          "webpage-controller"
+        ],
+        "operationId": "getWebpage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Webpage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "webpage-controller"
+        ],
+        "operationId": "updateWebpage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Webpage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Webpage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "webpage-controller"
+        ],
+        "operationId": "deleteWebpage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/user/{id}": {
       "get": {
         "tags": [
@@ -299,7 +543,96 @@
         }
       }
     },
-    "/websites": {
+    "/website": {
+      "get": {
+        "tags": [
+          "website-controller"
+        ],
+        "operationId": "getWebsites",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "name": "modifiedAfter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "createdAfter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Website"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "website-controller"
@@ -331,7 +664,177 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/Website"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/website/{id}/scans": {
+      "post": {
+        "tags": [
+          "website-controller"
+        ],
+        "operationId": "scanWebsite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanJob"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webpage": {
+      "get": {
+        "tags": [
+          "webpage-controller"
+        ],
+        "operationId": "getWebpages",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "name": "modifiedAfter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "createdAfter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Webpage"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "webpage-controller"
+        ],
+        "operationId": "addWebpage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebpageMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Webpage"
                 }
               }
             }
@@ -545,7 +1048,7 @@
         "tags": [
           "statistic-controller"
         ],
-        "operationId": "getWebsiteDetails",
+        "operationId": "getWebsiteScan",
         "parameters": [
           {
             "name": "id",
@@ -573,7 +1076,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebsiteDetails"
+                  "$ref": "#/components/schemas/WebsiteScanMessage"
                 }
               }
             }
@@ -652,15 +1155,15 @@
               "$ref": "#/components/schemas/HttpRange"
             }
           },
+          "ifModifiedSince": {
+            "type": "integer",
+            "format": "int64"
+          },
           "connection": {
             "type": "array",
             "items": {
               "type": "string"
             }
-          },
-          "ifModifiedSince": {
-            "type": "integer",
-            "format": "int64"
           },
           "contentType": {
             "$ref": "#/components/schemas/MediaType"
@@ -675,6 +1178,9 @@
           "host": {
             "type": "object",
             "properties": {
+              "hostString": {
+                "type": "string"
+              },
               "address": {
                 "type": "object",
                 "properties": {
@@ -731,9 +1237,6 @@
                 "type": "boolean"
               },
               "hostName": {
-                "type": "string"
-              },
-              "hostString": {
                 "type": "string"
               }
             }
@@ -828,17 +1331,9 @@
           "etag": {
             "type": "string"
           },
-          "accept": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaType"
-            }
-          },
-          "acceptPatch": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaType"
-            }
+          "basicAuth": {
+            "type": "string",
+            "writeOnly": true
           },
           "acceptLanguage": {
             "type": "array",
@@ -855,9 +1350,11 @@
               }
             }
           },
-          "basicAuth": {
-            "type": "string",
-            "writeOnly": true
+          "accept": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaType"
+            }
           },
           "acceptLanguageAsLocales": {
             "type": "array",
@@ -919,6 +1416,12 @@
                   "type": "string"
                 }
               }
+            }
+          },
+          "acceptPatch": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaType"
             }
           },
           "accessControlAllowCredentials": {
@@ -1198,15 +1701,15 @@
                   "$ref": "#/components/schemas/HttpRange"
                 }
               },
+              "ifModifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
               "connection": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
-              },
-              "ifModifiedSince": {
-                "type": "integer",
-                "format": "int64"
               },
               "contentType": {
                 "$ref": "#/components/schemas/MediaType"
@@ -1221,6 +1724,9 @@
               "host": {
                 "type": "object",
                 "properties": {
+                  "hostString": {
+                    "type": "string"
+                  },
                   "address": {
                     "type": "object",
                     "properties": {
@@ -1277,9 +1783,6 @@
                     "type": "boolean"
                   },
                   "hostName": {
-                    "type": "string"
-                  },
-                  "hostString": {
                     "type": "string"
                   }
                 }
@@ -1374,17 +1877,9 @@
               "etag": {
                 "type": "string"
               },
-              "accept": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MediaType"
-                }
-              },
-              "acceptPatch": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MediaType"
-                }
+              "basicAuth": {
+                "type": "string",
+                "writeOnly": true
               },
               "acceptLanguage": {
                 "type": "array",
@@ -1401,9 +1896,11 @@
                   }
                 }
               },
-              "basicAuth": {
-                "type": "string",
-                "writeOnly": true
+              "accept": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
               },
               "acceptLanguageAsLocales": {
                 "type": "array",
@@ -1465,6 +1962,12 @@
                       "type": "string"
                     }
                   }
+                }
+              },
+              "acceptPatch": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
                 }
               },
               "accessControlAllowCredentials": {
@@ -1592,6 +2095,50 @@
           },
           "titleMessageCode": {
             "type": "string"
+          },
+          "mostSpecificCause": {
+            "type": "object",
+            "properties": {
+              "stackTrace": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "classLoaderName": {
+                      "type": "string"
+                    },
+                    "moduleName": {
+                      "type": "string"
+                    },
+                    "moduleVersion": {
+                      "type": "string"
+                    },
+                    "methodName": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "nativeMethod": {
+                      "type": "boolean"
+                    },
+                    "className": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "message": {
+                "type": "string"
+              },
+              "localizedMessage": {
+                "type": "string"
+              }
+            }
           },
           "rootCause": {
             "type": "object",
@@ -1728,50 +2275,6 @@
               }
             }
           },
-          "mostSpecificCause": {
-            "type": "object",
-            "properties": {
-              "stackTrace": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "classLoaderName": {
-                      "type": "string"
-                    },
-                    "moduleName": {
-                      "type": "string"
-                    },
-                    "moduleVersion": {
-                      "type": "string"
-                    },
-                    "methodName": {
-                      "type": "string"
-                    },
-                    "fileName": {
-                      "type": "string"
-                    },
-                    "lineNumber": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "nativeMethod": {
-                      "type": "boolean"
-                    },
-                    "className": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "message": {
-                "type": "string"
-              },
-              "localizedMessage": {
-                "type": "string"
-              }
-            }
-          },
           "suppressed": {
             "type": "array",
             "items": {
@@ -1820,6 +2323,22 @@
             }
           },
           "localizedMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "Tag": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
             "type": "string"
           }
         }
@@ -1876,10 +2395,18 @@
           }
         }
       },
-      "Tag": {
+      "Website": {
         "required": [
+          "category",
+          "created",
+          "deleted",
+          "domain",
           "id",
-          "name"
+          "modified",
+          "status",
+          "tags",
+          "url",
+          "user"
         ],
         "type": "object",
         "properties": {
@@ -1887,8 +2414,140 @@
             "type": "integer",
             "format": "int64"
           },
-          "name": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "url": {
             "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "GOVERNMENT_FEDERAL",
+              "GOVERNMENT_CANTONAL",
+              "GOVERNMENT_MUNICIPAL",
+              "PRIVATE_AFFILIATED",
+              "PRIVATE_UNIVERSITY",
+              "PRIVATE_NEWS",
+              "PRIVATE_SHOP",
+              "PRIVATE_OTHER"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "BLOCKED",
+              "READY",
+              "PENDING_INITIAL",
+              "PENDING_RESCAN"
+            ]
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebsiteTag"
+            }
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "modified": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "WebsiteTag": {
+        "required": [
+          "created",
+          "id",
+          "modified",
+          "tag"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "websiteId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tag": {
+            "$ref": "#/components/schemas/Tag"
+          },
+          "modified": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Webpage": {
+        "required": [
+          "created",
+          "deleted",
+          "displayUrl",
+          "id",
+          "modified",
+          "status",
+          "url",
+          "user",
+          "website"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "website": {
+            "$ref": "#/components/schemas/Website"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "displayUrl": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "BLOCKED",
+              "READY",
+              "PENDING_INITIAL",
+              "PENDING_RESCAN"
+            ]
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "modified": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -1930,15 +2589,97 @@
       },
       "WebsiteMessage": {
         "required": [
-          "webpages",
-          "website"
+          "category",
+          "tags",
+          "url"
         ],
         "type": "object",
         "properties": {
-          "locale": {
+          "url": {
             "type": "string"
           },
-          "website": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "GOVERNMENT_FEDERAL",
+              "GOVERNMENT_CANTONAL",
+              "GOVERNMENT_MUNICIPAL",
+              "PRIVATE_AFFILIATED",
+              "PRIVATE_UNIVERSITY",
+              "PRIVATE_NEWS",
+              "PRIVATE_SHOP",
+              "PRIVATE_OTHER"
+            ]
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Instant": {
+        "required": [
+          "epochSeconds",
+          "nanosecondsOfSecond",
+          "value$kotlinx_datetime"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date-time",
+            "writeOnly": true
+          },
+          "value$kotlinx_datetime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "nanosecondsOfSecond": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "epochSeconds": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ScanJob": {
+        "required": [
+          "created",
+          "domain",
+          "id",
+          "jobTimestamp",
+          "modelVersion",
+          "modified",
+          "userId",
+          "webpages",
+          "websiteId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "websiteId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "modelVersion": {
+            "type": "string"
+          },
+          "jobTimestamp": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "domain": {
             "type": "string"
           },
           "webpages": {
@@ -1947,6 +2688,30 @@
             "items": {
               "type": "string"
             }
+          },
+          "modified": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "WebpageMessage": {
+        "required": [
+          "url",
+          "websiteId"
+        ],
+        "type": "object",
+        "properties": {
+          "websiteId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "url": {
+            "type": "string"
           }
         }
       },
@@ -2122,33 +2887,6 @@
           }
         }
       },
-      "Instant": {
-        "required": [
-          "epochSeconds",
-          "nanosecondsOfSecond",
-          "value$kotlinx_datetime"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "date-time",
-            "writeOnly": true
-          },
-          "value$kotlinx_datetime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "nanosecondsOfSecond": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "epochSeconds": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "Rule": {
         "required": [
           "axeUrl",
@@ -2194,52 +2932,6 @@
           }
         }
       },
-      "ScanJob": {
-        "required": [
-          "created",
-          "id",
-          "jobTimestamp",
-          "locale",
-          "modelVersion",
-          "modified",
-          "webpagePaths",
-          "websiteBaseUrl"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "modelVersion": {
-            "type": "string"
-          },
-          "jobTimestamp": {
-            "$ref": "#/components/schemas/Instant"
-          },
-          "locale": {
-            "type": "string"
-          },
-          "websiteBaseUrl": {
-            "type": "string"
-          },
-          "webpagePaths": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "modified": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "created": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "WcagReferences": {
         "required": [
           "criteria",
@@ -2268,110 +2960,14 @@
           }
         }
       },
-      "Webpage": {
-        "required": [
-          "category",
-          "created",
-          "domain",
-          "id",
-          "modified",
-          "status",
-          "url",
-          "userId",
-          "websiteFk"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "websiteFk": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "domain": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          },
-          "category": {
-            "type": "string",
-            "enum": [
-              "GOVERNMENT_FEDERAL",
-              "GOVERNMENT_CANTONAL",
-              "GOVERNMENT_MUNICIPAL",
-              "PRIVATE_AFFILIATED",
-              "PRIVATE_UNIVERSITY",
-              "PRIVATE_NEWS",
-              "PRIVATE_SHOP",
-              "PRIVATE_OTHER"
-            ]
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "BLOCKED",
-              "READY",
-              "PENDING_INITIAL",
-              "PENDING_RESCAN"
-            ]
-          },
-          "modified": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "created": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "WebpageDetails": {
-        "required": [
-          "created",
-          "id",
-          "modified",
-          "webpage"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "webpage": {
-            "$ref": "#/components/schemas/Webpage"
-          },
-          "statistics": {
-            "$ref": "#/components/schemas/WebpageStatistic"
-          },
-          "scanResult": {
-            "$ref": "#/components/schemas/WebpageResult"
-          },
-          "modified": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "created": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "WebpageResult": {
         "required": [
           "created",
           "id",
           "modified",
-          "path",
           "rules",
-          "scanStatus"
+          "scanStatus",
+          "url"
         ],
         "type": "object",
         "properties": {
@@ -2379,7 +2975,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "path": {
+          "url": {
             "type": "string"
           },
           "scanStatus": {
@@ -2409,15 +3005,12 @@
           }
         }
       },
-      "WebpageStatistic": {
+      "WebpageScanMessage": {
         "required": [
           "created",
           "id",
           "modified",
-          "score",
-          "userId",
-          "webpageId",
-          "websiteStatisticFk"
+          "webpage"
         ],
         "type": "object",
         "properties": {
@@ -2425,15 +3018,36 @@
             "type": "integer",
             "format": "int64"
           },
-          "websiteStatisticFk": {
+          "webpage": {
+            "$ref": "#/components/schemas/Webpage"
+          },
+          "webpageStatistic": {
+            "$ref": "#/components/schemas/WebpageStatistic"
+          },
+          "webpageResult": {
+            "$ref": "#/components/schemas/WebpageResult"
+          },
+          "modified": {
             "type": "integer",
             "format": "int64"
           },
-          "webpageId": {
+          "created": {
             "type": "integer",
             "format": "int64"
-          },
-          "userId": {
+          }
+        }
+      },
+      "WebpageStatistic": {
+        "required": [
+          "created",
+          "id",
+          "modified",
+          "score",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
             "type": "integer",
             "format": "int64"
           },
@@ -2441,121 +3055,9 @@
             "type": "number",
             "format": "double"
           },
-          "modified": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "created": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "Website": {
-        "required": [
-          "category",
-          "created",
-          "domain",
-          "id",
-          "modified",
-          "status",
-          "tags",
-          "url",
-          "userId",
-          "webpageCount"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "domain": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          },
-          "category": {
-            "type": "string",
-            "enum": [
-              "GOVERNMENT_FEDERAL",
-              "GOVERNMENT_CANTONAL",
-              "GOVERNMENT_MUNICIPAL",
-              "PRIVATE_AFFILIATED",
-              "PRIVATE_UNIVERSITY",
-              "PRIVATE_NEWS",
-              "PRIVATE_SHOP",
-              "PRIVATE_OTHER"
-            ]
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "BLOCKED",
-              "READY",
-              "PENDING_INITIAL",
-              "PENDING_RESCAN"
-            ]
-          },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WebsiteTag"
-            }
-          },
-          "webpageCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "modified": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "created": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "WebsiteDetails": {
-        "required": [
-          "created",
-          "id",
-          "modified",
-          "user",
-          "webpages",
-          "website"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "website": {
-            "$ref": "#/components/schemas/Website"
-          },
-          "statistics": {
-            "$ref": "#/components/schemas/WebsiteStatistic"
-          },
-          "scanResult": {
-            "$ref": "#/components/schemas/WebsiteResult"
-          },
-          "webpages": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WebpageDetails"
-            }
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
+          "weight": {
+            "type": "number",
+            "format": "double"
           },
           "modified": {
             "type": "integer",
@@ -2570,13 +3072,13 @@
       "WebsiteResult": {
         "required": [
           "created",
+          "domain",
           "id",
           "modelVersion",
           "modified",
           "scanJob",
           "scanStatus",
-          "scanTimestamp",
-          "website"
+          "scanTimestamp"
         ],
         "type": "object",
         "properties": {
@@ -2590,7 +3092,7 @@
           "scanJob": {
             "$ref": "#/components/schemas/ScanJob"
           },
-          "website": {
+          "domain": {
             "type": "string"
           },
           "scanStatus": {
@@ -2616,14 +3118,13 @@
           }
         }
       },
-      "WebsiteStatistic": {
+      "WebsiteScanMessage": {
         "required": [
           "created",
           "id",
           "modified",
-          "score",
-          "userId",
-          "websiteId"
+          "webpageScans",
+          "website"
         ],
         "type": "object",
         "properties": {
@@ -2631,17 +3132,21 @@
             "type": "integer",
             "format": "int64"
           },
-          "websiteId": {
-            "type": "integer",
-            "format": "int64"
+          "website": {
+            "$ref": "#/components/schemas/Website"
           },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
+          "websiteStatistic": {
+            "$ref": "#/components/schemas/WebsiteStatistic"
           },
-          "score": {
-            "type": "number",
-            "format": "double"
+          "websiteResult": {
+            "$ref": "#/components/schemas/WebsiteResult"
+          },
+          "webpageScans": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebpageScanMessage"
+            }
           },
           "modified": {
             "type": "integer",
@@ -2653,14 +3158,12 @@
           }
         }
       },
-      "WebsiteTag": {
+      "WebsiteStatistic": {
         "required": [
           "created",
           "id",
           "modified",
-          "tag",
-          "userId",
-          "websiteId"
+          "score"
         ],
         "type": "object",
         "properties": {
@@ -2668,16 +3171,9 @@
             "type": "integer",
             "format": "int64"
           },
-          "websiteId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "tag": {
-            "$ref": "#/components/schemas/Tag"
+          "score": {
+            "type": "number",
+            "format": "double"
           },
           "modified": {
             "type": "integer",

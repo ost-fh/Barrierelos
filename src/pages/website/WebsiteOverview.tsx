@@ -1,4 +1,4 @@
-import {WebsiteDetails} from "../../lib/api-client"
+import {WebsiteScanMessage} from "../../lib/api-client"
 import {
   Card,
   CardContent,
@@ -23,17 +23,13 @@ import UnderstandableIcon from "@mui/icons-material/Psychology"
 import RobustIcon from "@mui/icons-material/FitnessCenter"
 
 
-interface WebsiteOverviewProps {
-  websiteDetails: WebsiteDetails
-}
-
-function WebsiteOverview(params: WebsiteOverviewProps) {
+function WebsiteOverview(props: { websiteScan: WebsiteScanMessage }) {
   const {t} = useTranslation();
-  const websiteDetails: WebsiteDetails = params.websiteDetails
+  const websiteScan: WebsiteScanMessage = props.websiteScan
 
   return (
     <>
-      {websiteDetails.scanResult ? (
+      {websiteScan.websiteStatistic ? (
         <>
           <h2>{t("WebsitePage.Overview.PrincipleViolationHeader")}</h2>
           <Stack
@@ -99,7 +95,7 @@ function WebsiteOverview(params: WebsiteOverviewProps) {
           <TableHead>
             <TableRow>
               <TableCell>{t("WebsitePage.Overview.WebpageUrl")}</TableCell>
-              {websiteDetails.statistics ? (
+              {websiteScan.websiteStatistic ? (
                 <>
                   <TableCell>{t("General.barrierelosScore")}</TableCell>
                   <TableCell>
@@ -115,16 +111,16 @@ function WebsiteOverview(params: WebsiteOverviewProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {websiteDetails.webpages.map((webpageDetails) => (
+            {websiteScan.webpageScans.map((webpageScan) => (
               <TableRow
-                key={webpageDetails.id}
+                key={webpageScan.id}
                 sx={{"&:last-child td, &:last-child th": {border: 0}}}
               >
-                <TableCell component="th" scope="row">{webpageDetails.webpage.url}</TableCell>
-                {websiteDetails.statistics ? (
+                <TableCell component="th" scope="row">{webpageScan.webpage.url}</TableCell>
+                {webpageScan.webpageStatistic ? (
                   <>
-                    <TableCell>{webpageDetails.statistics?.score}</TableCell>
-                    <TableCell>10</TableCell>
+                    <TableCell>{Math.round(webpageScan.webpageStatistic.score ?? 0)}</TableCell>
+                    <TableCell>{Math.round(webpageScan.webpageStatistic.weight * 100)}%</TableCell>
                   </>
                 ) : null}
               </TableRow>
@@ -154,8 +150,8 @@ function WebsiteOverview(params: WebsiteOverviewProps) {
         throw Error(`{principle} is not a valid WCAG principle`)
     }
 
-    return websiteDetails.webpages
-      .flatMap(webpageDetails => webpageDetails.scanResult?.rules
+    return websiteScan.webpageScans
+      .flatMap(webpageScan => webpageScan.webpageResult?.rules
         ?.filter(rule => rule.wcagReferences && rule.wcagReferences.criteria
           .some(criterion => criterion.startsWith(id))
         )

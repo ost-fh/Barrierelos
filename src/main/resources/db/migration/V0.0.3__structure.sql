@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS "webpage_scan" CASCADE;
 DROP TABLE IF EXISTS "webpage_statistic" CASCADE;
 DROP TABLE IF EXISTS "tag" CASCADE;
 DROP TABLE IF EXISTS "website_tag" CASCADE;
+DROP TABLE IF EXISTS "report" CASCADE;
 
 DROP CAST IF EXISTS (VARCHAR AS CATEGORY_ENUM);
 DROP CAST IF EXISTS (VARCHAR AS STATUS_ENUM);
@@ -137,4 +138,20 @@ CREATE TABLE "website_tag"
   FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("tag_fk") REFERENCES "tag" ("tag_id")
+);
+
+----------------------------------------------------------------------------------------------------
+-- Report
+----------------------------------------------------------------------------------------------------
+
+CREATE TABLE "report"
+(
+  "report_id" BIGSERIAL,
+  "user_fk" BIGSERIAL,
+  "reason" REASON_ENUM NOT NULL,
+  "state" STATE_ENUM NOT NULL DEFAULT 'OPEN',
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  PRIMARY KEY ("report_id"),
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
 );

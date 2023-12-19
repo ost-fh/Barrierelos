@@ -1,5 +1,6 @@
 package ch.barrierelos.backend.integration
 
+import ch.barrierelos.backend.enums.ReasonEnum
 import ch.barrierelos.backend.helper.*
 import ch.barrierelos.backend.repository.*
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -40,6 +41,8 @@ class RepositoryTests
   lateinit var websiteScanRepository: WebsiteScanRepository
   @Autowired
   lateinit var webpageScanRepository: WebpageScanRepository
+  @Autowired
+  lateinit var reportRepository: ReportRepository
 
   @Nested
   inner class UserRepositoryTests
@@ -663,6 +666,42 @@ class RepositoryTests
       val webpageScans = webpageScanRepository.findAllByWebpageFk(5000)
 
       webpageScans.shouldBeEmpty()
+    }
+  }
+
+  @Nested
+  inner class ReportRepositoryTests
+  {
+    @Test
+    fun `finds by user fk, when user fk exists`()
+    {
+      // given
+      val userFk = 25L
+
+      // when
+      entityManager.persist(createReportEntity(userFk = userFk).apply { reason = ReasonEnum.INCORRECT })
+      entityManager.persist(createReportEntity(userFk = userFk).apply { reason = ReasonEnum.MISLEADING })
+      entityManager.flush()
+
+      // then
+      val actual = reportRepository.findAllByUserFk(userFk)
+
+      actual.shouldHaveSize(2)
+      actual.shouldHaveSingleElement { it.reason == ReasonEnum.INCORRECT }
+      actual.shouldHaveSingleElement { it.reason == ReasonEnum.MISLEADING }
+    }
+
+    @Test
+    fun `not exists by user fk, when user fk not exists`()
+    {
+      // when
+      entityManager.persist(createReportEntity(userFk = 25))
+      entityManager.flush()
+
+      // then
+      val reports = reportRepository.findAllByUserFk(5000)
+
+      reports.shouldBeEmpty()
     }
   }
 }

@@ -1,7 +1,6 @@
 package ch.barrierelos.backend.configuration
 
-import ch.barrierelos.backend.enums.OrderEnum
-import ch.barrierelos.backend.enums.RoleEnum
+import ch.barrierelos.backend.enums.*
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.converter.Converter
 import org.springframework.format.FormatterRegistry
@@ -21,6 +20,9 @@ public class WebConfiguration : WebMvcConfigurer
   {
     registry.addConverter(StringToOrderEnumConverter())
     registry.addConverter(StringToRoleEnumConverter())
+    registry.addConverter(StringToStatusEnumConverter())
+    registry.addConverter(StringToStateEnumConverter())
+    registry.addConverter(StringToReasonEnumConverter())
   }
 
   private class StringToOrderEnumConverter : Converter<String, OrderEnum>
@@ -36,6 +38,30 @@ public class WebConfiguration : WebMvcConfigurer
     override fun convert(source: String): RoleEnum
     {
       return RoleEnum.valueOf(source.uppercase(Locale.getDefault()))
+    }
+  }
+
+  private class StringToStatusEnumConverter : Converter<String, StatusEnum>
+  {
+    override fun convert(source: String): StatusEnum
+    {
+      return StatusEnum.valueOf(source.uppercase(Locale.getDefault()))
+    }
+  }
+
+  private class StringToStateEnumConverter : Converter<String, StateEnum>
+  {
+    override fun convert(source: String): StateEnum
+    {
+      return StateEnum.valueOf(source.uppercase(Locale.getDefault()))
+    }
+  }
+
+  private class StringToReasonEnumConverter : Converter<String, ReasonEnum>
+  {
+    override fun convert(source: String): ReasonEnum
+    {
+      return ReasonEnum.valueOf(source.uppercase(Locale.getDefault()))
     }
   }
 }

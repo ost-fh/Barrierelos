@@ -1,8 +1,6 @@
 package ch.barrierelos.backend.helper
 
-import ch.barrierelos.backend.enums.CategoryEnum
-import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.enums.StatusEnum
+import ch.barrierelos.backend.enums.*
 import ch.barrierelos.backend.model.*
 
 fun createUserModel() = User(
@@ -83,6 +81,14 @@ fun createWebpageScanModel(userId: Long = 0, webpageId: Long = 0, webpageStatist
   webpageStatisticId = webpageStatisticId,
   webpageResultId = webpageResultId,
   userId = userId,
+  modified = 5000,
+  created = 5000,
+)
+
+fun createReportModel(userId: Long = 0) = Report(
+  userId = userId,
+  reason = ReasonEnum.INCORRECT,
+  state = StateEnum.OPEN,
   modified = 5000,
   created = 5000,
 )

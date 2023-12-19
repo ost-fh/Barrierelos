@@ -1,9 +1,7 @@
 package ch.barrierelos.backend.helper
 
 import ch.barrierelos.backend.entity.*
-import ch.barrierelos.backend.enums.CategoryEnum
-import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.enums.StatusEnum
+import ch.barrierelos.backend.enums.*
 import java.sql.Timestamp
 
 fun createUserEntity() = UserEntity(
@@ -84,6 +82,14 @@ fun createWebpageScanEntity(userFk: Long = 0, webpageFk: Long = 0, webpageStatis
   webpageStatisticFk = webpageStatisticFk,
   webpageResultFk = webpageResultFk,
   userFk = userFk,
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)
+
+fun createReportEntity(userFk: Long = 0) = ReportEntity(
+  userFk = userFk,
+  reason = ReasonEnum.INCORRECT,
+  state = StateEnum.OPEN,
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )

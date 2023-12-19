@@ -3,9 +3,7 @@ package ch.barrierelos.backend.integration
 import body
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
-import ch.barrierelos.backend.enums.OrderEnum
-import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.enums.StatusEnum
+import ch.barrierelos.backend.enums.*
 import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.helper.*
 import ch.barrierelos.backend.message.RegistrationMessage
@@ -58,6 +56,8 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
   lateinit var websiteScanService: WebsiteScanService
   @MockkBean
   lateinit var webpageScanService: WebpageScanService
+  @MockkBean
+  lateinit var reportService: ReportService
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -1650,7 +1650,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { websiteService.updateWebsite(website) } returns website
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/website/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = website.toJson()
         }.andExpect {
@@ -2230,18 +2230,22 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
 
       @Test
       @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
-      fun `responds with 403 forbidden, given contributor account`()
+      fun `returns webpage, when updated, given contributor account`()
       {
         // when
-        every { webpageService.updateWebpage(webpage) } returns webpage
+        val expected = webpage.copy()
+
+        every { webpageService.updateWebpage(expected.apply { id = 1 }) } returns expected
 
         // then
-        mockMvc.put("/tag/1") {
+        val actual = mockMvc.put("/webpage/1") {
           contentType = EXPECTED_MEDIA_TYPE
-          content = webpage.toJson()
+          content = expected.toJson()
         }.andExpect {
-          status { isForbidden() }
-        }
+          status { isOk() }
+        }.body<Webpage>()
+
+        assertEquals(expected, actual)
       }
 
       @Test
@@ -2252,7 +2256,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { webpageService.updateWebpage(webpage) } returns webpage
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/webpage/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = webpage.toJson()
         }.andExpect {
@@ -2791,7 +2795,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { websiteStatisticService.updateWebsiteStatistic(websiteStatistic) } returns websiteStatistic
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/website-statistic/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = websiteStatistic.toJson()
         }.andExpect {
@@ -2807,7 +2811,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { websiteStatisticService.updateWebsiteStatistic(websiteStatistic) } returns websiteStatistic
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/website-statistic/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = websiteStatistic.toJson()
         }.andExpect {
@@ -2823,7 +2827,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { websiteStatisticService.updateWebsiteStatistic(websiteStatistic) } returns websiteStatistic
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/website-statistic/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = websiteStatistic.toJson()
         }.andExpect {
@@ -3346,7 +3350,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { webpageStatisticService.updateWebpageStatistic(webpageStatistic) } returns webpageStatistic
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/webpage-statistic/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = webpageStatistic.toJson()
         }.andExpect {
@@ -3362,7 +3366,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { webpageStatisticService.updateWebpageStatistic(webpageStatistic) } returns webpageStatistic
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/webpage-statistic/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = webpageStatistic.toJson()
         }.andExpect {
@@ -3378,7 +3382,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { webpageStatisticService.updateWebpageStatistic(webpageStatistic) } returns webpageStatistic
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/webpage-statistic/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = webpageStatistic.toJson()
         }.andExpect {
@@ -3907,7 +3911,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { websiteScanService.updateWebsiteScan(any()) } returns websiteScan
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/website-scan/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = websiteScan.toJson()
         }.andExpect {
@@ -3923,7 +3927,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { websiteScanService.updateWebsiteScan(any()) } returns websiteScan
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/website-scan/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = websiteScan.toJson()
         }.andExpect {
@@ -3939,7 +3943,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { websiteScanService.updateWebsiteScan(any()) } returns websiteScan
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/website-scan/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = websiteScan.toJson()
         }.andExpect {
@@ -4468,7 +4472,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { webpageScanService.updateWebpageScan(any()) } returns webpageScan
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/webpage-scan/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = webpageScan.toJson()
         }.andExpect {
@@ -4484,7 +4488,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { webpageScanService.updateWebpageScan(any()) } returns webpageScan
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/webpage-scan/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = webpageScan.toJson()
         }.andExpect {
@@ -4500,7 +4504,7 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
         every { webpageScanService.updateWebpageScan(any()) } returns webpageScan
 
         // then
-        mockMvc.put("/tag/1") {
+        mockMvc.put("/webpage-scan/1") {
           contentType = EXPECTED_MEDIA_TYPE
           content = webpageScan.toJson()
         }.andExpect {
@@ -4784,6 +4788,704 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
 
         // then
         mockMvc.delete("/webpage-scan/1").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class ReportControllerTests
+  {
+    private val report = createReportModel()
+
+    @Nested
+    inner class AddReportTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { reportService.addReport(any()) } returns report
+
+        // then
+        mockMvc.post("/report").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives report, when provided in body`()
+      {
+        // when
+        every { reportService.addReport(report.apply {
+          reason = ReasonEnum.INCORRECT
+          state = StateEnum.CLOSED
+        }) } returns report
+
+        // then
+        mockMvc.post("/report") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          content {
+            contentType(EXPECTED_MEDIA_TYPE)
+            jsonPath("$.userId") { value(report.userId) }
+            jsonPath("$.reason") { value(report.reason.toString()) }
+            jsonPath("$.state") { value(report.state.toString()) }
+            jsonPath("$.modified") { value(report.modified) }
+            jsonPath("$.created") { value(report.created) }
+          }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `returns report, when added, given admin account`()
+      {
+        // when
+        val expected = report.copy()
+
+        every { reportService.addReport(expected) } returns expected
+
+        // then
+        val actual = mockMvc.post("/report") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isCreated() }
+        }.body<Report>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `returns report, when added, given moderator account`()
+      {
+        // when
+        val expected = report.copy()
+
+        every { reportService.addReport(expected) } returns expected
+
+        // then
+        val actual = mockMvc.post("/report") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isCreated() }
+        }.body<Report>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `returns report, when added, given contributor account`()
+      {
+        // when
+        val expected = report.copy()
+
+        every { reportService.addReport(expected) } returns expected
+
+        // then
+        val actual = mockMvc.post("/report") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isCreated() }
+        }.body<Report>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { reportService.addReport(any()) } returns report
+
+        // then
+        mockMvc.post("/report") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { reportService.addReport(any()) } returns report
+
+        // then
+        mockMvc.post("/report") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { reportService.addReport(any()) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.post("/report") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 415 unsupported media type, when no report provided in body`()
+      {
+        // when
+        every { reportService.addReport(any()) } returns report
+
+        // then
+        mockMvc.post("/report").andExpect {
+          status { isUnsupportedMediaType() }
+        }
+      }
+    }
+
+    @Nested
+    inner class UpdateReportTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { reportService.updateReport(any()) } returns report
+
+        // then
+        mockMvc.put("/report/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives report, when provided in body`()
+      {
+        // when
+        every { reportService.updateReport(report.apply {
+          id = 1
+          reason = ReasonEnum.INCORRECT
+          state = StateEnum.CLOSED
+        }) } returns report
+
+        // then
+        mockMvc.put("/report/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          content {
+            contentType(EXPECTED_MEDIA_TYPE)
+            jsonPath("$.userId") { value(report.userId) }
+            jsonPath("$.reason") { value(report.reason.toString()) }
+            jsonPath("$.state") { value(report.state.toString()) }
+            jsonPath("$.modified") { value(report.modified) }
+            jsonPath("$.created") { value(report.created) }
+          }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { reportService.updateReport(any()) } returns report
+
+        // then
+        mockMvc.put("/report/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `returns report, when updated, given admin account`()
+      {
+        // when
+        val expected = report.copy().apply { id = 1 }
+
+        every { reportService.updateReport(expected) } returns expected
+
+        // then
+        val actual = mockMvc.put("/report/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isOk() }
+        }.body<Report>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore= TEST_EXECUTION)
+      fun `returns report, when updated, given moderator account`()
+      {
+        // when
+        val expected = report.copy().apply { id = 1 }
+
+        every { reportService.updateReport(expected) } returns expected
+
+        // then
+        val actual = mockMvc.put("/report/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = expected.toJson()
+        }.andExpect {
+          status { isOk() }
+        }.body<Report>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given contributor account`()
+      {
+        // when
+        every { reportService.updateReport(any()) } returns report
+
+        // then
+        mockMvc.put("/report/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { reportService.updateReport(any()) } returns report
+
+        // then
+        mockMvc.put("/report/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { reportService.updateReport(any()) } returns report
+
+        // then
+        mockMvc.put("/report/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { reportService.updateReport(any()) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.put("/report/1") {
+          contentType = EXPECTED_MEDIA_TYPE
+          content = report.toJson()
+        }.andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `responds with 415 unsupported media type, when no report provided in body`()
+      {
+        // when
+        every { reportService.updateReport(any()) } returns report
+
+        // then
+        mockMvc.put("/report/1").andExpect {
+          status { isUnsupportedMediaType() }
+        }
+      }
+    }
+
+    @Nested
+    inner class GetReportsTests
+    {
+      private val result = Result(
+        page = 0,
+        size = 1,
+        totalElements = 1,
+        totalPages = 1,
+        count = 1,
+        lastModified = 5000,
+        content = listOf(
+          report
+        ),
+      )
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { reportService.getReports() } returns result
+
+        // then
+        mockMvc.get("/report").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `receives default parameters, when default parameters provided`()
+      {
+        // when
+        val defaultParameters = DefaultParameters(
+          page = 0,
+          size = 2,
+          sort = "score",
+          order = OrderEnum.ASC,
+          modifiedAfter = 4000
+        )
+
+        every { reportService.getReports(defaultParameters) } returns result
+
+        // then
+        mockMvc.get("/report") {
+          param("page", defaultParameters.page.toString())
+          param("size", defaultParameters.size.toString())
+          param("sort", defaultParameters.sort.toString())
+          param("order", defaultParameters.order.toString())
+          param("modifiedAfter", defaultParameters.modifiedAfter.toString())
+        }.andExpect {
+          haveParameterValue("page", defaultParameters.page.toString())
+          haveParameterValue("size", defaultParameters.size.toString())
+          haveParameterValue("sort", defaultParameters.sort.toString())
+          haveParameterValue("order", defaultParameters.order.toString())
+          haveParameterValue("modifiedAfter", defaultParameters.modifiedAfter.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `gets reports, given admin account`()
+      {
+        // when
+        every { reportService.getReports() } returns result
+
+        // then
+        val actual = mockMvc.get("/report").andExpect {
+          status { isOk() }
+        }.body<List<Report>>()
+
+        assertEquals(result.content, actual)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore= TEST_EXECUTION)
+      fun `gets reports, given moderator account`()
+      {
+        // when
+        every { reportService.getReports() } returns result
+
+        // then
+        val actual = mockMvc.get("/report").andExpect {
+          status { isOk() }
+        }.body<List<Report>>()
+
+        assertEquals(result.content, actual)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
+      fun `gets reports, given contributor account`()
+      {
+        // when
+        every { reportService.getReports() } returns result
+
+        // then
+        val actual = mockMvc.get("/report").andExpect {
+          status { isOk() }
+        }.body<List<Report>>()
+
+        assertEquals(result.content, actual)
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { reportService.getReports() } returns result
+
+        // then
+        mockMvc.get("/report").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { reportService.getReports() } returns result
+
+        // then
+        mockMvc.get("/report").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+    }
+
+    @Nested
+    inner class GetReportTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { reportService.getReport(1) } returns report
+
+        // then
+        mockMvc.get("/report/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { reportService.getReport(1) } returns report
+
+        // then
+        mockMvc.get("/report/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `gets report, given admin account`()
+      {
+        // when
+        val expected = report.copy()
+
+        every { reportService.getReport(1) } returns expected
+
+        // then
+        val actual = mockMvc.get("/report/1").andExpect {
+          status { isOk() }
+        }.body<Report>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore= TEST_EXECUTION)
+      fun `gets report, given moderator account`()
+      {
+        // when
+        val expected = report.copy()
+
+        every { reportService.getReport(1) } returns expected
+
+        // then
+        val actual = mockMvc.get("/report/1").andExpect {
+          status { isOk() }
+        }.body<Report>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
+      fun `gets report, given contributor account`()
+      {
+        // when
+        val expected = report.copy()
+
+        every { reportService.getReport(1) } returns expected
+
+        // then
+        val actual = mockMvc.get("/report/1").andExpect {
+          status { isOk() }
+        }.body<Report>()
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore= TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { reportService.getReport(1) } returns report
+
+        // then
+        mockMvc.get("/report/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { reportService.getReport(1) } returns report
+
+        // then
+        mockMvc.get("/report/1").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 404 not found, when service throws NoSuchElementException`()
+      {
+        // when
+        every { reportService.getReport(1) } throws NoSuchElementException()
+
+        // then
+        mockMvc.get("/report/1").andExpect {
+          status { isNotFound() }
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteReportTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `uses correct media type`()
+      {
+        // when
+        every { reportService.deleteReport(1) } returns Unit
+
+        // then
+        mockMvc.delete("/report/1").andExpect {
+          content { EXPECTED_MEDIA_TYPE }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `receives path variable, when path variable provided`()
+      {
+        // when
+        every { reportService.deleteReport(1) } returns Unit
+
+        // then
+        mockMvc.delete("/report/1").andExpect {
+          haveParameterValue("id", 1.toString())
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 200 ok, given admin account`()
+      {
+        // when
+        every { reportService.deleteReport(1) } returns Unit
+
+        // then
+        mockMvc.delete("/report/1").andExpect {
+          status { isOk() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given moderator account`()
+      {
+        // when
+        every { reportService.deleteReport(1) } returns Unit
+
+        // then
+        mockMvc.delete("/report/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given contributor account`()
+      {
+        // when
+        every { reportService.deleteReport(1) } returns Unit
+
+        // then
+        mockMvc.delete("/report/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `responds with 403 forbidden, given viewer account`()
+      {
+        // when
+        every { reportService.deleteReport(1) } returns Unit
+
+        // then
+        mockMvc.delete("/report/1").andExpect {
+          status { isForbidden() }
+        }
+      }
+
+      @Test
+      fun `responds with 401 unauthorized, given no account`()
+      {
+        // when
+        every { reportService.deleteReport(1) } returns Unit
+
+        // then
+        mockMvc.delete("/report/1").andExpect {
+          status { isUnauthorized() }
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
+      {
+        // when
+        every { reportService.deleteReport(1) } throws NoAuthorizationException()
+
+        // then
+        mockMvc.delete("/report/1").andExpect {
           status { isUnauthorized() }
         }
       }

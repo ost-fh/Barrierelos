@@ -4,6 +4,7 @@ import ch.barrierelos.backend.converter.toEntities
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.converter.toModels
+import ch.barrierelos.backend.enums.StateEnum
 import ch.barrierelos.backend.helper.*
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
@@ -675,6 +676,80 @@ class ConverterTests
       actual.shouldHaveSize(expected.size)
       actual.shouldHaveSingleElement { it.webpageFk == 1L }
       actual.shouldHaveSingleElement { it.webpageFk == 2L }
+    }
+  }
+
+  @Nested
+  inner class ReportTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createReportEntity()
+
+      // then
+      val model = createReportModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createReportModel()
+
+      // then
+      val expected = createReportEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.reportId, actual.reportId)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.reason, actual.reason)
+      assertEquals(expected.state, actual.state)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+
+    @Test
+    fun `converts to models, when entities`()
+    {
+      // when
+      val entities = setOf(
+        createReportEntity().apply { state = StateEnum.OPEN },
+        createReportEntity().apply { state = StateEnum.CLOSED }
+      )
+
+      // then
+      val models = setOf(
+        createReportModel().apply { state = StateEnum.OPEN },
+        createReportModel().apply { state = StateEnum.CLOSED }
+      )
+
+      assertEquals(models, entities.toModels())
+    }
+
+    @Test
+    fun `converts to entities, when models`()
+    {
+      // when
+      val models = setOf(
+        createReportModel().apply { state = StateEnum.OPEN },
+        createReportModel().apply { state = StateEnum.CLOSED }
+      )
+
+      // then
+      val expected = setOf(
+        createReportEntity().apply { state = StateEnum.OPEN },
+        createReportEntity().apply { state = StateEnum.CLOSED }
+      )
+      val actual = models.toEntities()
+
+      actual.shouldHaveSize(expected.size)
+      actual.shouldHaveSingleElement { it.state == StateEnum.OPEN }
+      actual.shouldHaveSingleElement { it.state == StateEnum.CLOSED }
     }
   }
 }

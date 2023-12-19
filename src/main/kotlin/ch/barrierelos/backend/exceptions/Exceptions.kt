@@ -20,7 +20,10 @@ public class InvalidDomainException(message: String) : ResponseStatusException(H
 public class InvalidPathException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class InvalidUrlException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
+public class InvalidUrlException(url: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, "Url (${url}) is not valid.")
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class UrlNotMatchingWebsiteDomainException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class NoAuthorizationException : ResponseStatusException(HttpStatus.UNAUTHORIZED, "No authorization.")

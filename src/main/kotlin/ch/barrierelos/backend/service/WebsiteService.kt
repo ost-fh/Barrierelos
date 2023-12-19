@@ -77,12 +77,13 @@ public class WebsiteService
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
 
     throwIfNoValidUrl(websiteMessage.url)
-    val domain = "https?://([^/?]+([^/?]/)*)/?.*".toRegex()
-      .find(websiteMessage.url)?.groups?.get(1)?.value ?: throw InvalidUrlException("Url is not valid.")
+    val domain = "^https?://(([^/?]+\\.)+[^/?]+)(/.*)?$".toRegex()
+      .find(websiteMessage.url)?.groups?.get(1)?.value
+      ?: throw InvalidUrlException(websiteMessage.url)
     throwIfDomainAlreadyExists(domain)
 
     val tags = tagRepository.findAllByNameIn(websiteMessage.tags).toModels()
-    if(tags.size != websiteMessage.tags.size)
+    if(tags.size < websiteMessage.tags.size)
     {
       throw NoSuchElementException("Tag with that name does not exist.")
     }

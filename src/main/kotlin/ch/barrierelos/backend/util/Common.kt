@@ -24,7 +24,7 @@ public fun <T> Optional<T>.orThrow(exception: Exception): T
 public fun throwIfNoValidUrl(url: String)
 {
   val urlValidator = UrlValidator(arrayOf("http", "https"))
-  if(!urlValidator.isValid(url)) throw InvalidUrlException("Invalid URL.")
+  if(!urlValidator.isValid(url)) throw InvalidUrlException(url)
 }
 
 public fun <T> MutableCollection<T>.clearAndAdd(element: T): Boolean

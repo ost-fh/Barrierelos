@@ -8,6 +8,7 @@ import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.exceptions.InvalidUrlException
 import ch.barrierelos.backend.exceptions.NoAuthorizationException
 import ch.barrierelos.backend.exceptions.ReferenceNotExistsException
+import ch.barrierelos.backend.exceptions.UrlNotMatchingWebsiteDomainException
 import ch.barrierelos.backend.message.WebpageMessage
 import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.parameter.DefaultParameters
@@ -44,7 +45,12 @@ public class WebpageService
     throwIfNoValidUrl(webpageMessage.url)
     throwIfUrlNotMatchesWebsiteDomain(webpageMessage.url, website.domain)
 
-    val displayUrl = "https?://([^?]+).*".toRegex().find(webpageMessage.url)?.groups?.get(1)?.value ?: throw InvalidUrlException("Url is not valid.")
+    var displayUrl = "^https?://([^?]+)(/?\\?.*)?$".toRegex()
+      .find(webpageMessage.url)?.groups?.get(1)?.value
+      ?: throw throw InvalidUrlException(webpageMessage.url)
+
+    if(displayUrl.endsWith('/'))
+      displayUrl = displayUrl.dropLast(1)
 
     throwIfDisplayUrlAlreadyExists(displayUrl)
 
@@ -139,9 +145,12 @@ public class WebpageService
 
   private fun throwIfUrlNotMatchesWebsiteDomain(url: String, domain: String)
   {
-    if(!url.matches("^https?://([^/]*\\.)?${domain}(/.*)?\$".toRegex()))
+    val secondAndTopLevelDomain = "^([^.]+\\.)*([^.]+\\.[^.]+)$".toRegex()
+      .find(domain)?.groups?.get(2)?.value
+      ?: throw InvalidUrlException(url)
+    if(!url.matches("^https?://([^/]+\\.)?${secondAndTopLevelDomain}(/.*)?$".toRegex()))
     {
-      throw InvalidUrlException("Url doesn't match website domain.")
+      throw UrlNotMatchingWebsiteDomainException("Url (${url}) does not match website domain (${domain}).")
     }
   }
 
@@ -149,7 +158,7 @@ public class WebpageService
   {
     if(!this.webpageRepository.existsById(webpageId))
     {
-      throw NoSuchElementException("Webpage with such id does not exist.")
+      throw NoSuchElementException("Webpage with this id does not exist.")
     }
   }
 }

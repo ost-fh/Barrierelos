@@ -59,6 +59,8 @@ class ServiceTests
   lateinit var reportService: ReportService
   @Autowired
   lateinit var reportMessageService: ReportMessageService
+  @Autowired
+  lateinit var userReportService: UserReportService
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -89,6 +91,8 @@ class ServiceTests
   lateinit var reportRepository: ReportRepository
   @Autowired
   lateinit var reportMessageRepository: ReportMessageRepository
+  @Autowired
+  lateinit var userReportRepository: UserReportRepository
 
 
   lateinit var admin: UserEntity
@@ -163,6 +167,7 @@ class ServiceTests
     webpageStatisticRepository.deleteAll()
     websiteScanRepository.deleteAll()
     webpageScanRepository.deleteAll()
+    userReportRepository.deleteAll()
     reportRepository.deleteAll()
     reportMessageRepository.deleteAll()
   }
@@ -4700,6 +4705,448 @@ class ServiceTests
         // then
         assertThrows(NoAuthorizationException::class.java) {
           reportMessageService.deleteReportMessage(reportMessage.id)
+        }
+      }
+    }
+  }
+
+  @Nested
+  inner class UserReportServiceTests
+  {
+    @Nested
+    inner class AddUserReportTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `adds user report, given admin account`()
+      {
+        // when
+        val expected = createUserReportModel()
+
+        // then
+        val actual = userReportService.addUserReport(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.userId, actual.userId)
+        assertNotEquals(0, actual.report.id)
+        assertEquals(expected.report.userId, actual.report.userId)
+        assertEquals(expected.report.reason, actual.report.reason)
+        assertEquals(expected.report.state, actual.report.state)
+        assertEquals(expected.report.modified, actual.report.modified)
+        assertEquals(expected.report.created, actual.report.created)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `adds user report, given moderator account`()
+      {
+        // when
+        val expected = createUserReportModel()
+
+        // then
+        val actual = userReportService.addUserReport(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.userId, actual.userId)
+        assertNotEquals(0, actual.report.id)
+        assertEquals(expected.report.userId, actual.report.userId)
+        assertEquals(expected.report.reason, actual.report.reason)
+        assertEquals(expected.report.state, actual.report.state)
+        assertEquals(expected.report.modified, actual.report.modified)
+        assertEquals(expected.report.created, actual.report.created)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `adds user report, given contributor account`()
+      {
+        // when
+        val expected = createUserReportModel()
+
+        // then
+        val actual = userReportService.addUserReport(expected.copy())
+
+        assertNotEquals(0, actual.id)
+        assertEquals(expected.userId, actual.userId)
+        assertNotEquals(0, actual.report.id)
+        assertEquals(expected.report.userId, actual.report.userId)
+        assertEquals(expected.report.reason, actual.report.reason)
+        assertEquals(expected.report.state, actual.report.state)
+        assertEquals(expected.report.modified, actual.report.modified)
+        assertEquals(expected.report.created, actual.report.created)
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot add user report, given viewer account`()
+      {
+        // when
+        val userReport = createUserReportModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.addUserReport(userReport)
+        }
+      }
+
+      @Test
+      fun `cannot add user report, given no account`()
+      {
+        // when
+        val userReport = createUserReportModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.addUserReport(userReport)
+        }
+      }
+    }
+    
+    @Nested
+    inner class GetUserReportsTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `gets user reports, given admin account`()
+      {
+        // given
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+        userReportRepository.save(createUserReportEntity(userFk = 60L))
+
+        // when
+        val userReports = userReportService.getUserReports().content
+
+        // then
+        userReports.shouldNotBeEmpty()
+        userReports.shouldHaveSize(2)
+        assertTrue(userReports.any { it.userId == 40L })
+        assertTrue(userReports.any { it.userId == 60L })
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `gets user reports, given moderator account`()
+      {
+        // given
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+        userReportRepository.save(createUserReportEntity(userFk = 60L))
+
+        // when
+        val userReports = userReportService.getUserReports().content
+
+        // then
+        userReports.shouldNotBeEmpty()
+        userReports.shouldHaveSize(2)
+        assertTrue(userReports.any { it.userId == 40L })
+        assertTrue(userReports.any { it.userId == 60L })
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `gets user reports, given contributor account`()
+      {
+        // given
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+        userReportRepository.save(createUserReportEntity(userFk = 60L))
+
+        // when
+        val userReports = userReportService.getUserReports().content
+
+        // then
+        userReports.shouldNotBeEmpty()
+        userReports.shouldHaveSize(2)
+        assertTrue(userReports.any { it.userId == 40L })
+        assertTrue(userReports.any { it.userId == 60L })
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot get user reports, given viewer account`()
+      {
+        // when
+        userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.getUserReports()
+        }
+      }
+
+      @Test
+      fun `cannot get user reports, given no account`()
+      {
+        // when
+        userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.getUserReports()
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `gets user reports by userId, given admin account`()
+      {
+        // given
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+
+        // when
+        val userReports = userReportService.getUserReportsByUser(40).content
+
+        // then
+        userReports.shouldNotBeEmpty()
+        userReports.shouldHaveSize(2)
+        assertTrue(userReports.any { it.userId == 40L })
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `gets user reports by userId, given moderator account`()
+      {
+        // given
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+
+        // when
+        val userReports = userReportService.getUserReportsByUser(40).content
+
+        // then
+        userReports.shouldNotBeEmpty()
+        userReports.shouldHaveSize(2)
+        assertTrue(userReports.any { it.userId == 40L })
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `gets user reports by userId, given contributor account`()
+      {
+        // given
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+
+        // when
+        val userReports = userReportService.getUserReportsByUser(40).content
+
+        // then
+        userReports.shouldNotBeEmpty()
+        userReports.shouldHaveSize(2)
+        assertTrue(userReports.any { it.userId == 40L })
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot get user reports by userId, given viewer account`()
+      {
+        // when
+        userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.getUserReportsByUser(1)
+        }
+      }
+
+      @Test
+      fun `cannot get user reports by userId, given no account`()
+      {
+        // when
+        userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.getUserReportsByUser(1)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `gets user reports with headers, when no parameters, given admin account`()
+      {
+        // given
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+        userReportRepository.save(createUserReportEntity(userFk = 60L))
+
+        // when
+        val userReports = userReportService.getUserReports()
+
+        // then
+        userReports.page.shouldBe(0)
+        userReports.size.shouldBe(2)
+        userReports.totalElements.shouldBe(2)
+        userReports.totalPages.shouldBe(1)
+        userReports.count.shouldBe(2)
+        userReports.content.shouldHaveSize(2)
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `gets user reports with headers, when with parameters, given admin account`()
+      {
+        // given
+        userReportRepository.save(createUserReportEntity(userFk = 40L))
+        userReportRepository.save(createUserReportEntity(userFk = 60L))
+
+        // when
+        val userReports = userReportService.getUserReports(DefaultParameters(
+          page = 1,
+          size = 1,
+          sort = "id",
+          order = OrderEnum.ASC
+        ))
+
+        // then
+        userReports.page.shouldBe(1)
+        userReports.size.shouldBe(1)
+        userReports.totalElements.shouldBe(2)
+        userReports.totalPages.shouldBe(2)
+        userReports.count.shouldBe(2)
+        userReports.content.shouldHaveSize(1)
+      }
+    }
+
+    @Nested
+    inner class GetUserReportTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `gets user report, given admin account`()
+      {
+        // when
+        val expected = userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        val actual = userReportService.getUserReport(expected.id)
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `gets user report, given moderator account`()
+      {
+        // when
+        val expected = userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        val actual = userReportService.getUserReport(expected.id)
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `gets user report, given contributor account`()
+      {
+        // when
+        val expected = userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        val actual = userReportService.getUserReport(expected.id)
+
+        assertEquals(expected, actual)
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot get user report, given viewer account`()
+      {
+        // when
+        val userReport = userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.getUserReport(userReport.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `cannot get userReport, when userReport not exists`()
+      {
+        assertThrows(NoSuchElementException::class.java) {
+          userReportService.getUserReport(5000000)
+        }
+      }
+    }
+
+    @Nested
+    inner class DeleteUserReportTests
+    {
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `deletes user report, given admin account`()
+      {
+        // when
+        val userReport = userReportRepository.save(createUserReportEntity()).toModel()
+        val userReportsBefore = userReportService.getUserReports().content
+
+        // then
+        assertDoesNotThrow {
+          userReportService.deleteUserReport(userReport.id)
+        }
+
+        assertThrows(NoSuchElementException::class.java) {
+          userReportService.getUserReport(userReport.id)
+        }
+
+        val userReportsAfter = userReportService.getUserReports().content
+
+        userReportsBefore.shouldContain(userReport)
+        userReportsAfter.shouldNotContain(userReport)
+        userReportsBefore.shouldContainAll(userReportsAfter)
+        userReportsAfter.shouldNotContainAll(userReportsBefore)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `cannot delete user report, given moderator account`()
+      {
+        // when
+        val userReport = userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.deleteUserReport(userReport.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `cannot delete user report, given contributor account`()
+      {
+        // when
+        val userReport = userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.deleteUserReport(userReport.id)
+        }
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot delete user report, given viewer account`()
+      {
+        // when
+        val userReport = userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.deleteUserReport(userReport.id)
+        }
+      }
+
+      @Test
+      fun `cannot delete user report, given no account`()
+      {
+        // when
+        val userReport = userReportRepository.save(createUserReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          userReportService.deleteUserReport(userReport.id)
         }
       }
     }

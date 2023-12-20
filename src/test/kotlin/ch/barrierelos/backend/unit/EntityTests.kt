@@ -242,4 +242,25 @@ class EntityTests
       assertEquals(expected.created, actual.created)
     }
   }
+
+  @Nested
+  inner class ReportMessageTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createReportMessageEntity()
+
+      // then
+      val actual = createReportMessageEntity()
+
+      assertEquals(expected.reportMessageId, actual.reportMessageId)
+      assertEquals(expected.reportFk, actual.reportFk)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.message, actual.message)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+  }
 }

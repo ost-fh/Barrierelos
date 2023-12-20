@@ -752,4 +752,78 @@ class ConverterTests
       actual.shouldHaveSingleElement { it.state == StateEnum.CLOSED }
     }
   }
+
+  @Nested
+  inner class ReportMessageTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createReportMessageEntity()
+
+      // then
+      val model = createReportMessageModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createReportMessageModel()
+
+      // then
+      val expected = createReportMessageEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.reportMessageId, actual.reportMessageId)
+      assertEquals(expected.reportFk, actual.reportFk)
+      assertEquals(expected.userFk, actual.userFk)
+      assertEquals(expected.message, actual.message)
+      assertEquals(expected.modified, actual.modified)
+      assertEquals(expected.created, actual.created)
+    }
+
+    @Test
+    fun `converts to models, when entities`()
+    {
+      // when
+      val entities = setOf(
+        createReportMessageEntity().apply { message = "one" },
+        createReportMessageEntity().apply { message = "two" }
+      )
+
+      // then
+      val models = setOf(
+        createReportMessageModel().apply { message = "one" },
+        createReportMessageModel().apply { message = "two" }
+      )
+
+      assertEquals(models, entities.toModels())
+    }
+
+    @Test
+    fun `converts to entities, when models`()
+    {
+      // when
+      val models = setOf(
+        createReportMessageModel().apply { message = "one" },
+        createReportMessageModel().apply { message = "two" },
+      )
+
+      // then
+      val expected = setOf(
+        createReportMessageEntity().apply { message = "one" },
+        createReportMessageEntity().apply { message = "two" }
+      )
+      val actual = models.toEntities()
+
+      actual.shouldHaveSize(expected.size)
+      actual.shouldHaveSingleElement { it.message == "one" }
+      actual.shouldHaveSingleElement { it.message == "two" }
+    }
+  }
 }

@@ -182,4 +182,20 @@ class ModelTests
       assertEquals(expected, actual)
     }
   }
+
+  @Nested
+  inner class ReportMessageTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createReportMessageModel()
+
+      // then
+      val actual = createReportMessageModel()
+
+      assertEquals(expected, actual)
+    }
+  }
 }

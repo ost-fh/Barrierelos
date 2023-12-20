@@ -93,3 +93,11 @@ fun createReportEntity(userFk: Long = 0) = ReportEntity(
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
+
+fun createReportMessageEntity(userFk: Long = 0, reportFk: Long = 0) = ReportMessageEntity(
+  reportFk = reportFk,
+  userFk = userFk,
+  message = "Test message.",
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)

@@ -1,11 +1,11 @@
 package ch.barrierelos.backend.configuration
 
-import ch.barrierelos.backend.constants.Endpoint
 import ch.barrierelos.backend.constants.Endpoint.CREDENTIAL
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constants.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constants.Endpoint.REPORT
 import ch.barrierelos.backend.constants.Endpoint.REPORT_MESSAGE
+import ch.barrierelos.backend.constants.Endpoint.STATISTICS
 import ch.barrierelos.backend.constants.Endpoint.TAG
 import ch.barrierelos.backend.constants.Endpoint.USER
 import ch.barrierelos.backend.constants.Endpoint.USER_REPORT
@@ -14,6 +14,7 @@ import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_SCAN
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_STATISTIC
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE
 import ch.barrierelos.backend.constants.Endpoint.WEBSITES
+import ch.barrierelos.backend.constants.Endpoint.WEBSITE_REPORT
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE_SCAN
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE_STATISTIC
 import ch.barrierelos.backend.enums.RoleEnum
@@ -75,7 +76,7 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.GET, "$WEBPAGE/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name)
 
-          .requestMatchers("${Endpoint.STATISTICS}/**").permitAll()
+          .requestMatchers("${STATISTICS}/**").permitAll()
 
           .requestMatchers(HttpMethod.POST, "$WEBSITE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
           .requestMatchers(HttpMethod.PUT, "$WEBSITE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
@@ -118,6 +119,12 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.HEAD, "$USER_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
           .requestMatchers(HttpMethod.GET, "$USER_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
           .requestMatchers(HttpMethod.DELETE, "$USER_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name)
+
+          .requestMatchers(HttpMethod.POST, "$WEBSITE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBSITE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.HEAD, "$WEBSITE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.GET, "$WEBSITE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.DELETE, "$WEBSITE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name)
 
           .requestMatchers(HttpMethod.PUT, "$CREDENTIAL/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()

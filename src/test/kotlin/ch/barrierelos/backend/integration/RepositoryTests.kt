@@ -6,6 +6,7 @@ import ch.barrierelos.backend.repository.*
 import ch.barrierelos.backend.repository.ReportMessageRepository.Companion.findAllByReportFk
 import ch.barrierelos.backend.repository.ReportMessageRepository.Companion.findAllByUserFk
 import ch.barrierelos.backend.repository.ReportRepository.Companion.findAllByUserFk
+import ch.barrierelos.backend.repository.UserReportRepository.Companion.findAllByUserFk
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
@@ -48,6 +49,8 @@ class RepositoryTests
   lateinit var reportRepository: ReportRepository
   @Autowired
   lateinit var reportMessageRepository: ReportMessageRepository
+  @Autowired
+  lateinit var userReportRepository: UserReportRepository
 
   @Nested
   inner class UserRepositoryTests
@@ -775,6 +778,42 @@ class RepositoryTests
       val reportMessages = reportMessageRepository.findAllByUserFk(5000).content
 
       reportMessages.shouldBeEmpty()
+    }
+  }
+
+  @Nested
+  inner class UserReportRepositoryTests
+  {
+    @Test
+    fun `finds by user fk, when user fk exists`()
+    {
+      // given
+      val userFk = 25L
+
+      // when
+      entityManager.persist(createUserReportEntity(userFk = userFk).apply { report.reason = ReasonEnum.INCORRECT })
+      entityManager.persist(createUserReportEntity(userFk = userFk).apply { report.reason = ReasonEnum.MISLEADING })
+      entityManager.flush()
+
+      // then
+      val actual = userReportRepository.findAllByUserFk(userFk).content
+
+      actual.shouldHaveSize(2)
+      actual.shouldHaveSingleElement { it.report.reason == ReasonEnum.INCORRECT }
+      actual.shouldHaveSingleElement { it.report.reason == ReasonEnum.MISLEADING }
+    }
+
+    @Test
+    fun `not exists by user fk, when user fk not exists`()
+    {
+      // when
+      entityManager.persist(createUserReportEntity(userFk = 25))
+      entityManager.flush()
+
+      // then
+      val userReports = userReportRepository.findAllByUserFk(5000).content
+
+      userReports.shouldBeEmpty()
     }
   }
 }

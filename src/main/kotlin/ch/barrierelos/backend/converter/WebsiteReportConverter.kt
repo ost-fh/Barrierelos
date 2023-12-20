@@ -2,16 +2,13 @@ package ch.barrierelos.backend.converter
 
 import ch.barrierelos.backend.entity.WebsiteReportEntity
 import ch.barrierelos.backend.model.WebsiteReport
-import java.sql.Timestamp
 
 public fun WebsiteReport.toEntity(): WebsiteReportEntity
 {
   return WebsiteReportEntity(
     websiteReportId = this.id,
     websiteFk = this.websiteId,
-    reportFk = this.reportId,
-    modified = Timestamp(this.modified),
-    created = Timestamp(this.created),
+    report = this.report.toEntity(),
   )
 }
 
@@ -20,9 +17,7 @@ public fun WebsiteReportEntity.toModel(): WebsiteReport
   return WebsiteReport(
     id = this.websiteReportId,
     websiteId = this.websiteFk,
-    reportId = this.reportFk,
-    modified = this.modified.time,
-    created = this.created.time,
+    report = this.report.toModel(),
   )
 }
 
@@ -31,8 +26,16 @@ public fun WebsiteReportEntity.toModel(websiteReport: WebsiteReport): WebsiteRep
   return websiteReport.apply {
     id = this@toModel.websiteReportId
     websiteId = this@toModel.websiteFk
-    reportId = this@toModel.reportFk
-    modified = this@toModel.modified.time
-    created = this@toModel.created.time
+    report = this@toModel.report.toModel(report)
   }
+}
+
+public fun Collection<WebsiteReport>.toEntities(): MutableSet<WebsiteReportEntity>
+{
+  return this.map { tag -> tag.toEntity() }.toMutableSet()
+}
+
+public fun Collection<WebsiteReportEntity>.toModels(): MutableSet<WebsiteReport>
+{
+  return this.map { tag -> tag.toModel() }.toMutableSet()
 }

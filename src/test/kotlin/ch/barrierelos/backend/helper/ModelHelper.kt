@@ -100,3 +100,8 @@ fun createReportMessageModel(userId: Long = 0, reportId: Long = 0) = ReportMessa
   modified = 5000,
   created = 5000,
 )
+
+fun createUserReportModel(userId: Long = 0) = UserReport(
+  userId = userId,
+  report = createReportModel(userId),
+)

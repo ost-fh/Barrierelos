@@ -111,3 +111,8 @@ fun createWebsiteReportEntity(websiteFk: Long = 0) = WebsiteReportEntity(
   websiteFk = websiteFk,
   report = createReportEntity(websiteFk),
 )
+
+fun createWebpageReportEntity(webpageFk: Long = 0) = WebpageReportEntity(
+  webpageFk = webpageFk,
+  report = createReportEntity(webpageFk),
+)

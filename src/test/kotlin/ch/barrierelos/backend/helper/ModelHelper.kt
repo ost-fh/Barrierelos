@@ -110,3 +110,8 @@ fun createWebsiteReportModel(websiteId: Long = 0) = WebsiteReport(
   websiteId = websiteId,
   report = createReportModel(websiteId),
 )
+
+fun createWebpageReportModel(webpageId: Long = 0) = WebpageReport(
+  webpageId = webpageId,
+  report = createReportModel(webpageId),
+)

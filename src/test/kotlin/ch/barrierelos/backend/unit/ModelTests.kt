@@ -230,4 +230,20 @@ class ModelTests
       assertEquals(expected, actual)
     }
   }
+
+  @Nested
+  inner class WebpageReportTests
+  {
+    @Test
+    fun `is equals, when same content`()
+    {
+      // when
+      val expected = createWebpageReportModel()
+
+      // then
+      val actual = createWebpageReportModel()
+
+      assertEquals(expected, actual)
+    }
+  }
 }

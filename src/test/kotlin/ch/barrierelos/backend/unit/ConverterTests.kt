@@ -978,4 +978,80 @@ class ConverterTests
       actual.shouldHaveSingleElement { it.report.state == StateEnum.CLOSED }
     }
   }
+
+  @Nested
+  inner class WebpageReportTests
+  {
+    @Test
+    fun `converts to model, when entity`()
+    {
+      // when
+      val entity = createWebpageReportEntity()
+
+      // then
+      val model = createWebpageReportModel()
+
+      assertEquals(model, entity.toModel())
+    }
+
+    @Test
+    fun `converts to entity, when model`()
+    {
+      // when
+      val model = createWebpageReportModel()
+
+      // then
+      val expected = createWebpageReportEntity()
+
+      val actual = model.toEntity()
+
+      assertEquals(expected.webpageReportId, actual.webpageReportId)
+      assertEquals(expected.webpageFk, actual.webpageFk)
+      assertEquals(expected.report.reportId, actual.report.reportId)
+      assertEquals(expected.report.userFk, actual.report.userFk)
+      assertEquals(expected.report.reason, actual.report.reason)
+      assertEquals(expected.report.state, actual.report.state)
+      assertEquals(expected.report.modified, actual.report.modified)
+      assertEquals(expected.report.created, actual.report.created)
+    }
+
+    @Test
+    fun `converts to models, when entities`()
+    {
+      // when
+      val entities = setOf(
+        createWebpageReportEntity().apply { report.state = StateEnum.OPEN },
+        createWebpageReportEntity().apply { report.state = StateEnum.CLOSED }
+      )
+
+      // then
+      val models = setOf(
+        createWebpageReportModel().apply { report.state = StateEnum.OPEN },
+        createWebpageReportModel().apply { report.state = StateEnum.CLOSED }
+      )
+
+      assertEquals(models, entities.toModels())
+    }
+
+    @Test
+    fun `converts to entities, when models`()
+    {
+      // when
+      val models = setOf(
+        createWebpageReportModel().apply { report.state = StateEnum.OPEN },
+        createWebpageReportModel().apply { report.state = StateEnum.CLOSED }
+      )
+
+      // then
+      val expected = setOf(
+        createWebpageReportEntity().apply { report.state = StateEnum.OPEN },
+        createWebpageReportEntity().apply { report.state = StateEnum.CLOSED }
+      )
+      val actual = models.toEntities()
+
+      actual.shouldHaveSize(expected.size)
+      actual.shouldHaveSingleElement { it.report.state == StateEnum.OPEN }
+      actual.shouldHaveSingleElement { it.report.state == StateEnum.CLOSED }
+    }
+  }
 }

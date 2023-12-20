@@ -14,6 +14,7 @@ public object Endpoint
   public const val WEBSITE_SCAN: String = "/website-scan"
   public const val WEBPAGE_SCAN: String = "/webpage-scan"
   public const val REPORT: String = "/report"
+  public const val REPORT_MESSAGE: String = "/report-message"
 
   public const val DOCUMENTATION_OPENAPI: String = "/openapi"
   public const val DOCUMENTATION_SWAGGER: String = "/swagger"

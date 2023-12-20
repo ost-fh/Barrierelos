@@ -47,17 +47,17 @@ public class ReportMessageController
   }
 
   @GetMapping(value = [REPORT_MESSAGE], params = ["reportId"], produces = [MediaType.JSON])
-  public fun getReportMessagesByReport(@RequestParam reportId: Long): ResponseEntity<List<ReportMessage>>
+  public fun getReportMessagesByReport(@RequestParam reportId: Long, @ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<ReportMessage>>
   {
-    val reportMessagesPage = this.reportMessageService.getReportMessagesByReport(reportId)
+    val reportMessagesPage = this.reportMessageService.getReportMessagesByReport(reportId, defaultParameters)
 
     return ResponseEntity.status(HttpStatus.OK).headers(reportMessagesPage.toHeaders()).body(reportMessagesPage.content)
   }
 
   @GetMapping(value = [REPORT_MESSAGE], params = ["userId"], produces = [MediaType.JSON])
-  public fun getReportMessagesByUser(@RequestParam userId: Long): ResponseEntity<List<ReportMessage>>
+  public fun getReportMessagesByUser(@RequestParam userId: Long, @ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<ReportMessage>>
   {
-    val reportMessagesPage = this.reportMessageService.getReportMessagesByUser(userId)
+    val reportMessagesPage = this.reportMessageService.getReportMessagesByUser(userId, defaultParameters)
 
     return ResponseEntity.status(HttpStatus.OK).headers(reportMessagesPage.toHeaders()).body(reportMessagesPage.content)
   }

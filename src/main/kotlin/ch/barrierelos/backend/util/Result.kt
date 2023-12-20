@@ -21,7 +21,7 @@ public fun <E, M> Page<E>.toResult(toModel: E.() -> M): Result<M>
 {
   return Result(
     page =  number,
-    size = size,
+    size = if(totalElements < size) totalElements.toInt() else size,
     totalElements = totalElements,
     totalPages = totalPages,
     count = totalElements,

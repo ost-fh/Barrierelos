@@ -7,6 +7,7 @@ import ch.barrierelos.backend.repository.ReportMessageRepository.Companion.findA
 import ch.barrierelos.backend.repository.ReportMessageRepository.Companion.findAllByUserFk
 import ch.barrierelos.backend.repository.ReportRepository.Companion.findAllByUserFk
 import ch.barrierelos.backend.repository.UserReportRepository.Companion.findAllByUserFk
+import ch.barrierelos.backend.repository.WebpageReportRepository.Companion.findAllByWebpageFk
 import ch.barrierelos.backend.repository.WebsiteReportRepository.Companion.findAllByWebsiteFk
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSingleElement
@@ -54,6 +55,8 @@ class RepositoryTests
   lateinit var userReportRepository: UserReportRepository
   @Autowired
   lateinit var websiteReportRepository: WebsiteReportRepository
+  @Autowired
+  lateinit var webpageReportRepository: WebpageReportRepository
 
   @Nested
   inner class UserRepositoryTests
@@ -853,6 +856,42 @@ class RepositoryTests
       val websiteReports = websiteReportRepository.findAllByWebsiteFk(5000).content
 
       websiteReports.shouldBeEmpty()
+    }
+  }
+
+  @Nested
+  inner class WebpageReportRepositoryTests
+  {
+    @Test
+    fun `finds by webpage fk, when webpage fk exists`()
+    {
+      // given
+      val webpageFk = 25L
+
+      // when
+      entityManager.persist(createWebpageReportEntity(webpageFk = webpageFk).apply { report.reason = ReasonEnum.INCORRECT })
+      entityManager.persist(createWebpageReportEntity(webpageFk = webpageFk).apply { report.reason = ReasonEnum.MISLEADING })
+      entityManager.flush()
+
+      // then
+      val actual = webpageReportRepository.findAllByWebpageFk(webpageFk).content
+
+      actual.shouldHaveSize(2)
+      actual.shouldHaveSingleElement { it.report.reason == ReasonEnum.INCORRECT }
+      actual.shouldHaveSingleElement { it.report.reason == ReasonEnum.MISLEADING }
+    }
+
+    @Test
+    fun `not exists by webpage fk, when webpage fk not exists`()
+    {
+      // when
+      entityManager.persist(createWebpageReportEntity(webpageFk = 25))
+      entityManager.flush()
+
+      // then
+      val webpageReports = webpageReportRepository.findAllByWebpageFk(5000).content
+
+      webpageReports.shouldBeEmpty()
     }
   }
 }

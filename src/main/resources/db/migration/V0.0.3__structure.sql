@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS "webpage_statistic" CASCADE;
 DROP TABLE IF EXISTS "tag" CASCADE;
 DROP TABLE IF EXISTS "website_tag" CASCADE;
 DROP TABLE IF EXISTS "report" CASCADE;
+DROP TABLE IF EXISTS "report_message" CASCADE;
 
 DROP CAST IF EXISTS (VARCHAR AS CATEGORY_ENUM);
 DROP CAST IF EXISTS (VARCHAR AS STATUS_ENUM);
@@ -155,5 +156,18 @@ CREATE TABLE "report"
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("report_id"),
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
+);
+
+CREATE TABLE "report_message"
+(
+  "report_message_id" BIGSERIAL,
+  "report_fk" BIGSERIAL,
+  "user_fk" BIGSERIAL,
+  "message" TEXT NOT NULL,
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  PRIMARY KEY ("report_message_id"),
+  FOREIGN KEY ("report_fk") REFERENCES "report" ("report_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
 );

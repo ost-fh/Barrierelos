@@ -105,3 +105,8 @@ fun createUserReportModel(userId: Long = 0) = UserReport(
   userId = userId,
   report = createReportModel(userId),
 )
+
+fun createWebsiteReportModel(websiteId: Long = 0) = WebsiteReport(
+  websiteId = websiteId,
+  report = createReportModel(websiteId),
+)

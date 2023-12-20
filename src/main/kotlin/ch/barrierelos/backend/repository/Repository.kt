@@ -149,6 +149,11 @@ public interface Repository<E> : JpaRepository<E, Long>
       return sorting
     }
 
+    public fun <E> DefaultParameters.toPageable(entity: Class<E>): Pageable
+    {
+      return this.toPageable(Int.MAX_VALUE.toLong(), entity)
+    }
+
     public fun <E> DefaultParameters.toPageable(count: Long, entity: Class<E>): Pageable
     {
       val page = this.page ?: 0

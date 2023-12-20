@@ -3830,6 +3830,82 @@ class ServiceTests
 
       @Test
       @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
+      fun `gets reports by userId, given admin account`()
+      {
+        // given
+        reportRepository.save(createReportEntity(userFk = 40L))
+        reportRepository.save(createReportEntity(userFk = 40L))
+
+        // when
+        val reports = reportService.getReportsByUser(40).content
+
+        // then
+        reports.shouldNotBeEmpty()
+        reports.shouldHaveSize(2)
+        assertTrue(reports.any { it.userId == 40L })
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore=TEST_EXECUTION)
+      fun `gets reports by userId, given moderator account`()
+      {
+        // given
+        reportRepository.save(createReportEntity(userFk = 40L))
+        reportRepository.save(createReportEntity(userFk = 40L))
+
+        // when
+        val reports = reportService.getReportsByUser(40).content
+
+        // then
+        reports.shouldNotBeEmpty()
+        reports.shouldHaveSize(2)
+        assertTrue(reports.any { it.userId == 40L })
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore=TEST_EXECUTION)
+      fun `gets reports by userId, given contributor account`()
+      {
+        // given
+        reportRepository.save(createReportEntity(userFk = 40L))
+        reportRepository.save(createReportEntity(userFk = 40L))
+
+        // when
+        val reports = reportService.getReportsByUser(40).content
+
+        // then
+        reports.shouldNotBeEmpty()
+        reports.shouldHaveSize(2)
+        assertTrue(reports.any { it.userId == 40L })
+      }
+
+      @Test
+      @WithUserDetails("viewer", setupBefore=TEST_EXECUTION)
+      fun `cannot get reports by userId, given viewer account`()
+      {
+        // when
+        reportRepository.save(createReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          reportService.getReportsByUser(1)
+        }
+      }
+
+      @Test
+      fun `cannot get reports by userId, given no account`()
+      {
+        // when
+        reportRepository.save(createReportEntity()).toModel()
+
+        // then
+        assertThrows(NoAuthorizationException::class.java) {
+          reportService.getReportsByUser(1)
+        }
+      }
+
+      @Test
+      @WithUserDetails("admin", setupBefore=TEST_EXECUTION)
       fun `gets reports with headers, when no parameters, given admin account`()
       {
         // given

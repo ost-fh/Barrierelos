@@ -17,6 +17,18 @@ public fun <E, M> Page<E>.toResult(count:Long, lastModified: Long, toModel: E.()
   )
 }
 
+public fun <E, M> Page<E>.toResult(toModel: E.() -> M): Result<M>
+{
+  return Result(
+    page =  number,
+    size = size,
+    totalElements = totalElements,
+    totalPages = totalPages,
+    count = totalElements,
+    content = content.map { it.toModel() }
+  )
+}
+
 public fun <T> Result<T>.toHeaders(): HttpHeaders
 {
   val headers = HttpHeaders()
@@ -41,9 +53,9 @@ public data class Result<T>
   public var totalElements: Long,
   public var totalPages: Int,
   public var count: Long,
-  public var lastModified: Long,
+  public var lastModified: Long = 0,
   public var content: List<T>,
 )
 {
-  public constructor(content: List<T>, count: Long, lastModified: Long): this(0, content.size, content.size.toLong(), 1, count, lastModified, content)
+  public constructor(content: List<T>, count: Long, lastModified: Long = 0): this(0, content.size, content.size.toLong(), 1, count, lastModified, content)
 }

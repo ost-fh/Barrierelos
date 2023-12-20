@@ -46,6 +46,14 @@ public class ReportController
     return ResponseEntity.status(HttpStatus.OK).headers(reportsPage.toHeaders()).body(reportsPage.content)
   }
 
+  @GetMapping(value = [REPORT], params = ["userId"], produces = [MediaType.JSON])
+  public fun getReports(@RequestParam userId: Long, @ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<Report>>
+  {
+    val reportsPage = this.reportService.getReportsByUser(userId, defaultParameters)
+
+    return ResponseEntity.status(HttpStatus.OK).headers(reportsPage.toHeaders()).body(reportsPage.content)
+  }
+
   @GetMapping(value = ["$REPORT/{id}"], produces = [MediaType.JSON])
   public fun getReport(@PathVariable id: Long): ResponseEntity<Report>
   {

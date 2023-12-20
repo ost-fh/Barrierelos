@@ -52,7 +52,8 @@ CREATE TABLE "website_statistic"
   "website_statistic_id" BIGSERIAL,
   "score" DOUBLE PRECISION NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
-  "created" TIMESTAMP(3) NOT NULL DEFAULT now()
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  PRIMARY KEY ("website_statistic_id")
 );
 
 CREATE TABLE "website_scan"
@@ -96,7 +97,8 @@ CREATE TABLE "webpage_statistic"
   "webpage_statistic_id" BIGSERIAL,
   "score" DOUBLE PRECISION,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
-  "created" TIMESTAMP(3) NOT NULL DEFAULT now()
+  "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
+  PRIMARY KEY ("webpage_statistic_id")
 );
 
 CREATE TABLE "webpage_scan"

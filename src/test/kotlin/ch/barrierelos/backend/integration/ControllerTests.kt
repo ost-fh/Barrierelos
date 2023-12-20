@@ -5263,6 +5263,51 @@ class ControllerTests(@Autowired val mockMvc: MockMvc)
           status { isUnauthorized() }
         }
       }
+
+      @Test
+      @WithUserDetails("admin", setupBefore= TEST_EXECUTION)
+      fun `gets reports by userId, given admin account`()
+      {
+        // when
+        every { reportService.getReportsByUser(1) } returns result
+
+        // then
+        val actual = mockMvc.get("/report?userId=1").andExpect {
+          status { isOk() }
+        }.body<List<Report>>()
+
+        assertEquals(result.content, actual)
+      }
+
+      @Test
+      @WithUserDetails("moderator", setupBefore= TEST_EXECUTION)
+      fun `gets reports by userId, given moderator account`()
+      {
+        // when
+        every { reportService.getReportsByUser(1) } returns result
+
+        // then
+        val actual = mockMvc.get("/report?userId=1").andExpect {
+          status { isOk() }
+        }.body<List<Report>>()
+
+        assertEquals(result.content, actual)
+      }
+
+      @Test
+      @WithUserDetails("contributor", setupBefore= TEST_EXECUTION)
+      fun `gets reports by userId, given contributor account`()
+      {
+        // when
+        every { reportService.getReportsByUser(1) } returns result
+
+        // then
+        val actual = mockMvc.get("/report?userId=1").andExpect {
+          status { isOk() }
+        }.body<List<Report>>()
+
+        assertEquals(result.content, actual)
+      }
     }
 
     @Nested

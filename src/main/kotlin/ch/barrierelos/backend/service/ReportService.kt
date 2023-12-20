@@ -8,6 +8,7 @@ import ch.barrierelos.backend.enums.StateEnum
 import ch.barrierelos.backend.model.Report
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.ReportRepository
+import ch.barrierelos.backend.repository.ReportRepository.Companion.findAllByUserFk
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.util.Result
@@ -55,6 +56,13 @@ public class ReportService
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
 
     return this.reportRepository.findAll(defaultParameters, ReportEntity::class.java, ReportEntity::toModel)
+  }
+
+  public fun getReportsByUser(userId: Long, defaultParameters: DefaultParameters = DefaultParameters()): Result<Report>
+  {
+    Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
+
+    return this.reportRepository.findAllByUserFk(userId, defaultParameters)
   }
 
   public fun getReport(reportId: Long): Report

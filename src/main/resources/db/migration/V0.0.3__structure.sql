@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS "tag" CASCADE;
 DROP TABLE IF EXISTS "website_tag" CASCADE;
 DROP TABLE IF EXISTS "report" CASCADE;
 DROP TABLE IF EXISTS "report_message" CASCADE;
+DROP TABLE IF EXISTS "user_report" CASCADE;
 
 DROP CAST IF EXISTS (VARCHAR AS CATEGORY_ENUM);
 DROP CAST IF EXISTS (VARCHAR AS STATUS_ENUM);
@@ -170,4 +171,14 @@ CREATE TABLE "report_message"
   PRIMARY KEY ("report_message_id"),
   FOREIGN KEY ("report_fk") REFERENCES "report" ("report_id"),
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id")
+);
+
+CREATE TABLE "user_report"
+(
+  "user_report_id" BIGSERIAL,
+  "user_fk" BIGSERIAL,
+  "report_fk" BIGSERIAL,
+  PRIMARY KEY ("user_report_id"),
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
+  FOREIGN KEY ("report_fk") REFERENCES "report" ("report_id")
 );

@@ -17,6 +17,7 @@ public object Endpoint
   public const val REPORT_MESSAGE: String = "/report-message"
   public const val USER_REPORT: String = "/user-report"
   public const val WEBSITE_REPORT: String = "/website-report"
+  public const val WEBPAGE_REPORT: String = "/webpage-report"
 
   public const val DOCUMENTATION_OPENAPI: String = "/openapi"
   public const val DOCUMENTATION_SWAGGER: String = "/swagger"

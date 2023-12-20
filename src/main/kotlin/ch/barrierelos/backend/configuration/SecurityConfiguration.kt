@@ -10,6 +10,7 @@ import ch.barrierelos.backend.constants.Endpoint.TAG
 import ch.barrierelos.backend.constants.Endpoint.USER
 import ch.barrierelos.backend.constants.Endpoint.USER_REPORT
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE
+import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_REPORT
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_SCAN
 import ch.barrierelos.backend.constants.Endpoint.WEBPAGE_STATISTIC
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE
@@ -125,6 +126,12 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.HEAD, "$WEBSITE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
           .requestMatchers(HttpMethod.GET, "$WEBSITE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
           .requestMatchers(HttpMethod.DELETE, "$WEBSITE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name)
+
+          .requestMatchers(HttpMethod.POST, "$WEBPAGE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.PUT, "$WEBPAGE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name)
+          .requestMatchers(HttpMethod.HEAD, "$WEBPAGE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.GET, "$WEBPAGE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
+          .requestMatchers(HttpMethod.DELETE, "$WEBPAGE_REPORT/**").hasAnyRole(RoleEnum.ADMIN.name)
 
           .requestMatchers(HttpMethod.PUT, "$CREDENTIAL/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name, RoleEnum.VIEWER.name)
           .requestMatchers("$DOCUMENTATION_OPENAPI/**").permitAll()

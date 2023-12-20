@@ -7,6 +7,7 @@ import ch.barrierelos.backend.repository.ReportMessageRepository.Companion.findA
 import ch.barrierelos.backend.repository.ReportMessageRepository.Companion.findAllByUserFk
 import ch.barrierelos.backend.repository.ReportRepository.Companion.findAllByUserFk
 import ch.barrierelos.backend.repository.UserReportRepository.Companion.findAllByUserFk
+import ch.barrierelos.backend.repository.WebsiteReportRepository.Companion.findAllByWebsiteFk
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
@@ -51,6 +52,8 @@ class RepositoryTests
   lateinit var reportMessageRepository: ReportMessageRepository
   @Autowired
   lateinit var userReportRepository: UserReportRepository
+  @Autowired
+  lateinit var websiteReportRepository: WebsiteReportRepository
 
   @Nested
   inner class UserRepositoryTests
@@ -814,6 +817,42 @@ class RepositoryTests
       val userReports = userReportRepository.findAllByUserFk(5000).content
 
       userReports.shouldBeEmpty()
+    }
+  }
+
+  @Nested
+  inner class WebsiteReportRepositoryTests
+  {
+    @Test
+    fun `finds by website fk, when website fk exists`()
+    {
+      // given
+      val websiteFk = 25L
+
+      // when
+      entityManager.persist(createWebsiteReportEntity(websiteFk = websiteFk).apply { report.reason = ReasonEnum.INCORRECT })
+      entityManager.persist(createWebsiteReportEntity(websiteFk = websiteFk).apply { report.reason = ReasonEnum.MISLEADING })
+      entityManager.flush()
+
+      // then
+      val actual = websiteReportRepository.findAllByWebsiteFk(websiteFk).content
+
+      actual.shouldHaveSize(2)
+      actual.shouldHaveSingleElement { it.report.reason == ReasonEnum.INCORRECT }
+      actual.shouldHaveSingleElement { it.report.reason == ReasonEnum.MISLEADING }
+    }
+
+    @Test
+    fun `not exists by website fk, when website fk not exists`()
+    {
+      // when
+      entityManager.persist(createWebsiteReportEntity(websiteFk = 25))
+      entityManager.flush()
+
+      // then
+      val websiteReports = websiteReportRepository.findAllByWebsiteFk(5000).content
+
+      websiteReports.shouldBeEmpty()
     }
   }
 }

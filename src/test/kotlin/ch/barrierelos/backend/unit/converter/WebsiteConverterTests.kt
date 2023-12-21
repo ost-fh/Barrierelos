@@ -39,7 +39,7 @@ abstract class WebsiteConverterTests
     val actual = model.toEntity()
 
     Assertions.assertEquals(expected.websiteId, actual.websiteId)
-    Assertions.assertEquals(expected.userFk, actual.userFk)
+    Assertions.assertEquals(expected.user.userId, actual.user.userId)
     Assertions.assertEquals(expected.domain, actual.domain)
     Assertions.assertEquals(expected.url, actual.url)
     Assertions.assertEquals(expected.category, actual.category)

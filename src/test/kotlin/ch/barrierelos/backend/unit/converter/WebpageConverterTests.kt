@@ -39,9 +39,9 @@ abstract class WebpageConverterTests
     val actual = model.toEntity()
 
     Assertions.assertEquals(expected.webpageId, actual.webpageId)
-    Assertions.assertEquals(expected.websiteFk, actual.websiteFk)
-    Assertions.assertEquals(expected.userFk, actual.userFk)
-    Assertions.assertEquals(expected.path, actual.path)
+    Assertions.assertEquals(expected.website.websiteId, actual.website.websiteId)
+    Assertions.assertEquals(expected.user.userId, actual.user.userId)
+    Assertions.assertEquals(expected.displayUrl, actual.displayUrl)
     Assertions.assertEquals(expected.url, actual.url)
     Assertions.assertEquals(expected.status, actual.status)
     Assertions.assertEquals(expected.deleted, actual.deleted)
@@ -54,14 +54,14 @@ abstract class WebpageConverterTests
   {
     // when
     val entities = setOf(
-      createWebpageEntity().apply { path = "one" },
-      createWebpageEntity().apply { path = "two" }
+      createWebpageEntity().apply { displayUrl = "admin.ch/vbs/infos/one" },
+      createWebpageEntity().apply { displayUrl = "admin.ch/vbs/infos/two" }
     )
 
     // then
     val models = setOf(
-      createWebpageModel().apply { path = "one" },
-      createWebpageModel().apply { path = "two" }
+      createWebpageModel().apply { displayUrl = "admin.ch/vbs/infos/one" },
+      createWebpageModel().apply { displayUrl = "admin.ch/vbs/infos/two" }
     )
 
     Assertions.assertEquals(models, entities.toModels())
@@ -72,19 +72,19 @@ abstract class WebpageConverterTests
   {
     // when
     val models = setOf(
-      createWebpageModel().apply { path = "one" },
-      createWebpageModel().apply { path = "two" }
+      createWebpageModel().apply { displayUrl = "admin.ch/vbs/infos/one" },
+      createWebpageModel().apply { displayUrl = "admin.ch/vbs/infos/two" }
     )
 
     // then
     val expected = setOf(
-      createWebpageEntity().apply { path = "one" },
-      createWebpageEntity().apply { path = "two" }
+      createWebpageEntity().apply { displayUrl = "admin.ch/vbs/infos/one" },
+      createWebpageEntity().apply { displayUrl = "admin.ch/vbs/infos/two" }
     )
     val actual = models.toEntities()
 
     actual.shouldHaveSize(expected.size)
-    actual.shouldHaveSingleElement { it.path == "one" }
-    actual.shouldHaveSingleElement { it.path == "two" }
+    actual.shouldHaveSingleElement { it.displayUrl == "admin.ch/vbs/infos/one" }
+    actual.shouldHaveSingleElement { it.displayUrl == "admin.ch/vbs/infos/two" }
   }
 }

@@ -19,9 +19,6 @@ public class WebsiteScanController
   @Autowired
   private lateinit var websiteScanService: WebsiteScanService
 
-  @Autowired
-  private lateinit var websiteStatisticController: WebsiteStatisticController
-
   @PostMapping(value = [WEBSITE_SCAN], consumes = [MediaType.JSON], produces = [MediaType.JSON])
   public fun addWebsiteScan(@RequestBody websiteScan: WebsiteScan): ResponseEntity<WebsiteScan>
   {
@@ -63,7 +60,7 @@ public class WebsiteScanController
   {
     val websiteScan: WebsiteScan = this.websiteScanService.getWebsiteScan(id)
 
-    return this.websiteStatisticController.getWebsiteStatistic(websiteScan.websiteStatisticId)
+    return ResponseEntity.status(HttpStatus.OK).body(websiteScan.websiteStatistic)
   }
 
   @DeleteMapping(value = ["$WEBSITE_SCAN/{id}"], produces = [MediaType.JSON])

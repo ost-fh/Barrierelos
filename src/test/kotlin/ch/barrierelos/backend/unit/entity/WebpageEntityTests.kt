@@ -18,9 +18,9 @@ abstract class WebpageEntityTests
     val actual = createWebpageEntity()
 
     Assertions.assertEquals(expected.webpageId, actual.webpageId)
-    Assertions.assertEquals(expected.websiteFk, actual.websiteFk)
-    Assertions.assertEquals(expected.userFk, actual.userFk)
-    Assertions.assertEquals(expected.path, actual.path)
+    Assertions.assertEquals(expected.website.websiteId, actual.website.websiteId)
+    Assertions.assertEquals(expected.user.userId, actual.user.userId)
+    Assertions.assertEquals(expected.displayUrl, actual.displayUrl)
     Assertions.assertEquals(expected.url, actual.url)
     Assertions.assertEquals(expected.status, actual.status)
     Assertions.assertEquals(expected.deleted, actual.deleted)

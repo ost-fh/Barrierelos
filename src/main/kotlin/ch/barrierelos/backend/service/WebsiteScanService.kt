@@ -2,7 +2,6 @@ package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
-import ch.barrierelos.backend.converter.toModels
 import ch.barrierelos.backend.entity.WebsiteScanEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.model.WebsiteScan
@@ -41,11 +40,6 @@ public class WebsiteScanService
     websiteScan.created = existingWebsite.created
 
     return this.websiteScanRepository.save(websiteScan.toEntity()).toModel()
-  }
-
-  public fun getWebsiteScans(websiteId: Long): Set<WebsiteScan>
-  {
-    return this.websiteScanRepository.findAllByWebsiteFk(websiteId).toModels()
   }
 
   public fun getWebsiteScans(defaultParameters: DefaultParameters = DefaultParameters()): Result<WebsiteScan>

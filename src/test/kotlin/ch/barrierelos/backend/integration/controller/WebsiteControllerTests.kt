@@ -5,6 +5,7 @@ import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.exceptions.AlreadyExistsException
 import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.helper.createWebsiteMessage
 import ch.barrierelos.backend.helper.createWebsiteModel
 import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.parameter.DefaultParameters
@@ -15,7 +16,6 @@ import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.url.haveParameterValue
 import io.mockk.every
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.security.test.context.support.TestExecutionEvent
@@ -31,10 +31,10 @@ abstract class WebsiteControllerTests : ControllerTests()
   @MockkBean
   lateinit var websiteService: WebsiteService
 
-  private val website = createWebsiteModel(1, 0)
+  private val websiteMessage = createWebsiteMessage()
+  private val website = createWebsiteModel()
 
   @Nested
-  @DisplayName("Add Website")
   inner class AddWebsiteTests
   {
     @Test
@@ -42,7 +42,7 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `uses correct media type`()
     {
       // when
-      every { websiteService.addWebsite(website) } returns website
+      every { websiteService.addWebsite(websiteMessage) } returns website
 
       // then
       mockMvc.post("/website").andExpect {
@@ -55,16 +55,16 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `receives website, when provided in body`()
     {
       // when
-      every { websiteService.addWebsite(website) } returns website
+      every { websiteService.addWebsite(websiteMessage) } returns website
 
       // then
       mockMvc.post("/website") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = website.toJson()
+        content = websiteMessage.toJson()
       }.andExpect {
         content {
           contentType(EXPECTED_MEDIA_TYPE)
-          jsonPath("$.userId") { value(website.userId) }
+          jsonPath("$.user.username") { value(website.user.username) }
           jsonPath("$.domain") { value(website.domain) }
           jsonPath("$.url") { value(website.url) }
           jsonPath("$.category") { value(website.category.toString()) }
@@ -80,19 +80,17 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `returns website, when added, given admin account`()
     {
       // when
-      val expected = website.copy()
-
-      every { websiteService.addWebsite(expected) } returns expected
+      every { websiteService.addWebsite(websiteMessage) } returns website
 
       // then
       val actual = mockMvc.post("/website") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = expected.toJson()
+        content = websiteMessage.toJson()
       }.andExpect {
         status { isCreated() }
       }.body<Website>()
 
-      Assertions.assertEquals(expected, actual)
+      Assertions.assertEquals(website, actual)
     }
 
     @Test
@@ -100,19 +98,17 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `returns website, when added, given moderator account`()
     {
       // when
-      val expected = website.copy()
-
-      every { websiteService.addWebsite(expected) } returns expected
+      every { websiteService.addWebsite(websiteMessage) } returns website
 
       // then
       val actual = mockMvc.post("/website") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = expected.toJson()
+        content = websiteMessage.toJson()
       }.andExpect {
         status { isCreated() }
       }.body<Website>()
 
-      Assertions.assertEquals(expected, actual)
+      Assertions.assertEquals(website, actual)
     }
 
     @Test
@@ -120,19 +116,17 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `returns website, when added, given contributor account`()
     {
       // when
-      val expected = website.copy()
-
-      every { websiteService.addWebsite(expected) } returns expected
+      every { websiteService.addWebsite(websiteMessage) } returns website
 
       // then
       val actual = mockMvc.post("/website") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = expected.toJson()
+        content = websiteMessage.toJson()
       }.andExpect {
         status { isCreated() }
       }.body<Website>()
 
-      Assertions.assertEquals(expected, actual)
+      Assertions.assertEquals(website, actual)
     }
 
     @Test
@@ -140,12 +134,12 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `responds with 403 forbidden, given viewer account`()
     {
       // when
-      every { websiteService.addWebsite(website) } returns website
+      every { websiteService.addWebsite(websiteMessage) } returns website
 
       // then
       mockMvc.post("/website") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = website.toJson()
+        content = websiteMessage.toJson()
       }.andExpect {
         status { isForbidden() }
       }
@@ -155,12 +149,12 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `responds with 401 unauthorized, given no account`()
     {
       // when
-      every { websiteService.addWebsite(website) } returns website
+      every { websiteService.addWebsite(websiteMessage) } returns website
 
       // then
       mockMvc.post("/website") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = website.toJson()
+        content = websiteMessage.toJson()
       }.andExpect {
         status { isUnauthorized() }
       }
@@ -171,12 +165,12 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
     {
       // when
-      every { websiteService.addWebsite(website) } throws NoAuthorizationException()
+      every { websiteService.addWebsite(websiteMessage) } throws NoAuthorizationException()
 
       // then
       mockMvc.post("/website") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = website.toJson()
+        content = websiteMessage.toJson()
       }.andExpect {
         status { isUnauthorized() }
       }
@@ -187,12 +181,12 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `responds with 409 conflict, when service throws AlreadyExistsException`()
     {
       // when
-      every { websiteService.addWebsite(website) } throws AlreadyExistsException("")
+      every { websiteService.addWebsite(websiteMessage) } throws AlreadyExistsException("")
 
       // then
       mockMvc.post("/website") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = website.toJson()
+        content = websiteMessage.toJson()
       }.andExpect {
         status { isConflict() }
       }
@@ -203,7 +197,7 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `responds with 415 unsupported media type, when no website provided in body`()
     {
       // when
-      every { websiteService.addWebsite(website) } returns website
+      every { websiteService.addWebsite(websiteMessage) } returns website
 
       // then
       mockMvc.post("/website").andExpect {
@@ -213,7 +207,6 @@ abstract class WebsiteControllerTests : ControllerTests()
   }
 
   @Nested
-  @DisplayName("Update Website")
   inner class UpdateWebsiteTests
   {
     @Test
@@ -234,12 +227,10 @@ abstract class WebsiteControllerTests : ControllerTests()
     fun `receives website, when provided in body`()
     {
       // when
-      every {
-        websiteService.updateWebsite(website.apply {
-          id = 1
-          status = StatusEnum.READY
-        })
-      } returns website
+      every { websiteService.updateWebsite(website.apply {
+        id = 1
+        status = StatusEnum.READY
+      }) } returns website
 
       // then
       mockMvc.put("/website/1") {
@@ -248,7 +239,7 @@ abstract class WebsiteControllerTests : ControllerTests()
       }.andExpect {
         content {
           contentType(EXPECTED_MEDIA_TYPE)
-          jsonPath("$.userId") { value(website.userId) }
+          jsonPath("$.user.username") { value(website.user.username) }
           jsonPath("$.domain") { value(website.domain) }
           jsonPath("$.url") { value(website.url) }
           jsonPath("$.category") { value(website.category.toString()) }
@@ -341,7 +332,7 @@ abstract class WebsiteControllerTests : ControllerTests()
       every { websiteService.updateWebsite(website) } returns website
 
       // then
-      mockMvc.put("/website/1") {
+      mockMvc.put("/tag/1") {
         contentType = EXPECTED_MEDIA_TYPE
         content = website.toJson()
       }.andExpect {
@@ -411,7 +402,6 @@ abstract class WebsiteControllerTests : ControllerTests()
   }
 
   @Nested
-  @DisplayName("Get Websites")
   inner class GetWebsitesTests
   {
     private val result = Result(
@@ -484,7 +474,6 @@ abstract class WebsiteControllerTests : ControllerTests()
   }
 
   @Nested
-  @DisplayName("Get Website")
   inner class GetWebsiteTests
   {
     @Test
@@ -542,7 +531,6 @@ abstract class WebsiteControllerTests : ControllerTests()
   }
 
   @Nested
-  @DisplayName("Delete Website")
   inner class DeleteWebsiteTests
   {
     @Test

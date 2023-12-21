@@ -5,6 +5,7 @@ import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.exceptions.AlreadyExistsException
 import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.helper.createWebpageMessage
 import ch.barrierelos.backend.helper.createWebpageModel
 import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.parameter.DefaultParameters
@@ -15,7 +16,6 @@ import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.url.haveParameterValue
 import io.mockk.every
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.security.test.context.support.TestExecutionEvent
@@ -31,10 +31,10 @@ abstract class WebpageControllerTests : ControllerTests()
   @MockkBean
   lateinit var webpageService: WebpageService
 
-  private val webpage = createWebpageModel(1, 0)
+  private val webpageMessage = createWebpageMessage()
+  private val webpage = createWebpageModel()
 
   @Nested
-  @DisplayName("Add Webpage")
   inner class AddWebpageTests
   {
     @Test
@@ -42,7 +42,7 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `uses correct media type`()
     {
       // when
-      every { webpageService.addWebpage(webpage) } returns webpage
+      every { webpageService.addWebpage(webpageMessage) } returns webpage
 
       // then
       mockMvc.post("/webpage").andExpect {
@@ -55,17 +55,17 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `receives webpage, when provided in body`()
     {
       // when
-      every { webpageService.addWebpage(webpage) } returns webpage
+      every { webpageService.addWebpage(webpageMessage) } returns webpage
 
       // then
       mockMvc.post("/webpage") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = webpage.toJson()
+        content = webpageMessage.toJson()
       }.andExpect {
         content {
           contentType(EXPECTED_MEDIA_TYPE)
-          jsonPath("$.userId") { value(webpage.userId) }
-          jsonPath("$.path") { value(webpage.path) }
+          jsonPath("$.user.username") { value(webpage.user.username) }
+          jsonPath("$.displayUrl") { value(webpage.displayUrl) }
           jsonPath("$.url") { value(webpage.url) }
           jsonPath("$.modified") { value(webpage.modified) }
           jsonPath("$.created") { value(webpage.created) }
@@ -78,19 +78,17 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `returns webpage, when added, given admin account`()
     {
       // when
-      val expected = webpage.copy()
-
-      every { webpageService.addWebpage(expected) } returns expected
+      every { webpageService.addWebpage(webpageMessage) } returns webpage
 
       // then
       val actual = mockMvc.post("/webpage") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = expected.toJson()
+        content = webpageMessage.toJson()
       }.andExpect {
         status { isCreated() }
       }.body<Webpage>()
 
-      Assertions.assertEquals(expected, actual)
+      Assertions.assertEquals(webpage, actual)
     }
 
     @Test
@@ -98,19 +96,17 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `returns webpage, when added, given moderator account`()
     {
       // when
-      val expected = webpage.copy()
-
-      every { webpageService.addWebpage(expected) } returns expected
+      every { webpageService.addWebpage(webpageMessage) } returns webpage
 
       // then
       val actual = mockMvc.post("/webpage") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = expected.toJson()
+        content = webpageMessage.toJson()
       }.andExpect {
         status { isCreated() }
       }.body<Webpage>()
 
-      Assertions.assertEquals(expected, actual)
+      Assertions.assertEquals(webpage, actual)
     }
 
     @Test
@@ -118,19 +114,17 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `returns webpage, when added, given contributor account`()
     {
       // when
-      val expected = webpage.copy()
-
-      every { webpageService.addWebpage(expected) } returns expected
+      every { webpageService.addWebpage(webpageMessage) } returns webpage
 
       // then
       val actual = mockMvc.post("/webpage") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = expected.toJson()
+        content = webpageMessage.toJson()
       }.andExpect {
         status { isCreated() }
       }.body<Webpage>()
 
-      Assertions.assertEquals(expected, actual)
+      Assertions.assertEquals(webpage, actual)
     }
 
     @Test
@@ -138,12 +132,12 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `responds with 403 forbidden, given viewer account`()
     {
       // when
-      every { webpageService.addWebpage(webpage) } returns webpage
+      every { webpageService.addWebpage(webpageMessage) } returns webpage
 
       // then
       mockMvc.post("/webpage") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = webpage.toJson()
+        content = webpageMessage.toJson()
       }.andExpect {
         status { isForbidden() }
       }
@@ -153,12 +147,12 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `responds with 401 unauthorized, given no account`()
     {
       // when
-      every { webpageService.addWebpage(webpage) } returns webpage
+      every { webpageService.addWebpage(webpageMessage) } returns webpage
 
       // then
       mockMvc.post("/webpage") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = webpage.toJson()
+        content = webpageMessage.toJson()
       }.andExpect {
         status { isUnauthorized() }
       }
@@ -169,12 +163,12 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `responds with 401 unauthorized, when service throws NoAuthorizationException`()
     {
       // when
-      every { webpageService.addWebpage(webpage) } throws NoAuthorizationException()
+      every { webpageService.addWebpage(webpageMessage) } throws NoAuthorizationException()
 
       // then
       mockMvc.post("/webpage") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = webpage.toJson()
+        content = webpageMessage.toJson()
       }.andExpect {
         status { isUnauthorized() }
       }
@@ -185,12 +179,12 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `responds with 409 conflict, when service throws AlreadyExistsException`()
     {
       // when
-      every { webpageService.addWebpage(webpage) } throws AlreadyExistsException("")
+      every { webpageService.addWebpage(webpageMessage) } throws AlreadyExistsException("")
 
       // then
       mockMvc.post("/webpage") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = webpage.toJson()
+        content = webpageMessage.toJson()
       }.andExpect {
         status { isConflict() }
       }
@@ -201,7 +195,7 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `responds with 415 unsupported media type, when no webpage provided in body`()
     {
       // when
-      every { webpageService.addWebpage(webpage) } returns webpage
+      every { webpageService.addWebpage(webpageMessage) } returns webpage
 
       // then
       mockMvc.post("/webpage").andExpect {
@@ -211,7 +205,6 @@ abstract class WebpageControllerTests : ControllerTests()
   }
 
   @Nested
-  @DisplayName("Update Webpage")
   inner class UpdateWebpageTests
   {
     @Test
@@ -232,12 +225,10 @@ abstract class WebpageControllerTests : ControllerTests()
     fun `receives webpage, when provided in body`()
     {
       // when
-      every {
-        webpageService.updateWebpage(webpage.apply {
-          id = 1
-          status = StatusEnum.READY
-        })
-      } returns webpage
+      every { webpageService.updateWebpage(webpage.apply {
+        id = 1
+        status = StatusEnum.READY
+      }) } returns webpage
 
       // then
       mockMvc.put("/webpage/1") {
@@ -246,8 +237,8 @@ abstract class WebpageControllerTests : ControllerTests()
       }.andExpect {
         content {
           contentType(EXPECTED_MEDIA_TYPE)
-          jsonPath("$.userId") { value(webpage.userId) }
-          jsonPath("$.path") { value(webpage.path) }
+          jsonPath("$.user.username") { value(webpage.user.username) }
+          jsonPath("$.displayUrl") { value(webpage.displayUrl) }
           jsonPath("$.url") { value(webpage.url) }
           jsonPath("$.status") { value(webpage.status.toString()) }
           jsonPath("$.modified") { value(webpage.modified) }
@@ -311,22 +302,18 @@ abstract class WebpageControllerTests : ControllerTests()
 
     @Test
     @WithUserDetails("contributor", setupBefore= TestExecutionEvent.TEST_EXECUTION)
-    fun `returns webpage, when updated, given contributor account`()
+    fun `responds with 403 forbidden, given contributor account`()
     {
       // when
-      val expected = webpage.copy()
-
-      every { webpageService.updateWebpage(expected.apply { id = 1 }) } returns expected
+      every { webpageService.updateWebpage(webpage) } returns webpage
 
       // then
-      val actual = mockMvc.put("/webpage/1") {
+      mockMvc.put("/tag/1") {
         contentType = EXPECTED_MEDIA_TYPE
-        content = expected.toJson()
+        content = webpage.toJson()
       }.andExpect {
-        status { isOk() }
-      }.body<Webpage>()
-
-      Assertions.assertEquals(expected, actual)
+        status { isForbidden() }
+      }
     }
 
     @Test
@@ -337,7 +324,7 @@ abstract class WebpageControllerTests : ControllerTests()
       every { webpageService.updateWebpage(webpage) } returns webpage
 
       // then
-      mockMvc.put("/webpage/1") {
+      mockMvc.put("/tag/1") {
         contentType = EXPECTED_MEDIA_TYPE
         content = webpage.toJson()
       }.andExpect {
@@ -407,10 +394,9 @@ abstract class WebpageControllerTests : ControllerTests()
   }
 
   @Nested
-  @DisplayName("Get Webpages")
   inner class GetWebpagesTests
   {
-    private val result = Result(
+    val result = Result(
       page = 0,
       size = 1,
       totalElements = 1,
@@ -480,7 +466,6 @@ abstract class WebpageControllerTests : ControllerTests()
   }
 
   @Nested
-  @DisplayName("Get Webpage")
   inner class GetWebpageTests
   {
     @Test
@@ -538,7 +523,6 @@ abstract class WebpageControllerTests : ControllerTests()
   }
 
   @Nested
-  @DisplayName("Delete Webpage")
   inner class DeleteWebpageTests
   {
     @Test

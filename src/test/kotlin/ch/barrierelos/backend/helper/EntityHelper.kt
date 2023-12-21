@@ -2,6 +2,7 @@ package ch.barrierelos.backend.helper
 
 import ch.barrierelos.backend.entity.*
 import ch.barrierelos.backend.enums.*
+import ch.barrierelos.backend.model.scanner.WebsiteResult
 import java.sql.Timestamp
 
 fun createUserEntity() = UserEntity(
@@ -68,20 +69,22 @@ fun createWebpageStatisticEntity() = WebpageStatisticEntity(
   created = Timestamp(5000),
 )
 
-fun createWebsiteScanEntity(userFk: Long = 0, websiteFk: Long = 0, websiteStatisticFk: Long = 0, websiteResultFk: Long = 0) = WebsiteScanEntity(
-  websiteFk = websiteFk,
-  websiteStatisticFk = websiteStatisticFk,
-  websiteResultFk = websiteResultFk,
-  userFk = userFk,
+fun createWebsiteScanEntity(website: WebsiteEntity = createWebsiteEntity(), websiteStatistic: WebsiteStatisticEntity = createWebsiteStatisticEntity(), websiteResult: WebsiteResult = createWebsiteResultEntity()) = WebsiteScanEntity(
+  website = website,
+  websiteStatistic = websiteStatistic,
+  websiteResult = websiteResult,
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
 
-fun createWebpageScanEntity(userFk: Long = 0, webpageFk: Long = 0, webpageStatisticFk: Long = 0, webpageResultFk: Long = 0) = WebpageScanEntity(
-  webpageFk = webpageFk,
-  webpageStatisticFk = webpageStatisticFk,
-  webpageResultFk = webpageResultFk,
-  userFk = userFk,
+fun createWebsiteResultEntity() = WebsiteResult(
+
+)
+
+fun createWebpageScanEntity(webpage: Long = 0, webpageStatistic: Long = 0, webpageResult: Long = 0) = WebpageScanEntity(
+  webpage = webpage,
+  webpageStatistic = webpageStatistic,
+  webpageResult = webpageResult,
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )

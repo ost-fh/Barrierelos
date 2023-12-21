@@ -25,7 +25,7 @@ abstract class WebsiteRepositoryTests : RepositoryTests()
 
     // when
     val expected = createWebsiteEntity()
-    expected.userFk = user.userId
+    expected.user = user
     expected.tags.clear()
 
     entityManager.persist(expected)
@@ -40,7 +40,7 @@ abstract class WebsiteRepositoryTests : RepositoryTests()
     {
       Assertions.assertNotEquals(0, actual.websiteId)
       Assertions.assertEquals(expected.websiteId, actual.websiteId)
-      Assertions.assertEquals(expected.userFk, actual.userFk)
+      Assertions.assertEquals(expected.user, actual.user)
       Assertions.assertEquals(expected.domain, actual.domain)
       Assertions.assertEquals(expected.url, actual.url)
       Assertions.assertEquals(expected.category, actual.category)
@@ -71,7 +71,7 @@ abstract class WebsiteRepositoryTests : RepositoryTests()
 
     // when
     val expected = createWebsiteEntity()
-    expected.userFk = user.userId
+    expected.user = user
     expected.tags.clear()
 
     entityManager.persist(expected)
@@ -87,7 +87,7 @@ abstract class WebsiteRepositoryTests : RepositoryTests()
 
     Assertions.assertNotEquals(0, actual.first().websiteId)
     Assertions.assertEquals(expected.websiteId, actual.first().websiteId)
-    Assertions.assertEquals(expected.userFk, actual.first().userFk)
+    Assertions.assertEquals(expected.user, actual.first().user)
     Assertions.assertEquals(expected.domain, actual.first().domain)
     Assertions.assertEquals(expected.url, actual.first().url)
     Assertions.assertEquals(expected.category, actual.first().category)

@@ -11,36 +11,16 @@ import org.springdoc.core.annotations.ParameterObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 public class WebpageScanController
 {
   @Autowired
   private lateinit var webpageScanService: WebpageScanService
-
-  @Autowired
-  private lateinit var webpageStatisticController: WebpageStatisticController
-
-  @PostMapping(value = [WEBPAGE_SCAN], consumes = [MediaType.JSON], produces = [MediaType.JSON])
-  public fun addWebpageScan(@RequestBody webpageScan: WebpageScan): ResponseEntity<WebpageScan>
-  {
-    webpageScan.id = 0
-
-    this.webpageScanService.addWebpageScan(webpageScan)
-
-    return ResponseEntity.status(HttpStatus.CREATED).body(webpageScan)
-  }
-
-  @PutMapping(value = ["$WEBPAGE_SCAN/{id}"], consumes = [MediaType.JSON], produces = [MediaType.JSON])
-  public fun updateWebpageScan(@PathVariable id: Long, @RequestBody webpageScan: WebpageScan): ResponseEntity<WebpageScan>
-  {
-    webpageScan.id = id
-
-    this.webpageScanService.updateWebpageScan(webpageScan)
-
-    return ResponseEntity.status(HttpStatus.OK).body(webpageScan)
-  }
 
   @GetMapping(value = [WEBPAGE_SCAN], produces = [MediaType.JSON])
   public fun getWebpageScans(@ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<WebpageScan>>
@@ -63,7 +43,7 @@ public class WebpageScanController
   {
     val webpageScan: WebpageScan = this.webpageScanService.getWebpageScan(id)
 
-    return this.webpageStatisticController.getWebpageStatistic(webpageScan.webpageStatisticId)
+    return ResponseEntity.status(HttpStatus.OK).body(webpageScan.webpageStatistic)
   }
 
   @DeleteMapping(value = ["$WEBPAGE_SCAN/{id}"], produces = [MediaType.JSON])

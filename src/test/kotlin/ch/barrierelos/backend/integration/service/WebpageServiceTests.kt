@@ -1,21 +1,18 @@
 package ch.barrierelos.backend.integration.service
 
+import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.StatusEnum
-import ch.barrierelos.backend.exceptions.AlreadyExistsException
-import ch.barrierelos.backend.exceptions.InvalidPathException
-import ch.barrierelos.backend.exceptions.InvalidUrlException
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
-import ch.barrierelos.backend.helper.createWebpageEntity
-import ch.barrierelos.backend.helper.createWebpageModel
+import ch.barrierelos.backend.exceptions.*
+import ch.barrierelos.backend.helper.*
+import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebpageService
 import io.kotest.matchers.collections.*
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,24 +25,32 @@ abstract class WebpageServiceTests : ServiceTests()
   @Autowired
   lateinit var webpageService: WebpageService
 
+  private fun createAndAddWebsite(): Website
+  {
+    return websiteService.addWebsite(createWebsiteMessage().also {
+      it.tags.clear()
+    })
+  }
+
   @Nested
-  @DisplayName("Add Webpage")
   inner class AddWebpageTests
   {
     @Test
-    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("admin", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `adds webpage, given admin account`()
     {
       // when
-      val expected = createWebpageModel(1, 0)
+      val website = createAndAddWebsite()
+      val webpageMessage = createWebpageMessage(website.id)
+      val expected = createWebpageModel()
 
       // then
-      val actual = webpageService.addWebpage(expected.copy())
+      val actual = webpageService.addWebpage(webpageMessage)
 
       Assertions.assertNotEquals(0, actual.id)
       Assertions.assertNotEquals(expected.id, actual.id)
-      Assertions.assertEquals(expected.userId, actual.userId)
-      Assertions.assertEquals(expected.path, actual.path)
+      Assertions.assertEquals(website.user, actual.user)
+      Assertions.assertEquals(expected.displayUrl, actual.displayUrl)
       Assertions.assertEquals(expected.url, actual.url)
       Assertions.assertEquals(expected.status, actual.status)
       Assertions.assertEquals(expected.deleted, actual.deleted)
@@ -54,11 +59,11 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("viewer", setupBefore= TestExecutionEvent.TEST_EXECUTION)
-    fun `cannot add webpage, given wrong account`()
+    @WithUserDetails("viewer", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    fun `cannot add webpage, given viewer account`()
     {
       // when
-      val webpage = createWebpageModel()
+      val webpage = createWebpageMessage()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {
@@ -70,7 +75,7 @@ abstract class WebpageServiceTests : ServiceTests()
     fun `cannot add webpage, given no account`()
     {
       // when
-      val webpage = createWebpageModel()
+      val webpage = createWebpageMessage()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {
@@ -79,75 +84,48 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("admin", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot add webpage, when path already exists`()
     {
       // when
-      val webpage = createWebpageModel()
-      webpageService.addWebpage(webpage)
+      val website = createAndAddWebsite()
+      val webpageMessage = createWebpageMessage(website.id)
+      webpageService.addWebpage(webpageMessage)
 
       // then
-      Assertions.assertThrows(AlreadyExistsException::class.java) {
-        webpageService.addWebpage(webpage)
+      Assertions.assertThrows(ReferenceNotExistsException::class.java) {
+        webpageService.addWebpage(webpageMessage)
       }
     }
 
     @Test
-    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
-    fun `cannot add webpage, when invalid path`()
-    {
-      // when
-      val webpageEmail = createWebpageModel()
-      webpageEmail.path = "email@barrierelos.ch"
-
-      val webpageNoToplevel = createWebpageModel()
-      webpageNoToplevel.path = "barrierelos"
-
-      val webpageSpecialCharacter = createWebpageModel()
-      webpageSpecialCharacter.path = "barrierelos?ch"
-
-      // then
-      Assertions.assertThrows(InvalidPathException::class.java) {
-        webpageService.addWebpage(webpageEmail)
-      }
-
-      Assertions.assertThrows(InvalidPathException::class.java) {
-        webpageService.addWebpage(webpageNoToplevel)
-      }
-
-      Assertions.assertThrows(InvalidPathException::class.java) {
-        webpageService.addWebpage(webpageSpecialCharacter)
-      }
-    }
-
-    @Test
-    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("admin", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot add webpage, when invalid url`()
     {
       // when
-      val webpage = createWebpageModel()
-      webpage.path = "/barrierelos"
-      webpage.url = "https://barrierelos.ch/test"
+      val website = createAndAddWebsite()
+      val webpageMessage = createWebpageMessage(website.id)
+      webpageMessage.url = "https://barrierelos/test"
 
       // then
       Assertions.assertThrows(InvalidUrlException::class.java) {
-        webpageService.addWebpage(webpage)
+        webpageService.addWebpage(webpageMessage)
       }
     }
   }
 
   @Nested
-  @DisplayName("Update Webpage")
   inner class UpdateWebpageTests
   {
     @Test
-    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("admin", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `updates webpage, given admin account`()
     {
       // when
-      val expected = webpageRepository.save(createWebpageEntity()).toModel()
-      expected.path = "/test"
+      val website = createAndAddWebsite().toEntity()
+      val expected = webpageRepository.save(createWebpageEntity(admin, website)).toModel()
       expected.url = "https://barrierelos.ch/test"
+      expected.displayUrl = "barrierelos.ch/test"
       expected.status = StatusEnum.PENDING_RESCAN
 
       // then
@@ -155,8 +133,8 @@ abstract class WebpageServiceTests : ServiceTests()
 
       Assertions.assertNotEquals(0, actual.id)
       Assertions.assertEquals(expected.id, actual.id)
-      Assertions.assertEquals(expected.path, actual.path)
       Assertions.assertEquals(expected.url, actual.url)
+      Assertions.assertEquals(expected.displayUrl, actual.displayUrl)
       Assertions.assertEquals(expected.status, actual.status)
       Assertions.assertEquals(expected.deleted, actual.deleted)
       Assertions.assertNotEquals(expected.modified, actual.modified)
@@ -164,11 +142,12 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("moderator", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("moderator", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `updates webpage, given moderator account`()
     {
       // when
-      val expected = webpageRepository.save(createWebpageEntity()).toModel()
+      val website = createAndAddWebsite().toEntity()
+      val expected = webpageRepository.save(createWebpageEntity(admin, website)).toModel()
       expected.status = StatusEnum.BLOCKED
 
       // then
@@ -176,8 +155,8 @@ abstract class WebpageServiceTests : ServiceTests()
 
       Assertions.assertNotEquals(0, actual.id)
       Assertions.assertEquals(expected.id, actual.id)
-      Assertions.assertEquals(expected.path, actual.path)
       Assertions.assertEquals(expected.url, actual.url)
+      Assertions.assertEquals(expected.displayUrl, actual.displayUrl)
       Assertions.assertEquals(expected.status, actual.status)
       Assertions.assertEquals(expected.deleted, actual.deleted)
       Assertions.assertNotEquals(expected.modified, actual.modified)
@@ -185,11 +164,12 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("contributor", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("contributor", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `updates webpage, given correct contributor account`()
     {
       // when
-      val expected = webpageRepository.save(createWebpageEntity(contributor.id)).toModel()
+      val website = createAndAddWebsite().toEntity()
+      val expected = webpageRepository.save(createWebpageEntity(contributor, website)).toModel()
       expected.deleted = true
 
       // then
@@ -197,8 +177,8 @@ abstract class WebpageServiceTests : ServiceTests()
 
       Assertions.assertNotEquals(0, actual.id)
       Assertions.assertEquals(expected.id, actual.id)
-      Assertions.assertEquals(expected.path, actual.path)
       Assertions.assertEquals(expected.url, actual.url)
+      Assertions.assertEquals(expected.displayUrl, actual.displayUrl)
       Assertions.assertEquals(expected.status, actual.status)
       Assertions.assertEquals(expected.deleted, actual.deleted)
       Assertions.assertNotEquals(expected.modified, actual.modified)
@@ -206,11 +186,12 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("contributor", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("contributor", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot update webpage status, given wrong contributor account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity(moderator.id)).toModel()
+      val website = createAndAddWebsite().toEntity()
+      val webpage = webpageRepository.save(createWebpageEntity(moderator, website)).toModel()
       webpage.deleted = true
 
       // then
@@ -220,11 +201,11 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("viewer", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("viewer", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot update webpage, given viewer account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+      val webpage = createWebpageEntity().toModel()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {
@@ -236,7 +217,7 @@ abstract class WebpageServiceTests : ServiceTests()
     fun `cannot update webpage, given no account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+      val webpage = createWebpageEntity().toModel()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {
@@ -245,14 +226,15 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("moderator", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("moderator", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot update webpage, when illegally modified, given moderator account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity().also {
+      val website = createAndAddWebsite().toEntity()
+      val webpage = webpageRepository.save(createWebpageEntity(admin, website).also {
         it.status = StatusEnum.READY
       }).toModel()
-      webpage.path = "/newpath"
+      webpage.displayUrl = "new.url"
 
       // then
       Assertions.assertThrows(IllegalArgumentException::class.java) {
@@ -261,11 +243,12 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("moderator", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("moderator", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot change status of webpage, when current status is pending, given moderator account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity().also {
+      val website = createAndAddWebsite().toEntity()
+      val webpage = webpageRepository.save(createWebpageEntity(contributor, website).also {
         it.status = StatusEnum.PENDING_INITIAL
       }).toModel()
       webpage.status = StatusEnum.READY
@@ -277,7 +260,7 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("admin", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot update webpage, when webpage not exists`()
     {
       // when
@@ -291,19 +274,19 @@ abstract class WebpageServiceTests : ServiceTests()
   }
 
   @Nested
-  @DisplayName("Get Webpages")
   inner class GetWebpagesTests
   {
     @Test
     fun `gets webpages`()
     {
       // given
-      webpageRepository.save(createWebpageEntity().apply {
-        path = "/one"
+      val website = websiteRepository.save(createWebsiteEntity(admin).also { it.tags.clear() })
+      webpageRepository.save(createWebpageEntity(contributor, website).apply {
+        displayUrl = "barrierelos.ch/one"
         url = "https://barrierelos.ch/one"
       })
-      webpageRepository.save(createWebpageEntity().apply {
-        path = "/two"
+      webpageRepository.save(createWebpageEntity(contributor, website).apply {
+        displayUrl = "barrierelos.ch/two"
         url = "https://barrierelos.ch/two"
       })
 
@@ -313,20 +296,21 @@ abstract class WebpageServiceTests : ServiceTests()
       // then
       webpages.shouldNotBeEmpty()
       webpages.shouldHaveSize(2)
-      Assertions.assertTrue(webpages.any { it.path == "/one" })
-      Assertions.assertTrue(webpages.any { it.path == "/two" })
+      Assertions.assertTrue(webpages.any { it.displayUrl == "barrierelos.ch/one" })
+      Assertions.assertTrue(webpages.any { it.displayUrl == "barrierelos.ch/two" })
     }
 
     @Test
     fun `gets webpages with headers, when no parameters`()
     {
       // given
-      webpageRepository.save(createWebpageEntity().apply {
-        path = "/one"
+      val website = websiteRepository.save(createWebsiteEntity(admin).also { it.tags.clear() })
+      webpageRepository.save(createWebpageEntity(contributor, website).apply {
+        displayUrl = "barrierelos.ch/one"
         url = "https://barrierelos.ch/one"
       })
-      webpageRepository.save(createWebpageEntity().apply {
-        path = "/two"
+      webpageRepository.save(createWebpageEntity(contributor, website).apply {
+        displayUrl = "barrierelos.ch/two"
         url = "https://barrierelos.ch/two"
       })
 
@@ -347,22 +331,24 @@ abstract class WebpageServiceTests : ServiceTests()
     fun `gets webpages with headers, when with parameters`()
     {
       // given
-      webpageRepository.save(createWebpageEntity().apply {
-        path = "/one"
+      val website = websiteRepository.save(createWebsiteEntity(admin).also { it.tags.clear() })
+      webpageRepository.save(createWebpageEntity(contributor, website).apply {
+        displayUrl = "barrierelos.ch/one"
         url = "https://barrierelos.ch/one"
       })
-      webpageRepository.save(createWebpageEntity().apply {
-        path = "/two"
+      webpageRepository.save(createWebpageEntity(contributor, website).apply {
+        displayUrl = "barrierelos.ch/two"
         url = "https://barrierelos.ch/two"
       })
 
       // when
-      val webpages = webpageService.getWebpages(defaultParameters = DefaultParameters(
-        page = 1,
-        size = 1,
-        sort = "path",
-        order = OrderEnum.ASC
-      )
+      val webpages = webpageService.getWebpages(
+        DefaultParameters(
+          page = 1,
+          size = 1,
+          sort = "url",
+          order = OrderEnum.ASC
+        )
       )
 
       // then
@@ -377,14 +363,14 @@ abstract class WebpageServiceTests : ServiceTests()
   }
 
   @Nested
-  @DisplayName("Get Webpage")
   inner class GetWebpageTests
   {
     @Test
     fun `gets webpage`()
     {
       // when
-      val expected = webpageRepository.save(createWebpageEntity()).toModel()
+      val website = websiteRepository.save(createWebsiteEntity(admin).also { it.tags.clear() })
+      val expected = webpageRepository.save(createWebpageEntity(admin, website)).toModel()
 
       // then
       val actual = webpageService.getWebpage(expected.id)
@@ -402,15 +388,15 @@ abstract class WebpageServiceTests : ServiceTests()
   }
 
   @Nested
-  @DisplayName("Delete Webpage")
   inner class DeleteWebpageTests
   {
     @Test
-    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("admin", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `deletes webpage, given admin account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+      val website = createAndAddWebsite().toEntity()
+      val webpage = webpageRepository.save(createWebpageEntity(admin, website)).toModel()
       val webpagesBefore = webpageService.getWebpages().content
 
       // then
@@ -431,11 +417,12 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("moderator", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("moderator", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `deletes webpage, given moderator account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+      val website = createAndAddWebsite().toEntity()
+      val webpage = webpageRepository.save(createWebpageEntity(contributor, website)).toModel()
       val webpagesBefore = webpageService.getWebpages().content
 
       // then
@@ -456,13 +443,12 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("contributor", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("contributor", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot delete webpage, given contributor account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity().apply {
-        userFk = contributor.id
-      }).toModel()
+      val website = createAndAddWebsite().toEntity()
+      val webpage = webpageRepository.save(createWebpageEntity(contributor, website)).toModel()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {
@@ -471,13 +457,11 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("viewer", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("viewer", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot delete webpage, given viewer account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity().apply {
-        userFk = viewer.id
-      }).toModel()
+      val webpage = createWebpageEntity().toModel()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {
@@ -489,7 +473,7 @@ abstract class WebpageServiceTests : ServiceTests()
     fun `cannot delete webpage, given no account`()
     {
       // when
-      val webpage = webpageRepository.save(createWebpageEntity()).toModel()
+      val webpage = createWebpageEntity().toModel()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {
@@ -498,7 +482,7 @@ abstract class WebpageServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails("admin", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     fun `cannot delete webpage, when webpage not exists`()
     {
       Assertions.assertThrows(NoSuchElementException::class.java) {

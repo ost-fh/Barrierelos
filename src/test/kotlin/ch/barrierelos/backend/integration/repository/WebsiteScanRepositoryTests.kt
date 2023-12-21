@@ -22,8 +22,8 @@ abstract class WebsiteScanRepositoryTests : RepositoryTests()
     val websiteFk = 25L
 
     // when
-    entityManager.persist(createWebsiteScanEntity(websiteFk = websiteFk, websiteStatisticFk = 1))
-    entityManager.persist(createWebsiteScanEntity(websiteFk = websiteFk, websiteStatisticFk = 2))
+    entityManager.persist(createWebsiteScanEntity(website = websiteFk, websiteStatistic = 1))
+    entityManager.persist(createWebsiteScanEntity(website = websiteFk, websiteStatistic = 2))
     entityManager.flush()
 
     // then
@@ -38,7 +38,7 @@ abstract class WebsiteScanRepositoryTests : RepositoryTests()
   fun `not exists by website fk, when website fk not exists`()
   {
     // when
-    entityManager.persist(createWebsiteScanEntity(websiteFk = 25))
+    entityManager.persist(createWebsiteScanEntity(website = 25))
     entityManager.flush()
 
     // then

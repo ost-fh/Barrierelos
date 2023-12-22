@@ -2,7 +2,6 @@ package ch.barrierelos.backend.helper
 
 import ch.barrierelos.backend.entity.*
 import ch.barrierelos.backend.enums.*
-import ch.barrierelos.backend.model.scanner.WebsiteResult
 import java.sql.Timestamp
 
 fun createUserEntity() = UserEntity(
@@ -65,26 +64,34 @@ fun createWebsiteStatisticEntity() = WebsiteStatisticEntity(
 
 fun createWebpageStatisticEntity() = WebpageStatisticEntity(
   score = 80.0,
+  weight = 1.0,
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
 
-fun createWebsiteScanEntity(website: WebsiteEntity = createWebsiteEntity(), websiteStatistic: WebsiteStatisticEntity = createWebsiteStatisticEntity(), websiteResult: WebsiteResult = createWebsiteResultEntity()) = WebsiteScanEntity(
-  website = website,
-  websiteStatistic = websiteStatistic,
-  websiteResult = websiteResult,
+fun createWebsiteScanEntity(user: UserEntity = createUserEntity(), websiteFk: Long = 0) = WebsiteScanEntity(
+  website = createWebsiteEntity(user, websiteFk),
+  websiteStatistic = createWebsiteStatisticEntity(),
+  websiteResult = null,
+  webpageScans = mutableSetOf(),
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )
 
-fun createWebsiteResultEntity() = WebsiteResult(
+//fun createWebpageScanEntity(user: UserEntity = createUserEntity(), website: WebsiteEntity = createWebsiteEntity(), websiteScan: WebsiteScanEntity = createWebsiteScanEntity(user, website.websiteId)) = WebpageScanEntity(
+//  websiteScan = websiteScan,
+//  webpage = createWebpageEntity(user, website),
+//  webpageStatistic = createWebpageStatisticEntity(),
+//  webpageResult = null,
+//  modified = Timestamp(5000),
+//  created = Timestamp(5000),
+//)
 
-)
-
-fun createWebpageScanEntity(webpage: Long = 0, webpageStatistic: Long = 0, webpageResult: Long = 0) = WebpageScanEntity(
-  webpage = webpage,
-  webpageStatistic = webpageStatistic,
-  webpageResult = webpageResult,
+fun createWebpageScanEntity(user: UserEntity = createUserEntity(), website: WebsiteEntity = createWebsiteEntity()) = WebpageScanEntity(
+  websiteScan = createWebsiteScanEntity(user, website.websiteId),
+  webpage = createWebpageEntity(user, website),
+  webpageStatistic = createWebpageStatisticEntity(),
+  webpageResult = null,
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )

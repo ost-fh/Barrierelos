@@ -62,10 +62,7 @@ abstract class WebsiteScanControllerTests : ControllerTests()
       }.andExpect {
         content {
           contentType(EXPECTED_MEDIA_TYPE)
-          jsonPath("$.websiteId") { value(websiteScan.websiteId) }
-          jsonPath("$.userId") { value(websiteScan.userId) }
-          jsonPath("$.websiteStatisticId") { value(websiteScan.websiteStatisticId) }
-          jsonPath("$.websiteResultId") { value(websiteScan.websiteResultId) }
+          jsonPath("$.websiteStatistic.score") { value(websiteScan.websiteStatistic!!.score) }
           jsonPath("$.modified") { value(websiteScan.modified) }
           jsonPath("$.created") { value(websiteScan.created) }
         }
@@ -216,10 +213,7 @@ abstract class WebsiteScanControllerTests : ControllerTests()
       }.andExpect {
         content {
           contentType(EXPECTED_MEDIA_TYPE)
-          jsonPath("$.websiteId") { value(websiteScan.websiteId) }
-          jsonPath("$.userId") { value(websiteScan.userId) }
-          jsonPath("$.websiteStatisticId") { value(websiteScan.websiteStatisticId) }
-          jsonPath("$.websiteResultId") { value(websiteScan.websiteResultId) }
+          jsonPath("$.websiteStatistic.score") { value(websiteScan.websiteStatistic!!.score) }
           jsonPath("$.modified") { value(websiteScan.modified) }
           jsonPath("$.created") { value(websiteScan.created) }
         }

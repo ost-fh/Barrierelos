@@ -18,10 +18,9 @@ abstract class WebsiteScanEntityTests
     val actual = createWebsiteScanEntity()
 
     Assertions.assertEquals(expected.websiteScanId, actual.websiteScanId)
-    Assertions.assertEquals(expected.websiteFk, actual.websiteFk)
-    Assertions.assertEquals(expected.websiteStatisticFk, actual.websiteStatisticFk)
-    Assertions.assertEquals(expected.websiteResultFk, actual.websiteResultFk)
-    Assertions.assertEquals(expected.userFk, actual.userFk)
+    Assertions.assertEquals(expected.website.websiteId, actual.website.websiteId)
+    Assertions.assertEquals(expected.websiteStatistic!!.websiteStatisticId, actual.websiteStatistic!!.websiteStatisticId)
+    Assertions.assertEquals(expected.websiteResult, actual.websiteResult)
     Assertions.assertEquals(expected.modified, actual.modified)
     Assertions.assertEquals(expected.created, actual.created)
   }

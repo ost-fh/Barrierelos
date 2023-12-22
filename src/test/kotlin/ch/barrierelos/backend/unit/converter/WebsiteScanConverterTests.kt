@@ -39,10 +39,9 @@ abstract class WebsiteScanConverterTests
     val actual = model.toEntity()
 
     Assertions.assertEquals(expected.websiteScanId, actual.websiteScanId)
-    Assertions.assertEquals(expected.websiteFk, actual.websiteFk)
-    Assertions.assertEquals(expected.websiteStatisticFk, actual.websiteStatisticFk)
-    Assertions.assertEquals(expected.websiteResultFk, actual.websiteResultFk)
-    Assertions.assertEquals(expected.userFk, actual.userFk)
+    Assertions.assertEquals(expected.website.websiteId, actual.website.websiteId)
+    Assertions.assertEquals(expected.websiteStatistic!!.websiteStatisticId, actual.websiteStatistic!!.websiteStatisticId)
+    Assertions.assertEquals(expected.websiteResult, actual.websiteResult)
     Assertions.assertEquals(expected.modified, actual.modified)
     Assertions.assertEquals(expected.created, actual.created)
   }
@@ -52,14 +51,14 @@ abstract class WebsiteScanConverterTests
   {
     // when
     val entities = setOf(
-      createWebsiteScanEntity().apply { websiteFk = 1L },
-      createWebsiteScanEntity().apply { websiteFk = 2L }
+      createWebsiteScanEntity().apply { website.websiteId = 1L },
+      createWebsiteScanEntity().apply { website.websiteId = 2L }
     )
 
     // then
     val models = setOf(
-      createWebsiteScanModel().apply { websiteId = 1L },
-      createWebsiteScanModel().apply { websiteId = 2L }
+      createWebsiteScanModel().apply { website.id = 1L },
+      createWebsiteScanModel().apply { website.id = 2L }
     )
 
     Assertions.assertEquals(models, entities.toModels())
@@ -70,19 +69,19 @@ abstract class WebsiteScanConverterTests
   {
     // when
     val models = setOf(
-      createWebsiteScanModel().apply { websiteId = 1L },
-      createWebsiteScanModel().apply { websiteId = 2L }
+      createWebsiteScanModel().apply { website.id = 1L },
+      createWebsiteScanModel().apply { website.id = 2L }
     )
 
     // then
     val expected = setOf(
-      createWebsiteScanEntity().apply { websiteFk = 1L },
-      createWebsiteScanEntity().apply { websiteFk = 2L }
+      createWebsiteScanEntity().apply { website.websiteId = 1L },
+      createWebsiteScanEntity().apply { website.websiteId = 2L }
     )
     val actual = models.toEntities()
 
     actual.shouldHaveSize(expected.size)
-    actual.shouldHaveSingleElement { it.websiteFk == 1L }
-    actual.shouldHaveSingleElement { it.websiteFk == 2L }
+    actual.shouldHaveSingleElement { it.website.websiteId == 1L }
+    actual.shouldHaveSingleElement { it.website.websiteId == 2L }
   }
 }

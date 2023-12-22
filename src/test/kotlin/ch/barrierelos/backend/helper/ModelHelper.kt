@@ -63,24 +63,24 @@ fun createWebsiteStatisticModel() = WebsiteStatistic(
 
 fun createWebpageStatisticModel() = WebpageStatistic(
   score = 80.0,
+  weight = 1.0,
   modified = 5000,
   created = 5000,
 )
 
-fun createWebsiteScanModel(userId: Long = 0, websiteId: Long = 0, websiteStatisticId: Long = 0, websiteResultId: Long = 0) = WebsiteScan(
-  websiteId = websiteId,
-  websiteStatisticId = websiteStatisticId,
-  websiteResultId = websiteResultId,
-  userId = userId,
+fun createWebsiteScanModel(user: User = createUserModel(), websiteId: Long = 0) = WebsiteScan(
+  website = createWebsiteModel(user, websiteId),
+  websiteStatistic = createWebsiteStatisticModel(),
+  websiteResult = null,
+  webpageScans = mutableSetOf(),
   modified = 5000,
   created = 5000,
 )
 
-fun createWebpageScanModel(userId: Long = 0, webpageId: Long = 0, webpageStatisticId: Long = 0, webpageResultId: Long = 0) = WebpageScan(
-  webpageId = webpageId,
-  webpageStatisticId = webpageStatisticId,
-  webpageResultId = webpageResultId,
-  userId = userId,
+fun createWebpageScanModel(user: User = createUserModel(), website: Website = createWebsiteModel()) = WebpageScan(
+  webpage = createWebpageModel(user, website),
+  webpageStatistic = createWebpageStatisticModel(),
+  webpageResult = null,
   modified = 5000,
   created = 5000,
 )

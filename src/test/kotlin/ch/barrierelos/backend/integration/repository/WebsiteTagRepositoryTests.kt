@@ -22,7 +22,7 @@ abstract class WebsiteTagRepositoryTests : RepositoryTests()
     val user = entityManager.persist(createUserEntity())
 
     val website = createWebsiteEntity()
-    website.userFk = user.userId
+    website.user = user
     website.tags.clear()
 
     entityManager.persist(website)

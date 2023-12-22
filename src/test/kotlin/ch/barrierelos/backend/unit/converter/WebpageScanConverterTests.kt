@@ -6,6 +6,7 @@ import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.converter.toModels
 import ch.barrierelos.backend.helper.createWebpageScanEntity
 import ch.barrierelos.backend.helper.createWebpageScanModel
+import ch.barrierelos.backend.helper.createWebsiteScanEntity
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
 import org.junit.jupiter.api.Assertions
@@ -32,17 +33,17 @@ abstract class WebpageScanConverterTests
   {
     // when
     val model = createWebpageScanModel()
+    val scan = createWebsiteScanEntity()
 
     // then
     val expected = createWebpageScanEntity()
 
-    val actual = model.toEntity()
+    val actual = model.toEntity(scan)
 
     Assertions.assertEquals(expected.webpageScanId, actual.webpageScanId)
-    Assertions.assertEquals(expected.webpageFk, actual.webpageFk)
-    Assertions.assertEquals(expected.webpageStatisticFk, actual.webpageStatisticFk)
-    Assertions.assertEquals(expected.webpageResultFk, actual.webpageResultFk)
-    Assertions.assertEquals(expected.userFk, actual.userFk)
+    Assertions.assertEquals(expected.webpage.webpageId, actual.webpage.webpageId)
+    Assertions.assertEquals(expected.webpageStatistic!!.webpageStatisticId, actual.webpageStatistic!!.webpageStatisticId)
+    Assertions.assertEquals(expected.webpageResult, actual.webpageResult)
     Assertions.assertEquals(expected.modified, actual.modified)
     Assertions.assertEquals(expected.created, actual.created)
   }
@@ -52,14 +53,14 @@ abstract class WebpageScanConverterTests
   {
     // when
     val entities = setOf(
-      createWebpageScanEntity().apply { webpageFk = 1L },
-      createWebpageScanEntity().apply { webpageFk = 2L }
+      createWebpageScanEntity().apply { webpage.webpageId = 1L },
+      createWebpageScanEntity().apply { webpage.webpageId = 2L }
     )
 
     // then
     val models = setOf(
-      createWebpageScanModel().apply { webpageId = 1L },
-      createWebpageScanModel().apply { webpageId = 2L }
+      createWebpageScanModel().apply { webpage.id = 1L },
+      createWebpageScanModel().apply { webpage.id = 2L }
     )
 
     Assertions.assertEquals(models, entities.toModels())
@@ -70,19 +71,19 @@ abstract class WebpageScanConverterTests
   {
     // when
     val models = setOf(
-      createWebpageScanModel().apply { webpageId = 1L },
-      createWebpageScanModel().apply { webpageId = 2L }
+      createWebpageScanModel().apply { webpage.id = 1L },
+      createWebpageScanModel().apply { webpage.id = 2L }
     )
 
     // then
     val expected = setOf(
-      createWebpageScanEntity().apply { webpageFk = 1L },
-      createWebpageScanEntity().apply { webpageFk = 2L }
+      createWebpageScanEntity().apply { webpage.webpageId = 1L },
+      createWebpageScanEntity().apply { webpage.webpageId = 2L }
     )
-    val actual = models.toEntities()
+    val actual = models.toEntities(createWebsiteScanEntity())
 
     actual.shouldHaveSize(expected.size)
-    actual.shouldHaveSingleElement { it.webpageFk == 1L }
-    actual.shouldHaveSingleElement { it.webpageFk == 2L }
+    actual.shouldHaveSingleElement { it.webpage.webpageId == 1L }
+    actual.shouldHaveSingleElement { it.webpage.webpageId == 2L }
   }
 }

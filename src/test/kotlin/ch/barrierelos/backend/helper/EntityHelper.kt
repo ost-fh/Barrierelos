@@ -78,15 +78,6 @@ fun createWebsiteScanEntity(user: UserEntity = createUserEntity(), websiteFk: Lo
   created = Timestamp(5000),
 )
 
-//fun createWebpageScanEntity(user: UserEntity = createUserEntity(), website: WebsiteEntity = createWebsiteEntity(), websiteScan: WebsiteScanEntity = createWebsiteScanEntity(user, website.websiteId)) = WebpageScanEntity(
-//  websiteScan = websiteScan,
-//  webpage = createWebpageEntity(user, website),
-//  webpageStatistic = createWebpageStatisticEntity(),
-//  webpageResult = null,
-//  modified = Timestamp(5000),
-//  created = Timestamp(5000),
-//)
-
 fun createWebpageScanEntity(user: UserEntity = createUserEntity(), website: WebsiteEntity = createWebsiteEntity()) = WebpageScanEntity(
   websiteScan = createWebsiteScanEntity(user, website.websiteId),
   webpage = createWebpageEntity(user, website),

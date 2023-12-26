@@ -1,10 +1,58 @@
 {
   "General": {
+    "title": "Barrierelos",
     "barrierelosScore": "Barrierelos-Score",
     "webpageWeight": "Weight"
   },
+  "WebsiteCategories": {
+    "label": "Category",
+    "GOVERNMENT_FEDERAL": "Federal Government",
+    "GOVERNMENT_CANTONAL": "Canton",
+    "GOVERNMENT_MUNICIPAL": "Municipality",
+    "PRIVATE_AFFILIATED": "Government-affiliated Company",
+    "PRIVATE_UNIVERSITY": "University",
+    "PRIVATE_NEWS": "News Portal",
+    "PRIVATE_SHOP": "Online Shop",
+    "PRIVATE_OTHER": "Other"
+  },
+  "WebsiteTags": {
+    "Canton: ZH": "Canton: Zurich",
+    "Canton: BE": "Canton: Bern",
+    "Canton: LU": "Canton: Lucerne",
+    "Canton: UR": "Canton: Uri",
+    "Canton: SZ": "Canton: Schwyz",
+    "Canton: OW": "Canton: Obwalden",
+    "Canton: NW": "Canton: Nidwalden",
+    "Canton: GL": "Canton: Glarus",
+    "Canton: ZG": "Canton: Zug",
+    "Canton: FR": "Canton: Fribourg",
+    "Canton: SO": "Canton: Solothurn",
+    "Canton: BS": "Canton: Basel-Stadt",
+    "Canton: BL": "Canton: Basel-Landschaft",
+    "Canton: SH": "Canton: Schaffhausen",
+    "Canton: AR": "Canton: Appenzell Ausserrhoden",
+    "Canton: AI": "Canton: Appenzell Innerrhoden",
+    "Canton: SG": "Canton: St. Gallen",
+    "Canton: GR": "Canton: Aargau",
+    "Canton: AG": "Canton: Grisons",
+    "Canton: TG": "Canton: Thurgau",
+    "Canton: TI": "Canton: Ticino",
+    "Canton: VD": "Canton: Vaud",
+    "Canton: VS": "Canton: Valais",
+    "Canton: NE": "Canton: Neuchâtel",
+    "Canton: GE": "Canton: Geneva",
+    "Canton: JU": "Canton: Jura",
+    "Country: FL": "Country: Liechtenstein"
+
+  },
   "Navbar": {
     "languageSelectionLabel": "Language Selection"
+  },
+  "HomePage": {
+    "title": "Home"
+  },
+  "WebsitesPage": {
+    "title": "Websites"
   },
   "WebsitePage": {
     "websiteStatusLabel": "Status",

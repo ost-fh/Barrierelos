@@ -38,7 +38,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScanMessage }) {
           >
             <Card variant="outlined" sx={{minWidth: 275}}>
               <CardContent>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={4}>
                   <Typography align="center"
                               sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("perceivable")}</Typography>
                   <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
@@ -51,7 +51,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScanMessage }) {
             </Card>
             <Card variant="outlined" sx={{minWidth: 275}}>
               <CardContent>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={4}>
                   <Typography align="center"
                               sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("operable")}</Typography>
                   <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
@@ -63,7 +63,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScanMessage }) {
             </Card>
             <Card variant="outlined" sx={{minWidth: 275}}>
               <CardContent>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={4}>
                   <Typography align="center"
                               sx={{fontSize: 80}}>{getViolationsPerPrinciple("understandable")}</Typography>
                   <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
@@ -76,7 +76,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScanMessage }) {
             </Card>
             <Card variant="outlined" sx={{minWidth: 275}}>
               <CardContent>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={4}>
                   <Typography align="center"
                               sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("robust")}</Typography>
                   <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
@@ -116,7 +116,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScanMessage }) {
                 key={webpageScan.id}
                 sx={{"&:last-child td, &:last-child th": {border: 0}}}
               >
-                <TableCell component="th" scope="row">{webpageScan.webpage.url}</TableCell>
+                <TableCell component="th" scope="row">{webpageScan.webpage.displayUrl}</TableCell>
                 {webpageScan.webpageStatistic ? (
                   <>
                     <TableCell>{Math.round(webpageScan.webpageStatistic.score ?? 0)}</TableCell>

@@ -26,7 +26,7 @@ function WebsiteRules(props: { websiteScan: WebsiteScanMessage }) {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>Webpage: {webpageScan.webpage.url}</Typography>
+            <Typography>Webpage: {webpageScan.webpage.displayUrl}</Typography>
             {webpageScan.webpageStatistic ? (
               <>
                 <Chip

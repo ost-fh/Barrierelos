@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {Button, ButtonGroup} from "@mui/material";
 import {t} from "i18next";
 
-function NavBar() {
+export default function NavBar() {
   const {i18n} = useTranslation()
 
   const changeLanguage = async (lng: string) => {
@@ -18,10 +18,10 @@ function NavBar() {
             <NavLink to="/">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/websites/1">Website 1</NavLink>
+            <NavLink to="/websites" end>Websites</NavLink>
           </li>
           <li>
-            <NavLink to="/websites/2">Website 2</NavLink>
+            <NavLink to="/websites/1">Website 1</NavLink>
           </li>
           <li className="languageSelection">
             <ButtonGroup variant="text" aria-label={t("Navbar.languageSelectionLabel")}>
@@ -36,5 +36,3 @@ function NavBar() {
     </>
   )
 }
-
-export default NavBar

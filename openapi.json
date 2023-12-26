@@ -623,10 +623,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Website"
-                  }
+                  "$ref": "#/components/schemas/ResultWebsite"
                 }
               }
             }
@@ -1159,18 +1156,18 @@
             "type": "integer",
             "format": "int64"
           },
-          "connection": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "contentType": {
             "$ref": "#/components/schemas/MediaType"
           },
           "contentLength": {
             "type": "integer",
             "format": "int64"
+          },
+          "connection": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "empty": {
             "type": "boolean"
@@ -1255,9 +1252,6 @@
           "date": {
             "type": "integer",
             "format": "int64"
-          },
-          "origin": {
-            "type": "string"
           },
           "allow": {
             "uniqueItems": true,
@@ -1485,6 +1479,9 @@
             "type": "integer",
             "format": "int64"
           },
+          "origin": {
+            "type": "string"
+          },
           "pragma": {
             "type": "string"
           },
@@ -1705,18 +1702,18 @@
                 "type": "integer",
                 "format": "int64"
               },
-              "connection": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
               "contentType": {
                 "$ref": "#/components/schemas/MediaType"
               },
               "contentLength": {
                 "type": "integer",
                 "format": "int64"
+              },
+              "connection": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "empty": {
                 "type": "boolean"
@@ -1801,9 +1798,6 @@
               "date": {
                 "type": "integer",
                 "format": "int64"
-              },
-              "origin": {
-                "type": "string"
               },
               "allow": {
                 "uniqueItems": true,
@@ -2031,6 +2025,9 @@
                 "type": "integer",
                 "format": "int64"
               },
+              "origin": {
+                "type": "string"
+              },
               "pragma": {
                 "type": "string"
               },
@@ -2072,11 +2069,6 @@
             "format": "uri",
             "writeOnly": true
           },
-          "type": {
-            "type": "string",
-            "format": "uri",
-            "writeOnly": true
-          },
           "detail": {
             "type": "string",
             "writeOnly": true
@@ -2092,6 +2084,11 @@
           },
           "detailMessageCode": {
             "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "writeOnly": true
           },
           "titleMessageCode": {
             "type": "string"
@@ -2445,6 +2442,10 @@
               "PENDING_RESCAN"
             ]
           },
+          "score": {
+            "type": "number",
+            "format": "double"
+          },
           "tags": {
             "uniqueItems": true,
             "type": "array",
@@ -2633,13 +2634,13 @@
             "format": "date-time",
             "writeOnly": true
           },
-          "value$kotlinx_datetime": {
-            "type": "string",
-            "format": "date-time"
-          },
           "nanosecondsOfSecond": {
             "type": "integer",
             "format": "int32"
+          },
+          "value$kotlinx_datetime": {
+            "type": "string",
+            "format": "date-time"
           },
           "epochSeconds": {
             "type": "integer",
@@ -2727,6 +2728,50 @@
           },
           "credential": {
             "$ref": "#/components/schemas/Credential"
+          }
+        }
+      },
+      "ResultWebsite": {
+        "required": [
+          "content",
+          "count",
+          "lastModified",
+          "page",
+          "size",
+          "totalElements",
+          "totalPages"
+        ],
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastModified": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Website"
+            }
           }
         }
       },

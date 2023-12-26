@@ -1,14 +1,15 @@
 import "./App.css"
 import {Route, Routes} from "react-router-dom";
 import WebsitePage from "./pages/website/WebsitePage.tsx";
-import Home from "./pages/Home.tsx";
+import HomePage from "./pages/HomePage.tsx";
 import {NotFound} from "./pages/NotFound.tsx";
-import {Helmet} from "react-helmet";
 import NavBar from "./components/NavBar.tsx";
 import {useTranslation} from "react-i18next";
 import * as locales from "@mui/material/locale";
 import {createTheme, ThemeProvider, useTheme} from "@mui/material";
 import {useMemo, useState} from "react";
+import WebsitesPage from "./pages/websites/WebsitesPage.tsx";
+import {Helmet, HelmetProvider} from "react-helmet-async";
 
 type MuiLocales = "enUS" | "deDE";
 
@@ -29,21 +30,24 @@ function App() {
   return (
     <>
       <ThemeProvider theme={themeWithLocale}>
-        <Helmet>
-          <html lang={i18n.resolvedLanguage}/>
-          <meta charSet="utf-8"/>
-          <title>Barrierelos</title>
-        </Helmet>
-        <header>
-          <NavBar/>
-        </header>
-        <main>
-          <Routes>
-            <Route path="/" element={<Home/>}/>
-            <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
-            <Route path="*" element={<NotFound/>}/>
-          </Routes>
-        </main>
+        <HelmetProvider>
+          <Helmet>
+            <html lang={i18n.resolvedLanguage}/>
+            <meta charSet="utf-8"/>
+            <title>Barrierelos</title>
+          </Helmet>
+          <header>
+            <NavBar/>
+          </header>
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage/>}/>
+              <Route path="/websites" element={<WebsitesPage/>}/>
+              <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
+              <Route path="*" element={<NotFound/>}/>
+            </Routes>
+          </main>
+        </HelmetProvider>
       </ThemeProvider>
     </>
   )

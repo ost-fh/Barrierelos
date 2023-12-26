@@ -4,12 +4,6 @@
     "barrierelosScore": "Barrierelos-Score",
     "webpageWeight": "Weight"
   },
-  "HomePage": {
-    "title": "Home",
-    "searchLabel": "Find an existing website",
-    "searchStringEmptyLabel": "Type to search",
-    "searchNoResultsLabel": "No website with this domain found"
-  },
   "WebsiteCategories": {
     "label": "Category",
     "GOVERNMENT_FEDERAL": "Federal Government",
@@ -49,13 +43,34 @@
     "Canton: GE": "Canton: Geneva",
     "Canton: JU": "Canton: Jura",
     "Country: FL": "Country: Liechtenstein"
-
   },
   "Navbar": {
     "languageSelectionLabel": "Language Selection"
   },
+  "HomePage": {
+    "title": "Home",
+    "searchLabel": "Find an existing website",
+    "searchStringEmptyLabel": "Type to search",
+    "searchNoResultsLabel": "No website with this domain found"
+  },
   "WebsitesPage": {
-    "title": "Websites"
+    "title": "Websites",
+    "groupByLabel": "Group by",
+    "groupBy": {
+      "website": "Website",
+      "region": "Region"
+    },
+    "WebsiteTable": {
+      "ariaLabel": "Table of websites",
+      "domainHeaderLabel": "Domain",
+      "categoryHeaderLabel": "Category",
+      "scoreHeaderLabel": "Barrierelos-Score"
+    },
+    "RegionTable": {
+      "ariaLabel": "Table of websites cumulated by region and sorted by Barrierelos-Score",
+      "regionHeaderLabel": "Region",
+      "scoreHeaderLabel": "Barrierelos-Score"
+    }
   },
   "WebsitePage": {
     "websiteStatusLabel": "Status",

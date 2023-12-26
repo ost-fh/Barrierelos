@@ -18,6 +18,7 @@ function App() {
 
   const [muiLocale, setMuiLocale] = useState<MuiLocales>(mapToMuiLocale(i18n.resolvedLanguage));
   const theme = useTheme();
+  theme.palette.contrastThreshold = 4.5
   const themeWithLocale = useMemo(
     () => createTheme(theme, locales[muiLocale]),
     [muiLocale, theme],

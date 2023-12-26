@@ -1,13 +1,13 @@
 import {WebsiteTag} from "../lib/api-client";
 import {t} from "i18next";
 
-const SPECIAL_TAG_PREFIXES = [
+const REGION_TAG_PREFIXES = [
   "Canton: ",
   "Country: ",
 ]
 
-export function isSpecialTag(tag: string) {
-  return SPECIAL_TAG_PREFIXES.some(prefix => tag.startsWith(prefix))
+export function isRegionTag(tag: string) {
+  return REGION_TAG_PREFIXES.some(prefix => tag.startsWith(prefix))
 }
 
 export function mapWebsiteTag(websiteTag: WebsiteTag | undefined): string {
@@ -15,7 +15,7 @@ export function mapWebsiteTag(websiteTag: WebsiteTag | undefined): string {
     return ""
 
   const tag = websiteTag.tag.name
-  if (!isSpecialTag(tag))
+  if (!isRegionTag(tag))
     return websiteTag.tag.name
 
   // @ts-expect-error: Interface is automatically generated from the translation file and consists of many union types
@@ -25,8 +25,8 @@ export function mapWebsiteTag(websiteTag: WebsiteTag | undefined): string {
 export function compareWebsiteTags(websiteTag1: WebsiteTag, websiteTag2: WebsiteTag) {
   const tag1 = mapWebsiteTag(websiteTag1)
   const tag2 = mapWebsiteTag(websiteTag2)
-  const tag1IsSpecial = isSpecialTag(tag1)
-  const tag2IsSpecial = isSpecialTag(tag2)
+  const tag1IsSpecial = isRegionTag(tag1)
+  const tag2IsSpecial = isRegionTag(tag2)
 
   if (tag1IsSpecial && tag2IsSpecial)
     return tag1.localeCompare(tag2)

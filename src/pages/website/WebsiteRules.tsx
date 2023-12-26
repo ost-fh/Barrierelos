@@ -1,11 +1,11 @@
-import {Rule, WebsiteScanMessage} from "../../lib/api-client";
+import {Rule, WebsiteScan} from "../../lib/api-client";
 import {Accordion, AccordionDetails, AccordionSummary, Chip, Typography} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useTranslation} from "react-i18next";
 import "./WebsiteRules.css"
 
 
-function WebsiteRules(props: { websiteScan: WebsiteScanMessage }) {
+function WebsiteRules(props: { websiteScan: WebsiteScan }) {
   const {t} = useTranslation();
 
   const websiteScan = props.websiteScan

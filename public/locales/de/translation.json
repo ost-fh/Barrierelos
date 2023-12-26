@@ -4,12 +4,6 @@
     "barrierelosScore": "Barrierelos-Score",
     "webpageWeight": "Gewichtung"
   },
-  "HomePage": {
-    "title": "Start",
-    "searchLabel": "Bestehende Website suchen",
-    "searchStringEmptyLabel": "Tippen Sie um zu suchen",
-    "searchNoResultsLabel": "Keine Website mit dieser Domain gefunden"
-  },
   "WebsiteCategories": {
     "label": "Kategorie",
     "GOVERNMENT_FEDERAL": "Bund",
@@ -22,37 +16,61 @@
     "PRIVATE_OTHER": "Sonstige"
   },
   "WebsiteTags": {
-    "Canton: ZH": "Canton: Zurich",
-    "Canton: BE": "Canton: Bern",
-    "Canton: LU": "Canton: Lucerne",
-    "Canton: UR": "Canton: Uri",
-    "Canton: SZ": "Canton: Schwyz",
-    "Canton: OW": "Canton: Obwalden",
-    "Canton: NW": "Canton: Nidwalden",
-    "Canton: GL": "Canton: Glarus",
-    "Canton: ZG": "Canton: Zug",
-    "Canton: FR": "Canton: Fribourg",
-    "Canton: SO": "Canton: Solothurn",
-    "Canton: BS": "Canton: Basel-Stadt",
-    "Canton: BL": "Canton: Basel-Landschaft",
-    "Canton: SH": "Canton: Schaffhausen",
-    "Canton: AR": "Canton: Appenzell Ausserrhoden",
-    "Canton: AI": "Canton: Appenzell Innerrhoden",
-    "Canton: SG": "Canton: St. Gallen",
-    "Canton: GR": "Canton: Aargau",
-    "Canton: AG": "Canton: Grisons",
-    "Canton: TG": "Canton: Thurgau",
-    "Canton: TI": "Canton: Ticino",
-    "Canton: VD": "Canton: Vaud",
-    "Canton: VS": "Canton: Valais",
-    "Canton: NE": "Canton: Neuchâtel",
-    "Canton: GE": "Canton: Geneva",
-    "Canton: JU": "Canton: Jura",
-    "Country: FL": "Country: Liechtenstein"
-
+    "Canton: ZH": "Kanton: Zürich",
+    "Canton: BE": "Kanton: Bern",
+    "Canton: LU": "Kanton: Luzern",
+    "Canton: UR": "Kanton: Uri",
+    "Canton: SZ": "Kanton: Schwyz",
+    "Canton: OW": "Kanton: Obwalden",
+    "Canton: NW": "Kanton: Nidwalden",
+    "Canton: GL": "Kanton: Glarus",
+    "Canton: ZG": "Kanton: Zug",
+    "Canton: FR": "Kanton: Fribourg",
+    "Canton: SO": "Kanton: Solothurn",
+    "Canton: BS": "Kanton: Basel-Stadt",
+    "Canton: BL": "Kanton: Basel-Landschaft",
+    "Canton: SH": "Kanton: Schaffhausen",
+    "Canton: AR": "Kanton: Appenzell Ausserrhoden",
+    "Canton: AI": "Kanton: Appenzell Innerrhoden",
+    "Canton: SG": "Kanton: St. Gallen",
+    "Canton: GR": "Kanton: Aargau",
+    "Canton: AG": "Kanton: Graubünden",
+    "Canton: TG": "Kanton: Thurgau",
+    "Canton: TI": "Kanton: Tessin",
+    "Canton: VD": "Kanton: Waadt",
+    "Canton: VS": "Kanton: Wallis",
+    "Canton: NE": "Kanton: Neuchâtel",
+    "Canton: GE": "Kanton: Genf",
+    "Canton: JU": "Kanton: Jura",
+    "Country: FL": "Land: Liechtenstein"
   },
   "Navbar": {
     "languageSelectionLabel": "Sprachauswahl"
+  },
+  "HomePage": {
+    "title": "Start",
+    "searchLabel": "Bestehende Website suchen",
+    "searchStringEmptyLabel": "Tippen Sie um zu suchen",
+    "searchNoResultsLabel": "Keine Website mit dieser Domain gefunden"
+  },
+  "WebsitesPage": {
+    "title": "Websites",
+    "groupByLabel": "Gruppieren nach",
+    "groupBy": {
+      "website": "Website",
+      "region": "Region"
+    },
+    "WebsiteTable": {
+      "ariaLabel": "Tabelle der Websites",
+      "domainHeaderLabel": "Domain",
+      "categoryHeaderLabel": "Kategorie",
+      "scoreHeaderLabel": "Barrierelos-Score"
+    },
+    "RegionTable": {
+      "ariaLabel": "Tabelle der Websites zusammengefasst nach Region und sortiert nach Barrierelos-Score",
+      "regionHeaderLabel": "Region",
+      "scoreHeaderLabel": "Barrierelos-Score"
+    }
   },
   "WebsitePage": {
     "websiteStatusLabel": "Status",

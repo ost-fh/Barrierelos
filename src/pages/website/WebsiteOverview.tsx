@@ -1,4 +1,4 @@
-import {WebsiteScanMessage} from "../../lib/api-client"
+import {WebsiteScan} from "../../lib/api-client"
 import {
   Card,
   CardContent,
@@ -23,70 +23,76 @@ import UnderstandableIcon from "@mui/icons-material/Psychology"
 import RobustIcon from "@mui/icons-material/FitnessCenter"
 
 
-function WebsiteOverview(props: { websiteScan: WebsiteScanMessage }) {
+function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
   const {t} = useTranslation();
-  const websiteScan: WebsiteScanMessage = props.websiteScan
+  const websiteScan: WebsiteScan = props.websiteScan
 
   return (
     <>
       {websiteScan.websiteStatistic ? (
         <>
           <h2>{t("WebsitePage.Overview.PrincipleViolationHeader")}</h2>
-          <Stack
-            direction={{xs: "column", md: "row"}}
-            spacing={2}
-          >
-            <Card variant="outlined" sx={{minWidth: 275}}>
-              <CardContent>
-                <Stack direction="row" spacing={4}>
-                  <Typography align="center"
-                              sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("perceivable")}</Typography>
-                  <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
-                    <PerceivableIcon sx={{fontSize: 80}}/>
-                    <Typography
-                      align="center">{t("WebsitePage.Overview.PrincipleViolationPerceivableLabel")}</Typography>
-                  </Grid>
-                </Stack>
-              </CardContent>
-            </Card>
-            <Card variant="outlined" sx={{minWidth: 275}}>
-              <CardContent>
-                <Stack direction="row" spacing={4}>
-                  <Typography align="center"
-                              sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("operable")}</Typography>
-                  <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
-                    <OperableIcon sx={{fontSize: 80}}/>
-                    <Typography align="center">{t("WebsitePage.Overview.PrincipleViolationOperableLabel")}</Typography>
-                  </Grid>
-                </Stack>
-              </CardContent>
-            </Card>
-            <Card variant="outlined" sx={{minWidth: 275}}>
-              <CardContent>
-                <Stack direction="row" spacing={4}>
-                  <Typography align="center"
-                              sx={{fontSize: 80}}>{getViolationsPerPrinciple("understandable")}</Typography>
-                  <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
-                    <UnderstandableIcon sx={{fontSize: 80, minWidth: 100}}/>
-                    <Typography
-                      align="center">{t("WebsitePage.Overview.PrincipleViolationUnderstandableLabel")}</Typography>
-                  </Grid>
-                </Stack>
-              </CardContent>
-            </Card>
-            <Card variant="outlined" sx={{minWidth: 275}}>
-              <CardContent>
-                <Stack direction="row" spacing={4}>
-                  <Typography align="center"
-                              sx={{fontSize: 80, minWidth: 100}}>{getViolationsPerPrinciple("robust")}</Typography>
-                  <Grid direction="column" container maxWidth="sm" justifyContent="space-evenly" alignItems="center">
-                    <RobustIcon sx={{fontSize: 80}}/>
-                    <Typography align="center">{t("WebsitePage.Overview.PrincipleViolationRobustLabel")}</Typography>
-                  </Grid>
-                </Stack>
-              </CardContent>
-            </Card>
-          </Stack>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Card variant="outlined">
+                <CardContent>
+                  <Stack direction="row" spacing={2}>
+                    <Typography align="center"
+                                sx={{fontSize: 80}}>{getViolationsPerPrinciple("perceivable")}</Typography>
+                    <Grid direction="column" container alignItems="center" width="inherit">
+                      <PerceivableIcon sx={{fontSize: 80}}/>
+                      <Typography
+                        align="center">{t("WebsitePage.Overview.PrincipleViolationPerceivableLabel")}</Typography>
+                    </Grid>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item>
+              <Card variant="outlined">
+                <CardContent>
+                  <Stack direction="row" spacing={2}>
+                    <Typography align="center"
+                                sx={{fontSize: 80}}>{getViolationsPerPrinciple("operable")}</Typography>
+                    <Grid direction="column" container alignItems="center">
+                      <OperableIcon sx={{fontSize: 80}}/>
+                      <Typography
+                        align="center">{t("WebsitePage.Overview.PrincipleViolationOperableLabel")}</Typography>
+                    </Grid>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item>
+              <Card variant="outlined">
+                <CardContent>
+                  <Stack direction="row" spacing={2}>
+                    <Typography align="center"
+                                sx={{fontSize: 80}}>{getViolationsPerPrinciple("understandable")}</Typography>
+                    <Grid direction="column" container alignItems="center">
+                      <UnderstandableIcon sx={{fontSize: 80}}/>
+                      <Typography
+                        align="center">{t("WebsitePage.Overview.PrincipleViolationUnderstandableLabel")}</Typography>
+                    </Grid>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item>
+              <Card variant="outlined">
+                <CardContent>
+                  <Stack direction="row" spacing={2}>
+                    <Typography align="center"
+                                sx={{fontSize: 80}}>{getViolationsPerPrinciple("robust")}</Typography>
+                    <Grid direction="column" container alignItems="center">
+                      <RobustIcon sx={{fontSize: 80}}/>
+                      <Typography align="center">{t("WebsitePage.Overview.PrincipleViolationRobustLabel")}</Typography>
+                    </Grid>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
         </>
       ) : null}
       <h2>{t("WebsitePage.Overview.WebpagesHeader")}</h2>

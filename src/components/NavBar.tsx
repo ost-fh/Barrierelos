@@ -20,9 +20,6 @@ export default function NavBar() {
           <li>
             <NavLink to="/websites" end>Websites</NavLink>
           </li>
-          <li>
-            <NavLink to="/websites/1">Website 1</NavLink>
-          </li>
           <li className="languageSelection">
             <ButtonGroup variant="text" aria-label={t("Navbar.languageSelectionLabel")}>
               <Button className="langBtn" disabled={i18n.resolvedLanguage === "de"}

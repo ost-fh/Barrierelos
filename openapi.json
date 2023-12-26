@@ -2812,6 +2812,94 @@
         }
       }
     },
+    "/website/region": {
+      "get": {
+        "tags": [
+          "website-controller"
+        ],
+        "operationId": "getRegions",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "name": "modifiedAfter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "createdAfter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultRegion"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/website-scan/{id}/statistic": {
       "get": {
         "tags": [
@@ -3276,47 +3364,6 @@
           }
         }
       }
-    },
-    "/statistics/{id}": {
-      "get": {
-        "tags": [
-          "statistic-controller"
-        ],
-        "operationId": "getWebsiteScan_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseStatusException"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WebsiteScanMessage"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -3565,13 +3612,32 @@
           "etag": {
             "type": "string"
           },
-          "acceptPatch": {
+          "acceptLanguage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "range": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number",
+                  "format": "double"
+                }
+              }
+            }
+          },
+          "basicAuth": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "accept": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaType"
             }
           },
-          "accept": {
+          "acceptPatch": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaType"
@@ -3711,25 +3777,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "acceptLanguage": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "range": {
-                  "type": "string"
-                },
-                "weight": {
-                  "type": "number",
-                  "format": "double"
-                }
-              }
-            }
-          },
-          "basicAuth": {
-            "type": "string",
-            "writeOnly": true
           }
         },
         "additionalProperties": {
@@ -4111,13 +4158,32 @@
               "etag": {
                 "type": "string"
               },
-              "acceptPatch": {
+              "acceptLanguage": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "range": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  }
+                }
+              },
+              "basicAuth": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "accept": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/MediaType"
                 }
               },
-              "accept": {
+              "acceptPatch": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/MediaType"
@@ -4257,25 +4323,6 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              "acceptLanguage": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "range": {
-                      "type": "string"
-                    },
-                    "weight": {
-                      "type": "number",
-                      "format": "double"
-                    }
-                  }
-                }
-              },
-              "basicAuth": {
-                "type": "string",
-                "writeOnly": true
               }
             },
             "additionalProperties": {
@@ -5569,7 +5616,6 @@
       "ResultWebsite": {
         "required": [
           "content",
-          "count",
           "lastModified",
           "page",
           "size",
@@ -5594,10 +5640,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "count": {
-            "type": "integer",
-            "format": "int64"
-          },
           "lastModified": {
             "type": "integer",
             "format": "int64"
@@ -5610,12 +5652,11 @@
           }
         }
       },
-      "WebpageScanMessage": {
+      "Region": {
         "required": [
-          "created",
           "id",
-          "modified",
-          "webpage"
+          "name",
+          "score"
         ],
         "type": "object",
         "properties": {
@@ -5623,62 +5664,51 @@
             "type": "integer",
             "format": "int64"
           },
-          "webpage": {
-            "$ref": "#/components/schemas/Webpage"
+          "name": {
+            "type": "string"
           },
-          "webpageStatistic": {
-            "$ref": "#/components/schemas/WebpageStatistic"
-          },
-          "webpageResult": {
-            "$ref": "#/components/schemas/WebpageResult"
-          },
-          "modified": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "created": {
-            "type": "integer",
-            "format": "int64"
+          "score": {
+            "type": "number",
+            "format": "double"
           }
         }
       },
-      "WebsiteScanMessage": {
+      "ResultRegion": {
         "required": [
-          "created",
-          "id",
-          "modified",
-          "webpageScans",
-          "website"
+          "content",
+          "lastModified",
+          "page",
+          "size",
+          "totalElements",
+          "totalPages"
         ],
         "type": "object",
         "properties": {
-          "id": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
             "type": "integer",
             "format": "int64"
           },
-          "website": {
-            "$ref": "#/components/schemas/Website"
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
-          "websiteStatistic": {
-            "$ref": "#/components/schemas/WebsiteStatistic"
+          "lastModified": {
+            "type": "integer",
+            "format": "int64"
           },
-          "websiteResult": {
-            "$ref": "#/components/schemas/WebsiteResult"
-          },
-          "webpageScans": {
-            "uniqueItems": true,
+          "content": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WebpageScanMessage"
+              "$ref": "#/components/schemas/Region"
             }
-          },
-          "modified": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "created": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       }

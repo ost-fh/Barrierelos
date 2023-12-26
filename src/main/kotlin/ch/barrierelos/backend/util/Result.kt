@@ -1,6 +1,7 @@
 package ch.barrierelos.backend.util
 
 import ch.barrierelos.backend.constants.Header
+import kotlinx.serialization.Serializable
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpHeaders
 
@@ -46,6 +47,7 @@ public fun <T> Result<T>.toHeaders(): HttpHeaders
   return headers
 }
 
+@Serializable
 public data class Result<T>
 (
   public var page: Int,

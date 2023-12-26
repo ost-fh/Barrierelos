@@ -467,9 +467,9 @@ abstract class WebsiteControllerTests : ControllerTests()
       // then
       val actual = mockMvc.get("/website").andExpect {
         status { isOk() }
-      }.body<List<Website>>()
+      }.body<Result<Website>>()
 
-      Assertions.assertEquals(result.content, actual)
+      Assertions.assertEquals(result.content, actual.content)
     }
   }
 

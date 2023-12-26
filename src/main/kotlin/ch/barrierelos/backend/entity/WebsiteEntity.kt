@@ -23,6 +23,7 @@ public class WebsiteEntity
   public var category: CategoryEnum,
   @Enumerated(EnumType.STRING)
   public var status: StatusEnum = StatusEnum.PENDING_INITIAL,
+  public var score: Double? = null,
   @OneToMany(orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
   @JoinColumn(name = "websiteFk", referencedColumnName = "websiteId")
   public var tags: MutableSet<WebsiteTagEntity>,

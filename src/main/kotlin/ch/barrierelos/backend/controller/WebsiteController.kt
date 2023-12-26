@@ -7,6 +7,7 @@ import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.model.scanner.ScanJob
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebsiteService
+import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toHeaders
 import org.springdoc.core.annotations.ParameterObject
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,11 +40,11 @@ public class WebsiteController
   }
 
   @GetMapping(value = [WEBSITE], produces = [MediaType.JSON])
-  public fun getWebsites(showDeleted: Boolean = false, showBlocked: Boolean = false, @ParameterObject defaultParameters: DefaultParameters): ResponseEntity<List<Website>>
+  public fun getWebsites(showDeleted: Boolean = false, showBlocked: Boolean = false, @ParameterObject defaultParameters: DefaultParameters): ResponseEntity<Result<Website>>
   {
     val websitePage = this.websiteService.getWebsites(showDeleted, showBlocked, defaultParameters)
 
-    return ResponseEntity.status(HttpStatus.OK).headers(websitePage.toHeaders()).body(websitePage.content)
+    return ResponseEntity.status(HttpStatus.OK).headers(websitePage.toHeaders()).body(websitePage)
   }
 
   @GetMapping(value = ["${WEBSITE}/{id}"], produces = [MediaType.JSON])

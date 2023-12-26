@@ -36,3 +36,6 @@ public class AlreadyExistsException(message: String) : ResponseStatusException(H
 
 @ResponseStatus
 public class InvalidStateException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
+
+@ResponseStatus
+public class InvalidArgumentException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)

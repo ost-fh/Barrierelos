@@ -61,11 +61,9 @@ public class StatisticService
   @Transactional
   public fun onReceiveResult(websiteResult: WebsiteResult, webpageResults: MutableSet<WebpageResult>)
   {
-    var website = websiteRepository.findById(websiteResult.scanJob.websiteId)
+    val website = websiteRepository.findById(websiteResult.scanJob.websiteId)
       .orThrow(NoSuchElementException("Website with this id does not exist."))
       .toModel()
-    website.status = StatusEnum.READY
-    website = websiteRepository.save(website.toEntity()).toModel()
 
     var websiteScan = websiteScanRepository.findFirstByWebsiteWebsiteIdOrderByCreated(website.id)
       .orThrow(NoSuchElementException("WebsiteScan with this websiteId does not exist."))
@@ -77,10 +75,14 @@ public class StatisticService
     {
       websiteTotalCount = scorings.sumOf { it.totalCount }
       val websiteScore = scorings.sumOf { it.score * (it.totalCount / websiteTotalCount.toDouble()) }
+      website.score = websiteScore
       websiteScan.websiteStatistic = WebsiteStatistic(
         score = websiteScore,
       )
     }
+    website.status = StatusEnum.READY
+    websiteRepository.save(website.toEntity()).toModel()
+
     websiteScan.websiteResult = websiteResult
     websiteScan = websiteScanRepository.save(websiteScan.toEntity()).toModel()
     websiteScanRepository.save(websiteScan.toEntity())

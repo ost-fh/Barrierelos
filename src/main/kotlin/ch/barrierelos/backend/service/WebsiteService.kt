@@ -8,12 +8,14 @@ import ch.barrierelos.backend.converter.scanner.toScanJob
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.converter.toModels
+import ch.barrierelos.backend.enums.CategoryEnum
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
 import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.message.scanner.WebsiteResultMessage
+import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.model.WebsiteTag
@@ -86,6 +88,7 @@ public class WebsiteService
     {
       throw NoSuchElementException("Tag with that name does not exist.")
     }
+    validateTags(tags, websiteMessage.category)
 
     var website = websiteMessage.toModel(domain, mutableSetOf())
     website = websiteRepository.save(website.toEntity()).toModel()
@@ -102,6 +105,39 @@ public class WebsiteService
     statisticService.addWebsiteScan(website)
 
     return website
+  }
+
+  private fun validateTags(tags: MutableSet<Tag>, category: CategoryEnum)
+  {
+    val countries = tags.filter { it.name.startsWith("Country:") }
+    val cantons = tags.filter { it.name.startsWith("Canton:") }
+
+    if(countries.size > 1)
+    {
+      throw InvalidArgumentException("Only one country tag per website is allowed.")
+    }
+    else if(countries.size == 1)
+    {
+      if(cantons.isNotEmpty())
+        throw InvalidArgumentException("Country and canton tag cannot be used together.")
+    }
+
+    if(cantons.size > 1)
+    {
+      throw InvalidArgumentException("Only one canton tag per website is allowed.")
+    }
+    else if(cantons.size == 1)
+    {
+      if(category == CategoryEnum.GOVERNMENT_FEDERAL)
+      {
+        throw InvalidArgumentException("Federal government websites cannot have a canton tag.")
+      }
+    } else {
+      if(mutableSetOf(CategoryEnum.GOVERNMENT_CANTONAL, CategoryEnum.GOVERNMENT_MUNICIPAL).contains(category))
+      {
+        throw InvalidArgumentException("Cantonal and municipal websites must have a canton tag.")
+      }
+    }
   }
 
   @Transactional

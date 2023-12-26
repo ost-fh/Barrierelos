@@ -29,6 +29,46 @@ SELECT SETVAL('credential_credential_id_seq', (SELECT MAX("credential_id") FROM 
 
 
 ---------------------------------------------------------------------------
+-- Tags                                                                  --
+---------------------------------------------------------------------------
+
+TRUNCATE "tag" CASCADE;
+
+
+INSERT INTO "tag"("tag_id", "name")
+VALUES
+  (28, 'Canton: ZH'),
+  (2, 'Canton: BE'),
+  (3, 'Canton: LU'),
+  (4, 'Canton: UR'),
+  (5, 'Canton: SZ'),
+  (6, 'Canton: OW'),
+  (7, 'Canton: NW'),
+  (8, 'Canton: GL'),
+  (9, 'Canton: ZG'),
+  (10, 'Canton: FR'),
+  (11, 'Canton: SO'),
+  (12, 'Canton: BS'),
+  (13, 'Canton: BL'),
+  (14, 'Canton: SH'),
+  (15, 'Canton: AR'),
+  (16, 'Canton: AI'),
+  (17, 'Canton: SG'),
+  (18, 'Canton: GR'),
+  (19, 'Canton: AG'),
+  (20, 'Canton: TG'),
+  (21, 'Canton: TI'),
+  (22, 'Canton: VD'),
+  (23, 'Canton: VS'),
+  (24, 'Canton: NE'),
+  (25, 'Canton: GE'),
+  (26, 'Canton: JU'),
+  (27, 'Country: FL')
+;
+
+SELECT SETVAL('"tag_tag_id_seq"', (SELECT MAX("tag_id") FROM "tag"));
+
+---------------------------------------------------------------------------
 -- Website, Scan, Statistics and other associated tables                 --
 ---------------------------------------------------------------------------
 
@@ -53,7 +93,7 @@ SELECT SETVAL('credential_credential_id_seq', (SELECT MAX("credential_id") FROM 
 -- INSERT INTO "scan_job"("scan_job_id", "model_version", "domain", "webpages", "modified", "created")
 -- VALUES
 --   (1, '1.0.0', 'galaxus.ch', '{''https://www.galaxus.ch/de/'', ''https://www.galaxus.ch/de/s1/tag/pc-komponenten-76'', ''https://www.galaxus.ch/de/s1/product/apple-earpods-kabelgebunden-kopfhoerer-6185119''}', NOW(), NOW());
---
+
 -- SELECT SETVAL('"scan_job_scan_job_id_seq"', (SELECT MAX("scan_job_id") FROM "scan_job"));
 --
 --

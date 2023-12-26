@@ -29,6 +29,7 @@ public fun Website.toEntity(): WebsiteEntity
     url = this.url,
     category = this.category,
     status = this.status,
+    score = this.score,
     tags = this.tags.toEntities(),
     deleted = this.deleted,
     modified = Timestamp(this.modified),
@@ -45,6 +46,7 @@ public fun WebsiteEntity.toModel(): Website
     url = this.url,
     category = this.category,
     status = this.status,
+    score = this.score,
     tags = this.tags.toModels(),
     deleted = this.deleted,
     modified = this.modified.time,
@@ -61,6 +63,7 @@ public fun WebsiteEntity.toModel(website: Website): Website
     url = this@toModel.url
     category = this@toModel.category
     status = this@toModel.status
+    score = this@toModel.score
     tags.clearAndAddAll(this@toModel.tags.toModels())
     deleted = this@toModel.deleted
     modified = this@toModel.modified.time

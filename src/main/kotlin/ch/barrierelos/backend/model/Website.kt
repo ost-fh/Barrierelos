@@ -12,6 +12,7 @@ public data class Website(
   public var domain: String,
   public var category: CategoryEnum,
   public var status: StatusEnum = StatusEnum.PENDING_INITIAL,
+  public var score: Double? = null,
   public var tags: MutableSet<WebsiteTag> = mutableSetOf(),
   public var deleted: Boolean = false,
   public var modified: Long = System.currentTimeMillis(),

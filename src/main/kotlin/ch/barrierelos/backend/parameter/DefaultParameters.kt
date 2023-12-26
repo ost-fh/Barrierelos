@@ -6,8 +6,8 @@ public data class DefaultParameters
 (
   public val page: Int? = null,
   public val size: Int? = null,
-  public val sort: String? = null,
-  public val order: OrderEnum? = null,
+  public var sort: String? = null,
+  public var order: OrderEnum? = null,
   public val modifiedAfter: Long? = null,
   public val createdAfter: Long? = null,
 )

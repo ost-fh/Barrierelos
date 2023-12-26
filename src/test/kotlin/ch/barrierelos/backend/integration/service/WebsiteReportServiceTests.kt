@@ -288,7 +288,6 @@ abstract class WebsiteReportServiceTests : ServiceTests()
       websiteReports.size.shouldBe(2)
       websiteReports.totalElements.shouldBe(2)
       websiteReports.totalPages.shouldBe(1)
-      websiteReports.count.shouldBe(2)
       websiteReports.content.shouldHaveSize(2)
     }
 
@@ -315,7 +314,6 @@ abstract class WebsiteReportServiceTests : ServiceTests()
       websiteReports.size.shouldBe(1)
       websiteReports.totalElements.shouldBe(2)
       websiteReports.totalPages.shouldBe(2)
-      websiteReports.count.shouldBe(2)
       websiteReports.content.shouldHaveSize(1)
     }
   }

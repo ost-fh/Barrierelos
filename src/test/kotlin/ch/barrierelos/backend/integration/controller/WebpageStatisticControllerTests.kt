@@ -355,7 +355,6 @@ abstract class WebpageStatisticControllerTests : ControllerTests()
       size = 1,
       totalElements = 1,
       totalPages = 1,
-      count = 1,
       lastModified = 5000,
       content = listOf(
         webpageStatistic

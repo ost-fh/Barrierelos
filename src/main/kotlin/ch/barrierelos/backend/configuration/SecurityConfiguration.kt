@@ -72,6 +72,7 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.DELETE, "$WEBSITE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name)
 
           .requestMatchers(HttpMethod.GET, "$WEBSITE/search/**").permitAll()
+          .requestMatchers(HttpMethod.GET, "$WEBSITE/region/**").permitAll()
 
           .requestMatchers(HttpMethod.POST, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)
           .requestMatchers(HttpMethod.PUT, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name, RoleEnum.CONTRIBUTOR.name)

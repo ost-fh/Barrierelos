@@ -3,6 +3,7 @@ package ch.barrierelos.backend.controller
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE
 import ch.barrierelos.backend.constants.MediaType
 import ch.barrierelos.backend.message.WebsiteMessage
+import ch.barrierelos.backend.model.Region
 import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.model.scanner.ScanJob
 import ch.barrierelos.backend.parameter.DefaultParameters
@@ -77,5 +78,13 @@ public class WebsiteController
     val searchResults: Set<Website> = this.websiteService.searchWebsiteByDomain(domain)
 
     return ResponseEntity.status(HttpStatus.OK).body(searchResults)
+  }
+
+  @GetMapping(value = ["${WEBSITE}/region"], produces = [MediaType.JSON])
+  public fun getRegions(@ParameterObject defaultParameters: DefaultParameters): ResponseEntity<Result<Region>>
+  {
+    val regionPage = this.websiteService.getRegions(defaultParameters)
+
+    return ResponseEntity.status(HttpStatus.OK).headers(regionPage.toHeaders()).body(regionPage)
   }
 }

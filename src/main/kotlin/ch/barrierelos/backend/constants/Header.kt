@@ -7,8 +7,7 @@ public object Header
   public const val PAGINATION_TOTAL_ELEMENTS: String = "X-Pagination-Total-Elements"
   public const val PAGINATION_TOTAL_PAGES: String = "X-Pagination-Total-Pages"
 
-  public const val STATUS_COUNT: String = "X-Status-Count"
   public const val STATUS_LAST_MODIFIED: String = "X-Status-Last-Modified"
 
-  public val ALL: List<String> = listOf(PAGINATION_PAGE, PAGINATION_SIZE, PAGINATION_TOTAL_ELEMENTS, PAGINATION_TOTAL_PAGES, STATUS_COUNT, STATUS_LAST_MODIFIED)
+  public val ALL: List<String> = listOf(PAGINATION_PAGE, PAGINATION_SIZE, PAGINATION_TOTAL_ELEMENTS, PAGINATION_TOTAL_PAGES, STATUS_LAST_MODIFIED)
 }

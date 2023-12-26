@@ -9,7 +9,6 @@ import ch.barrierelos.backend.model.WebpageScan
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebpageScanService
 import ch.barrierelos.backend.util.Result
-import ch.barrierelos.backend.util.toJson
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.url.haveParameterValue
 import io.mockk.every
@@ -21,7 +20,6 @@ import org.springframework.security.test.context.support.TestExecutionEvent
 import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.post
 
 @Nested
 abstract class WebpageScanControllerTests : ControllerTests()
@@ -41,7 +39,6 @@ abstract class WebpageScanControllerTests : ControllerTests()
       size = 1,
       totalElements = 1,
       totalPages = 1,
-      count = 1,
       lastModified = 5000,
       content = listOf(
         webpageScan

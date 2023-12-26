@@ -1,5 +1,6 @@
 package ch.barrierelos.backend.repository
 
+import ch.barrierelos.backend.constants.Paging
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.util.Result
@@ -13,6 +14,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.NoRepositoryBean
 import java.sql.Timestamp
+import kotlin.math.max
+import kotlin.math.min
 
 @NoRepositoryBean
 public interface Repository<E> : JpaRepository<E, Long>
@@ -67,7 +70,6 @@ public interface Repository<E> : JpaRepository<E, Long>
 
     public fun <E, M> Repository<E>.findAll(defaultParameters: DefaultParameters, entity: Class<E>, toModel: E.() -> M): Result<M>
     {
-      val count = this.count()
       val lastModified = this.lastModified()
 
       val page = defaultParameters.page
@@ -77,23 +79,23 @@ public interface Repository<E> : JpaRepository<E, Long>
 
       return if(page != null && size != null && size > 0)
       {
-        val pageable = defaultParameters.toPageable(count, entity)
+        val pageable = defaultParameters.toPageable(entity)
 
         if(createdAfter != null && modifiedAfter != null)
         {
-          this.findAllByCreatedAfterAndModifiedAfter(createdAfter, modifiedAfter, pageable).toResult(count, lastModified, toModel)
+          this.findAllByCreatedAfterAndModifiedAfter(createdAfter, modifiedAfter, pageable).toResult(lastModified, toModel)
         }
         else if(createdAfter != null)
         {
-          this.findAllByCreatedAfter(createdAfter, pageable).toResult(count, lastModified, toModel)
+          this.findAllByCreatedAfter(createdAfter, pageable).toResult(lastModified, toModel)
         }
         else if(modifiedAfter != null)
         {
-          this.findAllByModifiedAfter(modifiedAfter, pageable).toResult(count, lastModified, toModel)
+          this.findAllByModifiedAfter(modifiedAfter, pageable).toResult(lastModified, toModel)
         }
         else
         {
-          this.findAll(pageable).toResult(count, lastModified, toModel)
+          this.findAll(pageable).toResult(lastModified, toModel)
         }
       }
       else
@@ -102,19 +104,19 @@ public interface Repository<E> : JpaRepository<E, Long>
 
         if(createdAfter != null && modifiedAfter != null)
         {
-          Result(this.findAllByCreatedAfterAndModifiedAfter(createdAfter, modifiedAfter, sorting).map { it.toModel() }, count, lastModified)
+          Result(this.findAllByCreatedAfterAndModifiedAfter(createdAfter, modifiedAfter, sorting).map { it.toModel() }, lastModified)
         }
         else if(createdAfter != null)
         {
-          Result(this.findAllByCreatedAfter(createdAfter, sorting).map { it.toModel() }, count, lastModified)
+          Result(this.findAllByCreatedAfter(createdAfter, sorting).map { it.toModel() }, lastModified)
         }
         else if(modifiedAfter != null)
         {
-          Result(this.findAllByModifiedAfter(modifiedAfter, sorting).map { it.toModel() }, count, lastModified)
+          Result(this.findAllByModifiedAfter(modifiedAfter, sorting).map { it.toModel() }, lastModified)
         }
         else
         {
-          Result(this.findAll(sorting).map { it.toModel() }, count, lastModified)
+          Result(this.findAll(sorting).map { it.toModel() }, lastModified)
         }
       }
     }
@@ -151,15 +153,10 @@ public interface Repository<E> : JpaRepository<E, Long>
 
     public fun <E> DefaultParameters.toPageable(entity: Class<E>): Pageable
     {
-      return this.toPageable(Int.MAX_VALUE.toLong(), entity)
-    }
-
-    public fun <E> DefaultParameters.toPageable(count: Long, entity: Class<E>): Pageable
-    {
       val page = this.page ?: 0
-      var size = this.size ?: count.toInt()
-
-      if(size < 1) size = 1
+      var size = this.size ?: Paging.DEFAULT_PAGE_SIZE
+      size = min(size, Paging.MAX_PAGE_SIZE)
+      size = max(size, 1)
 
       val sorting = this.toSorting(entity)
 

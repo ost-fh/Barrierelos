@@ -15,12 +15,10 @@ import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
 import ch.barrierelos.backend.exceptions.*
 import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.message.scanner.WebsiteResultMessage
-import ch.barrierelos.backend.model.Tag
-import ch.barrierelos.backend.model.Webpage
-import ch.barrierelos.backend.model.Website
-import ch.barrierelos.backend.model.WebsiteTag
+import ch.barrierelos.backend.model.*
 import ch.barrierelos.backend.model.scanner.ScanJob
 import ch.barrierelos.backend.parameter.DefaultParameters
+import ch.barrierelos.backend.repository.Repository.Companion.toPageable
 import ch.barrierelos.backend.repository.TagRepository
 import ch.barrierelos.backend.repository.WebpageRepository
 import ch.barrierelos.backend.repository.WebsiteRepository
@@ -236,6 +234,16 @@ public class WebsiteService
   public fun getWebsite(websiteId: Long): Website
   {
     return this.websiteRepository.findById(websiteId).orElseThrow().toModel()
+  }
+
+  public fun getRegions(defaultParameters: DefaultParameters): Result<Region>
+  {
+    defaultParameters.apply {
+      sort = null
+      order = null
+    }
+    val regionPage = this.websiteRepository.findAllRegions(defaultParameters.toPageable(Region::class.java))
+    return Result(regionPage.content, regionPage.totalElements)
   }
 
   @Transactional

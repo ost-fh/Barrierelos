@@ -62,7 +62,6 @@ abstract class UserControllerTests : ControllerTests()
       size = 2,
       totalElements = 3,
       totalPages = 2,
-      count = 3,
       lastModified = 5000,
       content = listOf(
         admin,

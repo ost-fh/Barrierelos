@@ -288,7 +288,6 @@ abstract class WebpageReportServiceTests : ServiceTests()
       webpageReports.size.shouldBe(2)
       webpageReports.totalElements.shouldBe(2)
       webpageReports.totalPages.shouldBe(1)
-      webpageReports.count.shouldBe(2)
       webpageReports.content.shouldHaveSize(2)
     }
 
@@ -315,7 +314,6 @@ abstract class WebpageReportServiceTests : ServiceTests()
       webpageReports.size.shouldBe(1)
       webpageReports.totalElements.shouldBe(2)
       webpageReports.totalPages.shouldBe(2)
-      webpageReports.count.shouldBe(2)
       webpageReports.content.shouldHaveSize(1)
     }
   }

@@ -288,7 +288,6 @@ abstract class UserReportServiceTests : ServiceTests()
       userReports.size.shouldBe(2)
       userReports.totalElements.shouldBe(2)
       userReports.totalPages.shouldBe(1)
-      userReports.count.shouldBe(2)
       userReports.content.shouldHaveSize(2)
     }
 
@@ -315,7 +314,6 @@ abstract class UserReportServiceTests : ServiceTests()
       userReports.size.shouldBe(1)
       userReports.totalElements.shouldBe(2)
       userReports.totalPages.shouldBe(2)
-      userReports.count.shouldBe(2)
       userReports.content.shouldHaveSize(1)
     }
   }

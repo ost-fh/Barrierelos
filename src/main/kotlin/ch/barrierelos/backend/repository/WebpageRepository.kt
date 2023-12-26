@@ -29,21 +29,20 @@ public interface WebpageRepository : Repository<WebpageEntity>
   {
     public fun WebpageRepository.findAll(deleted: Boolean, blocked: Boolean, defaultParameters: DefaultParameters): Result<Webpage>
     {
-      val count = this.count()
       val lastModified = this.lastModified()
 
       val modifiedAfter = Timestamp(defaultParameters.modifiedAfter ?: 0)
       val createdAfter = Timestamp(defaultParameters.createdAfter ?: 0)
 
-      val pageable = defaultParameters.toPageable(count, WebpageEntity::class.java)
+      val pageable = defaultParameters.toPageable(WebpageEntity::class.java)
 
       return if(blocked)
       {
-        this.findByDeletedAndCreatedAfterAndModifiedAfter(deleted, createdAfter, modifiedAfter, pageable).toResult(count, lastModified, WebpageEntity::toModel)
+        this.findByDeletedAndCreatedAfterAndModifiedAfter(deleted, createdAfter, modifiedAfter, pageable).toResult(lastModified, WebpageEntity::toModel)
       }
       else
       {
-        this.findByDeletedAndStatusNotAndCreatedAfterAndModifiedAfter(deleted, StatusEnum.BLOCKED, createdAfter, modifiedAfter, pageable).toResult(count, lastModified, WebpageEntity::toModel)
+        this.findByDeletedAndStatusNotAndCreatedAfterAndModifiedAfter(deleted, StatusEnum.BLOCKED, createdAfter, modifiedAfter, pageable).toResult(lastModified, WebpageEntity::toModel)
       }
     }
   }

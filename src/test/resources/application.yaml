@@ -20,7 +20,6 @@ spring:
         globally_quoted_identifiers: true
         hbm2ddl:
           auto: create-drop
-    show-sql: true
   flyway:
     enabled: false
 
@@ -40,9 +39,11 @@ spring:
     deserialization:
       trust:
         all: true
-  level:
-    org:
-      hibernate:
-        SQL: debug
-        type: trace
+
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: debug
+#        type: trace
 

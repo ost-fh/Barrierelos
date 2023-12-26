@@ -78,7 +78,7 @@ abstract class WebsiteRepositoryTests : RepositoryTests()
     entityManager.flush()
 
     // then
-    val actual = websiteRepository.findByDomainContaining(expected.domain)
+    val actual = websiteRepository.findByDomainContainingOrderByDomain(expected.domain)
 
     Assertions.assertNotNull(actual)
     actual.shouldNotBeEmpty()
@@ -104,7 +104,7 @@ abstract class WebsiteRepositoryTests : RepositoryTests()
     val expected = createWebsiteEntity()
 
     // then
-    val actual = websiteRepository.findByDomainContaining(expected.domain)
+    val actual = websiteRepository.findByDomainContainingOrderByDomain(expected.domain)
 
     Assertions.assertNotNull(actual)
     actual.shouldBeEmpty()

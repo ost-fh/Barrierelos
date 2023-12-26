@@ -19,7 +19,7 @@ public interface WebsiteRepository : Repository<WebsiteEntity>
 
   public fun findByDeletedAndStatusNotAndCreatedAfterAndModifiedAfter(deleted: Boolean, status: StatusEnum, created: Timestamp, modified: Timestamp, pageable: Pageable): Page<WebsiteEntity>
 
-  public fun findByDomainContaining(domain: String): Set<WebsiteEntity>
+  public fun findByDomainContainingOrderByDomain(domain: String, pageable: Pageable = Pageable.ofSize(5)): List<WebsiteEntity>
 
   public fun existsByDomain(domain: String): Boolean
 

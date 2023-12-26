@@ -70,4 +70,12 @@ public class WebsiteController
 
     return ResponseEntity.status(HttpStatus.OK).body(scanJob)
   }
+
+  @GetMapping(value = ["${WEBSITE}/search/{domain}"], produces = [MediaType.JSON])
+  public fun searchWebsite(@PathVariable domain: String): ResponseEntity<Set<Website>>
+  {
+    val searchResults: Set<Website> = this.websiteService.searchWebsiteByDomain(domain)
+
+    return ResponseEntity.status(HttpStatus.OK).body(searchResults)
+  }
 }

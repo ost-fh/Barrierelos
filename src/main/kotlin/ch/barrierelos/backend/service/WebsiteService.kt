@@ -140,6 +140,26 @@ public class WebsiteService
     }
   }
 
+  @RabbitListener(queues = [Queueing.QUEUE_SCAN_RESULT])
+  @Transactional
+  public fun receiveResult(message: String)
+  {
+    val websiteResultMessage = message.fromJson<WebsiteResultMessage>()
+
+    if(websiteResultMessage.scanStatus == ScanStatusEnum.FAILED)
+    {
+      logger.error("Scan failed with error: ${websiteResultMessage.errorMessage}, message: $message")
+      return
+    }
+
+    val scanJobEntity = this.scanJobRepository.findById(websiteResultMessage.jobId).orElseThrow()
+    val websiteResult = this.websiteResultRepository.save(websiteResultMessage.toEntity(scanJobEntity)).toModel()
+    val webpageResults = this.webpageResultRepository.saveAll(websiteResultMessage.webpages.map { it.toEntity(websiteResult.toEntity()) })
+      .map { it.toModel() }.toMutableSet()
+
+    this.statisticService.onReceiveResult(websiteResult, webpageResults)
+  }
+
   @Transactional
   public fun scanWebsite(website: Website, webpages: MutableSet<Webpage>? = null): ScanJob
   {
@@ -161,24 +181,9 @@ public class WebsiteService
     return scanWebsite(this.websiteRepository.findById(id).orElseThrow().toModel())
   }
 
-  @RabbitListener(queues = [Queueing.QUEUE_SCAN_RESULT])
-  @Transactional
-  public fun receiveResult(message: String)
+  public fun searchWebsiteByDomain(domain: String): Set<Website>
   {
-    val websiteResultMessage = message.fromJson<WebsiteResultMessage>()
-
-    if(websiteResultMessage.scanStatus == ScanStatusEnum.FAILED)
-    {
-      logger.error("Scan failed with error: ${websiteResultMessage.errorMessage}, message: $message")
-      return
-    }
-
-    val scanJobEntity = this.scanJobRepository.findById(websiteResultMessage.jobId).orElseThrow()
-    val websiteResult = this.websiteResultRepository.save(websiteResultMessage.toEntity(scanJobEntity)).toModel()
-    val webpageResults = this.webpageResultRepository.saveAll(websiteResultMessage.webpages.map { it.toEntity(websiteResult.toEntity()) })
-      .map { it.toModel() }.toMutableSet()
-
-    this.statisticService.onReceiveResult(websiteResult, webpageResults)
+    return this.websiteRepository.findByDomainContainingOrderByDomain(domain).map { it.toModel() }.toSet()
   }
 
   public fun updateWebsite(website: Website): Website

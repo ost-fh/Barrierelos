@@ -1,5 +1,5 @@
 import {useLocation, useParams} from "react-router-dom";
-import {StatisticControllerService, WebpageScanMessage, Website, WebsiteScanMessage} from "../../lib/api-client";
+import {WebpageScanMessage, Website, WebsiteScanControllerService, WebsiteScanMessage} from "../../lib/api-client";
 import useSWR from "swr"
 import {Box, Chip, Tab} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
@@ -69,7 +69,7 @@ function WebsitePage() {
 }
 
 async function getWebsiteScan(id: string) {
-  const websiteScan = await StatisticControllerService.getWebsiteScan(parseInt(id));
+  const websiteScan = await WebsiteScanControllerService.getWebsiteScan(parseInt(id));
   websiteScan.webpageScans.sort(compareByWeightDescending)
   return websiteScan
 }

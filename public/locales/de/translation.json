@@ -4,6 +4,12 @@
     "barrierelosScore": "Barrierelos-Score",
     "webpageWeight": "Gewichtung"
   },
+  "HomePage": {
+    "title": "Start",
+    "searchLabel": "Bestehende Website suchen",
+    "searchStringEmptyLabel": "Tippen Sie um zu suchen",
+    "searchNoResultsLabel": "Keine Website mit dieser Domain gefunden"
+  },
   "WebsiteCategories": {
     "label": "Kategorie",
     "GOVERNMENT_FEDERAL": "Bund",

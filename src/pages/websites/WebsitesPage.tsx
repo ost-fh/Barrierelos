@@ -76,6 +76,8 @@ function WebsitePage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function getWebsites(_: string) {
     const websitePage = await WebsiteControllerService.getWebsites(
+      false,
+      false,
       paginationModel.page,
       paginationModel.pageSize,
       sortModel[0]?.field,

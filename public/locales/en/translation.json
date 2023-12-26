@@ -4,6 +4,12 @@
     "barrierelosScore": "Barrierelos-Score",
     "webpageWeight": "Weight"
   },
+  "HomePage": {
+    "title": "Home",
+    "searchLabel": "Find an existing website",
+    "searchStringEmptyLabel": "Type to search",
+    "searchNoResultsLabel": "No website with this domain found"
+  },
   "WebsiteCategories": {
     "label": "Category",
     "GOVERNMENT_FEDERAL": "Federal Government",
@@ -47,9 +53,6 @@
   },
   "Navbar": {
     "languageSelectionLabel": "Language Selection"
-  },
-  "HomePage": {
-    "title": "Home"
   },
   "WebsitesPage": {
     "title": "Websites"

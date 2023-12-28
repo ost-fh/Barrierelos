@@ -13,6 +13,7 @@ public fun User.toEntity(): UserEntity
     lastname = this.lastname,
     email = this.email,
     roles = this.roles,
+    deleted = this.deleted,
     modified = Timestamp(this.modified),
     created = Timestamp(this.created),
   )
@@ -27,6 +28,7 @@ public fun UserEntity.toModel(): User
     lastname = this.lastname,
     email = this.email,
     roles = this.roles,
+    deleted = this.deleted,
     modified = this.modified.time,
     created = this.created.time,
   )
@@ -41,6 +43,7 @@ public fun UserEntity.toModel(user: User): User
     lastname = this@toModel.lastname
     email = this@toModel.email
     roles = this@toModel.roles
+    deleted = this@toModel.deleted
     modified = this@toModel.modified.time
     created = this@toModel.created.time
   }

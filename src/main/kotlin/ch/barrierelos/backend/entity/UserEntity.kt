@@ -18,6 +18,7 @@ public class UserEntity
   public var email: String,
   @Enumerated(EnumType.STRING)
   public var roles: MutableSet<RoleEnum>,
+  public var deleted: Boolean = false,
   public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
   public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

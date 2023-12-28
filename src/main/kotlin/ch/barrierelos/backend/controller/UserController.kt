@@ -34,7 +34,7 @@ public class UserController
   {
     user.id = id
 
-    val user: User = this.userService.updateUser(user)
+    this.userService.updateUser(user)
     
     return ResponseEntity.status(HttpStatus.OK).body(user)
   }
@@ -61,5 +61,13 @@ public class UserController
     this.userService.deleteUser(id)
     
     return ResponseEntity.status(HttpStatus.OK).build()
+  }
+
+  @GetMapping(value = ["$USER/login/{username}"], produces = [MediaType.JSON])
+  public fun login(@PathVariable username: String): ResponseEntity<User>
+  {
+    val user: User = this.userService.getUserByUsername(username)
+
+    return ResponseEntity.status(HttpStatus.OK).body(user)
   }
 }

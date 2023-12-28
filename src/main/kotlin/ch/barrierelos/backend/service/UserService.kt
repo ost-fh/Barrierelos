@@ -11,11 +11,11 @@ import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
-import ch.barrierelos.backend.repository.Repository.Companion.throwIfNotExists
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.orThrow
+import ch.barrierelos.backend.util.throwIfNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -84,15 +84,24 @@ public class UserService
     return this.userRepository.findById(userId).orThrow(NoSuchElementException()).toModel()
   }
 
+  public fun getUserByUsername(username: String): User
+  {
+    val user = this.userRepository.findByUsername(username).throwIfNull(NoSuchElementException()).toModel()
+
+    Security.assertRoleOrId(user.id, RoleEnum.ADMIN)
+
+    return user
+  }
+
   public fun deleteUser(userId: Long)
   {
     Security.assertRoleOrId(userId, RoleEnum.ADMIN)
 
-    this.userRepository.throwIfNotExists(userId)
+    val existingUser = this.userRepository.findById(userId).orElseThrow()
 
-    this.credentialService.deleteCredential(userId)
+    existingUser.deleted = true
 
-    this.userRepository.deleteById(userId)
+    this.userRepository.save(existingUser)
   }
 
   private fun throwIfNoRole(user: User)

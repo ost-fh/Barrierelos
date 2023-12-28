@@ -20,7 +20,7 @@ public class AuthenticationDetailsService : UserDetailsService
   {
     val user: User? = this.authenticationService.findUser(username)
 
-    return if(user == null)
+    return if(user == null || user.deleted)
     {
       throw UsernameNotFoundException("User not found.")
     }

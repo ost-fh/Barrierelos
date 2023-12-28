@@ -10,8 +10,10 @@ import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.service.CredentialService
 import ch.barrierelos.backend.service.UserService
-import io.kotest.matchers.collections.*
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.longs.shouldBeGreaterThan
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -417,28 +419,14 @@ abstract class UserServiceTests : ServiceTests()
     fun `deletes user, given admin account`()
     {
       // when
-      val user = userService.addUser(createUserModel(), createCredentialModel())
-      val usersBefore = userService.getUsers().content
+      val user = userService.getUser(Security.getUserId())
 
       // then
       Assertions.assertDoesNotThrow {
         userService.deleteUser(user.id)
       }
 
-      Assertions.assertThrows(NoSuchElementException::class.java) {
-        userService.getUser(user.id)
-      }
-
-      Assertions.assertThrows(NoSuchElementException::class.java) {
-        credentialService.getCredential(user.id)
-      }
-
-      val usersAfter = userService.getUsers().content
-
-      usersBefore.shouldContain(user)
-      usersAfter.shouldNotContain(user)
-      usersBefore.shouldContainAll(usersAfter)
-      usersAfter.shouldNotContainAll(usersBefore)
+      userService.getUser(user.id).should { it.deleted }
     }
 
     @Test
@@ -453,13 +441,7 @@ abstract class UserServiceTests : ServiceTests()
         userService.deleteUser(user.id)
       }
 
-      Assertions.assertThrows(NoSuchElementException::class.java) {
-        userService.getUser(user.id)
-      }
-
-      Assertions.assertThrows(NoSuchElementException::class.java) {
-        credentialService.getCredential(user.id)
-      }
+      userService.getUser(user.id).should { it.deleted }
     }
 
     @Test

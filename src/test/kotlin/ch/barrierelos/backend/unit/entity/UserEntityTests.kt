@@ -23,6 +23,7 @@ abstract class UserEntityTests
     Assertions.assertEquals(expected.lastname, actual.lastname)
     Assertions.assertEquals(expected.email, actual.email)
     Assertions.assertEquals(expected.roles, actual.roles)
+    Assertions.assertEquals(expected.deleted, actual.deleted)
     Assertions.assertEquals(expected.modified, actual.modified)
     Assertions.assertEquals(expected.created, actual.created)
   }

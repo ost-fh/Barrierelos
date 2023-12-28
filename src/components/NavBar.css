@@ -31,6 +31,6 @@ nav .active {
 }
 
 .navbar .langBtn:disabled {
-  color: #1976d2;
-  text-decoration: underline;
+  color: lightgrey;
+  text-decoration: none;
 }

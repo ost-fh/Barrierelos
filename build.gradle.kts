@@ -88,67 +88,24 @@ tasks {
   }
 }
 
-task<Exec>("dockerStop") {
-  group = "docker"
-  description = "Stops this projects Docker container."
-
-  commandLine("docker", "stop", "barrierelos-backend")
-
-  setIgnoreExitValue(true)
-}
-
-task<Exec>("dockerRemove") {
-  group = "docker"
-  description = "Stops this projects Docker container."
-
-  dependsOn("dockerStop")
-
-  commandLine("docker", "rm", "barrierelos-backend")
-
-  setIgnoreExitValue(true)
-}
-
-task<Exec>("dockerBuild") {
-  group = "docker"
-  description = "Creates a Docker image for this project."
-
-  dependsOn("build", "dockerRemove")
-
-  commandLine("docker", "build", "--tag", "ch/barrierelos/backend", ".")
-}
-
-task<Exec>("dockerCleanup") {
-  group = "docker"
-  description = "Removes all dangling images of this project."
-
-  dependsOn("dockerBuild")
-
-  commandLine("docker", "image", "prune", "--force")
-}
-
 task<Exec>("dockerUp") {
   group = "docker"
-  description = "Ups this project as a Docker container."
+  description = "Launches the entire system, including the backend."
 
-  dependsOn("dockerCleanup")
-
-  commandLine("docker", "compose", "up", "-d")
+  commandLine(
+    "sh",
+    "-c",
+    "docker compose -f compose-prod.yml -f compose-dev.yml up -d"
+  )
 }
 
 task<Exec>("dockerDependenciesUp") {
   group = "docker"
-  description = "Launches this application's Docker dependencies using docker compose"
+  description = "Launches this application's Docker dependencies using docker compose."
 
   commandLine(
     "sh",
     "-c",
     "docker compose -f compose-prod.yml -f compose-dev.yml up -d --scale backend=0"
   )
-}
-
-task("dockerRun") {
-  group = "docker"
-  description = "Runs this project as a Docker container."
-
-  dependsOn("dockerUp")
 }

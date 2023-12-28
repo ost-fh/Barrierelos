@@ -14,7 +14,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
-import "./WebsiteOverview.css"
+import "./Overview.css"
 import {useTranslation} from "react-i18next"
 import HelpIcon from "@mui/icons-material/Help"
 import PerceivableIcon from "@mui/icons-material/Sensors"
@@ -23,7 +23,7 @@ import UnderstandableIcon from "@mui/icons-material/Psychology"
 import RobustIcon from "@mui/icons-material/FitnessCenter"
 
 
-function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
+function Overview(props: { websiteScan: WebsiteScan }) {
   const {t} = useTranslation();
   const websiteScan: WebsiteScan = props.websiteScan
 
@@ -31,7 +31,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
     <>
       {websiteScan.websiteStatistic ? (
         <>
-          <h2>{t("WebsitePage.Overview.PrincipleViolationHeader")}</h2>
+          <h2>{t("WebsitePage.Overview.principleViolationHeader")}</h2>
           <Grid container spacing={2}>
             <Grid item>
               <Card variant="outlined">
@@ -42,7 +42,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
                     <Grid direction="column" container alignItems="center" width="inherit">
                       <PerceivableIcon sx={{fontSize: 80}}/>
                       <Typography
-                        align="center">{t("WebsitePage.Overview.PrincipleViolationPerceivableLabel")}</Typography>
+                        align="center">{t("WebsitePage.Overview.principleViolationPerceivableLabel")}</Typography>
                     </Grid>
                   </Stack>
                 </CardContent>
@@ -57,7 +57,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
                     <Grid direction="column" container alignItems="center">
                       <OperableIcon sx={{fontSize: 80}}/>
                       <Typography
-                        align="center">{t("WebsitePage.Overview.PrincipleViolationOperableLabel")}</Typography>
+                        align="center">{t("WebsitePage.Overview.principleViolationOperableLabel")}</Typography>
                     </Grid>
                   </Stack>
                 </CardContent>
@@ -72,7 +72,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
                     <Grid direction="column" container alignItems="center">
                       <UnderstandableIcon sx={{fontSize: 80}}/>
                       <Typography
-                        align="center">{t("WebsitePage.Overview.PrincipleViolationUnderstandableLabel")}</Typography>
+                        align="center">{t("WebsitePage.Overview.principleViolationUnderstandableLabel")}</Typography>
                     </Grid>
                   </Stack>
                 </CardContent>
@@ -86,7 +86,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
                                 sx={{fontSize: 80}}>{getViolationsPerPrinciple("robust")}</Typography>
                     <Grid direction="column" container alignItems="center">
                       <RobustIcon sx={{fontSize: 80}}/>
-                      <Typography align="center">{t("WebsitePage.Overview.PrincipleViolationRobustLabel")}</Typography>
+                      <Typography align="center">{t("WebsitePage.Overview.principleViolationRobustLabel")}</Typography>
                     </Grid>
                   </Stack>
                 </CardContent>
@@ -95,17 +95,17 @@ function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
           </Grid>
         </>
       ) : null}
-      <h2>{t("WebsitePage.Overview.WebpagesHeader")}</h2>
+      <h2>{t("WebsitePage.Overview.webpagesHeader")}</h2>
       <TableContainer component={Paper}>
-        <Table sx={{minWidth: 650}} aria-label={t("WebsitePage.Overview.WebpagesTableAriaLabel")}>
+        <Table sx={{minWidth: 650}} aria-label={t("WebsitePage.Overview.webpagesTableAriaLabel")}>
           <TableHead>
             <TableRow>
-              <TableCell>{t("WebsitePage.Overview.WebpageUrl")}</TableCell>
+              <TableCell>{t("WebsitePage.Overview.webpageUrl")}</TableCell>
               {websiteScan.websiteStatistic ? (
                 <>
                   <TableCell>{t("General.barrierelosScore")}</TableCell>
                   <TableCell>
-                    <Tooltip describeChild title={t("WebsitePage.Overview.WebpageWeightTooltip")}>
+                    <Tooltip describeChild title={t("WebsitePage.Overview.webpageWeightTooltip")}>
                       <Stack direction="row" alignItems="center" gap={1}>
                         {t("General.webpageWeight")}
                         <HelpIcon/>
@@ -173,4 +173,4 @@ function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
 }
 
 
-export default WebsiteOverview
+export default Overview

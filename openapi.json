@@ -256,45 +256,6 @@
       }
     },
     "/website-scan/{id}": {
-      "get": {
-        "tags": [
-          "website-scan-controller"
-        ],
-        "operationId": "getWebsiteScan",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseStatusException"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WebsiteScan"
-                }
-              }
-            }
-          }
-        }
-      },
       "put": {
         "tags": [
           "website-scan-controller"
@@ -2900,6 +2861,47 @@
         }
       }
     },
+    "/website-scan/{websiteId}": {
+      "get": {
+        "tags": [
+          "website-scan-controller"
+        ],
+        "operationId": "getWebsiteScanByWebsiteId",
+        "parameters": [
+          {
+            "name": "websiteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatusException"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebsiteScanMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/website-scan/{id}/statistic": {
       "get": {
         "tags": [
@@ -3436,12 +3438,6 @@
               "$ref": "#/components/schemas/HttpRange"
             }
           },
-          "connection": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "ifModifiedSince": {
             "type": "integer",
             "format": "int64"
@@ -3452,6 +3448,12 @@
           "contentLength": {
             "type": "integer",
             "format": "int64"
+          },
+          "connection": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "empty": {
             "type": "boolean"
@@ -3982,12 +3984,6 @@
                   "$ref": "#/components/schemas/HttpRange"
                 }
               },
-              "connection": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
               "ifModifiedSince": {
                 "type": "integer",
                 "format": "int64"
@@ -3998,6 +3994,12 @@
               "contentLength": {
                 "type": "integer",
                 "format": "int64"
+              },
+              "connection": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "empty": {
                 "type": "boolean"
@@ -5709,6 +5711,78 @@
             "items": {
               "$ref": "#/components/schemas/Region"
             }
+          }
+        }
+      },
+      "WebpageScanMessage": {
+        "required": [
+          "created",
+          "id",
+          "modified",
+          "webpage"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "webpage": {
+            "$ref": "#/components/schemas/Webpage"
+          },
+          "webpageStatistic": {
+            "$ref": "#/components/schemas/WebpageStatistic"
+          },
+          "webpageResult": {
+            "$ref": "#/components/schemas/WebpageResult"
+          },
+          "modified": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "WebsiteScanMessage": {
+        "required": [
+          "created",
+          "id",
+          "modified",
+          "webpageScans",
+          "website"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "website": {
+            "$ref": "#/components/schemas/Website"
+          },
+          "websiteStatistic": {
+            "$ref": "#/components/schemas/WebsiteStatistic"
+          },
+          "websiteResult": {
+            "$ref": "#/components/schemas/WebsiteResult"
+          },
+          "webpageScans": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebpageScanMessage"
+            }
+          },
+          "modified": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       }

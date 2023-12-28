@@ -31,3 +31,9 @@ export function getScoreColor(score: number | undefined): string {
       return "#2980b9";
   }
 }
+
+export function formatViolationRatio(n: number, digits: number): string {
+  const decimalFactor = Math.pow(10, digits);
+  n = parseFloat((n * decimalFactor).toFixed(11));
+  return String(Math.round(n) / decimalFactor);
+}

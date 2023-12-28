@@ -79,19 +79,30 @@
     "tabRulesLabel": "Probleme",
     "tabScanInfosLabel": "Scan Infos",
     "Overview": {
-      "PrincipleViolationHeader": "Probleme pro WCAG Prinzip",
-      "PrincipleViolationPerceivableLabel": "Wahrnehmbar",
-      "PrincipleViolationOperableLabel": "Bedienbar",
-      "PrincipleViolationUnderstandableLabel": "Verständlich",
-      "PrincipleViolationRobustLabel": "Robust",
-      "WebpagesHeader": "Webpages",
-      "WebpagesTableAriaLabel": "Webpages Tabelle",
-      "WebpageUrl": "URL",
-      "WebpageWeightTooltip": "Bestimmt den Einfluss dieser Webpage auf den Website Score. Die Gewichtung basiert auf der Anzahl HTML Elemente auf der Webpage die relevant für die Barrierefreiheit sind."
+      "principleViolationHeader": "Probleme pro WCAG Prinzip",
+      "principleViolationPerceivableLabel": "Wahrnehmbar",
+      "principleViolationOperableLabel": "Bedienbar",
+      "principleViolationUnderstandableLabel": "Verständlich",
+      "principleViolationRobustLabel": "Robust",
+      "webpagesHeader": "Webpages",
+      "webpagesTableAriaLabel": "Webpages Tabelle",
+      "webpageUrl": "URL",
+      "webpageWeightTooltip": "Bestimmt den Einfluss dieser Webpage auf den Website Score. Die Gewichtung basiert auf der Anzahl HTML Elemente auf der Webpage die relevant für die Barrierefreiheit sind."
     },
-    "Rules": {
+    "Issues": {
+      "header": "Probleme pro Webpage"
     },
     "ScanInfos": {
+      "scanInfosHeader": "Scan Infos",
+      "lastScannedAtLabel": "Zuletzt gescannt am",
+      "webpagesHeader": "Webpage Scans",
+      "scanStatusLabel": "Scan Status",
+      "ScanStatus": {
+        "SUCCESS": "Erfolgreich",
+        "FAILED": "Fehlgeschlagen",
+        "notYetScanned": "Noch nicht gescannt"
+      },
+      "technicalErrorLabel": "Technischer Fehler"
     }
   }
 }

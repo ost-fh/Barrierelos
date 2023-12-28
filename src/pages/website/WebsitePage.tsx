@@ -1,16 +1,17 @@
 import {useLocation, useParams} from "react-router-dom";
-import {WebpageScan, Website, WebsiteScan, WebsiteScanControllerService} from "../../lib/api-client";
+import {WebpageScan, Website, WebsiteScanControllerService, WebsiteScanMessage} from "../../lib/api-client";
 import useSWR from "swr"
 import {Box, Chip, Stack, Tab, Tooltip} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {SyntheticEvent, useEffect, useState} from "react";
-import WebsiteOverview from "./WebsiteOverview.tsx";
-import WebsiteRules from "./WebsiteRules.tsx";
+import Overview from "./Overview.tsx";
+import Issues from "./Issues.tsx";
 import "./WebsitePage.css"
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
 import {formatScore, getScoreClass, getScoreColor} from "../../util/formatter.ts";
+import ScanInfos from "./ScanInfos.tsx";
 import status = Website.status;
 
 function WebsitePage() {
@@ -18,7 +19,7 @@ function WebsitePage() {
 
   const params = useParams<WebsitePageParams>();
   if (params.websiteId === undefined) throw Error("Path param websiteId is missing")
-  const {data: websiteScan, error, isLoading} = useSWR<WebsiteScan, Error>(params.websiteId, getWebsiteScan)
+  const {data: websiteScan, error, isLoading} = useSWR<WebsiteScanMessage, Error>(params.websiteId, getWebsiteScan)
 
   const [currentTabIndex, setCurrentTabIndex] = useState(Tabs.OVERVIEW);
   const handleTabChange = (_e: SyntheticEvent, tabIndex: Tabs) => {
@@ -38,6 +39,8 @@ function WebsitePage() {
   const scoreClass = getScoreClass(websiteScan.websiteStatistic?.score)
   const scoreColor = getScoreColor(websiteScan.websiteStatistic?.score)
   const scoreGradient = `conic-gradient(${scoreColor} ${score}%, transparent 0 100%)`;
+
+  const notPendingInitialScan = websiteScan.website.status !== status.PENDING_INITIAL
 
   return (
     <>
@@ -67,21 +70,31 @@ function WebsitePage() {
             {websiteScan.website.status === status.READY ? (
               <Tab label={t("WebsitePage.tabRulesLabel")} value={Tabs.RULES}/>
             ) : null}
-            <Tab label={t("WebsitePage.tabScanInfosLabel")} value={Tabs.SCAN_INFOS}/>
+            {websiteScan.website.status === status.READY ? (
+              <Tab label={t("WebsitePage.tabScanInfosLabel")} value={Tabs.SCAN_INFOS}/>
+            ) : null}
           </TabList>
         </Box>
-        <TabPanel value={Tabs.OVERVIEW}><WebsiteOverview websiteScan={websiteScan}/></TabPanel>
-        {websiteScan.website.status === status.READY ? (
-          <TabPanel value={Tabs.RULES}><WebsiteRules websiteScan={websiteScan}/></TabPanel>
+        <TabPanel value={Tabs.OVERVIEW}>
+          <Overview websiteScan={websiteScan}/>
+        </TabPanel>
+        {notPendingInitialScan ? (
+          <TabPanel value={Tabs.RULES}>
+            <Issues websiteScan={websiteScan}/>
+          </TabPanel>
         ) : null}
-        <TabPanel value={Tabs.SCAN_INFOS}>Scan Infos</TabPanel>
+        {notPendingInitialScan ? (
+          <TabPanel value={Tabs.SCAN_INFOS}>
+            <ScanInfos webpageScans={websiteScan.webpageScans} scanJob={websiteScan.websiteResult?.scanJob}/>
+          </TabPanel>
+        ) : null}
       </TabContext>
     </>
   )
 }
 
 async function getWebsiteScan(id: string) {
-  const websiteScan = await WebsiteScanControllerService.getWebsiteScan(parseInt(id));
+  const websiteScan = await WebsiteScanControllerService.getWebsiteScanByWebsiteId(parseInt(id));
   websiteScan.webpageScans.sort(compareByWeightDescending)
   return websiteScan
 }

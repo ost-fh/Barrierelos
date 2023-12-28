@@ -104,5 +104,63 @@
       },
       "technicalErrorLabel": "Technischer Fehler"
     }
+  },
+  "LoginPage": {
+    "logIn": "Anmelden",
+    "continueWithGoogle": "Weiter mit Google",
+    "dividerOr": "oder",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccountSignUp": "Keinen Account? Account Erstellen",
+    "loginFailed": "Login fehlgeschlagen. Benutzername und Passwort überprüfen und nochmal versuchen."
+  },
+  "SignupPage": {
+    "signUp": "Registrieren",
+    "username": "Benutzername",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "rememberMe": "Angemeldet bleiben",
+    "alreadyAccountLogIn": "Bereits einen Account? Anmelden",
+    "passwordConfirmationFailed": "Passwörter stimmen nicht überein. Bitte überprüfen, dass zweimal das gleiche Passwort eingegeben wurde.",
+    "signupFailed": "Registration fehlgeschlagen. Bitte später nochmal versuchen.",
+    "wrongEmail": "E-Mail-Adresse falsch, bitte korrekte E-Mail-Adresse angeben.",
+    "changeUsernameFailed": "Benutzername existiert bereits."
+  },
+  "Profile": {
+    "profile": "Profil",
+
+    "contact": "Kontakt",
+    "contactHint": "Mit ändern des Benutzernamens ändert sich auch der Login.",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "email": "E-Mail-Adresse",
+    "username": "Benutzername",
+    "changeContact": "Änderungen Speichern",
+    "changeContactError": "Kontakt konnte nicht geändert werden. Bitte später noch einmal probieren.",
+    "changeUsernameFailed": "Benutzername existiert bereits.",
+
+    "changePassword": "Passwort ändern",
+    "changePasswordHint": "Bitte mit aktuellem Passwort bestätigen, bevor das Passwort geändert werden kann.",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmNewPassword": "Neues Passwort bestätigen",
+    "changePasswordError": "Passwort konnte nicht geändert werden. Bitte später noch einmal probieren.",
+    "wrongPasswordError": "Passwort konnte nicht geändert werden. Bitte passwort überprüfen.",
+    "passwordConfirmationFailed": "Passwörter stimmen nicht überein. Bitte überprüfen, dass zweimal das gleiche Passwort eingegeben wurde.",
+
+    "deleteAccount": "Konto Löschen",
+    "deleteAccountHint": "Das Löschen des Kontos kann nicht rückgängig gemacht werden.",
+    "password": "Passwort",
+    "deleteAccountError": "Account konnte nicht gelöscht werden. Bitte später noch einmal probieren.",
+    "delete_wrongPasswordError": "Falsches Passwort.",
+    "confirmDialogTitle": "Konto löschen?",
+    "confirmDialogText": "Soll dieses Konto wirklich gelöscht werden? Das Löschen des Kontos kann nicht rückgängig gemacht werden!",
+    "confirmDialogNo": "Cancel",
+    "confirmDialogYes": "Delete"
   }
 }

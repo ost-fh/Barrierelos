@@ -104,5 +104,63 @@
       },
       "technicalErrorLabel": "Technical Error"
     }
+  },
+  "LoginPage": {
+    "logIn": "Log In",
+    "continueWithGoogle": "Continue with Google",
+    "dividerOr": "or",
+    "username": "Username",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "noAccountSignUp": "Don't have an account? Sign Up",
+    "loginFailed": "Log in failed. Check username and password, then try again."
+  },
+  "SignupPage": {
+    "signUp": "Sign Up",
+    "username": "Username",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "email": "Email Address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "rememberMe": "Remember me",
+    "alreadyAccountLogIn": "Already have an account? Log in",
+    "passwordConfirmationFailed": "Passwords don't match. Please check that you entered the same password twice.",
+    "signupFailed": "Sign up failed. Please try again later.",
+    "wrongEmail": "Email address wrong, please enter correct email address.",
+    "changeUsernameFailed": "Username already exists."
+  },
+  "Profile": {
+    "profile": "Profile",
+
+    "contact": "Contact",
+    "contactHint": "By changing the username you also change your login.",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "email": "Email Address",
+    "username": "Username",
+    "changeContact": "Save Changes",
+    "changeContactError": "Changing the contact failed. Please try again later.",
+    "changeUsernameFailed": "Username already exists.",
+
+    "changePassword": "Change Password",
+    "changePasswordHint": "Please confirm your current password, before changing it.",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "changePasswordError": "Changing the password failed. Please try again later.",
+    "wrongPasswordError": "Changing the password failed. Please check the password.",
+    "passwordConfirmationFailed": "Passwords don't match. Please check that you entered the same password twice.",
+
+    "deleteAccount": "Delete Account",
+    "deleteAccountHint": "Deleting the account cannot be undone.",
+    "password": "Password",
+    "deleteAccountError": "Deleting the account failed. Please try again later.",
+    "delete_wrongPasswordError": "Wrong password.",
+    "confirmDialogTitle": "Delete Account?",
+    "confirmDialogText": "Are you sure you want to delete this account? Deleting the account cannot be undone!",
+    "confirmDialogNo": "Cancel",
+    "confirmDialogYes": "Delete"
   }
 }

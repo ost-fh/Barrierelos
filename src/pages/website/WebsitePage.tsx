@@ -1,7 +1,7 @@
 import {useLocation, useParams} from "react-router-dom";
 import {WebpageScan, Website, WebsiteScan, WebsiteScanControllerService} from "../../lib/api-client";
 import useSWR from "swr"
-import {Box, Chip, Tab} from "@mui/material";
+import {Box, Chip, Stack, Tab, Tooltip} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {SyntheticEvent, useEffect, useState} from "react";
 import WebsiteOverview from "./WebsiteOverview.tsx";
@@ -10,8 +10,8 @@ import "./WebsitePage.css"
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
+import {formatScore, getScoreClass, getScoreColor} from "../../util/formatter.ts";
 import status = Website.status;
-
 
 function WebsitePage() {
   const {t} = useTranslation();
@@ -34,22 +34,34 @@ function WebsitePage() {
   if (error) return `Error occurred:\n${error}`
   if (websiteScan === undefined) return "Couldn't load website."
 
+  const score = formatScore(websiteScan.websiteStatistic?.score)
+  const scoreClass = getScoreClass(websiteScan.websiteStatistic?.score)
+  const scoreColor = getScoreColor(websiteScan.websiteStatistic?.score)
+  const scoreGradient = `conic-gradient(${scoreColor} ${score}%, transparent 0 100%)`;
+
   return (
     <>
       <Helmet>
         <title>{websiteScan.website.domain} - {t("General.title")}</title>
       </Helmet>
-      <h1>
-        {websiteScan.website.url}
+
+
+      <Stack direction="row">
+        <h1>{websiteScan.website.url}</h1>
         {websiteScan.website.status !== status.READY ? (
           <Chip label={`${t("WebsitePage.websiteStatusLabel")}: ${websiteScan.website.status}`}/>
         ) : null}
         {websiteScan.websiteStatistic ? (
-          <Chip label={`${t("General.barrierelosScore")}: ${Math.round(websiteScan.websiteStatistic.score)}`}/>
+          <Tooltip title={t("General.barrierelosScore")}>
+            <div className={`score ${scoreClass}`} style={{background: scoreGradient}}>
+              <span>{score}</span>
+            </div>
+          </Tooltip>
         ) : null}
-      </h1>
+      </Stack>
+
       <TabContext value={currentTabIndex}>
-        <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+        <Box sx={{borderBottom: 1, borderColor: "divider"}}>
           <TabList onChange={handleTabChange} aria-label={t("WebsitePage.tabsAriaLabel")}>
             <Tab label={t("WebsitePage.tabOverviewLabel")} value={Tabs.OVERVIEW}/>
             {websiteScan.website.status === status.READY ? (

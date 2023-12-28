@@ -105,7 +105,7 @@ function WebsiteOverview(props: { websiteScan: WebsiteScan }) {
                 <>
                   <TableCell>{t("General.barrierelosScore")}</TableCell>
                   <TableCell>
-                    <Tooltip title={t("WebsitePage.Overview.WebpageWeightTooltip")}>
+                    <Tooltip describeChild title={t("WebsitePage.Overview.WebpageWeightTooltip")}>
                       <Stack direction="row" alignItems="center" gap={1}>
                         {t("General.webpageWeight")}
                         <HelpIcon/>

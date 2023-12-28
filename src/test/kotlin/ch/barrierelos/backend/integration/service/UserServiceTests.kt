@@ -8,7 +8,6 @@ import ch.barrierelos.backend.helper.createCredentialModel
 import ch.barrierelos.backend.helper.createUserModel
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.security.Security
-import ch.barrierelos.backend.service.CredentialService
 import ch.barrierelos.backend.service.UserService
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.collections.shouldNotBeEmpty
@@ -28,8 +27,6 @@ abstract class UserServiceTests : ServiceTests()
 {
   @Autowired
   lateinit var userService: UserService
-  @Autowired
-  lateinit var credentialService: CredentialService
 
   @Nested
   @DisplayName("Add User")

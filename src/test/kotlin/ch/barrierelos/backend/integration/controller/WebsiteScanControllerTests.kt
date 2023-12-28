@@ -4,8 +4,10 @@ import body
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.exceptions.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebsiteScanModel
+import ch.barrierelos.backend.message.WebsiteScanMessage
 import ch.barrierelos.backend.model.WebsiteScan
 import ch.barrierelos.backend.parameter.DefaultParameters
+import ch.barrierelos.backend.service.StatisticService
 import ch.barrierelos.backend.service.WebsiteScanService
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toJson
@@ -28,6 +30,9 @@ abstract class WebsiteScanControllerTests : ControllerTests()
 {
   @MockkBean
   lateinit var websiteScanService: WebsiteScanService
+
+  @MockkBean
+  lateinit var statisticService: StatisticService
 
   private val websiteScan = createWebsiteScanModel()
 
@@ -426,7 +431,12 @@ abstract class WebsiteScanControllerTests : ControllerTests()
     fun `uses correct media type`()
     {
       // when
-      every { websiteScanService.getWebsiteScan(1) } returns websiteScan
+      val expected = WebsiteScanMessage(
+        website = websiteScan.website,
+        webpageScans = mutableSetOf(),
+      )
+
+      every { statisticService.getWebsiteScan(1) } returns expected
 
       // then
       mockMvc.get("/website-scan/1").andExpect {
@@ -438,7 +448,12 @@ abstract class WebsiteScanControllerTests : ControllerTests()
     fun `receives path variable, when path variable provided`()
     {
       // when
-      every { websiteScanService.getWebsiteScan(1) } returns websiteScan
+      val expected = WebsiteScanMessage(
+        website = websiteScan.website,
+        webpageScans = mutableSetOf(),
+      )
+
+      every { statisticService.getWebsiteScan(1) } returns expected
 
       // then
       mockMvc.get("/website-scan/1").andExpect {
@@ -450,14 +465,17 @@ abstract class WebsiteScanControllerTests : ControllerTests()
     fun `gets website scan`()
     {
       // when
-      val expected = websiteScan.copy()
+      val expected = WebsiteScanMessage(
+        website = websiteScan.website,
+        webpageScans = mutableSetOf(),
+      )
 
-      every { websiteScanService.getWebsiteScan(1) } returns expected
+      every { statisticService.getWebsiteScan(1) } returns expected
 
       // then
       val actual = mockMvc.get("/website-scan/1").andExpect {
         status { isOk() }
-      }.body<WebsiteScan>()
+      }.body<WebsiteScanMessage>()
 
       Assertions.assertEquals(expected, actual)
     }
@@ -467,7 +485,7 @@ abstract class WebsiteScanControllerTests : ControllerTests()
     fun `responds with 404 not found, when service throws NoSuchElementException`()
     {
       // when
-      every { websiteScanService.getWebsiteScan(1) } throws NoSuchElementException()
+      every { statisticService.getWebsiteScan(1) } throws NoSuchElementException()
 
       // then
       mockMvc.get("/website-scan/1").andExpect {

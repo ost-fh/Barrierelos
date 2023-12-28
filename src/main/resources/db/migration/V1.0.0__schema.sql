@@ -86,6 +86,7 @@ CREATE TABLE "scan_job"
   "website_fk" BIGINT NOT NULL,
   "user_fk" BIGINT NOT NULL,
   "model_version" VARCHAR NOT NULL,
+  "job_timestamp" TIMESTAMP(3) NOT NULL,
   "domain" VARCHAR NOT NULL,
   "webpages" VARCHAR ARRAY NOT NULL,
   "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),

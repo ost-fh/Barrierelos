@@ -2,9 +2,11 @@ package ch.barrierelos.backend.controller
 
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE_SCAN
 import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.message.WebsiteScanMessage
 import ch.barrierelos.backend.model.WebsiteScan
 import ch.barrierelos.backend.model.WebsiteStatistic
 import ch.barrierelos.backend.parameter.DefaultParameters
+import ch.barrierelos.backend.service.StatisticService
 import ch.barrierelos.backend.service.WebsiteScanService
 import ch.barrierelos.backend.util.toHeaders
 import org.springdoc.core.annotations.ParameterObject
@@ -18,6 +20,9 @@ public class WebsiteScanController
 {
   @Autowired
   private lateinit var websiteScanService: WebsiteScanService
+
+  @Autowired
+  private lateinit var statisticService: StatisticService
 
   @PostMapping(value = [WEBSITE_SCAN], consumes = [MediaType.JSON], produces = [MediaType.JSON])
   public fun addWebsiteScan(@RequestBody websiteScan: WebsiteScan): ResponseEntity<WebsiteScan>
@@ -47,10 +52,10 @@ public class WebsiteScanController
     return ResponseEntity.status(HttpStatus.OK).headers(websiteScansPage.toHeaders()).body(websiteScansPage.content)
   }
 
-  @GetMapping(value = ["$WEBSITE_SCAN/{id}"], produces = [MediaType.JSON])
-  public fun getWebsiteScan(@PathVariable id: Long): ResponseEntity<WebsiteScan>
+  @GetMapping(value = ["$WEBSITE_SCAN/{websiteId}"], produces = [MediaType.JSON])
+  public fun getWebsiteScanByWebsiteId(@PathVariable websiteId: Long): ResponseEntity<WebsiteScanMessage>
   {
-    val websiteScan: WebsiteScan = this.websiteScanService.getWebsiteScan(id)
+    val websiteScan = this.statisticService.getWebsiteScan(websiteId)
 
     return ResponseEntity.status(HttpStatus.OK).body(websiteScan)
   }

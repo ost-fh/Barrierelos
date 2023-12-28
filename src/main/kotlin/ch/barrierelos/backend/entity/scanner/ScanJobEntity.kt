@@ -13,6 +13,7 @@ public class ScanJobEntity
   public var websiteFk: Long,
   public var userFk: Long,
   public val modelVersion: String,
+  public val jobTimestamp: Timestamp,
   public val domain: String,
   @Suppress("JpaAttributeTypeInspection", "RedundantSuppression")
   public val webpages: MutableSet<String>,

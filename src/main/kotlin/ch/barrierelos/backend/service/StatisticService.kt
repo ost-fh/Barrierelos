@@ -11,7 +11,6 @@ import ch.barrierelos.backend.model.scanner.WebpageResult
 import ch.barrierelos.backend.model.scanner.WebsiteResult
 import ch.barrierelos.backend.repository.*
 import ch.barrierelos.backend.util.orThrow
-import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -58,7 +57,6 @@ public class StatisticService
   /**
    * Gets called after the result from the scanner is stored in the database.
    */
-  @Transactional
   public fun onReceiveResult(websiteResult: WebsiteResult, webpageResults: MutableSet<WebpageResult>)
   {
     val website = websiteRepository.findById(websiteResult.scanJob.websiteId)
@@ -81,11 +79,10 @@ public class StatisticService
       )
     }
     website.status = StatusEnum.READY
-    websiteRepository.save(website.toEntity()).toModel()
 
+    websiteScan.website = website
     websiteScan.websiteResult = websiteResult
     websiteScan = websiteScanRepository.save(websiteScan.toEntity()).toModel()
-    websiteScanRepository.save(websiteScan.toEntity())
 
     val webpages = webpageRepository.findAllByWebsiteWebsiteId(websiteResult.scanJob.websiteId).toModels()
     val webpageScans = webpageScanRepository.findAllByWebsiteScanWebsiteScanId(websiteScan.id)
@@ -106,13 +103,12 @@ public class StatisticService
         )
       }
 
+      it.webpage = webpage
       it.webpageResult = webpageResult
     }
 
-    webpageRepository.saveAll(webpages.map { it.toEntity() })
+//    webpageRepository.saveAll(webpages.map { it.toEntity() })
     webpageScanRepository.saveAll(webpageScans.map { it.toEntity(websiteScan.toEntity(), websiteResult) }).map { it.toModel() }
-
-    return
   }
 
   public fun getWebsiteScan(websiteId: Long): WebsiteScanMessage

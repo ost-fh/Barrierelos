@@ -45,76 +45,35 @@ CREATE TABLE "credential"
 );
 
 
----------------------------------------------------------------------------
--- Scan Results                                                          --
----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "scan_job" CASCADE;
-DROP TABLE IF EXISTS "website_result" CASCADE;
-DROP TABLE IF EXISTS "webpage_result" CASCADE;
-DROP TABLE IF EXISTS "rule" CASCADE;
-DROP TABLE IF EXISTS "wcag_references" CASCADE;
-DROP TABLE IF EXISTS "check_violating_element" CASCADE;
-DROP TABLE IF EXISTS "check_incomplete_element" CASCADE;
-DROP TABLE IF EXISTS "check" CASCADE;
-DROP TABLE IF EXISTS "check_element" CASCADE;
-DROP TABLE IF EXISTS "element" CASCADE;
-
-DROP CAST IF EXISTS (VARCHAR AS CHECK_TYPE_ENUM);
-DROP CAST IF EXISTS (VARCHAR AS IMPACT_ENUM);
-DROP CAST IF EXISTS (VARCHAR AS SCAN_STATUS_ENUM);
-
-DROP TYPE IF EXISTS CHECK_TYPE_ENUM;
-DROP TYPE IF EXISTS IMPACT_ENUM;
-DROP TYPE IF EXISTS SCAN_STATUS_ENUM;
-
-DROP EXTENSION IF EXISTS "pgcrypto";
-
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-
-CREATE TYPE CHECK_TYPE_ENUM AS ENUM ('ANY', 'ALL', 'NONE');
-CREATE TYPE IMPACT_ENUM AS ENUM ('MINOR', 'MODERATE', 'SERIOUS', 'CRITICAL');
-CREATE TYPE SCAN_STATUS_ENUM AS ENUM ('SUCCESS', 'FAILED');
-
-CREATE CAST (VARCHAR AS CHECK_TYPE_ENUM) WITH INOUT AS IMPLICIT;
-CREATE CAST (VARCHAR AS IMPACT_ENUM) WITH INOUT AS IMPLICIT;
-CREATE CAST (VARCHAR AS SCAN_STATUS_ENUM) WITH INOUT AS IMPLICIT;
+----------------------------------------------------------------------------------------------------
+-- Website and Webpage Tables
+----------------------------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS "website" CASCADE;
+DROP TABLE IF EXISTS "scan_job" CASCADE;
+DROP TABLE IF EXISTS "website_result" CASCADE;
 DROP TABLE IF EXISTS "website_scan" CASCADE;
 DROP TABLE IF EXISTS "website_statistic" CASCADE;
 DROP TABLE IF EXISTS "webpage" CASCADE;
-DROP TABLE IF EXISTS "webpage_scan" CASCADE;
+DROP TABLE IF EXISTS "webpage_result" CASCADE;
 DROP TABLE IF EXISTS "webpage_statistic" CASCADE;
-DROP TABLE IF EXISTS "tag" CASCADE;
-DROP TABLE IF EXISTS "website_tag" CASCADE;
-DROP TABLE IF EXISTS "report" CASCADE;
-DROP TABLE IF EXISTS "report_message" CASCADE;
-DROP TABLE IF EXISTS "user_report" CASCADE;
-DROP TABLE IF EXISTS "website_report" CASCADE;
-DROP TABLE IF EXISTS "webpage_report" CASCADE;
+DROP TABLE IF EXISTS "webpage_scan" CASCADE;
 
 DROP CAST IF EXISTS (VARCHAR AS CATEGORY_ENUM);
 DROP CAST IF EXISTS (VARCHAR AS STATUS_ENUM);
-DROP CAST IF EXISTS (VARCHAR AS REASON_ENUM);
+DROP CAST IF EXISTS (VARCHAR AS SCAN_STATUS_ENUM);
 
 DROP TYPE IF EXISTS CATEGORY_ENUM;
 DROP TYPE IF EXISTS STATUS_ENUM;
-DROP TYPE IF EXISTS REASON_ENUM;
-DROP TYPE IF EXISTS STATE_ENUM;
+DROP TYPE IF EXISTS SCAN_STATUS_ENUM;
 
 CREATE TYPE CATEGORY_ENUM AS ENUM ('GOVERNMENT_FEDERAL', 'GOVERNMENT_CANTONAL', 'GOVERNMENT_MUNICIPAL', 'PRIVATE_AFFILIATED', 'PRIVATE_UNIVERSITY', 'PRIVATE_NEWS', 'PRIVATE_SHOP', 'PRIVATE_OTHER');
 CREATE TYPE STATUS_ENUM AS ENUM ('BLOCKED', 'READY', 'PENDING_INITIAL', 'PENDING_RESCAN');
-CREATE TYPE REASON_ENUM AS ENUM ('INCORRECT', 'MISLEADING', 'INAPPROPRIATE');
-CREATE TYPE STATE_ENUM AS ENUM('OPEN', 'CLOSED');
+CREATE TYPE SCAN_STATUS_ENUM AS ENUM ('SUCCESS', 'FAILED');
 
 CREATE CAST (VARCHAR AS CATEGORY_ENUM) WITH INOUT AS IMPLICIT;
 CREATE CAST (VARCHAR AS STATUS_ENUM) WITH INOUT AS IMPLICIT;
-CREATE CAST (VARCHAR AS REASON_ENUM) WITH INOUT AS IMPLICIT;
-
-----------------------------------------------------------------------------------------------------
--- Website
-----------------------------------------------------------------------------------------------------
+CREATE CAST (VARCHAR AS SCAN_STATUS_ENUM) WITH INOUT AS IMPLICIT;
 
 CREATE TABLE "website"
 (
@@ -148,15 +107,6 @@ CREATE TABLE "scan_job"
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
 
-CREATE TABLE "website_statistic"
-(
-  "website_statistic_id" BIGSERIAL,
-  "score" DOUBLE PRECISION NOT NULL,
-  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("website_statistic_id")
-);
-
 CREATE TABLE "website_result"
 (
   "website_result_id" BIGSERIAL,
@@ -172,6 +122,15 @@ CREATE TABLE "website_result"
   FOREIGN KEY ("scan_job_fk") REFERENCES "scan_job" ("scan_job_id") ON DELETE CASCADE
 );
 
+CREATE TABLE "website_statistic"
+(
+  "website_statistic_id" BIGSERIAL,
+  "score" DOUBLE PRECISION NOT NULL,
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  PRIMARY KEY ("website_statistic_id")
+);
+
 CREATE TABLE "website_scan"
 (
   "website_scan_id" BIGSERIAL,
@@ -185,10 +144,6 @@ CREATE TABLE "website_scan"
   FOREIGN KEY ("website_statistic_fk") REFERENCES "website_statistic" ("website_statistic_id") ON DELETE CASCADE,
   FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id") ON DELETE CASCADE
 );
-
-----------------------------------------------------------------------------------------------------
--- Webpage
-----------------------------------------------------------------------------------------------------
 
 CREATE TABLE "webpage"
 (
@@ -206,16 +161,6 @@ CREATE TABLE "webpage"
   FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
 
-CREATE TABLE "webpage_statistic"
-(
-  "webpage_statistic_id" BIGSERIAL,
-  "score" DOUBLE PRECISION,
-  "weight" DOUBLE PRECISION,
-  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-  PRIMARY KEY ("webpage_statistic_id")
-);
-
 CREATE TABLE "webpage_result"
 (
   "webpage_result_id" BIGSERIAL,
@@ -227,6 +172,16 @@ CREATE TABLE "webpage_result"
   "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
   PRIMARY KEY ("webpage_result_id"),
   FOREIGN KEY ("website_result_fk") REFERENCES "website_result" ("website_result_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "webpage_statistic"
+(
+  "webpage_statistic_id" BIGSERIAL,
+  "score" DOUBLE PRECISION,
+  "weight" DOUBLE PRECISION,
+  "modified" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  "created" TIMESTAMP(3) NOT NULL DEFAULT NOW(),
+  PRIMARY KEY ("webpage_statistic_id")
 );
 
 CREATE TABLE "webpage_scan"
@@ -245,9 +200,13 @@ CREATE TABLE "webpage_scan"
   FOREIGN KEY ("webpage_result_fk") REFERENCES "webpage_result" ("webpage_result_id") ON DELETE CASCADE
 );
 
+
 ----------------------------------------------------------------------------------------------------
 -- Tag
 ----------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "tag" CASCADE;
+DROP TABLE IF EXISTS "website_tag" CASCADE;
 
 CREATE TABLE "tag"
 (
@@ -270,9 +229,28 @@ CREATE TABLE "website_tag"
   FOREIGN KEY ("tag_fk") REFERENCES "tag" ("tag_id")
 );
 
+
 ----------------------------------------------------------------------------------------------------
 -- Report
 ----------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "report" CASCADE;
+DROP TABLE IF EXISTS "report_message" CASCADE;
+DROP TABLE IF EXISTS "user_report" CASCADE;
+DROP TABLE IF EXISTS "website_report" CASCADE;
+DROP TABLE IF EXISTS "webpage_report" CASCADE;
+
+DROP CAST IF EXISTS (VARCHAR AS REASON_ENUM);
+DROP CAST IF EXISTS (VARCHAR AS STATE_ENUM);
+
+DROP TYPE IF EXISTS REASON_ENUM;
+DROP TYPE IF EXISTS STATE_ENUM;
+
+CREATE TYPE REASON_ENUM AS ENUM ('INCORRECT', 'MISLEADING', 'INAPPROPRIATE');
+CREATE TYPE STATE_ENUM AS ENUM('OPEN', 'CLOSED');
+
+CREATE CAST (VARCHAR AS REASON_ENUM) WITH INOUT AS IMPLICIT;
+CREATE CAST (VARCHAR AS STATE_ENUM) WITH INOUT AS IMPLICIT;
 
 CREATE TABLE "report"
 (
@@ -335,9 +313,30 @@ CREATE TABLE "webpage_report"
   FOREIGN KEY ("report_fk") REFERENCES "report" ("report_id")
 );
 
-----------------------------------------------------------------------------------------------------
--- Scan
-----------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+-- Scan Results                                                          --
+---------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "rule" CASCADE;
+DROP TABLE IF EXISTS "wcag_references" CASCADE;
+DROP TABLE IF EXISTS "check_violating_element" CASCADE;
+DROP TABLE IF EXISTS "check_incomplete_element" CASCADE;
+DROP TABLE IF EXISTS "check" CASCADE;
+DROP TABLE IF EXISTS "check_element" CASCADE;
+DROP TABLE IF EXISTS "element" CASCADE;
+
+DROP CAST IF EXISTS (VARCHAR AS CHECK_TYPE_ENUM);
+DROP CAST IF EXISTS (VARCHAR AS IMPACT_ENUM);
+
+DROP TYPE IF EXISTS CHECK_TYPE_ENUM;
+DROP TYPE IF EXISTS IMPACT_ENUM;
+
+CREATE TYPE CHECK_TYPE_ENUM AS ENUM ('ANY', 'ALL', 'NONE');
+CREATE TYPE IMPACT_ENUM AS ENUM ('MINOR', 'MODERATE', 'SERIOUS', 'CRITICAL');
+
+CREATE CAST (VARCHAR AS CHECK_TYPE_ENUM) WITH INOUT AS IMPLICIT;
+CREATE CAST (VARCHAR AS IMPACT_ENUM) WITH INOUT AS IMPLICIT;
 
 CREATE TABLE "rule"
 (

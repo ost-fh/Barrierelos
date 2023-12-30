@@ -36,6 +36,7 @@ public fun ScanJob.toMessage(): ScanJobMessage
 public fun ScanJob.toEntity(): ScanJobEntity
 {
   return ScanJobEntity(
+    scanJobId = this.id,
     websiteFk = this.websiteId,
     userFk = this.userId,
     modelVersion = this.modelVersion,

@@ -20,7 +20,7 @@ public class WebpageScanEntity
   @OneToOne(cascade = [CascadeType.ALL])
   @JoinColumn(name = "webpage_statistic_fk")
   public var webpageStatistic: WebpageStatisticEntity? = null,
-  @OneToOne(cascade = [CascadeType.MERGE])
+  @OneToOne
   @JoinColumn(name = "webpage_result_fk")
   public var webpageResult: WebpageResultEntity? = null,
   public var modified: Timestamp = Timestamp(System.currentTimeMillis()),

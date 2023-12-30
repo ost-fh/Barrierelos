@@ -17,7 +17,7 @@ public class WebsiteScanEntity
   @OneToOne(cascade = [CascadeType.ALL])
   @JoinColumn(name = "website_statistic_fk")
   public var websiteStatistic: WebsiteStatisticEntity? = null,
-  @OneToOne(cascade = [CascadeType.MERGE])
+  @OneToOne
   @JoinColumn(name = "website_result_fk")
   public var websiteResult: WebsiteResultEntity? = null,
   @OneToMany(mappedBy = "websiteScan", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)

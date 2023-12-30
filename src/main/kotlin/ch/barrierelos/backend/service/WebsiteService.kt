@@ -139,7 +139,6 @@ public class WebsiteService
   }
 
   @RabbitListener(queues = [Queueing.QUEUE_SCAN_RESULT])
-  @Transactional
   public fun receiveResult(message: String)
   {
     val websiteResultMessage = message.fromJson<WebsiteResultMessage>()

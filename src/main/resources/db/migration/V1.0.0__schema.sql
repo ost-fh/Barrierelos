@@ -224,9 +224,9 @@ CREATE TABLE "website_tag"
   "modified" TIMESTAMP(3) NOT NULL DEFAULT now(),
   "created" TIMESTAMP(3) NOT NULL DEFAULT now(),
   PRIMARY KEY ("website_tag_id"),
-  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id"),
-  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id"),
-  FOREIGN KEY ("tag_fk") REFERENCES "tag" ("tag_id")
+  FOREIGN KEY ("website_fk") REFERENCES "website" ("website_id") ON DELETE CASCADE,
+  FOREIGN KEY ("user_fk") REFERENCES "user" ("user_id") ON DELETE CASCADE,
+  FOREIGN KEY ("tag_fk") REFERENCES "tag" ("tag_id") ON DELETE CASCADE
 );
 
 

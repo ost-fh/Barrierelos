@@ -3,9 +3,9 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox, CircularProgress,
+  Checkbox,
+  CircularProgress,
   Container,
-  CssBaseline,
   FormControlLabel,
   Grid,
   Link,
@@ -18,7 +18,7 @@ import React, {useContext, useState} from "react";
 import {ApiError, Credential, RegistrationMessage, User, UserControllerService} from "../lib/api-client";
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
-import {useNavigate} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {ERROR_CONFLICT} from "../constants.ts";
 import {isValidEmail} from "../util.ts";
 
@@ -72,6 +72,7 @@ function Signup() {
           lastname: lastname.toString(),
           email: email.toString(),
           roles: ['CONTRIBUTOR'],
+          deleted: false,
           modified: 0,
           created: 0,
         }
@@ -117,7 +118,6 @@ function Signup() {
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, backgroundColor: 'secondary.main' }}>
             <LockOutlinedIcon />
@@ -202,14 +202,14 @@ function Signup() {
             )}
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               {loading ? (
-                <CircularProgress size="1.5rem" color="background" />
+                <CircularProgress size="1.5rem" sx={{color: "background"}}/>
               ) : (
                 t("SignupPage.signUp")
               )}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href={"./login"} variant="body2">
+                <Link to="/login" component={RouterLink} variant="body2">
                   {t("SignupPage.alreadyAccountLogIn")}
                 </Link>
               </Grid>

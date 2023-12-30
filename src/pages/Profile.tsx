@@ -1,16 +1,5 @@
-import {
-  Alert,
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  CssBaseline,
-  Grid,
-  TextField,
-  Typography
-} from "@mui/material";
-import PersonIcon from '@mui/icons-material/Person';
+import {Alert, Avatar, Box, Button, CircularProgress, Container, Grid, TextField, Typography} from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
 import {useTranslation} from "react-i18next";
 import React, {useContext, useState} from "react";
 import {ApiError, Credential, CredentialControllerService, UserControllerService} from "../lib/api-client";
@@ -212,7 +201,6 @@ function Profile() {
   return (
     <>
       <Container component="main">
-        <CssBaseline />
         <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, backgroundColor: 'secondary.main', width: 96, height: 96 }}>
             <PersonIcon sx={{ width: 72, height: 72 }} />
@@ -287,7 +275,7 @@ function Profile() {
                   <Grid item>
                     <Button type="submit" fullWidth variant="contained">
                       {changeContactLoading ? (
-                        <CircularProgress size="1.5rem" color="background" />
+                        <CircularProgress size="1.5rem" sx={{color: "background"}}/>
                       ) : (
                         t("Profile.changeContact")
                       )}
@@ -350,7 +338,7 @@ function Profile() {
                   <Grid item>
                     <Button type="submit" fullWidth variant="contained">
                       {changePasswordLoading ? (
-                        <CircularProgress size="1.5rem" color="background" />
+                        <CircularProgress size="1.5rem" sx={{color: "background"}}/>
                       ) : (
                         t("Profile.changePassword")
                       )}
@@ -391,7 +379,7 @@ function Profile() {
                   <Grid item>
                     <Button type="submit" fullWidth variant="contained">
                       {deleteAccountLoading ? (
-                        <CircularProgress size="1.5rem" color="background" />
+                        <CircularProgress size="1.5rem" sx={{color: "background"}}/>
                       ) : (
                         t("Profile.deleteAccount")
                       )}

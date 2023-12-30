@@ -95,6 +95,7 @@ function Overview(props: { websiteScan: WebsiteScan }) {
           </Grid>
         </>
       ) : null}
+
       <h2>{t("WebsitePage.Overview.webpagesHeader")}</h2>
       <TableContainer component={Paper}>
         <Table sx={{minWidth: 650}} aria-label={t("WebsitePage.Overview.webpagesTableAriaLabel")}>

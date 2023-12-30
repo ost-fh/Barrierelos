@@ -3,9 +3,9 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox, CircularProgress,
+  Checkbox,
+  CircularProgress,
   Container,
-  CssBaseline,
   Divider,
   FormControlLabel,
   Grid,
@@ -13,13 +13,12 @@ import {
   TextField,
   Typography
 } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import "./login/Login.css";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {useTranslation} from "react-i18next";
 import React, {useContext, useState} from "react";
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
-import {useNavigate} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 
 function Login() {
   const {t} = useTranslation();
@@ -54,7 +53,6 @@ function Login() {
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, backgroundColor: 'secondary.main' }}>
             <LockOutlinedIcon />
@@ -100,19 +98,19 @@ function Login() {
             )}
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               {loading ? (
-                <CircularProgress size="1.5rem" color="background" />
+                <CircularProgress size="1.5rem" sx={{color: "background"}}/>
               ) : (
                 t("LoginPage.logIn")
               )}
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link to="#" component={RouterLink} variant="body2">
                   {t("LoginPage.forgotPassword")}
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body2">
+                <Link to="/signup" component={RouterLink} variant="body2">
                   {t("LoginPage.noAccountSignUp")}
                 </Link>
               </Grid>

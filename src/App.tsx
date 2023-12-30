@@ -114,7 +114,6 @@ function App() {
               <meta charSet="utf-8"/>
               <title>Barrierelos</title>
             </Helmet>
-          </HelmetProvider>
           <header>
             <NavBar/>
           </header>
@@ -130,6 +129,7 @@ function App() {
               <Route path="*" element={<NotFound/>}/>
             </Routes>
           </main>
+          </HelmetProvider>
         </ThemeProvider>
       </AuthenticationProvider>
     </>

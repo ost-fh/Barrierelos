@@ -1,4 +1,4 @@
-import {DataGrid, GridColDef, GridPaginationModel, GridSortModel} from "@mui/x-data-grid";
+import {DataGrid, GridColDef, GridColumnVisibilityModel, GridPaginationModel, GridSortModel} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
 import useSWRMutation from "swr/mutation";
 import {ResultWebsite, Website, WebsiteControllerService} from "../../lib/api-client";
@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import {formatScore} from "../../util/formatter.ts";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
 import {useTranslation} from "react-i18next";
+import {useMediaQuery, useTheme} from "@mui/material";
 
 export function WebsiteTable() {
   const {t} = useTranslation();
@@ -19,6 +20,12 @@ export function WebsiteTable() {
     field: "score",
     sort: "desc"
   }] as GridSortModel)
+
+  const [columnVisibilityModel] = useState({
+    category: true,
+  } as GridColumnVisibilityModel)
+  const theme = useTheme();
+  columnVisibilityModel.category = useMediaQuery(theme.breakpoints.up("sm"));
 
   const {
     data: websitesPage,
@@ -75,8 +82,6 @@ export function WebsiteTable() {
       columns={columns}
       rowCount={rowCount}
       loading={isLoading}
-      paginationModel={paginationModel}
-      pageSizeOptions={[10]}
       disableRowSelectionOnClick
       disableColumnMenu
       pagination
@@ -84,6 +89,9 @@ export function WebsiteTable() {
       onSortModelChange={setSortModel}
       paginationMode="server"
       onPaginationModelChange={setPaginationModel}
+      paginationModel={paginationModel}
+      pageSizeOptions={[10]}
+      columnVisibilityModel={columnVisibilityModel}
       aria-label={t("WebsitesPage.WebsiteTable.ariaLabel")}
     />
   )

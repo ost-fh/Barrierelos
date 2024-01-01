@@ -131,7 +131,7 @@
     "wrongEmail": "E-Mail-Adresse falsch, bitte korrekte E-Mail-Adresse angeben.",
     "changeUsernameFailed": "Benutzername existiert bereits."
   },
-  "Profile": {
+  "ProfilePage": {
     "profile": "Profil",
 
     "contact": "Kontakt",

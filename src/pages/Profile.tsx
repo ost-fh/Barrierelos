@@ -22,17 +22,17 @@ function Profile() {
   const {authentication, setAuthentication} = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  function onChangeContactError(error: string = t("Profile.changeContactError")) {
+  function onChangeContactError(error: string = t("ProfilePage.changeContactError")) {
     setChangeContactError(error);
     setChangeContactLoading(false);
   }
 
-  function onChangePasswordError(error: string = t("Profile.changePasswordError")) {
+  function onChangePasswordError(error: string = t("ProfilePage.changePasswordError")) {
     setChangePasswordError(error);
     setChangePasswordLoading(false);
   }
 
-  function onDeleteAccountError(error: string = t("Profile.deleteAccountError")) {
+  function onDeleteAccountError(error: string = t("ProfilePage.deleteAccountError")) {
     setDeleteAccountError(error);
     setDeleteAccountLoading(false);
   }
@@ -83,7 +83,7 @@ function Profile() {
           if(error instanceof ApiError) {
             switch(error.status) {
               case ERROR_CONFLICT:
-                return onChangeContactError(t("Profile.changeUsernameFailed"));
+                return onChangeContactError(t("ProfilePage.changeUsernameFailed"));
               default:
                 return onChangeContactError();
             }
@@ -131,7 +131,7 @@ function Profile() {
             if(error instanceof ApiError) {
               switch(error.status) {
                 case ERROR_UNAUTHORIZED:
-                  return onChangePasswordError(t("Profile.wrongPasswordError"));
+                  return onChangePasswordError(t("ProfilePage.wrongPasswordError"));
               }
             }
 
@@ -143,7 +143,7 @@ function Profile() {
       }
     }
     else {
-      return onChangePasswordError(t("Profile.passwordConfirmationFailed"));
+      return onChangePasswordError(t("ProfilePage.passwordConfirmationFailed"));
     }
   };
 
@@ -186,7 +186,7 @@ function Profile() {
           if(error instanceof ApiError) {
             switch(error.status) {
               case ERROR_UNAUTHORIZED:
-                return onDeleteAccountError(t("Profile.delete_wrongPasswordError"));
+                return onDeleteAccountError(t("ProfilePage.delete_wrongPasswordError"));
             }
           }
 
@@ -206,7 +206,7 @@ function Profile() {
             <PersonIcon sx={{ width: 72, height: 72 }} />
           </Avatar>
           <Typography component="h1" variant="h5">
-            {t("Profile.profile")}
+            {t("ProfilePage.profile")}
           </Typography>
           <Grid container sx={{ px: 3, mb: 3, width: '100vw' }} spacing={2} direction="row">
             <Grid item xs={12} sm={6}>
@@ -214,12 +214,12 @@ function Profile() {
                 <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
                   <Grid item>
                     <Typography component="h2" variant="h6">
-                      {t("Profile.contact")}
+                      {t("ProfilePage.contact")}
                     </Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="body1">
-                      {t("Profile.contactHint")}
+                      {t("ProfilePage.contactHint")}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -228,7 +228,7 @@ function Profile() {
                       fullWidth
                       id="firstname"
                       name="firstname"
-                      label={t("Profile.firstname")}
+                      label={t("ProfilePage.firstname")}
                       autoComplete="given-name"
                       defaultValue={authentication?.user?.firstname}
                       autoFocus
@@ -240,7 +240,7 @@ function Profile() {
                       fullWidth
                       id="lastname"
                       name="lastname"
-                      label={t("Profile.lastname")}
+                      label={t("ProfilePage.lastname")}
                       autoComplete="family-name"
                       defaultValue={authentication?.user?.lastname}
                     />
@@ -251,7 +251,7 @@ function Profile() {
                       fullWidth
                       id="email"
                       name="email"
-                      label={t("Profile.email")}
+                      label={t("ProfilePage.email")}
                       autoComplete="email"
                       defaultValue={authentication?.user?.email}
                     />
@@ -262,7 +262,7 @@ function Profile() {
                       fullWidth
                       id="username"
                       name="username"
-                      label={t("Profile.username")}
+                      label={t("ProfilePage.username")}
                       defaultValue={authentication?.user?.username}
                       autoComplete="username"
                     />
@@ -277,7 +277,7 @@ function Profile() {
                       {changeContactLoading ? (
                         <CircularProgress size="1.5rem" sx={{color: "background"}}/>
                       ) : (
-                        t("Profile.changeContact")
+                        t("ProfilePage.changeContact")
                       )}
                     </Button>
                   </Grid>
@@ -289,12 +289,12 @@ function Profile() {
                 <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
                   <Grid item>
                     <Typography component="h2" variant="h6">
-                      {t("Profile.changePassword")}
+                      {t("ProfilePage.changePassword")}
                     </Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="body1">
-                      {t("Profile.changePasswordHint")}
+                      {t("ProfilePage.changePasswordHint")}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -304,7 +304,7 @@ function Profile() {
                       id="currentPassword"
                       name="currentPassword"
                       type="password"
-                      label={t("Profile.currentPassword")}
+                      label={t("ProfilePage.currentPassword")}
                       autoComplete="new-password"
                     />
                   </Grid>
@@ -315,7 +315,7 @@ function Profile() {
                       id="newPassword"
                       name="newPassword"
                       type="password"
-                      label={t("Profile.newPassword")}
+                      label={t("ProfilePage.newPassword")}
                       autoComplete="new-password"
                     />
                   </Grid>
@@ -326,7 +326,7 @@ function Profile() {
                       id="confirmNewPassword"
                       name="confirmNewPassword"
                       type="password"
-                      label={t("Profile.confirmNewPassword")}
+                      label={t("ProfilePage.confirmNewPassword")}
                       autoComplete="new-password"
                     />
                   </Grid>
@@ -340,7 +340,7 @@ function Profile() {
                       {changePasswordLoading ? (
                         <CircularProgress size="1.5rem" sx={{color: "background"}}/>
                       ) : (
-                        t("Profile.changePassword")
+                        t("ProfilePage.changePassword")
                       )}
                     </Button>
                   </Grid>
@@ -352,12 +352,12 @@ function Profile() {
                 <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
                   <Grid item>
                     <Typography component="h2" variant="h6">
-                      {t("Profile.deleteAccount")}
+                      {t("ProfilePage.deleteAccount")}
                     </Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="body1">
-                      {t("Profile.deleteAccountHint")}
+                      {t("ProfilePage.deleteAccountHint")}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -367,7 +367,7 @@ function Profile() {
                       id="password"
                       name="password"
                       type="password"
-                      label={t("Profile.password")}
+                      label={t("ProfilePage.password")}
                       autoComplete="new-password"
                     />
                   </Grid>
@@ -381,21 +381,21 @@ function Profile() {
                       {deleteAccountLoading ? (
                         <CircularProgress size="1.5rem" sx={{color: "background"}}/>
                       ) : (
-                        t("Profile.deleteAccount")
+                        t("ProfilePage.deleteAccount")
                       )}
                     </Button>
                   </Grid>
                 </Grid>
                 <ConfirmDialog
-                  title={t("Profile.confirmDialogTitle")}
-                  no={t("Profile.confirmDialogNo")}
-                  yes={t("Profile.confirmDialogYes")}
+                  title={t("ProfilePage.confirmDialogTitle")}
+                  no={t("ProfilePage.confirmDialogNo")}
+                  yes={t("ProfilePage.confirmDialogYes")}
                   open={deleteAccountConfirmOpen}
                   setOpen={setDeleteAccountConfirmOpen}
                   onNo={handleDeleteAccountNo}
                   onYes={handleDeleteAccountYes}
                 >
-                  {t("Profile.confirmDialogText")}
+                  {t("ProfilePage.confirmDialogText")}
                 </ConfirmDialog>
               </Box>
             </Grid>

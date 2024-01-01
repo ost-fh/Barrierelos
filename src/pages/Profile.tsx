@@ -2,12 +2,13 @@ import {Alert, Avatar, Box, Button, CircularProgress, Container, Grid, TextField
 import PersonIcon from "@mui/icons-material/Person";
 import {useTranslation} from "react-i18next";
 import React, {useContext, useState} from "react";
-import {ApiError, Credential, CredentialControllerService, UserControllerService} from "../lib/api-client";
+import {Credential, CredentialControllerService, UserControllerService} from "../lib/api-client";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {useNavigate} from "react-router-dom";
 import {ERROR_CONFLICT, ERROR_UNAUTHORIZED} from "../constants.ts";
 import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
+import {isValidEmail, isValidUsername} from "../util.ts";
 
 function Profile() {
   const {t} = useTranslation();
@@ -22,18 +23,65 @@ function Profile() {
   const {authentication, setAuthentication} = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  function onChangeContactError(error: string = t("ProfilePage.changeContactError")) {
-    setChangeContactError(error);
+  function onChangeContactError(): void
+  function onChangeContactError(error: string): void
+  function onChangeContactError(error: number): void
+  function onChangeContactError(error: unknown = t("ProfilePage.changeContactError")): void {
+    if(typeof error === "string") {
+      setChangeContactError(error);
+    }
+    else if(typeof error === "number") {
+      switch(error) {
+        case ERROR_CONFLICT:
+          setChangeContactError(t("ProfilePage.changeUsernameFailed"));
+          break;
+        default:
+          onChangeContactError();
+          break;
+      }
+    }
+
     setChangeContactLoading(false);
   }
 
-  function onChangePasswordError(error: string = t("ProfilePage.changePasswordError")) {
-    setChangePasswordError(error);
+  function onChangePasswordError(): void
+  function onChangePasswordError(error: string): void
+  function onChangePasswordError(error: number): void
+  function onChangePasswordError(error: unknown = t("ProfilePage.changePasswordError")): void {
+    if(typeof error === "string") {
+      setChangePasswordError(error);
+    }
+    else if(typeof error === "number") {
+      switch(error) {
+        case ERROR_UNAUTHORIZED:
+          setChangePasswordError(t("ProfilePage.wrongPasswordError"));
+          break;
+        default:
+          onChangePasswordError();
+          break;
+      }
+    }
+
     setChangePasswordLoading(false);
   }
 
-  function onDeleteAccountError(error: string = t("ProfilePage.deleteAccountError")) {
-    setDeleteAccountError(error);
+  function onDeleteAccountError(): void
+  function onDeleteAccountError(error: number): void
+  function onDeleteAccountError(error: unknown = t("ProfilePage.deleteAccountError")): void {
+    if(typeof error === "string") {
+      setDeleteAccountError(error);
+    }
+    else if(typeof error === "number") {
+      switch(error) {
+        case ERROR_UNAUTHORIZED:
+          setDeleteAccountError(t("ProfilePage.delete_wrongPasswordError"));
+          break;
+        default:
+          onDeleteAccountError();
+          break;
+      }
+    }
+
     setDeleteAccountLoading(false);
   }
 
@@ -69,6 +117,15 @@ function Profile() {
       && firstname !== null
       && lastname !== null
       && email !== null) {
+
+      if(!isValidEmail(email.toString())) {
+        return onChangeContactError(t("ProfilePage.wrongEmail"));
+      }
+
+      if(!isValidUsername(username.toString())) {
+        return onChangeContactError(t("ProfilePage.invalidUsername"));
+      }
+
       const user = Object.assign({}, authentication.user);
       user.username = username.toString();
       user.firstname = firstname.toString();
@@ -77,18 +134,14 @@ function Profile() {
 
       UserControllerService.updateUser(user.id, user)
         .then((user) => {
-          AuthenticationService.changeUser(user, onChangeContactSuccess, onChangeContactError, setAuthentication);
-        })
-        .catch((error) => {
-          if(error instanceof ApiError) {
-            switch(error.status) {
-              case ERROR_CONFLICT:
-                return onChangeContactError(t("ProfilePage.changeUsernameFailed"));
-              default:
-                return onChangeContactError();
-            }
+          if(setAuthentication !== undefined) {
+            AuthenticationService.changeUser(user, onChangeContactSuccess, setAuthentication);
+          }
+          else {
+            onChangeContactError()
           }
         })
+        .catch((error) => onChangeContactError(error.status as number));
     }
     else {
       return onChangeContactError();
@@ -123,19 +176,17 @@ function Profile() {
 
         CredentialControllerService.updateCredential(authentication.user.id, credential)
           .then(() => {
-            AuthenticationService.login(authentication?.user?.username ?? "", newPassword.toString(), onChangePasswordSuccess, onChangePasswordError, setAuthentication);
+            if(setAuthentication !== undefined) {
+              AuthenticationService.loginWithBasicAuthentication(authentication?.user?.username ?? "", newPassword.toString(), onChangePasswordSuccess, onChangePasswordError, setAuthentication);
+            }
+            else {
+              onChangePasswordError()
+            }
           })
           .catch((error) => {
             AuthenticationService.changePassword(AuthenticationService.getPassword());
 
-            if(error instanceof ApiError) {
-              switch(error.status) {
-                case ERROR_UNAUTHORIZED:
-                  return onChangePasswordError(t("ProfilePage.wrongPasswordError"));
-              }
-            }
-
-            return onChangePasswordError();
+            return onChangePasswordError(error.status as number);
           })
       }
       else {
@@ -183,14 +234,8 @@ function Profile() {
         })
         .catch((error) => {
           AuthenticationService.changePassword(AuthenticationService.getPassword());
-          if(error instanceof ApiError) {
-            switch(error.status) {
-              case ERROR_UNAUTHORIZED:
-                return onDeleteAccountError(t("ProfilePage.delete_wrongPasswordError"));
-            }
-          }
 
-          return onDeleteAccountError();
+          return onDeleteAccountError(error.status as number);
         });
     }
     else {

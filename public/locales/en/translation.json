@@ -114,7 +114,13 @@
     "rememberMe": "Remember me",
     "forgotPassword": "Forgot password?",
     "noAccountSignUp": "Don't have an account? Sign Up",
-    "loginFailed": "Log in failed. Check username and password, then try again."
+    "loginFailed": "Log in failed. Check username and password, then try again.",
+    "accountWithEmailAlreadyExists": "Someone has already created an account with this email address. This account has been deleted. The same email address cannot be used again to create an account.",
+    "loginDialogUsernameTitle": "Enter Username",
+    "loginDialogUsernameYes": "Create User",
+    "loginDialogUsernameNo": "Cancel",
+    "invalidUsername": "Invalid username. Must be at least 3 characters long. May not be an email address.",
+    "usernameAlreadyExists": "Username already exists."
   },
   "SignupPage": {
     "signUp": "Sign Up",
@@ -129,6 +135,8 @@
     "passwordConfirmationFailed": "Passwords don't match. Please check that you entered the same password twice.",
     "signupFailed": "Sign up failed. Please try again later.",
     "wrongEmail": "Email address wrong, please enter correct email address.",
+    "invalidUsername": "Invalid username. Must be at least 3 characters long. May not be an email address.",
+    "invalidPassword": "Invalid password. Must be at least 6 characters long.",
     "changeUsernameFailed": "Username already exists."
   },
   "ProfilePage": {
@@ -142,6 +150,9 @@
     "username": "Username",
     "changeContact": "Save Changes",
     "changeContactError": "Changing the contact failed. Please try again later.",
+    "wrongEmail": "Email address wrong, please enter correct email address.",
+    "invalidUsername": "Invalid username. Must be at least 3 characters long. May not be an email address.",
+    "invalidPassword": "Invalid password. Must be at least 6 characters long.",
     "changeUsernameFailed": "Username already exists.",
 
     "changePassword": "Change Password",

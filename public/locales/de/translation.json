@@ -114,7 +114,13 @@
     "rememberMe": "Angemeldet bleiben",
     "forgotPassword": "Passwort vergessen?",
     "noAccountSignUp": "Keinen Account? Account Erstellen",
-    "loginFailed": "Login fehlgeschlagen. Benutzername und Passwort überprüfen und nochmal versuchen."
+    "loginFailed": "Login fehlgeschlagen. Benutzername und Passwort überprüfen und nochmal versuchen.",
+    "accountWithEmailAlreadyExists": "Jemand hat mit dieser E-Mail-Adresse bereits ein Konto erstellt. Dieses Konto wurde gelöscht. Die gleiche E-Mail-Adresse kann nicht erneut zum Erstellen eines Kontos verwendet werden.",
+    "loginDialogUsernameTitle": "Benutzername eingeben",
+    "loginDialogUsernameYes": "Benutzer erstellen",
+    "loginDialogUsernameNo": "Abbrechen",
+    "invalidUsername": "Ungültiger Benutzername. Muss mindestens 3 Zeichen lang sein. Darf keine E-Mail-Adresse sein.",
+    "usernameAlreadyExists": "Benutzername existiert bereits."
   },
   "SignupPage": {
     "signUp": "Registrieren",
@@ -129,6 +135,8 @@
     "passwordConfirmationFailed": "Passwörter stimmen nicht überein. Bitte überprüfen, dass zweimal das gleiche Passwort eingegeben wurde.",
     "signupFailed": "Registration fehlgeschlagen. Bitte später nochmal versuchen.",
     "wrongEmail": "E-Mail-Adresse falsch, bitte korrekte E-Mail-Adresse angeben.",
+    "invalidUsername": "Ungültiger Benutzername. Muss mindestens 3 Zeichen lang sein. Darf keine E-Mail-Adresse sein.",
+    "invalidPassword": "Passwort ungültig. Muss mindestens 6 Zeichen lang sein.",
     "changeUsernameFailed": "Benutzername existiert bereits."
   },
   "ProfilePage": {
@@ -142,6 +150,9 @@
     "username": "Benutzername",
     "changeContact": "Änderungen Speichern",
     "changeContactError": "Kontakt konnte nicht geändert werden. Bitte später noch einmal probieren.",
+    "wrongEmail": "E-Mail-Adresse falsch, bitte korrekte E-Mail-Adresse angeben.",
+    "invalidUsername": "Ungültiger Benutzername. Muss mindestens 3 Zeichen lang sein. Darf keine E-Mail-Adresse sein.",
+    "invalidPassword": "Passwort ungültig. Muss mindestens 6 Zeichen lang sein.",
     "changeUsernameFailed": "Benutzername existiert bereits.",
 
     "changePassword": "Passwort ändern",
@@ -150,7 +161,7 @@
     "newPassword": "Neues Passwort",
     "confirmNewPassword": "Neues Passwort bestätigen",
     "changePasswordError": "Passwort konnte nicht geändert werden. Bitte später noch einmal probieren.",
-    "wrongPasswordError": "Passwort konnte nicht geändert werden. Bitte passwort überprüfen.",
+    "wrongPasswordError": "Passwort konnte nicht geändert werden. Bitte Passwort überprüfen.",
     "passwordConfirmationFailed": "Passwörter stimmen nicht überein. Bitte überprüfen, dass zweimal das gleiche Passwort eingegeben wurde.",
 
     "deleteAccount": "Konto Löschen",

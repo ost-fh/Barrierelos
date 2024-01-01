@@ -3294,22 +3294,12 @@
         }
       }
     },
-    "/user/login/{username}": {
+    "/user/login": {
       "get": {
         "tags": [
           "user-controller"
         ],
         "operationId": "login",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "404": {
             "description": "Not Found",
@@ -3478,32 +3468,12 @@
               "$ref": "#/components/schemas/HttpRange"
             }
           },
-          "ifModifiedSince": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "contentType": {
-            "$ref": "#/components/schemas/MediaType"
-          },
-          "contentLength": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "connection": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "empty": {
             "type": "boolean"
           },
           "host": {
             "type": "object",
             "properties": {
-              "hostString": {
-                "type": "string"
-              },
               "address": {
                 "type": "object",
                 "properties": {
@@ -3561,6 +3531,9 @@
               },
               "hostName": {
                 "type": "string"
+              },
+              "hostString": {
+                "type": "string"
               }
             }
           },
@@ -3578,6 +3551,26 @@
           "date": {
             "type": "integer",
             "format": "int64"
+          },
+          "contentLength": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "connection": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ifModifiedSince": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contentType": {
+            "$ref": "#/components/schemas/MediaType"
+          },
+          "origin": {
+            "type": "string"
           },
           "allow": {
             "uniqueItems": true,
@@ -3651,6 +3644,18 @@
           "etag": {
             "type": "string"
           },
+          "accept": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaType"
+            }
+          },
+          "acceptPatch": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaType"
+            }
+          },
           "acceptLanguage": {
             "type": "array",
             "items": {
@@ -3669,18 +3674,6 @@
           "basicAuth": {
             "type": "string",
             "writeOnly": true
-          },
-          "accept": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaType"
-            }
-          },
-          "acceptPatch": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaType"
-            }
           },
           "acceptLanguageAsLocales": {
             "type": "array",
@@ -3804,9 +3797,6 @@
           "ifUnmodifiedSince": {
             "type": "integer",
             "format": "int64"
-          },
-          "origin": {
-            "type": "string"
           },
           "pragma": {
             "type": "string"
@@ -4024,32 +4014,12 @@
                   "$ref": "#/components/schemas/HttpRange"
                 }
               },
-              "ifModifiedSince": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "contentType": {
-                "$ref": "#/components/schemas/MediaType"
-              },
-              "contentLength": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "connection": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
               "empty": {
                 "type": "boolean"
               },
               "host": {
                 "type": "object",
                 "properties": {
-                  "hostString": {
-                    "type": "string"
-                  },
                   "address": {
                     "type": "object",
                     "properties": {
@@ -4107,6 +4077,9 @@
                   },
                   "hostName": {
                     "type": "string"
+                  },
+                  "hostString": {
+                    "type": "string"
                   }
                 }
               },
@@ -4124,6 +4097,26 @@
               "date": {
                 "type": "integer",
                 "format": "int64"
+              },
+              "contentLength": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "connection": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ifModifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "contentType": {
+                "$ref": "#/components/schemas/MediaType"
+              },
+              "origin": {
+                "type": "string"
               },
               "allow": {
                 "uniqueItems": true,
@@ -4197,6 +4190,18 @@
               "etag": {
                 "type": "string"
               },
+              "accept": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
+              },
+              "acceptPatch": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
+              },
               "acceptLanguage": {
                 "type": "array",
                 "items": {
@@ -4215,18 +4220,6 @@
               "basicAuth": {
                 "type": "string",
                 "writeOnly": true
-              },
-              "accept": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MediaType"
-                }
-              },
-              "acceptPatch": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MediaType"
-                }
               },
               "acceptLanguageAsLocales": {
                 "type": "array",
@@ -4351,9 +4344,6 @@
                 "type": "integer",
                 "format": "int64"
               },
-              "origin": {
-                "type": "string"
-              },
               "pragma": {
                 "type": "string"
               },
@@ -4386,13 +4376,18 @@
           "responseHeaders": {
             "$ref": "#/components/schemas/HttpHeaders"
           },
+          "title": {
+            "type": "string",
+            "writeOnly": true
+          },
           "instance": {
             "type": "string",
             "format": "uri",
             "writeOnly": true
           },
-          "title": {
+          "type": {
             "type": "string",
+            "format": "uri",
             "writeOnly": true
           },
           "detail": {
@@ -4411,57 +4406,8 @@
           "detailMessageCode": {
             "type": "string"
           },
-          "type": {
-            "type": "string",
-            "format": "uri",
-            "writeOnly": true
-          },
           "titleMessageCode": {
             "type": "string"
-          },
-          "mostSpecificCause": {
-            "type": "object",
-            "properties": {
-              "stackTrace": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "classLoaderName": {
-                      "type": "string"
-                    },
-                    "moduleName": {
-                      "type": "string"
-                    },
-                    "moduleVersion": {
-                      "type": "string"
-                    },
-                    "methodName": {
-                      "type": "string"
-                    },
-                    "fileName": {
-                      "type": "string"
-                    },
-                    "lineNumber": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "nativeMethod": {
-                      "type": "boolean"
-                    },
-                    "className": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "message": {
-                "type": "string"
-              },
-              "localizedMessage": {
-                "type": "string"
-              }
-            }
           },
           "rootCause": {
             "type": "object",
@@ -4592,6 +4538,50 @@
                     }
                   }
                 }
+              },
+              "localizedMessage": {
+                "type": "string"
+              }
+            }
+          },
+          "mostSpecificCause": {
+            "type": "object",
+            "properties": {
+              "stackTrace": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "classLoaderName": {
+                      "type": "string"
+                    },
+                    "moduleName": {
+                      "type": "string"
+                    },
+                    "moduleVersion": {
+                      "type": "string"
+                    },
+                    "methodName": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "nativeMethod": {
+                      "type": "boolean"
+                    },
+                    "className": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "message": {
+                "type": "string"
               },
               "localizedMessage": {
                 "type": "string"

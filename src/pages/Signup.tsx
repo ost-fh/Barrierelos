@@ -20,7 +20,7 @@ import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {ERROR_CONFLICT} from "../constants.ts";
-import {isValidEmail} from "../util.ts";
+import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
 
 function Signup() {
   const {t} = useTranslation();
@@ -35,8 +35,21 @@ function Signup() {
     navigate("/profile");
   }
 
-  function onSignupError(error: string = t("SignupPage.signupFailed")) {
-    setError(error);
+  function onSignupError(): void
+  function onSignupError(error: string): void
+  function onSignupError(error: number): void
+  function onSignupError(error: unknown = t("SignupPage.signupFailed")): void {
+    if(typeof error === "string") {
+      setError(error);
+    }
+    else if(typeof error === "number") {
+      switch(error) {
+        default:
+          onSignupError();
+          break;
+      }
+    }
+
     setLoading(false);
   }
 
@@ -63,6 +76,14 @@ function Signup() {
 
         if(!isValidEmail(email.toString())) {
           return onSignupError(t("SignupPage.wrongEmail"));
+        }
+
+        if(!isValidUsername(username.toString())) {
+          return onSignupError(t("SignupPage.invalidUsername"));
+        }
+
+        if(!isValidPassword(password.toString())) {
+          return onSignupError(t("SignupPage.invalidPassword"));
         }
 
         const user: User = {
@@ -92,7 +113,12 @@ function Signup() {
 
         UserControllerService.addUser(registrationMessage)
           .then(() => {
-            AuthenticationService.login(username.toString(), password.toString(), onSignupSuccess, onSignupError, setAuthentication);
+            if(setAuthentication !== undefined) {
+              AuthenticationService.loginWithBasicAuthentication(username.toString(), password.toString(), onSignupSuccess, onSignupError, setAuthentication);
+            }
+            else {
+              onSignupError()
+            }
           })
           .catch((error) => {
             if(error instanceof ApiError) {

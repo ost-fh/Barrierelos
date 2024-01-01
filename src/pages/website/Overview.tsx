@@ -174,4 +174,4 @@ function Overview(props: { websiteScan: WebsiteScan }) {
 }
 
 
-export default Overview
+export default Overview;

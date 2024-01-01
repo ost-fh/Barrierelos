@@ -113,4 +113,4 @@ enum Tabs {
   SCAN_INFOS = "SCAN_INFOS"
 }
 
-export default WebsitePage
+export default WebsitePage;

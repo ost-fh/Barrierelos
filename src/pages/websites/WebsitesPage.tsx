@@ -46,4 +46,4 @@ enum GroupBy {
   region = "region",
 }
 
-export default WebsitePage
+export default WebsitePage;

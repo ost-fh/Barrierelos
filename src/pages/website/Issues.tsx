@@ -84,4 +84,4 @@ function RuleElement(props: { rule: Rule }) {
   )
 }
 
-export default Issues
+export default Issues;

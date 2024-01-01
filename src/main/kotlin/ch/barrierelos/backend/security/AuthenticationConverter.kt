@@ -18,7 +18,7 @@ public class AuthenticationConverter : Converter<Jwt, AuthenticationToken>
 
   override fun convert(jwt: Jwt): AuthenticationToken
   {
-    val user: User? = this.authenticationService.findUser(jwt.issuer.authority, jwt.subject)
+    val user: User? = this.authenticationService.findUser(jwt.issuer.toString(), jwt.subject)
 
     return if(user == null)
     {

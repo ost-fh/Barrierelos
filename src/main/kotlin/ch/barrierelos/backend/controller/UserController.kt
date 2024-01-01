@@ -5,6 +5,7 @@ import ch.barrierelos.backend.constants.MediaType
 import ch.barrierelos.backend.message.RegistrationMessage
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.parameter.DefaultParameters
+import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.service.UserService
 import ch.barrierelos.backend.util.toHeaders
 import org.springdoc.core.annotations.ParameterObject
@@ -63,10 +64,10 @@ public class UserController
     return ResponseEntity.status(HttpStatus.OK).build()
   }
 
-  @GetMapping(value = ["$USER/login/{username}"], produces = [MediaType.JSON])
-  public fun login(@PathVariable username: String): ResponseEntity<User>
+  @GetMapping(value = ["$USER/login"], produces = [MediaType.JSON])
+  public fun login(): ResponseEntity<User>
   {
-    val user: User = this.userService.getUserByUsername(username)
+    val user: User = Security.getUser()
 
     return ResponseEntity.status(HttpStatus.OK).body(user)
   }

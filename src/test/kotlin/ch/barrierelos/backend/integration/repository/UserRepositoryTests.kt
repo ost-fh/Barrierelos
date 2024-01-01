@@ -127,7 +127,7 @@ abstract class UserRepositoryTests : RepositoryTests()
   {
     // when
     val expected = createUserEntity()
-    val credential = createCredentialEntity()
+    val credential = createCredentialEntity(issuer = "issuer", subject = "subject")
 
     credential.userFk = entityManager.persist(expected).userId
     entityManager.persist(credential)
@@ -155,7 +155,7 @@ abstract class UserRepositoryTests : RepositoryTests()
   fun `cannot find user by issuer and subject, when user not exists`()
   {
     // when
-    val credential = createCredentialEntity()
+    val credential = createCredentialEntity(issuer = "issuer", subject = "subject")
 
     // then
     val actual = userRepository.findByIssuerAndSubject(credential.issuer!!, credential.subject!!)
@@ -168,7 +168,7 @@ abstract class UserRepositoryTests : RepositoryTests()
   {
     // when
     val expected = createUserEntity()
-    val credential = createCredentialEntity()
+    val credential = createCredentialEntity(issuer = "issuer", subject = "subject")
 
     credential.userFk = entityManager.persist(expected).userId
     entityManager.persist(credential)
@@ -185,7 +185,7 @@ abstract class UserRepositoryTests : RepositoryTests()
   {
     // when
     val expected = createUserEntity()
-    val credential = createCredentialEntity()
+    val credential = createCredentialEntity(issuer = "issuer", subject = "subject")
 
     credential.userFk = entityManager.persist(expected).userId
     entityManager.persist(credential)

@@ -14,11 +14,11 @@ fun createUserEntity() = UserEntity(
   created = Timestamp(5000),
 )
 
-fun createCredentialEntity(userFk: Long = 0) = CredentialEntity(
+fun createCredentialEntity(userFk: Long = 0, issuer: String? = null, subject: String? = null) = CredentialEntity(
   userFk = userFk,
   password = "password",
-  issuer = "issuer",
-  subject = "subject",
+  issuer = issuer,
+  subject = subject,
   modified = Timestamp(5000),
   created = Timestamp(5000),
 )

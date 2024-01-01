@@ -71,6 +71,89 @@ abstract class CredentialServiceTests : ServiceTests()
         credentialService.addCredential(credential)
       }
     }
+
+    @Test
+    fun `cannot add credential, when password empty`()
+    {
+      // when
+      val credential = createCredentialModel()
+      credential.password = ""
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.addCredential(credential)
+      }
+    }
+
+    @Test
+    fun `cannot add credential, when password too short`()
+    {
+      // when
+      val credential = createCredentialModel()
+      credential.password = "12345"
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.addCredential(credential)
+      }
+    }
+
+    @Test
+    fun `cannot add credential, when no password, issuer and subject`()
+    {
+      // when
+      val credential = createCredentialModel()
+      credential.password = null
+      credential.issuer = null
+      credential.subject = null
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.addCredential(credential)
+      }
+    }
+
+    @Test
+    fun `cannot add credential, when no issuer`()
+    {
+      // when
+      val credential = createCredentialModel()
+      credential.issuer = null
+      credential.subject = "subject"
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.addCredential(credential)
+      }
+    }
+
+    @Test
+    fun `cannot add credential, when no subject`()
+    {
+      // when
+      val credential = createCredentialModel()
+      credential.issuer = "https://accounts.google.com"
+      credential.subject = null
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.addCredential(credential)
+      }
+    }
+
+    @Test
+    fun `cannot add credential, when wrong issuer`()
+    {
+      // when
+      val credential = createCredentialModel()
+      credential.issuer = "issuer"
+      credential.subject = "subject"
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.addCredential(credential)
+      }
+    }
   }
 
   @Nested
@@ -85,8 +168,6 @@ abstract class CredentialServiceTests : ServiceTests()
       val expected = credentialService.addCredential(createCredentialModel().apply {
         userId = 10000
         password = "password2"
-        issuer = "issuer2"
-        subject = "subject2"
       })
 
       // then
@@ -126,6 +207,95 @@ abstract class CredentialServiceTests : ServiceTests()
       credential.password = ""
       credential.issuer = ""
       credential.subject = ""
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.updateCredential(credential)
+      }
+    }
+
+    @Test
+    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `cannot update credential, when password empty`()
+    {
+      // when
+      val credential = credentialService.addCredential(createCredentialModel())
+      credential.password = ""
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.updateCredential(credential)
+      }
+    }
+
+    @Test
+    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `cannot update credential, when password too short`()
+    {
+      // when
+      val credential = credentialService.addCredential(createCredentialModel())
+      credential.password = "12345"
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.updateCredential(credential)
+      }
+    }
+
+    @Test
+    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `cannot update credential, when no password, issuer and subject`()
+    {
+      // when
+      val credential = credentialService.addCredential(createCredentialModel())
+      credential.password = null
+      credential.issuer = null
+      credential.subject = null
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.updateCredential(credential)
+      }
+    }
+
+    @Test
+    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `cannot update credential, when no issuer`()
+    {
+      // when
+      val credential = credentialService.addCredential(createCredentialModel())
+      credential.issuer = null
+      credential.subject = "subject"
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.updateCredential(credential)
+      }
+    }
+
+    @Test
+    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `cannot update credential, when no subject`()
+    {
+      // when
+      val credential = credentialService.addCredential(createCredentialModel())
+      credential.issuer = "https://accounts.google.com"
+      credential.subject = null
+
+      // then
+      Assertions.assertThrows(InvalidCredentialsException::class.java) {
+        credentialService.updateCredential(credential)
+      }
+    }
+
+    @Test
+    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `cannot update credential, when wrong issuer`()
+    {
+      // when
+      val credential = credentialService.addCredential(createCredentialModel())
+      credential.issuer = "issuer"
+      credential.subject = "subject"
 
       // then
       Assertions.assertThrows(InvalidCredentialsException::class.java) {

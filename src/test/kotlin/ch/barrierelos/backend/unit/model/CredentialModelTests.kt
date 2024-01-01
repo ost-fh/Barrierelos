@@ -12,10 +12,10 @@ abstract class CredentialModelTests
   fun `is equals, when same content`()
   {
     // when
-    val expected = createCredentialModel()
+    val expected = createCredentialModel(issuer = "issuer", subject = "subject")
 
     // then
-    val actual = createCredentialModel()
+    val actual = createCredentialModel(issuer = "issuer", subject = "subject")
 
     Assertions.assertEquals(expected, actual)
   }

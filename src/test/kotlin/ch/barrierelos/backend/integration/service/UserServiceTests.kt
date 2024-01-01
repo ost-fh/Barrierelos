@@ -89,6 +89,19 @@ abstract class UserServiceTests : ServiceTests()
     }
 
     @Test
+    fun `cannot add user, when invalid username`()
+    {
+      // when
+      val user = createUserModel()
+      user.username = "username@barrierelos.ch"
+
+      // then
+      Assertions.assertThrows(InvalidUsernameException::class.java) {
+        userService.addUser(user, createCredentialModel())
+      }
+    }
+
+    @Test
     fun `cannot add user, when invalid email`()
     {
       // when
@@ -214,6 +227,20 @@ abstract class UserServiceTests : ServiceTests()
 
       // then
       Assertions.assertThrows(AlreadyExistsException::class.java) {
+        userService.updateUser(user)
+      }
+    }
+
+    @Test
+    @WithUserDetails("admin", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `cannot update user, when invalid username`()
+    {
+      // when
+      val user = userService.addUser(createUserModel(), createCredentialModel())
+      user.username = "username@barrierelos.ch"
+
+      // then
+      Assertions.assertThrows(InvalidUsernameException::class.java) {
         userService.updateUser(user)
       }
     }

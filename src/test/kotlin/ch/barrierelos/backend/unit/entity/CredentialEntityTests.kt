@@ -12,10 +12,10 @@ abstract class CredentialEntityTests
   fun `is equals, when same content`()
   {
     // when
-    val expected = createCredentialEntity()
+    val expected = createCredentialEntity(issuer = "issuer", subject = "subject")
 
     // then
-    val actual = createCredentialEntity()
+    val actual = createCredentialEntity(issuer = "issuer", subject = "subject")
 
     Assertions.assertEquals(expected.credentialId, actual.credentialId)
     Assertions.assertEquals(expected.userFk, actual.userFk)

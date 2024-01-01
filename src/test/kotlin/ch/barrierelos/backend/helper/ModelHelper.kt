@@ -13,11 +13,11 @@ fun createUserModel() = User(
   created = 5000,
 )
 
-fun createCredentialModel(userId: Long = 0) = Credential(
+fun createCredentialModel(userId: Long = 0, issuer: String? = null, subject: String? = null) = Credential(
   userId = userId,
   password = "password",
-  issuer = "issuer",
-  subject = "subject",
+  issuer = issuer,
+  subject = subject,
   modified = 5000,
   created = 5000,
 )

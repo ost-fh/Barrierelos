@@ -15,10 +15,10 @@ abstract class CredentialConverterTests
   fun `converts to model, when entity`()
   {
     // when
-    val entity = createCredentialEntity()
+    val entity = createCredentialEntity(issuer = "issuer", subject = "subject")
 
     // then
-    val model = createCredentialModel()
+    val model = createCredentialModel(issuer = "issuer", subject = "subject")
 
     Assertions.assertEquals(model, entity.toModel())
   }
@@ -27,10 +27,10 @@ abstract class CredentialConverterTests
   fun `converts to entity, when model`()
   {
     // when
-    val model = createCredentialModel()
+    val model = createCredentialModel(issuer = "issuer", subject = "subject")
 
     // then
-    val expected = createCredentialEntity()
+    val expected = createCredentialEntity(issuer = "issuer", subject = "subject")
     val actual = model.toEntity()
 
     Assertions.assertEquals(expected.credentialId, actual.credentialId)

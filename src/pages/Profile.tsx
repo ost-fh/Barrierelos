@@ -8,13 +8,15 @@ import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {useNavigate} from "react-router-dom";
 import {ERROR_CONFLICT, ERROR_UNAUTHORIZED} from "../constants.ts";
 import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
-import {isValidEmail, isValidUsername} from "../util.ts";
+import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
 
 function Profile() {
   const {t} = useTranslation();
   const [changeContactLoading, setChangeContactLoading] = useState(false);
   const [changePasswordLoading, setChangePasswordLoading] = useState(false);
   const [deleteAccountLoading, setDeleteAccountLoading] = useState(false);
+  const [changeContactSuccess, setChangeContactSuccess] = useState<string|undefined>();
+  const [changePasswordSuccess, setChangePasswordSuccess] = useState<string|undefined>();
   const [changeContactError, setChangeContactError] = useState<string|undefined>(undefined);
   const [changePasswordError, setChangePasswordError] = useState<string|undefined>(undefined);
   const [deleteAccountError, setDeleteAccountError] = useState<string|undefined>(undefined);
@@ -86,6 +88,7 @@ function Profile() {
   }
 
   function onChangeContactSuccess() {
+    setChangeContactSuccess(t("ProfilePage.success"));
     setChangeContactError(undefined);
     setChangeContactLoading(false);
   }
@@ -93,6 +96,7 @@ function Profile() {
   function onChangePasswordSuccess() {
     setChangePasswordError(undefined);
     setChangePasswordLoading(false);
+    setChangePasswordSuccess(t("ProfilePage.success"));
   }
 
   function onDeleteAccountSuccess() {
@@ -102,7 +106,10 @@ function Profile() {
 
   const handleChangeContact = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setChangeContactSuccess(t("ProfilePage.success"));
 
+    setChangeContactSuccess(undefined);
+    setChangePasswordSuccess(undefined);
     setChangeContactError(undefined);
     setChangeContactLoading(true);
 
@@ -135,7 +142,7 @@ function Profile() {
       UserControllerService.updateUser(user.id, user)
         .then((user) => {
           if(setAuthentication !== undefined) {
-            AuthenticationService.changeUser(user, authentication.isBasicAuthentication, onChangeContactSuccess, setAuthentication);
+            AuthenticationService.changeUser(user, authentication.isBasicAuthentication, onChangeContactSuccess, setAuthentication, 1000);
           }
           else {
             onChangeContactError()
@@ -151,6 +158,8 @@ function Profile() {
   const handleChangePassword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    setChangeContactSuccess(undefined);
+    setChangePasswordSuccess(undefined);
     setChangePasswordError(undefined);
     setChangePasswordLoading(true);
 
@@ -172,12 +181,16 @@ function Profile() {
           created: 0,
         }
 
+        if(!isValidPassword(newPassword.toString())) {
+          return onChangePasswordError(t("ProfilePage.invalidPassword"));
+        }
+
         AuthenticationService.changePassword(currentPassword.toString());
 
         CredentialControllerService.updateCredential(authentication.user.id, credential)
           .then(() => {
             if(setAuthentication !== undefined) {
-              AuthenticationService.loginWithBasicAuthentication(authentication?.user?.username ?? "", newPassword.toString(), onChangePasswordSuccess, onChangePasswordError, setAuthentication);
+              AuthenticationService.loginWithBasicAuthentication(authentication?.user?.username ?? "", newPassword.toString(), onChangePasswordSuccess, onChangePasswordError, setAuthentication, 1000);
             }
             else {
               onChangePasswordError()
@@ -201,6 +214,8 @@ function Profile() {
   const handleDeleteAccount = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    setChangeContactSuccess(undefined);
+    setChangePasswordSuccess(undefined);
     setDeleteAccountError(undefined);
     setDeleteAccountLoading(true);
 
@@ -317,6 +332,11 @@ function Profile() {
                       <Alert sx={{ mt: 1 }} severity="error">{changeContactError}</Alert>
                     </Grid>
                   )}
+                  {changeContactSuccess && (
+                    <Grid item>
+                      <Alert sx={{ mt: 1 }} severity="success">{changeContactSuccess}</Alert>
+                    </Grid>
+                  )}
                   <Grid item>
                     <Button type="submit" fullWidth variant="contained">
                       {changeContactLoading ? (
@@ -379,6 +399,11 @@ function Profile() {
                     {changePasswordError && (
                       <Grid item>
                         <Alert sx={{ mt: 1 }} severity="error">{changePasswordError}</Alert>
+                      </Grid>
+                    )}
+                    {changePasswordSuccess && (
+                      <Grid item>
+                        <Alert sx={{ mt: 1 }} severity="success">{changePasswordSuccess}</Alert>
                       </Grid>
                     )}
                     <Grid item>

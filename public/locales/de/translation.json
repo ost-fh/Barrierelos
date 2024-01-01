@@ -141,6 +141,7 @@
   },
   "ProfilePage": {
     "profile": "Profil",
+    "success": "Änderungen erfolgreich gespeichert.",
 
     "contact": "Kontakt",
     "contactHint": "Mit ändern des Benutzernamens ändert sich auch der Login.",

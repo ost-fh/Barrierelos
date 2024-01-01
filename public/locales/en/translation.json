@@ -141,6 +141,7 @@
   },
   "ProfilePage": {
     "profile": "Profile",
+    "success": "Changes successfully saved.",
 
     "contact": "Contact",
     "contactHint": "By changing the username you also change your login.",

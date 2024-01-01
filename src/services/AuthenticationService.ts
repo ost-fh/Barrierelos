@@ -8,15 +8,15 @@ export class AuthenticationService {
   private static readonly KEY_TOKEN = "token";
   private static readonly KEY_AUTHENTICATION = "authentication";
 
-  public static loginWithBasicAuthentication(username: string, password: string, onSuccess: (authentication: Authentication) => void, onError: (errorCode?: number) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>): void {
-    this.login(username, password, undefined, onSuccess, onError, setAuthentication);
+  public static loginWithBasicAuthentication(username: string, password: string, onSuccess: (authentication: Authentication) => void, onError: (errorCode?: number) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>, timeout?: number): void {
+    this.login(username, password, undefined, onSuccess, onError, setAuthentication, timeout);
   }
 
-  public static loginWithTokenAuthentication(token: string, onSuccess: (authentication: Authentication) => void, onError: (errorCode?: number) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>): void {
-    this.login(undefined, undefined, token, onSuccess, onError, setAuthentication);
+  public static loginWithTokenAuthentication(token: string, onSuccess: (authentication: Authentication) => void, onError: (errorCode?: number) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>, timeout?: number): void {
+    this.login(undefined, undefined, token, onSuccess, onError, setAuthentication, timeout);
   }
 
-  public static login(username: string | undefined, password: string | undefined, token: string | undefined, onSuccess: (authentication: Authentication) => void, onError: (errorCode?: number) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>): void {
+  public static login(username: string | undefined, password: string | undefined, token: string | undefined, onSuccess: (authentication: Authentication) => void, onError: (errorCode?: number) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>, timeout?: number): void {
     if(((username === undefined || password === undefined) && token === undefined) || ((username !== undefined || password !== undefined) && token !== undefined)) {
       return onError();
     }
@@ -36,7 +36,7 @@ export class AuthenticationService {
             sessionStorage.setItem(AuthenticationService.KEY_TOKEN, token);
           }
 
-          AuthenticationService.changeUser(user, password !== undefined, onSuccess, setAuthentication);
+          AuthenticationService.changeUser(user, password !== undefined, onSuccess, setAuthentication, timeout);
         })
         .catch((error) => {
           AuthenticationService.clear();
@@ -46,7 +46,7 @@ export class AuthenticationService {
     }
   }
 
-  public static changeUser(user: User, isBasicAuthentication: boolean, onSuccess: (authentication: Authentication) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>): void {
+  public static changeUser(user: User, isBasicAuthentication: boolean, onSuccess: (authentication: Authentication) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>, timeout?: number): void {
     OpenAPI.USERNAME = user.username;
 
     const authentication = new Authentication();
@@ -57,9 +57,14 @@ export class AuthenticationService {
     sessionStorage.setItem(AuthenticationService.KEY_USERNAME, user.username);
     sessionStorage.setItem(AuthenticationService.KEY_AUTHENTICATION, JSON.stringify(authentication));
 
-    setAuthentication(authentication);
-
     onSuccess(authentication);
+
+    if(timeout) {
+      setTimeout(() => setAuthentication(authentication), 2000);
+    }
+    else {
+      setAuthentication(authentication)
+    }
   }
 
   public static logout(setAuthentication: Dispatch<SetStateAction<Authentication>>) {
@@ -73,6 +78,10 @@ export class AuthenticationService {
     const password = sessionStorage.getItem(AuthenticationService.KEY_PASSWORD);
     const token = sessionStorage.getItem(AuthenticationService.KEY_TOKEN);
     const authentication = sessionStorage.getItem(AuthenticationService.KEY_AUTHENTICATION);
+
+    OpenAPI.USERNAME = username ?? undefined;
+    OpenAPI.PASSWORD = password ?? undefined;
+    OpenAPI.TOKEN = token ?? undefined;
 
     if(authentication) {
       setAuthentication(JSON.parse(authentication));

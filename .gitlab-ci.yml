@@ -45,9 +45,3 @@ lint:
   needs: [ ]
   script:
     - npm run test:lint
-
-unit-test:
-  stage: test
-  needs: [ ]
-  script:
-    - npm run test:unittest

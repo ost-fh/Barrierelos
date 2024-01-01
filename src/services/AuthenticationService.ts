@@ -36,7 +36,7 @@ export class AuthenticationService {
             sessionStorage.setItem(AuthenticationService.KEY_TOKEN, token);
           }
 
-          AuthenticationService.changeUser(user, onSuccess, setAuthentication);
+          AuthenticationService.changeUser(user, password !== undefined, onSuccess, setAuthentication);
         })
         .catch((error) => {
           AuthenticationService.clear();
@@ -46,11 +46,12 @@ export class AuthenticationService {
     }
   }
 
-  public static changeUser(user: User, onSuccess: (authentication: Authentication) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>): void {
+  public static changeUser(user: User, isBasicAuthentication: boolean, onSuccess: (authentication: Authentication) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>): void {
     OpenAPI.USERNAME = user.username;
 
     const authentication = new Authentication();
     authentication.isAuthenticated = true;
+    authentication.isBasicAuthentication = isBasicAuthentication;
     authentication.user = user;
 
     sessionStorage.setItem(AuthenticationService.KEY_USERNAME, user.username);

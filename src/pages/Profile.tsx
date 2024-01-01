@@ -135,7 +135,7 @@ function Profile() {
       UserControllerService.updateUser(user.id, user)
         .then((user) => {
           if(setAuthentication !== undefined) {
-            AuthenticationService.changeUser(user, onChangeContactSuccess, setAuthentication);
+            AuthenticationService.changeUser(user, authentication.isBasicAuthentication, onChangeContactSuccess, setAuthentication);
           }
           else {
             onChangeContactError()
@@ -329,69 +329,71 @@ function Profile() {
                 </Grid>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Box component="form" onSubmit={handleChangePassword} sx={{ mt: 3, alignItems: 'left' }}>
-                <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
-                  <Grid item>
-                    <Typography component="h2" variant="h6">
-                      {t("ProfilePage.changePassword")}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="body1">
-                      {t("ProfilePage.changePasswordHint")}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      fullWidth
-                      id="currentPassword"
-                      name="currentPassword"
-                      type="password"
-                      label={t("ProfilePage.currentPassword")}
-                      autoComplete="new-password"
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      fullWidth
-                      id="newPassword"
-                      name="newPassword"
-                      type="password"
-                      label={t("ProfilePage.newPassword")}
-                      autoComplete="new-password"
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      fullWidth
-                      id="confirmNewPassword"
-                      name="confirmNewPassword"
-                      type="password"
-                      label={t("ProfilePage.confirmNewPassword")}
-                      autoComplete="new-password"
-                    />
-                  </Grid>
-                  {changePasswordError && (
+            {authentication.isBasicAuthentication && (
+              <Grid item xs={12} sm={6}>
+                <Box component="form" onSubmit={handleChangePassword} sx={{ mt: 3, alignItems: 'left' }}>
+                  <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
                     <Grid item>
-                      <Alert sx={{ mt: 1 }} severity="error">{changePasswordError}</Alert>
+                      <Typography component="h2" variant="h6">
+                        {t("ProfilePage.changePassword")}
+                      </Typography>
                     </Grid>
-                  )}
-                  <Grid item>
-                    <Button type="submit" fullWidth variant="contained">
-                      {changePasswordLoading ? (
-                        <CircularProgress size="1.5rem" sx={{color: "background"}}/>
-                      ) : (
-                        t("ProfilePage.changePassword")
-                      )}
-                    </Button>
+                    <Grid item>
+                      <Typography variant="body1">
+                        {t("ProfilePage.changePasswordHint")}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        required
+                        fullWidth
+                        id="currentPassword"
+                        name="currentPassword"
+                        type="password"
+                        label={t("ProfilePage.currentPassword")}
+                        autoComplete="new-password"
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        required
+                        fullWidth
+                        id="newPassword"
+                        name="newPassword"
+                        type="password"
+                        label={t("ProfilePage.newPassword")}
+                        autoComplete="new-password"
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        required
+                        fullWidth
+                        id="confirmNewPassword"
+                        name="confirmNewPassword"
+                        type="password"
+                        label={t("ProfilePage.confirmNewPassword")}
+                        autoComplete="new-password"
+                      />
+                    </Grid>
+                    {changePasswordError && (
+                      <Grid item>
+                        <Alert sx={{ mt: 1 }} severity="error">{changePasswordError}</Alert>
+                      </Grid>
+                    )}
+                    <Grid item>
+                      <Button type="submit" fullWidth variant="contained">
+                        {changePasswordLoading ? (
+                          <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                        ) : (
+                          t("ProfilePage.changePassword")
+                        )}
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Box>
-            </Grid>
+                </Box>
+              </Grid>
+            )}
             <Grid item xs={12} sm={6}>
               <Box component="form" onSubmit={handleDeleteAccount} sx={{ mt: 3, alignItems: 'left' }}>
                 <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">

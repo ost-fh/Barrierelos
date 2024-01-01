@@ -79,6 +79,9 @@
     "tabRulesLabel": "Probleme",
     "tabScanInfosLabel": "Scan Infos",
     "Overview": {
+      "websiteDetailsHeader": "Website Details",
+      "addedOnLabel": "Hinzugefügt am",
+      "tagsLabel": "Tags",
       "principleViolationHeader": "Probleme pro WCAG Prinzip",
       "principleViolationPerceivableLabel": "Wahrnehmbar",
       "principleViolationOperableLabel": "Bedienbar",

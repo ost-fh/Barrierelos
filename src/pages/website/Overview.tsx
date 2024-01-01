@@ -2,6 +2,7 @@ import {WebsiteScan} from "../../lib/api-client"
 import {
   Card,
   CardContent,
+  Chip,
   Grid,
   Paper,
   Stack,
@@ -21,28 +22,39 @@ import PerceivableIcon from "@mui/icons-material/Sensors"
 import OperableIcon from "@mui/icons-material/Keyboard"
 import UnderstandableIcon from "@mui/icons-material/Psychology"
 import RobustIcon from "@mui/icons-material/FitnessCenter"
+import {mapWebsiteTag} from "../../util/tags.ts"
 
 
 function Overview(props: { websiteScan: WebsiteScan }) {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const websiteScan: WebsiteScan = props.websiteScan
+
+  const tags = websiteScan.website.tags.map(websiteTag => (
+    <Chip key={websiteTag.id} label={mapWebsiteTag(websiteTag)} variant="outlined"/>
+  ))
 
   return (
     <>
       {websiteScan.websiteStatistic ? (
         <>
+          <h2>{t("WebsitePage.Overview.websiteDetailsHeader")}</h2>
+          <p>{t("WebsitePage.Overview.addedOnLabel")}: {new Date(websiteScan.website.created).toLocaleString(i18n.language)}</p>
+          <p>{t("WebsitePage.Overview.tagsLabel")}: {tags}</p>
+
           <h2>{t("WebsitePage.Overview.principleViolationHeader")}</h2>
           <Grid container spacing={2}>
             <Grid item>
               <Card variant="outlined">
                 <CardContent>
                   <Stack direction="row" spacing={2}>
-                    <Typography align="center"
-                                sx={{fontSize: 80}}>{getViolationsPerPrinciple("perceivable")}</Typography>
+                    <Typography align="center" sx={{fontSize: 80}}>
+                      {getViolationsPerPrinciple("perceivable")}
+                    </Typography>
                     <Grid direction="column" container alignItems="center" width="inherit">
                       <PerceivableIcon sx={{fontSize: 80}}/>
-                      <Typography
-                        align="center">{t("WebsitePage.Overview.principleViolationPerceivableLabel")}</Typography>
+                      <Typography align="center">
+                        {t("WebsitePage.Overview.principleViolationPerceivableLabel")}
+                      </Typography>
                     </Grid>
                   </Stack>
                 </CardContent>
@@ -52,12 +64,14 @@ function Overview(props: { websiteScan: WebsiteScan }) {
               <Card variant="outlined">
                 <CardContent>
                   <Stack direction="row" spacing={2}>
-                    <Typography align="center"
-                                sx={{fontSize: 80}}>{getViolationsPerPrinciple("operable")}</Typography>
+                    <Typography align="center" sx={{fontSize: 80}}>
+                      {getViolationsPerPrinciple("operable")}
+                    </Typography>
                     <Grid direction="column" container alignItems="center">
                       <OperableIcon sx={{fontSize: 80}}/>
-                      <Typography
-                        align="center">{t("WebsitePage.Overview.principleViolationOperableLabel")}</Typography>
+                      <Typography align="center">
+                        {t("WebsitePage.Overview.principleViolationOperableLabel")}
+                      </Typography>
                     </Grid>
                   </Stack>
                 </CardContent>
@@ -67,12 +81,14 @@ function Overview(props: { websiteScan: WebsiteScan }) {
               <Card variant="outlined">
                 <CardContent>
                   <Stack direction="row" spacing={2}>
-                    <Typography align="center"
-                                sx={{fontSize: 80}}>{getViolationsPerPrinciple("understandable")}</Typography>
+                    <Typography align="center" sx={{fontSize: 80}}>
+                      {getViolationsPerPrinciple("understandable")}
+                    </Typography>
                     <Grid direction="column" container alignItems="center">
                       <UnderstandableIcon sx={{fontSize: 80}}/>
-                      <Typography
-                        align="center">{t("WebsitePage.Overview.principleViolationUnderstandableLabel")}</Typography>
+                      <Typography align="center">
+                        {t("WebsitePage.Overview.principleViolationUnderstandableLabel")}
+                      </Typography>
                     </Grid>
                   </Stack>
                 </CardContent>
@@ -82,8 +98,9 @@ function Overview(props: { websiteScan: WebsiteScan }) {
               <Card variant="outlined">
                 <CardContent>
                   <Stack direction="row" spacing={2}>
-                    <Typography align="center"
-                                sx={{fontSize: 80}}>{getViolationsPerPrinciple("robust")}</Typography>
+                    <Typography align="center" sx={{fontSize: 80}}>
+                      {getViolationsPerPrinciple("robust")}
+                    </Typography>
                     <Grid direction="column" container alignItems="center">
                       <RobustIcon sx={{fontSize: 80}}/>
                       <Typography align="center">{t("WebsitePage.Overview.principleViolationRobustLabel")}</Typography>
@@ -173,5 +190,4 @@ function Overview(props: { websiteScan: WebsiteScan }) {
   }
 }
 
-
-export default Overview;
+export default Overview

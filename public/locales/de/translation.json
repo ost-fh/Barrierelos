@@ -113,7 +113,7 @@
     "password": "Passwort",
     "rememberMe": "Angemeldet bleiben",
     "forgotPassword": "Passwort vergessen?",
-    "noAccountSignUp": "Keinen Account? Account Erstellen",
+    "noAccountSignUp": "Keinen Account? Account erstellen",
     "loginFailed": "Login fehlgeschlagen. Benutzername und Passwort überprüfen und nochmal versuchen.",
     "accountWithEmailAlreadyExists": "Jemand hat mit dieser E-Mail-Adresse bereits ein Konto erstellt. Dieses Konto wurde gelöscht. Die gleiche E-Mail-Adresse kann nicht erneut zum Erstellen eines Kontos verwendet werden.",
     "loginDialogUsernameTitle": "Benutzername eingeben",

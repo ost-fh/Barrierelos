@@ -19,6 +19,8 @@ import Logout from "./pages/Logout.tsx";
 import Profile from "./pages/Profile.tsx";
 import Signup from "./pages/Signup.tsx";
 import WebsitesPage from "./pages/websites/WebsitesPage.tsx";
+import {GoogleOAuthProvider} from "@react-oauth/google";
+import {OAUTH_GOOGLE_CLIENT_ID} from "./constants.ts";
 
 type MuiLocales = "enUS" | "deDE";
 
@@ -99,7 +101,9 @@ function App() {
   function AuthenticationProvider({children}: Props) {
     return (
       <AuthenticationContext.Provider value={{authentication, setAuthentication}}>
-        {children}
+        <GoogleOAuthProvider clientId={OAUTH_GOOGLE_CLIENT_ID} >
+          {children}
+        </GoogleOAuthProvider>
       </AuthenticationContext.Provider>
     );
   }

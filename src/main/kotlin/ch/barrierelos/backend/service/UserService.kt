@@ -6,6 +6,7 @@ import ch.barrierelos.backend.entity.UserEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.exceptions.AlreadyExistsException
 import ch.barrierelos.backend.exceptions.InvalidEmailException
+import ch.barrierelos.backend.exceptions.InvalidUsernameException
 import ch.barrierelos.backend.exceptions.NoRoleException
 import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
@@ -13,9 +14,7 @@ import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.security.Security
-import ch.barrierelos.backend.util.Result
-import ch.barrierelos.backend.util.orThrow
-import ch.barrierelos.backend.util.throwIfNull
+import ch.barrierelos.backend.util.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -35,12 +34,14 @@ public class UserService
 
     throwIfNoRole(user)
     throwIfNoValidEmail(user)
+    throwIfNoValidUsername(user)
     throwIfUsernameAlreadyExists(user)
     this.credentialService.throwIfNoValidCredentials(credential)
 
     val timestamp = System.currentTimeMillis()
     user.created = timestamp
     user.modified = timestamp
+    user.deleted = false
 
     this.userRepository.save(user.toEntity()).toModel(user)
 
@@ -62,6 +63,7 @@ public class UserService
 
     throwIfNoRole(user)
     throwIfNoValidEmail(user)
+    throwIfNoValidUsername(user)
     throwIfUsernameChangedAndAlreadyExists(user, existingUser)
 
     user.modified = System.currentTimeMillis()
@@ -93,6 +95,15 @@ public class UserService
     return user
   }
 
+  public fun getUserByIssuerAndSubject(issuer: String, subject: String): User
+  {
+    val user = this.userRepository.findByIssuerAndSubject(issuer, subject).throwIfNull(NoSuchElementException()).toModel()
+
+    Security.assertRoleOrId(user.id, RoleEnum.ADMIN)
+
+    return user
+  }
+
   public fun deleteUser(userId: Long)
   {
     Security.assertRoleOrId(userId, RoleEnum.ADMIN)
@@ -102,6 +113,8 @@ public class UserService
     existingUser.deleted = true
 
     this.userRepository.save(existingUser)
+
+    this.credentialService.deleteCredential(userId)
   }
 
   private fun throwIfNoRole(user: User)
@@ -130,9 +143,17 @@ public class UserService
 
   private fun throwIfNoValidEmail(user: User)
   {
-    if(!user.email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$".toRegex()))
+    if(!user.email.isValidEmail())
     {
       throw InvalidEmailException("Email address is not valid.")
+    }
+  }
+
+  private fun throwIfNoValidUsername(user: User)
+  {
+    if(!user.username.isValidUsername())
+    {
+      throw InvalidUsernameException("Username is not valid.")
     }
   }
 }

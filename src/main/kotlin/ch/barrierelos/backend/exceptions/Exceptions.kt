@@ -11,6 +11,9 @@ public class ReferenceNotExistsException(message: String) : ResponseStatusExcept
 public class InvalidCredentialsException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
+public class InvalidUsernameException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class InvalidEmailException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)

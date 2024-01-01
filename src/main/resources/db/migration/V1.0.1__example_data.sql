@@ -11,8 +11,7 @@ VALUES
   (1, 'admin', 'Hans', 'Root', 'admin@localhost', '{ADMIN}'::role_enum[], FALSE),
   (2, 'moderator', 'Hans', 'Admin', 'moderator@localhost', '{MODERATOR}'::role_enum[], FALSE),
   (3, 'contributor', 'Hans', 'Moderator', 'contributor@localhost', '{CONTRIBUTOR}'::role_enum[], FALSE),
-  (4, 'viewer', 'Hans', 'Creator', 'viewer@localhost', '{VIEWER}'::role_enum[], FALSE),
-  (5, 'google', 'Hans', 'Google', 'google@localhost', '{CONTRIBUTOR,VIEWER}'::role_enum[], FALSE);
+  (4, 'viewer', 'Hans', 'Creator', 'viewer@localhost', '{VIEWER}'::role_enum[], FALSE);
 
 SELECT SETVAL('user_user_id_seq', (SELECT MAX("user_id") FROM "user"));
 
@@ -22,8 +21,7 @@ VALUES
   (1, 1, "crypt"('password', "gen_salt"('bf')), NULL, NULL),
   (2, 2, "crypt"('password', "gen_salt"('bf')), NULL, NULL),
   (3, 3, "crypt"('password', "gen_salt"('bf')), NULL, NULL),
-  (4, 4, "crypt"('password', "gen_salt"('bf')), NULL, NULL),
-  (5, 5, NULL, 'accounts.google.com', '117148868352469216810');
+  (4, 4, "crypt"('password', "gen_salt"('bf')), NULL, NULL);
 
 SELECT SETVAL('credential_credential_id_seq', (SELECT MAX("credential_id") FROM "credential"));
 

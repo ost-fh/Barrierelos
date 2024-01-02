@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8030",
+      "url": "http://barrierelos.ch:40001",
       "description": "Generated server url"
     }
   ],
@@ -3435,13 +3435,13 @@
             "format": "date-time",
             "deprecated": true
           },
+          "inline": {
+            "type": "boolean"
+          },
           "attachment": {
             "type": "boolean"
           },
           "formData": {
-            "type": "boolean"
-          },
-          "inline": {
             "type": "boolean"
           }
         }
@@ -3449,128 +3449,42 @@
       "HttpHeaders": {
         "type": "object",
         "properties": {
-          "contentDisposition": {
-            "$ref": "#/components/schemas/ContentDisposition"
+          "upgrade": {
+            "type": "string"
           },
-          "acceptCharset": {
+          "vary": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "location": {
+          "basicAuth": {
             "type": "string",
-            "format": "uri"
+            "writeOnly": true
           },
-          "range": {
+          "acceptLanguage": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/HttpRange"
-            }
-          },
-          "empty": {
-            "type": "boolean"
-          },
-          "host": {
-            "type": "object",
-            "properties": {
-              "address": {
-                "type": "object",
-                "properties": {
-                  "hostAddress": {
-                    "type": "string"
-                  },
-                  "address": {
-                    "type": "string",
-                    "format": "byte"
-                  },
-                  "hostName": {
-                    "type": "string"
-                  },
-                  "linkLocalAddress": {
-                    "type": "boolean"
-                  },
-                  "multicastAddress": {
-                    "type": "boolean"
-                  },
-                  "anyLocalAddress": {
-                    "type": "boolean"
-                  },
-                  "loopbackAddress": {
-                    "type": "boolean"
-                  },
-                  "siteLocalAddress": {
-                    "type": "boolean"
-                  },
-                  "mcglobal": {
-                    "type": "boolean"
-                  },
-                  "mcnodeLocal": {
-                    "type": "boolean"
-                  },
-                  "mclinkLocal": {
-                    "type": "boolean"
-                  },
-                  "mcsiteLocal": {
-                    "type": "boolean"
-                  },
-                  "mcorgLocal": {
-                    "type": "boolean"
-                  },
-                  "canonicalHostName": {
-                    "type": "string"
-                  }
+              "type": "object",
+              "properties": {
+                "range": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number",
+                  "format": "double"
                 }
-              },
-              "port": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "unresolved": {
-                "type": "boolean"
-              },
-              "hostName": {
-                "type": "string"
-              },
-              "hostString": {
-                "type": "string"
               }
             }
           },
-          "all": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "writeOnly": true
+          "pragma": {
+            "type": "string"
           },
-          "lastModified": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "date": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "contentLength": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "connection": {
+          "acceptPatch": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/MediaType"
             }
-          },
-          "ifModifiedSince": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "contentType": {
-            "$ref": "#/components/schemas/MediaType"
-          },
-          "origin": {
-            "type": "string"
           },
           "allow": {
             "uniqueItems": true,
@@ -3579,8 +3493,15 @@
               "$ref": "#/components/schemas/HttpMethod"
             }
           },
-          "cacheControl": {
-            "type": "string"
+          "bearerAuth": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "acceptCharset": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "contentLanguage": {
             "type": "object",
@@ -3644,36 +3565,64 @@
           "etag": {
             "type": "string"
           },
+          "expires": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ifMatch": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ifNoneMatch": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "origin": {
+            "type": "string"
+          },
+          "accessControlAllowOrigin": {
+            "type": "string"
+          },
+          "accessControlExposeHeaders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accessControlMaxAge": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accessControlRequestHeaders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accessControlAllowMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HttpMethod"
+            }
+          },
           "accept": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaType"
             }
           },
-          "acceptPatch": {
+          "accessControlRequestMethod": {
+            "$ref": "#/components/schemas/HttpMethod"
+          },
+          "connection": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MediaType"
+              "type": "string"
             }
-          },
-          "acceptLanguage": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "range": {
-                  "type": "string"
-                },
-                "weight": {
-                  "type": "number",
-                  "format": "double"
-                }
-              }
-            }
-          },
-          "basicAuth": {
-            "type": "string",
-            "writeOnly": true
           },
           "acceptLanguageAsLocales": {
             "type": "array",
@@ -3737,6 +3686,99 @@
               }
             }
           },
+          "host": {
+            "type": "object",
+            "properties": {
+              "hostString": {
+                "type": "string"
+              },
+              "address": {
+                "type": "object",
+                "properties": {
+                  "hostAddress": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string",
+                    "format": "byte"
+                  },
+                  "hostName": {
+                    "type": "string"
+                  },
+                  "linkLocalAddress": {
+                    "type": "boolean"
+                  },
+                  "multicastAddress": {
+                    "type": "boolean"
+                  },
+                  "anyLocalAddress": {
+                    "type": "boolean"
+                  },
+                  "loopbackAddress": {
+                    "type": "boolean"
+                  },
+                  "siteLocalAddress": {
+                    "type": "boolean"
+                  },
+                  "mcglobal": {
+                    "type": "boolean"
+                  },
+                  "mcnodeLocal": {
+                    "type": "boolean"
+                  },
+                  "mclinkLocal": {
+                    "type": "boolean"
+                  },
+                  "mcsiteLocal": {
+                    "type": "boolean"
+                  },
+                  "mcorgLocal": {
+                    "type": "boolean"
+                  },
+                  "canonicalHostName": {
+                    "type": "string"
+                  }
+                }
+              },
+              "port": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "unresolved": {
+                "type": "boolean"
+              },
+              "hostName": {
+                "type": "string"
+              }
+            }
+          },
+          "cacheControl": {
+            "type": "string"
+          },
+          "range": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HttpRange"
+            }
+          },
+          "location": {
+            "type": "string",
+            "format": "uri"
+          },
+          "contentDisposition": {
+            "$ref": "#/components/schemas/ContentDisposition"
+          },
+          "contentType": {
+            "$ref": "#/components/schemas/MediaType"
+          },
+          "contentLength": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ifUnmodifiedSince": {
+            "type": "integer",
+            "format": "int64"
+          },
           "accessControlAllowCredentials": {
             "type": "boolean"
           },
@@ -3746,69 +3788,27 @@
               "type": "string"
             }
           },
-          "accessControlAllowMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/HttpMethod"
-            }
+          "empty": {
+            "type": "boolean"
           },
-          "accessControlAllowOrigin": {
-            "type": "string"
-          },
-          "accessControlExposeHeaders": {
-            "type": "array",
-            "items": {
+          "all": {
+            "type": "object",
+            "additionalProperties": {
               "type": "string"
-            }
-          },
-          "accessControlMaxAge": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "accessControlRequestHeaders": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "accessControlRequestMethod": {
-            "$ref": "#/components/schemas/HttpMethod"
-          },
-          "bearerAuth": {
-            "type": "string",
+            },
             "writeOnly": true
           },
-          "expires": {
+          "lastModified": {
             "type": "integer",
             "format": "int64"
           },
-          "ifMatch": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "ifNoneMatch": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "ifUnmodifiedSince": {
+          "date": {
             "type": "integer",
             "format": "int64"
           },
-          "pragma": {
-            "type": "string"
-          },
-          "upgrade": {
-            "type": "string"
-          },
-          "vary": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "ifModifiedSince": {
+            "type": "integer",
+            "format": "int64"
           }
         },
         "additionalProperties": {
@@ -3830,9 +3830,6 @@
           "is4xxClientError": {
             "type": "boolean"
           },
-          "error": {
-            "type": "boolean"
-          },
           "is5xxServerError": {
             "type": "boolean"
           },
@@ -3843,6 +3840,9 @@
             "type": "boolean"
           },
           "is3xxRedirection": {
+            "type": "boolean"
+          },
+          "error": {
             "type": "boolean"
           }
         }
@@ -3866,16 +3866,16 @@
             "type": "number",
             "format": "double"
           },
-          "wildcardType": {
-            "type": "boolean"
-          },
-          "wildcardSubtype": {
-            "type": "boolean"
-          },
           "subtypeSuffix": {
             "type": "string"
           },
           "concrete": {
+            "type": "boolean"
+          },
+          "wildcardType": {
+            "type": "boolean"
+          },
+          "wildcardSubtype": {
             "type": "boolean"
           },
           "charset": {
@@ -3995,128 +3995,42 @@
           "headers": {
             "type": "object",
             "properties": {
-              "contentDisposition": {
-                "$ref": "#/components/schemas/ContentDisposition"
+              "upgrade": {
+                "type": "string"
               },
-              "acceptCharset": {
+              "vary": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
               },
-              "location": {
+              "basicAuth": {
                 "type": "string",
-                "format": "uri"
+                "writeOnly": true
               },
-              "range": {
+              "acceptLanguage": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/HttpRange"
-                }
-              },
-              "empty": {
-                "type": "boolean"
-              },
-              "host": {
-                "type": "object",
-                "properties": {
-                  "address": {
-                    "type": "object",
-                    "properties": {
-                      "hostAddress": {
-                        "type": "string"
-                      },
-                      "address": {
-                        "type": "string",
-                        "format": "byte"
-                      },
-                      "hostName": {
-                        "type": "string"
-                      },
-                      "linkLocalAddress": {
-                        "type": "boolean"
-                      },
-                      "multicastAddress": {
-                        "type": "boolean"
-                      },
-                      "anyLocalAddress": {
-                        "type": "boolean"
-                      },
-                      "loopbackAddress": {
-                        "type": "boolean"
-                      },
-                      "siteLocalAddress": {
-                        "type": "boolean"
-                      },
-                      "mcglobal": {
-                        "type": "boolean"
-                      },
-                      "mcnodeLocal": {
-                        "type": "boolean"
-                      },
-                      "mclinkLocal": {
-                        "type": "boolean"
-                      },
-                      "mcsiteLocal": {
-                        "type": "boolean"
-                      },
-                      "mcorgLocal": {
-                        "type": "boolean"
-                      },
-                      "canonicalHostName": {
-                        "type": "string"
-                      }
+                  "type": "object",
+                  "properties": {
+                    "range": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "format": "double"
                     }
-                  },
-                  "port": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "unresolved": {
-                    "type": "boolean"
-                  },
-                  "hostName": {
-                    "type": "string"
-                  },
-                  "hostString": {
-                    "type": "string"
                   }
                 }
               },
-              "all": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "writeOnly": true
+              "pragma": {
+                "type": "string"
               },
-              "lastModified": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "date": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "contentLength": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "connection": {
+              "acceptPatch": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/MediaType"
                 }
-              },
-              "ifModifiedSince": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "contentType": {
-                "$ref": "#/components/schemas/MediaType"
-              },
-              "origin": {
-                "type": "string"
               },
               "allow": {
                 "uniqueItems": true,
@@ -4125,8 +4039,15 @@
                   "$ref": "#/components/schemas/HttpMethod"
                 }
               },
-              "cacheControl": {
-                "type": "string"
+              "bearerAuth": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "acceptCharset": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "contentLanguage": {
                 "type": "object",
@@ -4190,36 +4111,64 @@
               "etag": {
                 "type": "string"
               },
+              "expires": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "ifMatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ifNoneMatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "origin": {
+                "type": "string"
+              },
+              "accessControlAllowOrigin": {
+                "type": "string"
+              },
+              "accessControlExposeHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessControlMaxAge": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "accessControlRequestHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessControlAllowMethods": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpMethod"
+                }
+              },
               "accept": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/MediaType"
                 }
               },
-              "acceptPatch": {
+              "accessControlRequestMethod": {
+                "$ref": "#/components/schemas/HttpMethod"
+              },
+              "connection": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/MediaType"
+                  "type": "string"
                 }
-              },
-              "acceptLanguage": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "range": {
-                      "type": "string"
-                    },
-                    "weight": {
-                      "type": "number",
-                      "format": "double"
-                    }
-                  }
-                }
-              },
-              "basicAuth": {
-                "type": "string",
-                "writeOnly": true
               },
               "acceptLanguageAsLocales": {
                 "type": "array",
@@ -4283,6 +4232,99 @@
                   }
                 }
               },
+              "host": {
+                "type": "object",
+                "properties": {
+                  "hostString": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "hostAddress": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "string",
+                        "format": "byte"
+                      },
+                      "hostName": {
+                        "type": "string"
+                      },
+                      "linkLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "multicastAddress": {
+                        "type": "boolean"
+                      },
+                      "anyLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "loopbackAddress": {
+                        "type": "boolean"
+                      },
+                      "siteLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "mcglobal": {
+                        "type": "boolean"
+                      },
+                      "mcnodeLocal": {
+                        "type": "boolean"
+                      },
+                      "mclinkLocal": {
+                        "type": "boolean"
+                      },
+                      "mcsiteLocal": {
+                        "type": "boolean"
+                      },
+                      "mcorgLocal": {
+                        "type": "boolean"
+                      },
+                      "canonicalHostName": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "port": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "unresolved": {
+                    "type": "boolean"
+                  },
+                  "hostName": {
+                    "type": "string"
+                  }
+                }
+              },
+              "cacheControl": {
+                "type": "string"
+              },
+              "range": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpRange"
+                }
+              },
+              "location": {
+                "type": "string",
+                "format": "uri"
+              },
+              "contentDisposition": {
+                "$ref": "#/components/schemas/ContentDisposition"
+              },
+              "contentType": {
+                "$ref": "#/components/schemas/MediaType"
+              },
+              "contentLength": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "ifUnmodifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
               "accessControlAllowCredentials": {
                 "type": "boolean"
               },
@@ -4292,69 +4334,27 @@
                   "type": "string"
                 }
               },
-              "accessControlAllowMethods": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/HttpMethod"
-                }
+              "empty": {
+                "type": "boolean"
               },
-              "accessControlAllowOrigin": {
-                "type": "string"
-              },
-              "accessControlExposeHeaders": {
-                "type": "array",
-                "items": {
+              "all": {
+                "type": "object",
+                "additionalProperties": {
                   "type": "string"
-                }
-              },
-              "accessControlMaxAge": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "accessControlRequestHeaders": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "accessControlRequestMethod": {
-                "$ref": "#/components/schemas/HttpMethod"
-              },
-              "bearerAuth": {
-                "type": "string",
+                },
                 "writeOnly": true
               },
-              "expires": {
+              "lastModified": {
                 "type": "integer",
                 "format": "int64"
               },
-              "ifMatch": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "ifNoneMatch": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "ifUnmodifiedSince": {
+              "date": {
                 "type": "integer",
                 "format": "int64"
               },
-              "pragma": {
-                "type": "string"
-              },
-              "upgrade": {
-                "type": "string"
-              },
-              "vary": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+              "ifModifiedSince": {
+                "type": "integer",
+                "format": "int64"
               }
             },
             "additionalProperties": {
@@ -4370,11 +4370,27 @@
           "reason": {
             "type": "string"
           },
+          "responseHeaders": {
+            "$ref": "#/components/schemas/HttpHeaders"
+          },
           "message": {
             "type": "string"
           },
-          "responseHeaders": {
-            "$ref": "#/components/schemas/HttpHeaders"
+          "detailMessageArguments": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "detailMessageCode": {
+            "type": "string"
+          },
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "detail": {
+            "type": "string",
+            "writeOnly": true
           },
           "title": {
             "type": "string",
@@ -4390,24 +4406,55 @@
             "format": "uri",
             "writeOnly": true
           },
-          "detail": {
-            "type": "string",
-            "writeOnly": true
-          },
-          "statusCode": {
-            "$ref": "#/components/schemas/HttpStatusCode"
-          },
-          "detailMessageArguments": {
-            "type": "array",
-            "items": {
-              "type": "object"
-            }
-          },
-          "detailMessageCode": {
+          "typeMessageCode": {
             "type": "string"
           },
           "titleMessageCode": {
             "type": "string"
+          },
+          "mostSpecificCause": {
+            "type": "object",
+            "properties": {
+              "stackTrace": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "classLoaderName": {
+                      "type": "string"
+                    },
+                    "moduleName": {
+                      "type": "string"
+                    },
+                    "moduleVersion": {
+                      "type": "string"
+                    },
+                    "methodName": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "nativeMethod": {
+                      "type": "boolean"
+                    },
+                    "className": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "message": {
+                "type": "string"
+              },
+              "localizedMessage": {
+                "type": "string"
+              }
+            }
           },
           "rootCause": {
             "type": "object",
@@ -4538,50 +4585,6 @@
                     }
                   }
                 }
-              },
-              "localizedMessage": {
-                "type": "string"
-              }
-            }
-          },
-          "mostSpecificCause": {
-            "type": "object",
-            "properties": {
-              "stackTrace": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "classLoaderName": {
-                      "type": "string"
-                    },
-                    "moduleName": {
-                      "type": "string"
-                    },
-                    "moduleVersion": {
-                      "type": "string"
-                    },
-                    "methodName": {
-                      "type": "string"
-                    },
-                    "fileName": {
-                      "type": "string"
-                    },
-                    "lineNumber": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "nativeMethod": {
-                      "type": "boolean"
-                    },
-                    "className": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "message": {
-                "type": "string"
               },
               "localizedMessage": {
                 "type": "string"
@@ -5017,6 +5020,10 @@
             "format": "date-time",
             "writeOnly": true
           },
+          "epochSeconds": {
+            "type": "integer",
+            "format": "int64"
+          },
           "value$kotlinx_datetime": {
             "type": "string",
             "format": "date-time"
@@ -5024,10 +5031,6 @@
           "nanosecondsOfSecond": {
             "type": "integer",
             "format": "int32"
-          },
-          "epochSeconds": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },

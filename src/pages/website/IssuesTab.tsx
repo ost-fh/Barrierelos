@@ -60,7 +60,7 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
   })
   return (
     <>
-      <h2>{t("WebsitePage.Issues.header")}</h2>
+      <h2>{t("WebsitePage.IssuesTab.header")}</h2>
       {webpages}
     </>
   )

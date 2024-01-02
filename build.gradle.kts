@@ -5,13 +5,13 @@ plugins {
   kotlin("plugin.jpa") version "1.8.22"
   kotlin("plugin.serialization") version "1.9.20"
   kotlin("plugin.spring") version "1.8.22"
-  id("org.springframework.boot") version "3.1.5"
+  id("org.springframework.boot") version "3.2.1"
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("org.barfuin.gradle.jacocolog") version "3.1.0"
 }
 
 group = "ch.barrierelos"
-version = "0.0.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
   mavenCentral()
@@ -25,12 +25,12 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
   implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
   implementation("org.springframework.amqp:spring-rabbit:3.0.10")
-  implementation("org.springframework.boot:spring-boot-starter-amqp:3.1.5")
-  implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.5")
-  implementation("org.springframework.boot:spring-boot-starter-security:3.1.5")
-  implementation("org.springframework.boot:spring-boot-starter-web:3.1.5")
+  implementation("org.springframework.boot:spring-boot-starter-amqp:3.2.1")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.1")
+  implementation("org.springframework.boot:spring-boot-starter-security:3.2.1")
+  implementation("org.springframework.boot:spring-boot-starter-web:3.2.1")
   implementation("org.springframework.security:spring-security-oauth2-jose:6.1.5")
   implementation("org.springframework.security:spring-security-oauth2-resource-server:6.1.5")
   implementation("org.yaml:snakeyaml:2.2")
@@ -43,7 +43,7 @@ dependencies {
   testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.0")
   testImplementation("io.mockk", "mockk", "1.13.8")
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-  testImplementation("org.springframework.boot", "spring-boot-starter-test", "3.1.5") {
+  testImplementation("org.springframework.boot", "spring-boot-starter-test", "3.2.1") {
     exclude("org.junit.vintage", "junit-vintage-engine")
     exclude("org.mockito", "mockito-core")
   }
@@ -86,26 +86,4 @@ tasks {
   jacocoTestReport {
     dependsOn(test)
   }
-}
-
-task<Exec>("dockerUp") {
-  group = "docker"
-  description = "Launches the entire system, including the backend."
-
-  commandLine(
-    "sh",
-    "-c",
-    "docker compose -f compose-prod.yml -f compose-dev.yml up -d"
-  )
-}
-
-task<Exec>("dockerDependenciesUp") {
-  group = "docker"
-  description = "Launches this application's Docker dependencies using docker compose."
-
-  commandLine(
-    "sh",
-    "-c",
-    "docker compose -f compose-prod.yml -f compose-dev.yml up -d --scale backend=0"
-  )
 }

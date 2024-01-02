@@ -101,14 +101,23 @@
       "webpageWeightTooltip": "Determines the influence of this webpage on the website score. The weight is based on the number of HTML elements on the webpage that are relevant for Accessibility."
     },
     "IssuesTab": {
-      "header": "Issues per Webpage"
+      "header": "Issues per Webpage",
+      "violationsLabel": "Violations",
+      "violationPercentageSuffix": "of elements tested for this rule",
+      "issueTypeLabel": "Type",
+      "issueTypeBestPracticeLabel": "Best-Practice",
+      "issueTypeWcagLabel": "WCAG",
+      "issueTypeWcagVersionLabel": "Version",
+      "issueTypeWcagLevelLabel": "Level",
+      "issueTypeWcagRelevantCriteriaLabel": "Relevant criteria",
+      "learnMoreLinkLabel": "Learn more"
     },
     "ScanInfosTab": {
       "scanInfosHeader": "Scan Infos",
       "lastScannedAtLabel": "Last scanned at",
       "webpagesHeader": "Webpage Scans",
-      "scanStatusLabel": "Scan Status",
       "ScanStatus": {
+        "label": "Scan Status",
         "SUCCESS": "Success",
         "FAILED": "Failed",
         "notYetScanned": "Not yet scanned"

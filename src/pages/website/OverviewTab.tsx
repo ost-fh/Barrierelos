@@ -38,8 +38,10 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
       {websiteScan.websiteStatistic ? (
         <>
           <h2>{t("WebsitePage.OverviewTab.websiteDetailsHeader")}</h2>
-          <p>{t("WebsitePage.OverviewTab.addedOnLabel")}: {new Date(websiteScan.website.created).toLocaleString(i18n.language)}</p>
-          <p>{t("WebsitePage.OverviewTab.tagsLabel")}: {tags}</p>
+          <Stack spacing={2}>
+            <div>{t("WebsitePage.OverviewTab.addedOnLabel")}: {new Date(websiteScan.website.created).toLocaleString(i18n.language)}</div>
+            <div>{t("WebsitePage.OverviewTab.tagsLabel")}: {tags}</div>
+          </Stack>
 
           <h2>{t("WebsitePage.OverviewTab.violationsPerWcagPrincipleHeader")}</h2>
           <Grid container spacing={2}>

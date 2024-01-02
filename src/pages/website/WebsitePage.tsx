@@ -50,17 +50,19 @@ function WebsitePage() {
 
 
       <Stack direction="row" alignItems="center">
-        <h1>{websiteScan.website.url}</h1>
+        <h1>{websiteScan.website.domain}</h1>
         {websiteScan.website.status !== status.READY ? (
           <Chip
             label={`${t("WebsitePage.WebsiteStatus.label")}: ${translate(t, "WebsitePage.WebsiteStatus." + websiteScan.website.status)}`}/>
         ) : null}
         {websiteScan.websiteStatistic ? (
-          <Tooltip title={t("General.barrierelosScore")}>
-            <div className={`score ${scoreClass}`} style={{background: scoreGradient}}>
-              <span>{score}</span>
-            </div>
-          </Tooltip>
+          <Box>
+            <Tooltip title={t("General.barrierelosScore")}>
+              <div className={`score ${scoreClass}`} style={{background: scoreGradient}}>
+                <span>{score}</span>
+              </div>
+            </Tooltip>
+          </Box>
         ) : null}
       </Stack>
 

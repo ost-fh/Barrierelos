@@ -1,5 +1,17 @@
 import {Rule, WebsiteScan} from "../../lib/api-client";
-import {Accordion, AccordionDetails, AccordionSummary, Chip, Typography} from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Chip,
+  Stack,
+  Typography
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useTranslation} from "react-i18next";
 import "./IssuesTab.css"
@@ -13,15 +25,16 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
   const webpages = websiteScan.webpageScans?.map(webpageScan => {
     const rules = webpageScan.webpageResult?.rules
       ?.filter(rule => rule.checks.some(check => check.violatedCount > 0))
-      ?.map(rule => (
-        <li key={rule.id}>
+      .sort((a, b) => a.description.localeCompare(b.description))
+      .map(rule => (
+        <Box key={rule.id}>
           <RuleElement rule={rule}/>
-        </li>
+        </Box>
       ))
     if (rules === undefined || rules.length === 0) return null
 
     return (
-      <Accordion key={webpageScan.webpage.id}>
+      <Accordion key={webpageScan.webpage.id} variant="outlined">
         <AccordionSummary
           expandIcon={<ExpandMoreIcon/>}
           aria-controls="panel1a-content"
@@ -38,9 +51,9 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
           ) : null}
         </AccordionSummary>
         <AccordionDetails>
-          <ul>
+          <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
             {rules}
-          </ul>
+          </Stack>
         </AccordionDetails>
       </Accordion>
     )
@@ -51,37 +64,45 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
       {webpages}
     </>
   )
-}
 
-function RuleElement(props: { rule: Rule }) {
-  const rule = props.rule
-  const violatedCount = rule.checks.map((check) => check.violatedCount).reduce((a, b) => a + b, 0)
-  if (violatedCount === 0) return null
-  const testedCount = rule.checks.map((check) => check.testedCount).reduce((a, b) => a + b, 0)
-  const violationPercentage = testedCount !== 0 ? formatViolationRatio(violatedCount / testedCount * 100, 2) : "0"
-  return (
-    <>
-      <p>
-        {rule.description}
-      </p>
-      <p>
-        <a href={rule.axeUrl}>Learn more</a>
-      </p>
-      <p>
-        Violations: {violatedCount} ({violationPercentage}% of elements tested for this rule)
-      </p>
-      {
-        rule.wcagReferences ? (
-          <>
-            <p>
-              WCAG - Version: {rule.wcagReferences.version} - Level: {rule.wcagReferences.level}
-              - Relevant criteria: {rule.wcagReferences.criteria.join(", ")}
-            </p>
-          </>
-        ) : null
-      }
-    </>
-  )
+  function RuleElement(props: { rule: Rule }) {
+    const rule = props.rule
+    const violatedCount = rule.checks.map((check) => check.violatedCount).reduce((a, b) => a + b, 0)
+    if (violatedCount === 0) return null
+    const testedCount = rule.checks.map((check) => check.testedCount).reduce((a, b) => a + b, 0)
+    const violationPercentage = testedCount !== 0 ? formatViolationRatio(violatedCount / testedCount * 100, 2) : "0"
+    return (
+      <Card sx={{maxWidth: 345}} variant="outlined">
+        <CardHeader title={rule.description} lang="en"/>
+        <CardContent>
+          <div>{t("WebsitePage.IssuesTab.violationsLabel")}: {violatedCount}</div>
+          <div>{violationPercentage}% {t("WebsitePage.IssuesTab.violationPercentageSuffix")}</div>
+
+          <p>
+            <span className="issueType">
+              {t("WebsitePage.IssuesTab.issueTypeLabel")}:&nbsp;
+              {rule.wcagReferences ? (
+                <span>{t("WebsitePage.IssuesTab.issueTypeWcagLabel")}</span>
+              ) : <span>{t("WebsitePage.IssuesTab.issueTypeBestPracticeLabel")}</span>}
+            </span>
+            {rule.wcagReferences ? (
+              <>
+                <span>{t("WebsitePage.IssuesTab.issueTypeWcagVersionLabel")}: {rule.wcagReferences.version}</span>
+                <span>{t("WebsitePage.IssuesTab.issueTypeWcagLevelLabel")}: {rule.wcagReferences.level}</span>
+                <span>{t("WebsitePage.IssuesTab.issueTypeWcagRelevantCriteriaLabel")}: {rule.wcagReferences.criteria.sort().join(", ")}
+                </span>
+              </>
+            ) : null}
+
+          </p>
+
+        </CardContent>
+        <CardActions disableSpacing>
+          <a href={rule.axeUrl} target="_blank" rel="noreferrer">{t("WebsitePage.IssuesTab.learnMoreLinkLabel")}</a>
+        </CardActions>
+      </Card>
+    )
+  }
 }
 
 export default IssuesTab

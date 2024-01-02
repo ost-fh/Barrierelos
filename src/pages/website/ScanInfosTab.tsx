@@ -10,26 +10,10 @@ function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | u
   const webpageScans = props.webpageScans
   const scanJob = props.scanJob
 
-  const webpageScanInfos = webpageScans.map(webpageResult => {
-    const webpage = webpageResult.webpage
-    const result = webpageResult.webpageResult
-    const scanStatus = result?.scanStatus !== undefined
-      ? translate(t, result.scanStatus.toUpperCase())
-      : t("WebsitePage.ScanInfosTab.ScanStatus.notYetScanned")
+  const webpageScanInfos = webpageScans.map(webpageScan => (
+    <WebpageScanInfo key={webpageScan.webpage.id} webpageScan={webpageScan}/>
+  ))
 
-    return (
-      <div key={webpage.id}>
-        <span>{webpage.displayUrl}</span>
-        <Chip label={`${t("WebsitePage.ScanInfosTab.scanStatusLabel")}: ${scanStatus}`}/>
-        {result?.errorMessage !== undefined ? (
-          <div>
-            <span>{t("WebsitePage.ScanInfosTab.technicalErrorLabel")}:</span>
-            <Paper sx={{display: "table", padding: "1rem"}}>{result?.errorMessage}</Paper>
-          </div>
-        ) : null}
-      </div>
-    )
-  })
   return (
     <>
       <h2>{t("WebsitePage.ScanInfosTab.scanInfosHeader")}</h2>
@@ -47,6 +31,27 @@ function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | u
       </Stack>
     </>
   )
+
+  function WebpageScanInfo(props: { webpageScan: WebpageScan }) {
+    const webpage = props.webpageScan.webpage
+    const result = props.webpageScan.webpageResult
+    const webpageScanStatus = result?.scanStatus !== undefined
+      ? translate(t, `WebsitePage.ScanInfosTab.ScanStatus.${result.scanStatus.toUpperCase()}`)
+      : t("WebsitePage.ScanInfosTab.ScanStatus.notYetScanned")
+
+    return (
+      <div key={webpage.id}>
+        <span>{webpage.displayUrl}</span>
+        <Chip label={`${t("WebsitePage.ScanInfosTab.ScanStatus.label")}: ${webpageScanStatus}`}/>
+        {result?.errorMessage !== undefined ? (
+          <div>
+            <span>{t("WebsitePage.ScanInfosTab.technicalErrorLabel")}:</span>
+            <Paper sx={{display: "table", padding: "1rem"}} lang="en">{result?.errorMessage}</Paper>
+          </div>
+        ) : null}
+      </div>
+    )
+  }
 }
 
 

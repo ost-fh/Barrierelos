@@ -101,7 +101,16 @@
       "webpageWeightTooltip": "Bestimmt den Einfluss dieser Webpage auf den Website Score. Die Gewichtung basiert auf der Anzahl HTML Elemente auf der Webpage die relevant für die Barrierefreiheit sind."
     },
     "IssuesTab": {
-      "header": "Probleme pro Webpage"
+      "header": "Probleme pro Webpage",
+      "violationsLabel": "Verstösse",
+      "violationPercentageSuffix": " der für diese Regel getesteten Elemente",
+      "issueTypeLabel": "Type",
+      "issueTypeBestPracticeLabel": "Best-Practice",
+      "issueTypeWcagLabel": "WCAG",
+      "issueTypeWcagVersionLabel": "Version",
+      "issueTypeWcagLevelLabel": "Level",
+      "issueTypeWcagRelevantCriteriaLabel": "Relevante Kriterien",
+      "learnMoreLinkLabel": "Mehr Informationen (auf Englisch)"
     },
     "ScanInfosTab": {
       "scanInfosHeader": "Scan Infos",

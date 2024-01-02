@@ -71,7 +71,7 @@ export function WebsiteTable() {
     {
       field: "score",
       headerName: t("WebsitesPage.WebsiteTable.scoreHeaderLabel"),
-      width: 140,
+      width: 160,
       align: "center"
     },
   ];
@@ -84,8 +84,8 @@ export function WebsiteTable() {
       loading={isLoading}
       disableRowSelectionOnClick
       disableColumnMenu
-      pagination
       sortingMode="server"
+      sortModel={sortModel}
       onSortModelChange={setSortModel}
       paginationMode="server"
       onPaginationModelChange={setPaginationModel}

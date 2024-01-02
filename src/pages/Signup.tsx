@@ -161,7 +161,6 @@ function Signup() {
                   name="firstname"
                   label={t("SignupPage.firstname")}
                   autoComplete="given-name"
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

@@ -182,7 +182,6 @@ function Login() {
               name="username"
               label={t("LoginPage.username")}
               autoComplete="username"
-              autoFocus
               value={username}
             />
             <TextField

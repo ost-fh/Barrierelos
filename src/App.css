@@ -1,3 +1,56 @@
-main {
+main, footer {
   margin-inline: 24px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  width: 1px;
+  height: 1px;
+  top: auto;
+}
+
+.skip-link:focus,
+.skip-link:active {
+  color: black;
+  display: inline-block;
+  height: auto;
+  width: auto;
+  position: static;
+  margin: auto;
+}
+
+hr {
+  margin-block: 24px;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: 24px;
+}
+
+.barrierelos-logo {
+  width: 250px;
+}
+
+.footer-links {
+  display: inline-block;
+  margin: 0;
+  padding-inline-start: 0;
+  list-style-type: none;
+}
+
+.footer-links li {
+  text-align: end;
+}
+
+.footer-links li a {
+  color: #006064;
+  font-weight: normal;
+}
+
+.footer-links li a:visited {
+  color: #006064;
+  text-decoration: none;
 }

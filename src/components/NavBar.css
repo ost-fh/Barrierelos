@@ -18,6 +18,10 @@ nav li a {
   text-decoration: none;
 }
 
+nav li a:focus {
+  border: #c7e1f3 inset;
+}
+
 nav li a:hover {
   background-color: #111;
 }

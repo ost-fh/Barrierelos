@@ -2,7 +2,8 @@
   "General": {
     "title": "Barrierelos",
     "barrierelosScore": "Barrierelos-Score",
-    "webpageWeight": "Weight"
+    "webpageWeight": "Weight",
+    "barrierelosLogoAlt": "Logo with accompanying text: Barrierelos: For better access to digital services."
   },
   "WebsiteCategories": {
     "label": "Category",

@@ -2,7 +2,8 @@
   "General": {
     "title": "Barrierelos",
     "barrierelosScore": "Barrierelos-Score",
-    "webpageWeight": "Gewichtung"
+    "webpageWeight": "Gewichtung",
+    "barrierelosLogoAlt": "Logo mit dazugehörigem Text: Barrierelos: Für besseren Zugang zu digitalen Angeboten."
   },
   "WebsiteCategories": {
     "label": "Kategorie",

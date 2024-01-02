@@ -1,5 +1,5 @@
 import "./App.css"
-import {Route, Routes} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import Login from "./pages/Login.tsx";
 import WebsitePage from "./pages/website/WebsitePage.tsx";
 import HomePage from "./pages/HomePage.tsx";
@@ -19,13 +19,17 @@ import Logout from "./pages/Logout.tsx";
 import Profile from "./pages/Profile.tsx";
 import Signup from "./pages/Signup.tsx";
 import WebsitesPage from "./pages/websites/WebsitesPage.tsx";
+import barrierelosLogo from "./assets/logo.svg";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage.tsx";
+import ImpressumPage from "./pages/ImpressumPage.tsx";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import {OAUTH_GOOGLE_CLIENT_ID} from "./constants.ts";
+
 
 type MuiLocales = "enUS" | "deDE";
 
 function App() {
-  const {i18n} = useTranslation()
+  const {t, i18n} = useTranslation()
 
   const [muiLocale, setMuiLocale] = useState<MuiLocales>(mapToMuiLocale(i18n.resolvedLanguage));
   const theme = useTheme();
@@ -94,7 +98,7 @@ function App() {
 
   const [authentication, setAuthentication] = useState<Authentication>(new Authentication());
 
-  if(!authentication.isAuthenticated) {
+  if (!authentication.isAuthenticated) {
     AuthenticationService.load(setAuthentication);
   }
 
@@ -118,37 +122,56 @@ function App() {
               <meta charSet="utf-8"/>
               <title>Barrierelos</title>
             </Helmet>
-          <header>
-            <NavBar/>
-          </header>
-          <main>
-            <Routes>
-              <Route path="/" element={<HomePage/>}/>
-              <Route path="/websites" element={<WebsitesPage/>}/>
-              <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
-              <Route path="/login" element={<Login/>}/>
-              <Route path="/logout" element={<Logout/>}/>
-              <Route path="/signup" element={<Signup/>}/>
-              <Route path="/profile" element={<Private Component={Profile} />}/>
-              <Route path="*" element={<NotFound/>}/>
-            </Routes>
-          </main>
+            <header>
+              <Link className="skip-link" to="#main-content" onClick={focusMainContent}>Skip to main content</Link>
+              <NavBar/>
+            </header>
+            <main id="main-content" tabIndex={-1}>
+              <Routes>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/websites" element={<WebsitesPage/>}/>
+                <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/logout" element={<Logout/>}/>
+                <Route path="/signup" element={<Signup/>}/>
+                <Route path="/profile" element={<Private Component={Profile}/>}/>
+                <Route path="/impressum" element={<ImpressumPage/>}/>
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
+                <Route path="*" element={<NotFound/>}/>
+              </Routes>
+            </main>
+            <hr/>
+            <footer>
+              <img className="barrierelos-logo" src={barrierelosLogo} alt={t("General.barrierelosLogoAlt")}/>
+              <ul className="footer-links">
+                <li><Link to="/impressum">Impressum</Link></li>
+                <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+                <li><Link to="https://gitlab.ost.ch/barrierelos">Source Code</Link></li>
+              </ul>
+            </footer>
           </HelmetProvider>
         </ThemeProvider>
       </AuthenticationProvider>
     </>
   )
+}
 
-  function mapToMuiLocale(locale?: string): MuiLocales {
-    if (locale === undefined) return "enUS"
-    switch (locale) {
-      case "en":
-        return "enUS"
-      case "de":
-        return "deDE"
-      default:
-        throw Error(`Locale '${locale}' is not configured`)
-    }
+function mapToMuiLocale(locale?: string): MuiLocales {
+  if (locale === undefined) return "enUS"
+  switch (locale) {
+    case "en":
+      return "enUS"
+    case "de":
+      return "deDE"
+    default:
+      throw Error(`Locale '${locale}' is not configured`)
+  }
+}
+
+function focusMainContent() {
+  const mainContent = document.querySelector(`#main-content`) as HTMLElement | null;
+  if (mainContent) {
+    mainContent.focus();
   }
 }
 

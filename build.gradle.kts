@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+  // The current vulnerability (Cx78f40514-81ff) does not affect us since we do not use the affected class / function
   implementation("commons-validator:commons-validator:1.8.0")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
   implementation("me.paulschwarz:spring-dotenv:4.0.0")

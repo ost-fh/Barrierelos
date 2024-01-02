@@ -121,7 +121,7 @@ function formatRuleOccurrences(axeRuleOccurrences: [string, AxeRule[]]): Rule {
 
     return {
         id,
-        description: occurrences[0].rule.description,
+        description: occurrences[0].rule.help,
         axeUrl: occurrences[0].rule.helpUrl,
         wcagReferences: wcagReference,
         checks

@@ -52,7 +52,8 @@
     "title": "Start",
     "searchLabel": "Bestehende Website suchen",
     "searchStringEmptyLabel": "Tippen Sie um zu suchen",
-    "searchNoResultsLabel": "Keine Website mit dieser Domain gefunden"
+    "searchNoResultsLabel": "Keine Website mit dieser Domain gefunden",
+    "viewWebsiteBtnLabel": "Auswertung ansehen"
   },
   "WebsitesPage": {
     "title": "Websites",
@@ -79,24 +80,24 @@
     "tabOverviewLabel": "Übersicht",
     "tabRulesLabel": "Probleme",
     "tabScanInfosLabel": "Scan Infos",
-    "Overview": {
+    "OverviewTab": {
       "websiteDetailsHeader": "Website Details",
       "addedOnLabel": "Hinzugefügt am",
       "tagsLabel": "Tags",
-      "principleViolationHeader": "Probleme pro WCAG Prinzip",
-      "principleViolationPerceivableLabel": "Wahrnehmbar",
-      "principleViolationOperableLabel": "Bedienbar",
-      "principleViolationUnderstandableLabel": "Verständlich",
-      "principleViolationRobustLabel": "Robust",
+      "violationsPerWcagPrincipleHeader": "Probleme pro WCAG Prinzip",
+      "violationsPerWcagPrinciplePerceivableLabel": "Wahrnehmbar",
+      "violationsPerWcagPrincipleOperableLabel": "Bedienbar",
+      "violationsPerWcagPrincipleUnderstandableLabel": "Verständlich",
+      "violationsPerWcagPrincipleRobustLabel": "Robust",
       "webpagesHeader": "Webpages",
       "webpagesTableAriaLabel": "Webpages Tabelle",
       "webpageUrl": "URL",
       "webpageWeightTooltip": "Bestimmt den Einfluss dieser Webpage auf den Website Score. Die Gewichtung basiert auf der Anzahl HTML Elemente auf der Webpage die relevant für die Barrierefreiheit sind."
     },
-    "Issues": {
+    "IssuesTab": {
       "header": "Probleme pro Webpage"
     },
-    "ScanInfos": {
+    "ScanInfosTab": {
       "scanInfosHeader": "Scan Infos",
       "lastScannedAtLabel": "Zuletzt gescannt am",
       "webpagesHeader": "Webpage Scans",

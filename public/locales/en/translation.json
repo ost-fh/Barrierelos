@@ -52,7 +52,8 @@
     "title": "Home",
     "searchLabel": "Find an existing website",
     "searchStringEmptyLabel": "Type to search",
-    "searchNoResultsLabel": "No website with this domain found"
+    "searchNoResultsLabel": "No website with this domain found",
+    "viewWebsiteBtnLabel": "View Evaluation"
   },
   "WebsitesPage": {
     "title": "Websites",
@@ -79,24 +80,24 @@
     "tabOverviewLabel": "Overview",
     "tabRulesLabel": "Issues",
     "tabScanInfosLabel": "Scan Infos",
-    "Overview": {
+    "OverviewTab": {
       "websiteDetailsHeader": "Website Details",
       "addedOnLabel": "Added on",
       "tagsLabel": "Tags",
-      "principleViolationHeader": "Issues per WCAG principle",
-      "principleViolationPerceivableLabel": "Perceivable",
-      "principleViolationOperableLabel": "Operable",
-      "principleViolationUnderstandableLabel": "Understandable",
-      "principleViolationRobustLabel": "Robust",
+      "violationsPerWcagPrincipleHeader": "Issues per WCAG principle",
+      "violationsPerWcagPrinciplePerceivableLabel": "Perceivable",
+      "violationsPerWcagPrincipleOperableLabel": "Operable",
+      "violationsPerWcagPrincipleUnderstandableLabel": "Understandable",
+      "violationsPerWcagPrincipleRobustLabel": "Robust",
       "webpagesHeader": "Webpages",
       "webpagesTableAriaLabel": "Webpages Table",
       "webpageUrl": "URL",
       "webpageWeightTooltip": "Determines the influence of this webpage on the website score. The weight is based on the number of HTML elements on the webpage that are relevant for Accessibility."
     },
-    "Issues": {
+    "IssuesTab": {
       "header": "Issues per Webpage"
     },
-    "ScanInfos": {
+    "ScanInfosTab": {
       "scanInfosHeader": "Scan Infos",
       "lastScannedAtLabel": "Last scanned at",
       "webpagesHeader": "Webpage Scans",

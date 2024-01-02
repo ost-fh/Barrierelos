@@ -4,14 +4,14 @@ import useSWR from "swr"
 import {Box, Chip, Stack, Tab, Tooltip} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {SyntheticEvent, useEffect, useState} from "react";
-import Overview from "./Overview.tsx";
-import Issues from "./Issues.tsx";
+import OverviewTab from "./OverviewTab.tsx";
+import IssuesTab from "./IssuesTab.tsx";
 import "./WebsitePage.css"
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
 import {formatScore, getScoreClass, getScoreColor} from "../../util/formatter.ts";
-import ScanInfos from "./ScanInfos.tsx";
+import ScanInfosTab from "./ScanInfosTab.tsx";
 import status = Website.status;
 
 function WebsitePage() {
@@ -76,16 +76,16 @@ function WebsitePage() {
           </TabList>
         </Box>
         <TabPanel value={Tabs.OVERVIEW}>
-          <Overview websiteScan={websiteScan}/>
+          <OverviewTab websiteScan={websiteScan}/>
         </TabPanel>
         {notPendingInitialScan ? (
           <TabPanel value={Tabs.RULES}>
-            <Issues websiteScan={websiteScan}/>
+            <IssuesTab websiteScan={websiteScan}/>
           </TabPanel>
         ) : null}
         {notPendingInitialScan ? (
           <TabPanel value={Tabs.SCAN_INFOS}>
-            <ScanInfos webpageScans={websiteScan.webpageScans} scanJob={websiteScan.websiteResult?.scanJob}/>
+            <ScanInfosTab webpageScans={websiteScan.webpageScans} scanJob={websiteScan.websiteResult?.scanJob}/>
           </TabPanel>
         ) : null}
       </TabContext>

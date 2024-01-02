@@ -15,7 +15,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
-import "./Overview.css"
+import "./OverviewTab.css"
 import {useTranslation} from "react-i18next"
 import HelpIcon from "@mui/icons-material/Help"
 import PerceivableIcon from "@mui/icons-material/Sensors"
@@ -25,7 +25,7 @@ import RobustIcon from "@mui/icons-material/FitnessCenter"
 import {mapWebsiteTag} from "../../util/tags.ts"
 
 
-function Overview(props: { websiteScan: WebsiteScan }) {
+function OverviewTab(props: { websiteScan: WebsiteScan }) {
   const {t, i18n} = useTranslation();
   const websiteScan: WebsiteScan = props.websiteScan
 
@@ -37,11 +37,11 @@ function Overview(props: { websiteScan: WebsiteScan }) {
     <>
       {websiteScan.websiteStatistic ? (
         <>
-          <h2>{t("WebsitePage.Overview.websiteDetailsHeader")}</h2>
-          <p>{t("WebsitePage.Overview.addedOnLabel")}: {new Date(websiteScan.website.created).toLocaleString(i18n.language)}</p>
-          <p>{t("WebsitePage.Overview.tagsLabel")}: {tags}</p>
+          <h2>{t("WebsitePage.OverviewTab.websiteDetailsHeader")}</h2>
+          <p>{t("WebsitePage.OverviewTab.addedOnLabel")}: {new Date(websiteScan.website.created).toLocaleString(i18n.language)}</p>
+          <p>{t("WebsitePage.OverviewTab.tagsLabel")}: {tags}</p>
 
-          <h2>{t("WebsitePage.Overview.principleViolationHeader")}</h2>
+          <h2>{t("WebsitePage.OverviewTab.violationsPerWcagPrincipleHeader")}</h2>
           <Grid container spacing={2}>
             <Grid item>
               <Card variant="outlined">
@@ -53,7 +53,7 @@ function Overview(props: { websiteScan: WebsiteScan }) {
                     <Grid direction="column" container alignItems="center" width="inherit">
                       <PerceivableIcon sx={{fontSize: 80}}/>
                       <Typography align="center">
-                        {t("WebsitePage.Overview.principleViolationPerceivableLabel")}
+                        {t("WebsitePage.OverviewTab.violationsPerWcagPrinciplePerceivableLabel")}
                       </Typography>
                     </Grid>
                   </Stack>
@@ -70,7 +70,7 @@ function Overview(props: { websiteScan: WebsiteScan }) {
                     <Grid direction="column" container alignItems="center">
                       <OperableIcon sx={{fontSize: 80}}/>
                       <Typography align="center">
-                        {t("WebsitePage.Overview.principleViolationOperableLabel")}
+                        {t("WebsitePage.OverviewTab.violationsPerWcagPrincipleOperableLabel")}
                       </Typography>
                     </Grid>
                   </Stack>
@@ -87,7 +87,7 @@ function Overview(props: { websiteScan: WebsiteScan }) {
                     <Grid direction="column" container alignItems="center">
                       <UnderstandableIcon sx={{fontSize: 80}}/>
                       <Typography align="center">
-                        {t("WebsitePage.Overview.principleViolationUnderstandableLabel")}
+                        {t("WebsitePage.OverviewTab.violationsPerWcagPrincipleUnderstandableLabel")}
                       </Typography>
                     </Grid>
                   </Stack>
@@ -103,7 +103,8 @@ function Overview(props: { websiteScan: WebsiteScan }) {
                     </Typography>
                     <Grid direction="column" container alignItems="center">
                       <RobustIcon sx={{fontSize: 80}}/>
-                      <Typography align="center">{t("WebsitePage.Overview.principleViolationRobustLabel")}</Typography>
+                      <Typography
+                        align="center">{t("WebsitePage.OverviewTab.violationsPerWcagPrincipleRobustLabel")}</Typography>
                     </Grid>
                   </Stack>
                 </CardContent>
@@ -113,17 +114,17 @@ function Overview(props: { websiteScan: WebsiteScan }) {
         </>
       ) : null}
 
-      <h2>{t("WebsitePage.Overview.webpagesHeader")}</h2>
+      <h2>{t("WebsitePage.OverviewTab.webpagesHeader")}</h2>
       <TableContainer component={Paper}>
-        <Table sx={{minWidth: 650}} aria-label={t("WebsitePage.Overview.webpagesTableAriaLabel")}>
+        <Table sx={{minWidth: 650}} aria-label={t("WebsitePage.OverviewTab.webpagesTableAriaLabel")}>
           <TableHead>
             <TableRow>
-              <TableCell>{t("WebsitePage.Overview.webpageUrl")}</TableCell>
+              <TableCell>{t("WebsitePage.OverviewTab.webpageUrl")}</TableCell>
               {websiteScan.websiteStatistic ? (
                 <>
                   <TableCell>{t("General.barrierelosScore")}</TableCell>
                   <TableCell>
-                    <Tooltip describeChild title={t("WebsitePage.Overview.webpageWeightTooltip")}>
+                    <Tooltip describeChild title={t("WebsitePage.OverviewTab.webpageWeightTooltip")}>
                       <Stack direction="row" alignItems="center" gap={1}>
                         {t("General.webpageWeight")}
                         <HelpIcon/>
@@ -190,4 +191,4 @@ function Overview(props: { websiteScan: WebsiteScan }) {
   }
 }
 
-export default Overview
+export default OverviewTab

@@ -78,7 +78,7 @@ function HomePage() {
         />
         <Button id="view-website-btn" component={Link} variant="outlined" disabled={selectedWebsite === null}
                 to={selectedWebsite === null ? "/websites/" : `/websites/${selectedWebsite.id}`}>
-          View Website
+          {t("HomePage.viewWebsiteBtnLabel")}
         </Button>
       </Stack>
     </>

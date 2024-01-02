@@ -2,11 +2,11 @@ import {Rule, WebsiteScan} from "../../lib/api-client";
 import {Accordion, AccordionDetails, AccordionSummary, Chip, Typography} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useTranslation} from "react-i18next";
-import "./Issues.css"
+import "./IssuesTab.css"
 import {formatViolationRatio} from "../../util/formatter.ts";
 
 
-function Issues(props: { websiteScan: WebsiteScan }) {
+function IssuesTab(props: { websiteScan: WebsiteScan }) {
   const {t} = useTranslation();
 
   const websiteScan = props.websiteScan
@@ -84,4 +84,4 @@ function RuleElement(props: { rule: Rule }) {
   )
 }
 
-export default Issues;
+export default IssuesTab

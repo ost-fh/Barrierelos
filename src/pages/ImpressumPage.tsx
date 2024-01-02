@@ -35,12 +35,12 @@ function ImpressumPage() {
         <br/>
         <a href="mailto:info@ost.ch?subject=Project Cactus">info@ost.ch</a>
       </p>
-      <h2>Legal form</h2>
+      <h2>Legal Form</h2>
       <p>
         Institution under public law pursuant to the agreement on the OST –
         Eastern Switzerland University of Applied Sciences of 15 February 2019.
       </p>
-      <h2>Contact for technical and content-related matters</h2>
+      <h2>Contact for Technical and Content-Related Matters</h2>
       <p>
         <strong>OST</strong>
         <br/>
@@ -62,7 +62,7 @@ function ImpressumPage() {
           markus.stolze@ost.ch
         </a>
       </p>
-      <h2>Exclusion of liability</h2>
+      <h2>Exclusion of Liability</h2>
       <p>
         OST – Eastern Switzerland University of Applied Sciences makes every
         effort to publish the content on this website as up-to-date and accurate
@@ -76,7 +76,7 @@ function ImpressumPage() {
         the university reserves the right to change, delete or temporarily not
         publish content without prior notice.
       </p>
-      <h2>Exclusion of liability for links</h2>
+      <h2>Exclusion of Liability for Links</h2>
       <p>
         References and links to third-party websites are outside our area of
         responsibility. We decline all responsibility for such websites. Access
@@ -84,13 +84,12 @@ function ImpressumPage() {
       </p>
       <h2>Copyright</h2>
       <p>
-        OST – Eastern Switzerland University of Applied Sciences copyrighted
+        Pascal Lehmann, Michael Hofmann copyrighted
         content (texts, images, videos, etc.) and structure of this website. No
         rights are transferable by downloading or copying the content.
         Reproduction in whole or in part, transmission by electronic or other
         means, modification or use for public or commercial purposes without the
-        prior written consent of OST – Eastern Switzerland University of Applied
-        Sciences is prohibited.
+        prior written consent of Pascal Lehmann and Michael Hofmann is prohibited.
       </p>
     </>
   )

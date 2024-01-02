@@ -108,7 +108,6 @@ function PrivacyPolicyPage() {
           place of residence is in the European Economic Area (EEA) or
           Switzerland, by Google Ireland Limited based in Ireland (see above)
         </li>
-        <li>GitHub OAuth (GitHub, Inc.), based in the USA</li>
       </ul>
       <h2>How long do we process your data for?</h2>
       <p>

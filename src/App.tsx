@@ -123,7 +123,8 @@ function App() {
               <title>Barrierelos</title>
             </Helmet>
             <header>
-              <Link className="skip-link" to="#main-content" onClick={focusMainContent}>Skip to main content</Link>
+              <Link className="skip-link" to="#main-content"
+                    onClick={focusMainContent}>{t("General.skipLinkLabel")}</Link>
               <NavBar/>
             </header>
             <main id="main-content" tabIndex={-1}>

@@ -75,7 +75,13 @@
     }
   },
   "WebsitePage": {
-    "websiteStatusLabel": "Status",
+    "WebsiteStatus": {
+      "label": "Status",
+      "BLOCKED": "Blocked",
+      "READY": "Ready",
+      "PENDING_INITIAL": "Initial Scan Pending",
+      "PENDING_RESCAN": "Rescan Pending"
+    },
     "tabsAriaLabel": "Tabs",
     "tabOverviewLabel": "Overview",
     "tabRulesLabel": "Issues",

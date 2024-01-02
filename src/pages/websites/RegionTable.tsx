@@ -2,7 +2,7 @@ import {DataGrid, GridColDef, GridPaginationModel, GridValueFormatterParams} fro
 import {useEffect, useState} from "react";
 import useSWRMutation from "swr/mutation";
 import {ResultRegion, WebsiteControllerService} from "../../lib/api-client";
-import {formatScore} from "../../util/formatter.ts";
+import {formatScore, translate} from "../../util/formatter.ts";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
 import {useTranslation} from "react-i18next";
 
@@ -45,8 +45,7 @@ export function RegionTable() {
       headerName: t("WebsitesPage.RegionTable.regionHeaderLabel"),
       flex: 50,
       sortable: false,
-      // @ts-expect-error: Type is automatically generated from the translation file and consists of many union types
-      valueFormatter: (params: GridValueFormatterParams<Canton>) => t(`WebsiteTags.${params.value}`),
+      valueFormatter: (params: GridValueFormatterParams<string>) => translate(t, `WebsiteTags.${params.value}`),
     },
     {
       field: "score",

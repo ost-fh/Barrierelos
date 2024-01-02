@@ -1,9 +1,16 @@
-import {DataGrid, GridColDef, GridColumnVisibilityModel, GridPaginationModel, GridSortModel} from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridColumnVisibilityModel,
+  GridPaginationModel,
+  GridSortModel,
+  GridValueFormatterParams
+} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
 import useSWRMutation from "swr/mutation";
 import {ResultWebsite, Website, WebsiteControllerService} from "../../lib/api-client";
 import {Link} from "react-router-dom";
-import {formatScore} from "../../util/formatter.ts";
+import {formatScore, translate} from "../../util/formatter.ts";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
 import {useTranslation} from "react-i18next";
 import {useMediaQuery, useTheme} from "@mui/material";
@@ -65,8 +72,7 @@ export function WebsiteTable() {
       field: "category",
       headerName: t("WebsitesPage.WebsiteTable.categoryHeaderLabel"),
       flex: 50,
-      // @ts-expect-error: Interface is automatically generated from the translation file and consists of many union types
-      valueFormatter: (params) => t(`WebsiteCategories.${params.value}`),
+      valueFormatter: (params: GridValueFormatterParams<Website.category>) => translate(t, `WebsiteCategories.${params.value.toString()}`),
     },
     {
       field: "score",

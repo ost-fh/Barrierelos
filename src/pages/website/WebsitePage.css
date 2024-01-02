@@ -7,7 +7,7 @@ main:has(.MuiTabs-root) h1 {
 }
 
 :root {
-  --rating-size: 4rem;
+  --rating-size: 4.5rem;
   --bar-size: 0.5rem;
   --background-color: #ffffff;
   --score-color-default: #2980b9;
@@ -20,7 +20,6 @@ main:has(.MuiTabs-root) h1 {
 /* Rating item */
 .score {
   position: relative;
-  top: 0.7rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,18 +36,16 @@ main:has(.MuiTabs-root) h1 {
   line-height: 1;
 }
 
+.score:nth-child(3) {
+  margin-inline-start: 1.5rem;
+}
+
 /* Rating circle content */
 .score span {
   position: relative;
   display: flex;
   font-weight: bold;
   z-index: 2;
-}
-
-.score span small {
-  font-size: 0.5em;
-  font-weight: 900;
-  align-self: center;
 }
 
 /* Bar mask, creates an inner circle with the same color as the background */

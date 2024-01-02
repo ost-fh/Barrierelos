@@ -10,7 +10,7 @@ import "./WebsitePage.css"
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
-import {formatScore, getScoreClass, getScoreColor} from "../../util/formatter.ts";
+import {formatScore, getScoreClass, getScoreColor, translate} from "../../util/formatter.ts";
 import ScanInfosTab from "./ScanInfosTab.tsx";
 import status = Website.status;
 
@@ -49,10 +49,11 @@ function WebsitePage() {
       </Helmet>
 
 
-      <Stack direction="row">
+      <Stack direction="row" alignItems="center">
         <h1>{websiteScan.website.url}</h1>
         {websiteScan.website.status !== status.READY ? (
-          <Chip label={`${t("WebsitePage.websiteStatusLabel")}: ${websiteScan.website.status}`}/>
+          <Chip
+            label={`${t("WebsitePage.WebsiteStatus.label")}: ${translate(t, "WebsitePage.WebsiteStatus." + websiteScan.website.status)}`}/>
         ) : null}
         {websiteScan.websiteStatistic ? (
           <Tooltip title={t("General.barrierelosScore")}>

@@ -1,3 +1,5 @@
+import {TFunction} from "i18next";
+
 export function formatScore(score: number | undefined): string {
   if (score === undefined) {
     return "N/A";
@@ -12,7 +14,7 @@ export function getScoreClass(score: number | undefined): string {
   if (score >= 80) {
     return "good"
   }
-  if (score >= 40) {
+  if (score >= 50) {
     return "medium"
   }
   return "bad"
@@ -36,4 +38,9 @@ export function formatViolationRatio(n: number, digits: number): string {
   const decimalFactor = Math.pow(10, digits);
   n = parseFloat((n * decimalFactor).toFixed(11));
   return String(Math.round(n) / decimalFactor);
+}
+
+export function translate(t: TFunction, key: string): string {
+  // @ts-expect-error: Key type cannot be automatically inferred because the type is generated from the translation file
+  return t(key);
 }

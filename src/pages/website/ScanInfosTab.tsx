@@ -1,6 +1,7 @@
-import {ScanJob, WebpageResult, WebpageScan} from "../../lib/api-client";
+import {ScanJob, WebpageScan} from "../../lib/api-client";
 import {useTranslation} from "react-i18next";
 import {Chip, Paper, Stack} from "@mui/material";
+import {translate} from "../../util/formatter.ts";
 
 
 function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | undefined }) {
@@ -13,7 +14,7 @@ function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | u
     const webpage = webpageResult.webpage
     const result = webpageResult.webpageResult
     const scanStatus = result?.scanStatus !== undefined
-      ? translateScanStatus(result.scanStatus)
+      ? translate(t, result.scanStatus.toUpperCase())
       : t("WebsitePage.ScanInfosTab.ScanStatus.notYetScanned")
 
     return (
@@ -46,11 +47,6 @@ function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | u
       </Stack>
     </>
   )
-
-  function translateScanStatus(scanStatus: WebpageResult.scanStatus): string {
-    // @ts-expect-error: Interface is automatically generated from the translation file and consists of many union types
-    return t(`WebsitePage.ScanInfos.ScanStatus.${scanStatus.toUpperCase()}`)
-  }
 }
 
 

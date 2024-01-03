@@ -68,11 +68,11 @@ public class StatisticService
       .toModel()
 
     val scorings = scoringRepository.calculateWebpageScores(websiteResult.id)
-    var websiteTotalCount = 0L
+    var websiteWeight = 0L
     if(scorings.isNotEmpty())
     {
-      websiteTotalCount = scorings.sumOf { it.totalCount }
-      val websiteScore = scorings.sumOf { it.score * (it.totalCount / websiteTotalCount.toDouble()) }
+      websiteWeight = scorings.sumOf { it.weight }
+      val websiteScore = scorings.sumOf { it.score * (it.weight / websiteWeight.toDouble()) }
       website.score = websiteScore
       websiteScan.websiteStatistic = WebsiteStatistic(
         score = websiteScore,
@@ -99,7 +99,7 @@ public class StatisticService
         webpage.status = StatusEnum.READY
         it.webpageStatistic = WebpageStatistic(
           score = scoring.score,
-          weight = scoring.totalCount / websiteTotalCount.toDouble(),
+          weight = scoring.weight / websiteWeight.toDouble(),
         )
       }
 
@@ -107,7 +107,6 @@ public class StatisticService
       it.webpageResult = webpageResult
     }
 
-//    webpageRepository.saveAll(webpages.map { it.toEntity() })
     webpageScanRepository.saveAll(webpageScans.map { it.toEntity(websiteScan.toEntity(), websiteResult) }).map { it.toModel() }
   }
 

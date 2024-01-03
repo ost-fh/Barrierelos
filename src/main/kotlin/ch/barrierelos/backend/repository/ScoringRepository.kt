@@ -29,7 +29,7 @@ public interface ScoringRepository : Repository<ScoringEntity>
         SELECT
             "wr"."webpage_result_id",
             100 - "webpage_counts"."summed_weighted_violated_count" / ("webpage_counts"."summed_weighted_violated_count" + "webpage_counts"."summed_passed_count") * 100 AS "score",
-            "webpage_counts"."summed_passed_count" + "webpage_counts"."summed_weighted_violated_count" AS "total_count",
+            "webpage_counts"."summed_passed_count" + "webpage_counts"."summed_weighted_violated_count" AS "weight",
             "wr"."modified",
             "wr"."created"
         FROM "webpage_result" AS "wr"

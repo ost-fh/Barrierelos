@@ -13,7 +13,7 @@ public class ScoringEntity
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public var webpageResultId: Long = 0,
   public var score: Double,
-  public var totalCount: Long,
+  public var weight: Long,
   public var modified: Timestamp = Timestamp(System.currentTimeMillis()),
   public var created: Timestamp = Timestamp(System.currentTimeMillis()),
 )

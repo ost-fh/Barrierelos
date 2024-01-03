@@ -1,7 +1,7 @@
 import {ScanJob, WebpageScan} from "../../lib/api-client";
 import {useTranslation} from "react-i18next";
 import {Chip, Paper, Stack} from "@mui/material";
-import {translate} from "../../util/formatter.ts";
+import {ParseKeys} from "i18next";
 
 
 function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | undefined }) {
@@ -36,7 +36,7 @@ function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | u
     const webpage = props.webpageScan.webpage
     const result = props.webpageScan.webpageResult
     const webpageScanStatus = result?.scanStatus !== undefined
-      ? translate(t, `WebsitePage.ScanInfosTab.ScanStatus.${result.scanStatus.toUpperCase()}`)
+      ? t(`WebsitePage.ScanInfosTab.ScanStatus.${result.scanStatus.toUpperCase()}` as ParseKeys)
       : t("WebsitePage.ScanInfosTab.ScanStatus.notYetScanned")
 
     return (

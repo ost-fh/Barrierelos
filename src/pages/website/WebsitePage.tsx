@@ -10,8 +10,9 @@ import "./WebsitePage.css"
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
-import {formatScore, getScoreClass, getScoreColor, translate} from "../../util/formatter.ts";
+import {formatScore, getScoreClass, getScoreColor} from "../../util/formatter.ts";
 import ScanInfosTab from "./ScanInfosTab.tsx";
+import {ParseKeys} from "i18next";
 import status = Website.status;
 
 function WebsitePage() {
@@ -53,7 +54,7 @@ function WebsitePage() {
         <h1>{websiteScan.website.domain}</h1>
         {websiteScan.website.status !== status.READY ? (
           <Chip
-            label={`${t("WebsitePage.WebsiteStatus.label")}: ${translate(t, "WebsitePage.WebsiteStatus." + websiteScan.website.status)}`}/>
+            label={`${t("WebsitePage.WebsiteStatus.label")}: ${t("WebsitePage.WebsiteStatus." + websiteScan.website.status as ParseKeys)}`}/>
         ) : null}
         {websiteScan.websiteStatistic ? (
           <Box>

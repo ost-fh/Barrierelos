@@ -126,6 +126,27 @@
       "technicalErrorLabel": "Technical Error"
     }
   },
+  "Faq": {
+    "header": "Frequently Asked Questions (FAQ)",
+    "Questions": {
+      "barrierelos-explanation": {
+        "question": "What does <i>Barrierelos</i> mean?",
+        "answer": "<i>Barrierelos</i> is Swiss German dialect for the German word 'barrierefrei' which means 'barrier-free' or 'accessible'."
+      },
+      "website-vs-webpage": {
+        "question": "What is difference between a website and a webpage?",
+        "answer": "A website is a collection of webpages. For example, the website <i>barrierelos.ch</i> consists of multiple webpages like <i>barrierelos.ch/faq</i>, <i>barrierelos.ch/login</i> and <i>barrierelos.ch/profile</i>."
+      },
+      "barrierelos-score-explanation": {
+        "question": "What is the <i>Barrierelos-Score</i>?",
+        "answer": "The <i>Barrierelos-Score</i> is a rating between 0 and 100. It is derived from an automated scan of the website using the Axe-core accessibility engine. The score is based on the number of accessibility issues found on the website and the severity of these issues. The higher the score, the better the accessibility of the website. Please note that an automated scan can only find a subset of all accessibility issues. Therefore the Barrierelos-Score should only be considered a <strong>limited approximation</strong> of the actual accessibility of the website."
+      },
+      "barrierelos-score-calculation": {
+        "question": "How is the Barrierelos-Score calculated?",
+        "answer": "Die Axe-core Zugänglichkeits-Engine führt eine Reihe von Tests für jedes relevante HTML-Element für einen bestimmten Test durch. Daraus ergibt sich eine umfangreiche Liste der durchgeführten Tests, aus der wir die Gesamtzahl der Elemente ableiten können, die einen bestimmten Test bestanden oder nicht bestanden haben. Jedem Test ist ein Schweregrad zugeordnet: geringfügig, mittelschwer, schwerwiegend oder kritisch, der die Auswirkungen auf die Zugänglichkeit bestimmt, wenn ein Element diesen Test nicht besteht. Wir ordnen jedem Schweregrad einen numerischen <i>Schweregrads-Wert</i> zu: 2, 4, 8, 16. Anschließend berechnen wir den <i>Verstoss-Wert</i>, indem wir die Anzahl der Elemente, die den Test nicht bestanden haben, mit dem Schweregrads-Wert multiplizieren. Wir definieren das <i>Gewicht</i> einer Regel als den Verstoss-Wert plus die Anzahl der Elemente, die den Test bestanden haben. Jetzt haben wir also einen Verstoss-Wert und eine Gewicht für jeden Test. Um die Punktzahl einer Webpage zu berechnen, dividieren wir die Summe der Verstoss-Werte aller Tests durch die Summe der Gewichte aller Tests. Das Ergebnis ist eine Zahl zwischen 0 und 1, die wir mit 100 multiplizieren, um den Barrierelos-Score zu erhalten. Um den Score einer gesamten Website zu berechnen, berechnen wir einfach das gewichtete arithmetische Mittel aller Webpages der Website."
+      }
+    }
+  },
   "LoginPage": {
     "logIn": "Log In",
     "continueWithGoogle": "Continue with Google",

@@ -10,9 +10,10 @@ import {useEffect, useState} from "react";
 import useSWRMutation from "swr/mutation";
 import {ResultWebsite, Website, WebsiteControllerService} from "../../lib/api-client";
 import {Link} from "react-router-dom";
-import {formatScore, translate} from "../../util/formatter.ts";
+import {formatScore} from "../../util/formatter.ts";
 import {useTranslation} from "react-i18next";
 import {useMediaQuery, useTheme} from "@mui/material";
+import {ParseKeys} from "i18next";
 
 export function WebsiteTable() {
   const {t} = useTranslation();
@@ -70,7 +71,7 @@ export function WebsiteTable() {
       field: "category",
       headerName: t("WebsitesPage.WebsiteTable.categoryHeaderLabel"),
       flex: 50,
-      valueFormatter: (params: GridValueFormatterParams<Website.category>) => translate(t, `WebsiteCategories.${params.value.toString()}`),
+      valueFormatter: (params: GridValueFormatterParams<Website.category>) => t(`WebsiteCategories.${params.value.toString()}` as ParseKeys),
     },
     {
       field: "score",

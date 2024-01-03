@@ -26,6 +26,9 @@ export default function NavBar() {
             <NavLink to="/websites" end onClick={resetFocus}>Websites</NavLink>
           </li>
           <li>
+            <NavLink to="/faq" onClick={resetFocus}>FAQ</NavLink>
+          </li>
+          <li>
             <NavLink to="/login" onClick={resetFocus}>Login</NavLink>
           </li>
           <li>

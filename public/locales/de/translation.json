@@ -126,6 +126,27 @@
       "technicalErrorLabel": "Technischer Fehler"
     }
   },
+  "Faq": {
+    "header": "Häufig gestellte Fragen (FAQ)",
+    "Questions": {
+      "barrierelos-explanation": {
+        "question": "Was bedeutet <i>Barrierelos</i>?",
+        "answer": "<i>Barrierelos</i> ist schweizerdeutscher Dialekt für das deutsche Wort 'barrierefrei'."
+      },
+      "website-vs-webpage": {
+        "question": "Was ist der Unterschied zwischen einer Website und einer Webpage?",
+        "answer": "Eine Website ist eine Sammlung von Webseiten. Die Website <i>barrierelos.ch</i> besteht zum Beispiel aus vielen Webpages wie <i>barrierelos.ch/faq</i>, <i>barrierelos.ch/login</i> und <i>barrierelos.ch/profile</i>."
+      },
+      "barrierelos-score-explanation": {
+        "question": "Was ist der <i>Barrierelos-Score</i>?",
+        "answer": "Der <i>Barrierelos-Score</i> ist eine Wertung von 0 bis 100. Sie wird aus einem automatischen Scan der Website mit der Axe-core Zugänglichkeits-Engine abgeleitet. Die Punktzahl basiert auf der Anzahl der auf der Website gefundenen Zugänglichkeitsprobleme und dem Schweregrad dieser Probleme. Je höher die Punktzahl, desto besser ist die Zugänglichkeit der Website. Bitte beachten Sie, dass ein automatischer Scan nur eine Teilmenge aller Zugänglichkeitsprobleme finden kann. Daher sollte der Barrierelos-Score nur als eine <strong>eingeschränkte Annäherung</strong> an die tatsächliche Zugänglichkeit verstanden werden."
+      },
+      "barrierelos-score-calculation": {
+        "question": "How is the Barrierelos-Score calculated?",
+        "answer": "The Axe-core accessibility engine runs a number of tests on each relevant HTML element for a specific test. This results in a large list of tests performed, from which we can derive the total number of elements that passed or failed a specific test. Each test also has an associated issue severity: minor, moderate, serious or critical, which determines the impact on the accessibility if an element fails this test. We assign a <i>severity value</i> to each issue severity respectively: 2, 4, 8, 16. We then calculated the <i>violation value</i> by multiplying the number of elements that failed the test by the issue severity. We define the <i>weight</i> of a rule to be the violation value plus the number of elements that passed the test. So now we have a violation value and a weight for each test. To calculate the score of a webpage, we divide the sum of the violation values of all tests by the sum of the weights of all tests. This results in a number between 0 and 1, which we multiply by 100 to get the Barrierelos-Score. To calculate the score of a whole website, we simply calculate the weighted arithmetic mean of all webpages of the website."
+      }
+    }
+  },
   "LoginPage": {
     "logIn": "Anmelden",
     "continueWithGoogle": "Weiter mit Google",

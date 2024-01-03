@@ -24,7 +24,9 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage.tsx";
 import ImpressumPage from "./pages/ImpressumPage.tsx";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import {OAUTH_GOOGLE_CLIENT_ID} from "./constants.ts";
+import FaqPage from "./pages/faq/FaqPage.tsx";
 import Reports from "./pages/Reports.tsx";
+
 
 type MuiLocales = "enUS" | "deDE";
 
@@ -99,14 +101,14 @@ function App() {
 
   const [authentication, setAuthentication] = useState<Authentication>(new Authentication());
 
-  if(!authentication.isAuthenticated) {
+  if (!authentication.isAuthenticated) {
     AuthenticationService.load(setAuthentication);
   }
 
   function AuthenticationProvider({children}: Props) {
     return (
       <AuthenticationContext.Provider value={{authentication, setAuthentication}}>
-        <GoogleOAuthProvider clientId={OAUTH_GOOGLE_CLIENT_ID} >
+        <GoogleOAuthProvider clientId={OAUTH_GOOGLE_CLIENT_ID}>
           {children}
         </GoogleOAuthProvider>
       </AuthenticationContext.Provider>
@@ -133,6 +135,7 @@ function App() {
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/websites" element={<WebsitesPage/>}/>
                 <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
+                <Route path="/faq" element={<FaqPage/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
                 <Route path="/signup" element={<Signup/>}/>

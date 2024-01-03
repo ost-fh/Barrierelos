@@ -37,8 +37,8 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
       <Accordion key={webpageScan.webpage.id} variant="outlined">
         <AccordionSummary
           expandIcon={<ExpandMoreIcon/>}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+          aria-controls={`panel-${webpageScan.webpage.id}-content`}
+          id={`panel-${webpageScan.webpage.id}-header`}
         >
           <Typography>{webpageScan.webpage.displayUrl}</Typography>
           {webpageScan.webpageStatistic ? (

@@ -25,6 +25,7 @@ import OperableIcon from "@mui/icons-material/Keyboard"
 import UnderstandableIcon from "@mui/icons-material/Psychology"
 import RobustIcon from "@mui/icons-material/FitnessCenter"
 import {mapWebsiteTag} from "../../util/tags.ts"
+import {ParseKeys} from "i18next";
 
 
 function OverviewTab(props: { websiteScan: WebsiteScan }) {
@@ -45,6 +46,7 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
           <h2>{t("WebsitePage.OverviewTab.websiteDetailsHeader")}</h2>
           <Stack spacing={2}>
             <div>{t("WebsitePage.OverviewTab.addedOnLabel")}: {new Date(websiteScan.website.created).toLocaleString(i18n.language)}</div>
+            <div>{t("WebsitePage.OverviewTab.categoryLabel")}: {t(`WebsiteCategories.${websiteScan.website.category}` as ParseKeys)}</div>
             {tags.length !== 0 ? (
               <div>{t("WebsitePage.OverviewTab.tagsLabel")}: {tags}</div>
             ) : null}

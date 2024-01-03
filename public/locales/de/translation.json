@@ -90,6 +90,7 @@
     "OverviewTab": {
       "websiteDetailsHeader": "Website Details",
       "addedOnLabel": "Hinzugefügt am",
+      "categoryLabel": "Kategorie",
       "tagsLabel": "Tags",
       "violationsPerWcagPrincipleHeader": "Probleme pro WCAG Prinzip",
       "violationsPerWcagPrinciplePerceivableLabel": "Wahrnehmbar",

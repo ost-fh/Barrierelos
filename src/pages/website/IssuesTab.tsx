@@ -15,7 +15,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useTranslation} from "react-i18next";
 import "./IssuesTab.css"
-import {formatViolationRatio} from "../../util/formatter.ts";
+import {compareStrings, formatViolationRatio} from "../../util/formatter.ts";
 
 
 function IssuesTab(props: { websiteScan: WebsiteScan }) {
@@ -89,7 +89,7 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
               <>
                 <span>{t("WebsitePage.IssuesTab.issueTypeWcagVersionLabel")}: {rule.wcagReferences.version}</span>
                 <span>{t("WebsitePage.IssuesTab.issueTypeWcagLevelLabel")}: {rule.wcagReferences.level}</span>
-                <span>{t("WebsitePage.IssuesTab.issueTypeWcagRelevantCriteriaLabel")}: {rule.wcagReferences.criteria.sort().join(", ")}
+                <span>{t("WebsitePage.IssuesTab.issueTypeWcagRelevantCriteriaLabel")}: {rule.wcagReferences.criteria.sort(compareStrings).join(", ")}
                 </span>
               </>
             ) : null}

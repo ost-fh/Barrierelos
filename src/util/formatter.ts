@@ -37,3 +37,7 @@ export function formatViolationRatio(n: number, digits: number): string {
   n = parseFloat((n * decimalFactor).toFixed(11));
   return String(Math.round(n) / decimalFactor);
 }
+
+export function compareStrings(a: string, b: string): number {
+  return a.localeCompare(b);
+}

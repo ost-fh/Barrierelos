@@ -9,6 +9,7 @@ import {useEffect} from "react";
 const questionIds = [
   "barrierelos-explanation",
   "website-vs-webpage",
+  "wcag-explanation",
   "barrierelos-score-explanation",
   "barrierelos-score-calculation",
 ]

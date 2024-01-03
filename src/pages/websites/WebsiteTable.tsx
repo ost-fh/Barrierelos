@@ -11,7 +11,6 @@ import useSWRMutation from "swr/mutation";
 import {ResultWebsite, Website, WebsiteControllerService} from "../../lib/api-client";
 import {Link} from "react-router-dom";
 import {formatScore, translate} from "../../util/formatter.ts";
-import LoadingIndicator from "../../components/LoadingIndicator.tsx";
 import {useTranslation} from "react-i18next";
 import {useMediaQuery, useTheme} from "@mui/material";
 
@@ -56,7 +55,6 @@ export function WebsiteTable() {
   }, [websitesPage?.totalElements, setRowCount]);
 
   if (error) return `Error occurred:\n${error}`
-  if (isLoading) return (<LoadingIndicator/>)
 
   const columns: GridColDef[] = [
     {

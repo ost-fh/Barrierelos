@@ -14,6 +14,8 @@ import {
   TableRow,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material"
 import "./OverviewTab.css"
 import {useTranslation} from "react-i18next"
@@ -28,6 +30,9 @@ import {mapWebsiteTag} from "../../util/tags.ts"
 function OverviewTab(props: { websiteScan: WebsiteScan }) {
   const {t, i18n} = useTranslation();
   const websiteScan: WebsiteScan = props.websiteScan
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const tags = websiteScan.website.tags.map(websiteTag => (
     <Chip key={websiteTag.id} label={mapWebsiteTag(websiteTag)} variant="outlined"/>
@@ -117,17 +122,20 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
       ) : null}
 
       <h2>{t("WebsitePage.OverviewTab.webpagesHeader")}</h2>
-      <TableContainer component={Paper}>
-        <Table sx={{minWidth: 650}} aria-label={t("WebsitePage.OverviewTab.webpagesTableAriaLabel")}>
+      <TableContainer component={Paper} sx={{maxWidth: "1200px"}}>
+        <Table
+          aria-label={t("WebsitePage.OverviewTab.webpagesTableAriaLabel")}
+          size={isSmallScreen ? "small" : "medium"}
+        >
           <TableHead>
             <TableRow>
-              <TableCell>{t("WebsitePage.OverviewTab.webpageUrl")}</TableCell>
+              <TableCell sx={{minWidth: "80px"}}>{t("WebsitePage.OverviewTab.webpageUrl")}</TableCell>
               {websiteScan.websiteStatistic ? (
                 <>
-                  <TableCell>{t("General.barrierelosScore")}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{width: "15%", minWidth: "105px"}}>{t("General.barrierelosScore")}</TableCell>
+                  <TableCell sx={{width: "15%", minWidth: "105px"}}>
                     <Tooltip describeChild title={t("WebsitePage.OverviewTab.webpageWeightTooltip")}>
-                      <Stack direction="row" alignItems="center" gap={1}>
+                      <Stack direction="row" alignItems="center" gap={1} useFlexGap flexWrap="wrap">
                         {t("General.webpageWeight")}
                         <HelpIcon/>
                       </Stack>
@@ -143,7 +151,7 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
                 key={webpageScan.id}
                 sx={{"&:last-child td, &:last-child th": {border: 0}}}
               >
-                <TableCell component="th" scope="row">{webpageScan.webpage.displayUrl}</TableCell>
+                <TableCell>{webpageScan.webpage.displayUrl}</TableCell>
                 {webpageScan.webpageStatistic ? (
                   <>
                     <TableCell>{Math.round(webpageScan.webpageStatistic.score ?? 0)}</TableCell>

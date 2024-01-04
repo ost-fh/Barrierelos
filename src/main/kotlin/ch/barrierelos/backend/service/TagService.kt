@@ -4,7 +4,7 @@ import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.converter.toModels
 import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.exceptions.AlreadyExistsException
+import ch.barrierelos.backend.exception.AlreadyExistsException
 import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.repository.TagRepository
 import ch.barrierelos.backend.security.Security

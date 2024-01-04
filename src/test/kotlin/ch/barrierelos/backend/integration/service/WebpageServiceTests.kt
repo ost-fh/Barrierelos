@@ -1,24 +1,11 @@
 package ch.barrierelos.backend.integration.service
 
-import ch.barrierelos.backend.converter.toEntity
-import ch.barrierelos.backend.converter.toModel
-import ch.barrierelos.backend.enums.OrderEnum
-import ch.barrierelos.backend.enums.StatusEnum
-import ch.barrierelos.backend.exceptions.*
-import ch.barrierelos.backend.helper.*
+import ch.barrierelos.backend.helper.createWebsiteMessage
 import ch.barrierelos.backend.model.Website
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebpageService
 import ch.barrierelos.backend.service.WebsiteService
-import io.kotest.matchers.collections.*
-import io.kotest.matchers.longs.shouldBeGreaterThan
-import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.test.context.support.TestExecutionEvent
-import org.springframework.security.test.context.support.WithUserDetails
 
 // TODO: Add tests for webpage service
 @Nested

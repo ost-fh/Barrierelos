@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.security
 
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
 import org.springframework.beans.factory.annotation.Autowired

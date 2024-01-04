@@ -1,7 +1,7 @@
 package ch.barrierelos.backend.security
 
 import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.model.User
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder

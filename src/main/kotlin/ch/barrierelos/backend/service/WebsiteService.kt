@@ -12,7 +12,7 @@ import ch.barrierelos.backend.enums.CategoryEnum
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
-import ch.barrierelos.backend.exceptions.*
+import ch.barrierelos.backend.exception.*
 import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.message.scanner.WebsiteResultMessage
 import ch.barrierelos.backend.model.*

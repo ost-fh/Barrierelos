@@ -4,10 +4,10 @@ import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StatusEnum
-import ch.barrierelos.backend.exceptions.InvalidUrlException
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
-import ch.barrierelos.backend.exceptions.ReferenceNotExistsException
-import ch.barrierelos.backend.exceptions.UrlNotMatchingWebsiteDomainException
+import ch.barrierelos.backend.exception.InvalidUrlException
+import ch.barrierelos.backend.exception.NoAuthorizationException
+import ch.barrierelos.backend.exception.ReferenceNotExistsException
+import ch.barrierelos.backend.exception.UrlNotMatchingWebsiteDomainException
 import ch.barrierelos.backend.message.WebpageMessage
 import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.parameter.DefaultParameters

@@ -4,7 +4,7 @@ import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.ReasonEnum
 import ch.barrierelos.backend.enums.StateEnum
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createReportEntity
 import ch.barrierelos.backend.helper.createReportModel
 import ch.barrierelos.backend.parameter.DefaultParameters

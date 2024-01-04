@@ -1,22 +1,9 @@
 package ch.barrierelos.backend.integration.service
 
-import ch.barrierelos.backend.converter.toModel
-import ch.barrierelos.backend.enums.OrderEnum
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
-import ch.barrierelos.backend.helper.createWebsiteScanEntity
-import ch.barrierelos.backend.helper.createWebsiteScanModel
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebsiteScanService
-import io.kotest.matchers.collections.*
-import io.kotest.matchers.longs.shouldBeGreaterThan
-import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.test.context.support.TestExecutionEvent
-import org.springframework.security.test.context.support.WithUserDetails
 
 // TODO: Add tests for website scan service
 @Nested

@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.util
 
-import ch.barrierelos.backend.exceptions.InvalidUrlException
+import ch.barrierelos.backend.exception.InvalidUrlException
 import org.apache.commons.validator.routines.UrlValidator
 import java.util.*
 

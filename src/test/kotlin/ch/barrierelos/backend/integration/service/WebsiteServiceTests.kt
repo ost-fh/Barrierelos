@@ -4,25 +4,14 @@ import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.entity.TagEntity
 import ch.barrierelos.backend.entity.UserEntity
-import ch.barrierelos.backend.enums.CategoryEnum
-import ch.barrierelos.backend.enums.OrderEnum
-import ch.barrierelos.backend.enums.StatusEnum
-import ch.barrierelos.backend.exceptions.AlreadyExistsException
-import ch.barrierelos.backend.exceptions.InvalidUrlException
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
-import ch.barrierelos.backend.helper.*
+import ch.barrierelos.backend.helper.createWebsiteEntity
+import ch.barrierelos.backend.helper.createWebsiteTagEntity
 import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.model.Website
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebsiteService
-import io.kotest.matchers.collections.*
-import io.kotest.matchers.longs.shouldBeGreaterThan
-import io.kotest.matchers.optional.shouldBeEmpty
-import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.test.context.support.TestExecutionEvent
-import org.springframework.security.test.context.support.WithUserDetails
 
 // TODO: Add tests for website service
 @Nested

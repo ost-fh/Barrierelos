@@ -3,8 +3,8 @@ package ch.barrierelos.backend.integration.controller
 import body
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.StatusEnum
-import ch.barrierelos.backend.exceptions.AlreadyExistsException
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.AlreadyExistsException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebsiteMessage
 import ch.barrierelos.backend.helper.createWebsiteModel
 import ch.barrierelos.backend.model.Website

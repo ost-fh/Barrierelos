@@ -1,8 +1,8 @@
 package ch.barrierelos.backend.integration.service
 
 import ch.barrierelos.backend.converter.toModel
-import ch.barrierelos.backend.exceptions.InvalidCredentialsException
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.InvalidCredentialsException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createCredentialModel
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.service.CredentialService

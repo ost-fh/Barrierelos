@@ -2,7 +2,7 @@ package ch.barrierelos.backend.integration.service
 
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.OrderEnum
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebsiteReportEntity
 import ch.barrierelos.backend.helper.createWebsiteReportModel
 import ch.barrierelos.backend.parameter.DefaultParameters

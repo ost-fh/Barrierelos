@@ -5,7 +5,7 @@ import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.exceptions.*
+import ch.barrierelos.backend.exception.*
 import ch.barrierelos.backend.helper.createCredentialModel
 import ch.barrierelos.backend.message.RegistrationMessage
 import ch.barrierelos.backend.model.User

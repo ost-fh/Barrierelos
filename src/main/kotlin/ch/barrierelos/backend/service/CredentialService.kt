@@ -4,8 +4,8 @@ import ch.barrierelos.backend.constants.Credentials.ALLOWED_ISSUER
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.exceptions.InvalidCredentialsException
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.InvalidCredentialsException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.repository.CredentialRepository
 import ch.barrierelos.backend.security.Security

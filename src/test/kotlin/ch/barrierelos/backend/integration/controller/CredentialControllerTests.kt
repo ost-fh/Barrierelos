@@ -1,7 +1,7 @@
 package ch.barrierelos.backend.integration.controller
 
-import ch.barrierelos.backend.exceptions.InvalidCredentialsException
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.InvalidCredentialsException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createCredentialModel
 import ch.barrierelos.backend.service.CredentialService
 import ch.barrierelos.backend.util.toJson

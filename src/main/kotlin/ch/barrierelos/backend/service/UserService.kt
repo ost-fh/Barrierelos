@@ -4,10 +4,10 @@ import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.entity.UserEntity
 import ch.barrierelos.backend.enums.RoleEnum
-import ch.barrierelos.backend.exceptions.AlreadyExistsException
-import ch.barrierelos.backend.exceptions.InvalidEmailException
-import ch.barrierelos.backend.exceptions.InvalidUsernameException
-import ch.barrierelos.backend.exceptions.NoRoleException
+import ch.barrierelos.backend.exception.AlreadyExistsException
+import ch.barrierelos.backend.exception.InvalidEmailException
+import ch.barrierelos.backend.exception.InvalidUsernameException
+import ch.barrierelos.backend.exception.NoRoleException
 import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
 import ch.barrierelos.backend.parameter.DefaultParameters

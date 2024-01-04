@@ -2,7 +2,7 @@ package ch.barrierelos.backend.integration.controller
 
 import body
 import ch.barrierelos.backend.enums.OrderEnum
-import ch.barrierelos.backend.exceptions.NoAuthorizationException
+import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebsiteScanModel
 import ch.barrierelos.backend.message.WebsiteScanMessage
 import ch.barrierelos.backend.model.WebsiteScan

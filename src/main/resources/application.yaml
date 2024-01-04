@@ -29,7 +29,7 @@ spring:
           jwk-set-uri: "https://www.googleapis.com/oauth2/v3/certs"
   rabbitmq:
     host: localhost
-    port: 5050
+    port: ${RABBITMQ_PORT}
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
     virtual-host: /

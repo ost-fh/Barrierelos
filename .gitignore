@@ -1,8 +1,5 @@
 .env
 
-compose-*.yml
-deployment/
-
 # Created by https://www.toptal.com/developers/gitignore/api/jetbrains,gradle
 # Edit at https://www.toptal.com/developers/gitignore?templates=jetbrains,gradle
 

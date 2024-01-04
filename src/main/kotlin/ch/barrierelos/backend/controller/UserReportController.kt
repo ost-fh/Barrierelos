@@ -2,6 +2,7 @@ package ch.barrierelos.backend.controller
 
 import ch.barrierelos.backend.constants.Endpoint.USER_REPORT
 import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.message.UserReportsMessage
 import ch.barrierelos.backend.model.UserReport
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.UserReportService
@@ -42,6 +43,14 @@ public class UserReportController
     val userReportsPage = this.userReportService.getUserReportsByUser(userId, defaultParameters)
 
     return ResponseEntity.status(HttpStatus.OK).headers(userReportsPage.toHeaders()).body(userReportsPage.content)
+  }
+
+  @GetMapping(value = ["$USER_REPORT/for/{userId}"], produces = [MediaType.JSON])
+  public fun getUserReportsForUser(@PathVariable userId: Long): ResponseEntity<UserReportsMessage>
+  {
+    val userReports = this.userReportService.getUserReportsForUser(userId)
+
+    return ResponseEntity.status(HttpStatus.OK).body(userReports)
   }
 
   @GetMapping(value = ["$USER_REPORT/{id}"], produces = [MediaType.JSON])

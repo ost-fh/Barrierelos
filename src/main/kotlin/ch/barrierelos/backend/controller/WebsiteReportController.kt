@@ -2,6 +2,7 @@ package ch.barrierelos.backend.controller
 
 import ch.barrierelos.backend.constants.Endpoint.WEBSITE_REPORT
 import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.message.WebsiteReportsMessage
 import ch.barrierelos.backend.model.WebsiteReport
 import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebsiteReportService
@@ -42,6 +43,14 @@ public class WebsiteReportController
     val websiteReportsPage = this.websiteReportService.getWebsiteReportsByWebsite(websiteId, defaultParameters)
 
     return ResponseEntity.status(HttpStatus.OK).headers(websiteReportsPage.toHeaders()).body(websiteReportsPage.content)
+  }
+
+  @GetMapping(value = ["$WEBSITE_REPORT/for/{userId}"], produces = [MediaType.JSON])
+  public fun getWebsiteReportsForUser(@PathVariable userId: Long): ResponseEntity<WebsiteReportsMessage>
+  {
+    val websiteReports = this.websiteReportService.getWebsiteReportsForUser(userId)
+
+    return ResponseEntity.status(HttpStatus.OK).body(websiteReports)
   }
 
   @GetMapping(value = ["$WEBSITE_REPORT/{id}"], produces = [MediaType.JSON])

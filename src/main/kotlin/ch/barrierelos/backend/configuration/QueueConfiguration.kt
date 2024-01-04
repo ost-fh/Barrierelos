@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.configuration
 
-import ch.barrierelos.backend.constants.Queueing
+import ch.barrierelos.backend.constant.Queueing
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.BindingBuilder

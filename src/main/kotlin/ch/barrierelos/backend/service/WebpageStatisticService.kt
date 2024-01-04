@@ -2,10 +2,10 @@ package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.entity.WebpageStatisticEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.model.WebpageStatistic
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.WebpageStatisticRepository
 import ch.barrierelos.backend.security.Security

@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.util
 
-import ch.barrierelos.backend.constants.Header
+import ch.barrierelos.backend.constant.Header
 import kotlinx.serialization.Serializable
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpHeaders

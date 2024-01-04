@@ -1,12 +1,12 @@
 package ch.barrierelos.backend.integration.controller
 
 import body
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebsiteScanModel
 import ch.barrierelos.backend.message.WebsiteScanMessage
 import ch.barrierelos.backend.model.WebsiteScan
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.StatisticService
 import ch.barrierelos.backend.service.WebsiteScanService
 import ch.barrierelos.backend.util.Result

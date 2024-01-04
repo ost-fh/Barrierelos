@@ -1,7 +1,7 @@
 package ch.barrierelos.backend.controller
 
-import ch.barrierelos.backend.constants.Endpoint.TAG
-import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.constant.Endpoint.TAG
+import ch.barrierelos.backend.constant.MediaType
 import ch.barrierelos.backend.model.Tag
 import ch.barrierelos.backend.service.TagService
 import org.springframework.beans.factory.annotation.Autowired

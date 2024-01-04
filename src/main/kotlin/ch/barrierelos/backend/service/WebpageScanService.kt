@@ -3,11 +3,11 @@ package ch.barrierelos.backend.service
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.converter.toModels
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.entity.WebpageScanEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.model.Webpage
 import ch.barrierelos.backend.model.WebpageScan
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.WebpageScanRepository
 import ch.barrierelos.backend.repository.WebsiteScanRepository

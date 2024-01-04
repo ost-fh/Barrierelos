@@ -1,10 +1,10 @@
 package ch.barrierelos.backend.controller
 
-import ch.barrierelos.backend.constants.Endpoint.USER_REPORT
-import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.constant.Endpoint.USER_REPORT
+import ch.barrierelos.backend.constant.MediaType
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.message.UserReportsMessage
 import ch.barrierelos.backend.model.UserReport
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.UserReportService
 import ch.barrierelos.backend.util.toHeaders
 import org.springdoc.core.annotations.ParameterObject

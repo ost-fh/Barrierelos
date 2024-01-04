@@ -1,8 +1,8 @@
 package ch.barrierelos.backend.repository
 
-import ch.barrierelos.backend.constants.Paging
+import ch.barrierelos.backend.constant.Paging
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.OrderEnum
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toResult
 import jakarta.persistence.Id

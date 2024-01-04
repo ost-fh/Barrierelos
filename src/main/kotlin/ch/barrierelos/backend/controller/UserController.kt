@@ -1,10 +1,10 @@
 package ch.barrierelos.backend.controller
 
-import ch.barrierelos.backend.constants.Endpoint.USER
-import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.constant.Endpoint.USER
+import ch.barrierelos.backend.constant.MediaType
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.message.RegistrationMessage
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.security.Security
 import ch.barrierelos.backend.service.UserService
 import ch.barrierelos.backend.util.toHeaders

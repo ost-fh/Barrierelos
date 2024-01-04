@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.service
 
-import ch.barrierelos.backend.constants.Queueing
+import ch.barrierelos.backend.constant.Queueing
 import ch.barrierelos.backend.converter.scanner.toEntity
 import ch.barrierelos.backend.converter.scanner.toMessage
 import ch.barrierelos.backend.converter.scanner.toModel
@@ -8,6 +8,7 @@ import ch.barrierelos.backend.converter.scanner.toScanJob
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.converter.toModels
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.CategoryEnum
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StatusEnum
@@ -17,7 +18,6 @@ import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.message.scanner.WebsiteResultMessage
 import ch.barrierelos.backend.model.*
 import ch.barrierelos.backend.model.scanner.ScanJob
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.toPageable
 import ch.barrierelos.backend.repository.TagRepository
 import ch.barrierelos.backend.repository.WebpageRepository

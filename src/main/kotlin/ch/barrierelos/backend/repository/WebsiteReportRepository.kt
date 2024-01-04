@@ -1,9 +1,9 @@
 package ch.barrierelos.backend.repository
 
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.entity.WebsiteReportEntity
 import ch.barrierelos.backend.model.WebsiteReport
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.toPageable
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toResult

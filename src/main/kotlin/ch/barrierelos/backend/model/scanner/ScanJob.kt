@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.model.scanner
 
-import ch.barrierelos.backend.constants.Scanner
+import ch.barrierelos.backend.constant.Scanner
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 

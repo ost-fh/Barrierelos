@@ -1,13 +1,13 @@
 package ch.barrierelos.backend.integration.controller
 
 import body
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.ReasonEnum
 import ch.barrierelos.backend.enums.StateEnum
 import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebpageReportModel
 import ch.barrierelos.backend.model.WebpageReport
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebpageReportService
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toJson

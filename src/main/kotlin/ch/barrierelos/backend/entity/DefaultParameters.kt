@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.parameter
+package ch.barrierelos.backend.entity
 
 import ch.barrierelos.backend.enums.OrderEnum
 

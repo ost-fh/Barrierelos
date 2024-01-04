@@ -1,6 +1,6 @@
 package ch.barrierelos.backend.service
 
-import ch.barrierelos.backend.constants.Credentials.ALLOWED_ISSUER
+import ch.barrierelos.backend.constant.Credential.ALLOWED_ISSUER
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.enums.RoleEnum

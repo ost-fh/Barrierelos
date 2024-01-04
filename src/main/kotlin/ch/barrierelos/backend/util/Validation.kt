@@ -1,7 +1,7 @@
 package ch.barrierelos.backend.util
 
-import ch.barrierelos.backend.constants.Credentials.MIN_LENGTH_PASSWORD
-import ch.barrierelos.backend.constants.Credentials.MIN_LENGTH_USERNAME
+import ch.barrierelos.backend.constant.Credential.MIN_LENGTH_PASSWORD
+import ch.barrierelos.backend.constant.Credential.MIN_LENGTH_USERNAME
 
 public fun String.isValidEmail(): Boolean
 {

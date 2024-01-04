@@ -1,11 +1,11 @@
 package ch.barrierelos.backend.controller
 
-import ch.barrierelos.backend.constants.Endpoint.WEBSITE_SCAN
-import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.constant.Endpoint.WEBSITE_SCAN
+import ch.barrierelos.backend.constant.MediaType
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.message.WebsiteScanMessage
 import ch.barrierelos.backend.model.WebsiteScan
 import ch.barrierelos.backend.model.WebsiteStatistic
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.StatisticService
 import ch.barrierelos.backend.service.WebsiteScanService
 import ch.barrierelos.backend.util.toHeaders

@@ -2,6 +2,7 @@ package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.entity.UserEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.exception.AlreadyExistsException
@@ -10,7 +11,6 @@ import ch.barrierelos.backend.exception.InvalidUsernameException
 import ch.barrierelos.backend.exception.NoRoleException
 import ch.barrierelos.backend.model.Credential
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.findAll
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.security.Security

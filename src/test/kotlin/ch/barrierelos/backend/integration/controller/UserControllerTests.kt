@@ -3,13 +3,13 @@ package ch.barrierelos.backend.integration.controller
 import body
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.exception.*
 import ch.barrierelos.backend.helper.createCredentialModel
 import ch.barrierelos.backend.message.RegistrationMessage
 import ch.barrierelos.backend.model.User
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.UserService
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toJson

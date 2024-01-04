@@ -3,10 +3,10 @@ package ch.barrierelos.backend.service
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
 import ch.barrierelos.backend.converter.toModels
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.message.WebpageReportsMessage
 import ch.barrierelos.backend.model.WebpageReport
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.ReportMessageRepository
 import ch.barrierelos.backend.repository.UserRepository
 import ch.barrierelos.backend.repository.WebpageReportRepository

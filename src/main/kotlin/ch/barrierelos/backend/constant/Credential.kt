@@ -1,6 +1,6 @@
-package ch.barrierelos.backend.constants
+package ch.barrierelos.backend.constant
 
-public object Credentials
+public object Credential
 {
   public const val MIN_LENGTH_USERNAME: Int = 3
   public const val MIN_LENGTH_PASSWORD: Int = 6

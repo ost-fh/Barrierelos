@@ -1,12 +1,12 @@
 package ch.barrierelos.backend.controller
 
-import ch.barrierelos.backend.constants.Endpoint.WEBSITE
-import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.constant.Endpoint.WEBSITE
+import ch.barrierelos.backend.constant.MediaType
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.message.WebsiteMessage
 import ch.barrierelos.backend.model.Region
 import ch.barrierelos.backend.model.Website
 import ch.barrierelos.backend.model.scanner.ScanJob
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebsiteService
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toHeaders

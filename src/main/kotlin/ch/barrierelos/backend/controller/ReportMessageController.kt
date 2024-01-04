@@ -1,9 +1,9 @@
 package ch.barrierelos.backend.controller
 
-import ch.barrierelos.backend.constants.Endpoint.REPORT_MESSAGE
-import ch.barrierelos.backend.constants.MediaType
+import ch.barrierelos.backend.constant.Endpoint.REPORT_MESSAGE
+import ch.barrierelos.backend.constant.MediaType
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.model.ReportMessage
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.ReportMessageService
 import ch.barrierelos.backend.util.toHeaders
 import org.springdoc.core.annotations.ParameterObject

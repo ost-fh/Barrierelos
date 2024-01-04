@@ -1,11 +1,11 @@
 package ch.barrierelos.backend.integration.controller
 
 import body
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebpageStatisticModel
 import ch.barrierelos.backend.model.WebpageStatistic
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebpageStatisticService
 import ch.barrierelos.backend.util.Result
 import ch.barrierelos.backend.util.toJson

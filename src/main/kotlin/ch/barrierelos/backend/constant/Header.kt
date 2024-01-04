@@ -1,4 +1,4 @@
-package ch.barrierelos.backend.constants
+package ch.barrierelos.backend.constant
 
 public object Header
 {

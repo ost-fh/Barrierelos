@@ -2,6 +2,7 @@ package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.exception.InvalidUrlException
@@ -10,7 +11,6 @@ import ch.barrierelos.backend.exception.ReferenceNotExistsException
 import ch.barrierelos.backend.exception.UrlNotMatchingWebsiteDomainException
 import ch.barrierelos.backend.message.WebpageMessage
 import ch.barrierelos.backend.model.Webpage
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.WebpageRepository
 import ch.barrierelos.backend.repository.WebpageRepository.Companion.findAll
 import ch.barrierelos.backend.repository.WebsiteRepository

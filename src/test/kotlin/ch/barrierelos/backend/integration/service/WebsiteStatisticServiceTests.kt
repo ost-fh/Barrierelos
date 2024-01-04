@@ -1,11 +1,11 @@
 package ch.barrierelos.backend.integration.service
 
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebsiteStatisticEntity
 import ch.barrierelos.backend.helper.createWebsiteStatisticModel
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebsiteStatisticService
 import io.kotest.matchers.collections.*
 import io.kotest.matchers.longs.shouldBeGreaterThan

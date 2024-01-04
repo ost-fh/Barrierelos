@@ -2,11 +2,11 @@ package ch.barrierelos.backend.service
 
 import ch.barrierelos.backend.converter.toEntity
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.entity.ReportEntity
 import ch.barrierelos.backend.enums.RoleEnum
 import ch.barrierelos.backend.enums.StateEnum
 import ch.barrierelos.backend.model.Report
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.ReportRepository
 import ch.barrierelos.backend.repository.ReportRepository.Companion.findAllByUserFk
 import ch.barrierelos.backend.repository.Repository.Companion.findAll

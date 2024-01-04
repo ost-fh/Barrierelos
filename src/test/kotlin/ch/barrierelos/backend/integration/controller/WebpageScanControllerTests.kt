@@ -1,12 +1,12 @@
 package ch.barrierelos.backend.integration.controller
 
 import body
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.exception.NoAuthorizationException
 import ch.barrierelos.backend.helper.createWebpageModel
 import ch.barrierelos.backend.helper.createWebpageScanModel
 import ch.barrierelos.backend.model.WebpageScan
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.service.WebpageScanService
 import ch.barrierelos.backend.util.Result
 import com.ninjasquad.springmockk.MockkBean

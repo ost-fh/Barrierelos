@@ -1,11 +1,11 @@
 package ch.barrierelos.backend.repository
 
 import ch.barrierelos.backend.converter.toModel
+import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.entity.WebsiteEntity
 import ch.barrierelos.backend.enums.StatusEnum
 import ch.barrierelos.backend.model.Region
 import ch.barrierelos.backend.model.Website
-import ch.barrierelos.backend.parameter.DefaultParameters
 import ch.barrierelos.backend.repository.Repository.Companion.lastModified
 import ch.barrierelos.backend.repository.Repository.Companion.toPageable
 import ch.barrierelos.backend.util.Result

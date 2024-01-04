@@ -1,6 +1,6 @@
 import {ScanJob, WebpageScan} from "../../lib/api-client";
 import {useTranslation} from "react-i18next";
-import {Chip, Paper, Stack} from "@mui/material";
+import {Box, Chip, Paper, Stack} from "@mui/material";
 import {ParseKeys} from "i18next";
 
 
@@ -26,7 +26,7 @@ function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | u
       </span>
 
       <h3>{t("WebsitePage.ScanInfosTab.webpagesHeader")}</h3>
-      <Stack spacing={2}>
+      <Stack>
         {webpageScanInfos}
       </Stack>
     </>
@@ -40,16 +40,20 @@ function ScanInfosTab(props: { webpageScans: WebpageScan[], scanJob: ScanJob | u
       : t("WebsitePage.ScanInfosTab.ScanStatus.notYetScanned")
 
     return (
-      <div key={webpage.id}>
-        <span>{webpage.displayUrl}</span>
-        <Chip label={`${t("WebsitePage.ScanInfosTab.ScanStatus.label")}: ${webpageScanStatus}`}/>
-        {result?.errorMessage !== undefined ? (
-          <div>
-            <span>{t("WebsitePage.ScanInfosTab.technicalErrorLabel")}:</span>
-            <Paper sx={{display: "table", padding: "1rem"}} lang="en">{result?.errorMessage}</Paper>
-          </div>
-        ) : null}
-      </div>
+      <Box>
+        <Paper key={webpage.id} sx={{padding: "0.74rem", width: "100%"}} variant="outlined">
+          <span>{webpage.displayUrl}</span>
+          <Chip label={`${t("WebsitePage.ScanInfosTab.ScanStatus.label")}: ${webpageScanStatus}`}/>
+          {result?.errorMessage !== undefined ? (
+            <div>
+              <span>{t("WebsitePage.ScanInfosTab.technicalErrorLabel")}:</span>
+              <Paper sx={{display: "table", padding: "0.75rem", width: "100%"}} lang="en" variant="outlined">
+                {result?.errorMessage}
+              </Paper>
+            </div>
+          ) : null}
+        </Paper>
+      </Box>
     )
   }
 }

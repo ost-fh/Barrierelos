@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
-import {Autocomplete, Button, Grid, Stack, TextField} from "@mui/material";
+import {Autocomplete, Button, Grid, Stack, TextField, useMediaQuery, useTheme} from "@mui/material";
 import {SyntheticEvent, useEffect, useState} from "react";
 import {Website, WebsiteControllerService} from "../lib/api-client";
 import WebsiteIcon from "@mui/icons-material/Language";
@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 
 function HomePage() {
   const {t} = useTranslation();
+  const theme = useTheme();
 
   const [websiteOptions, setWebsiteOptions] = useState([] as Website[]);
   const [selectedWebsite, setSelectedWebsite] = useState(null as Website | null);
@@ -38,9 +39,9 @@ function HomePage() {
       </Helmet>
       <h1>{t("General.title")}</h1>
 
-      <Stack direction={"row"} spacing={2}>
+      <Stack direction={useMediaQuery(theme.breakpoints.up("sm")) ? "row" : "column"} spacing={2}>
         <Autocomplete
-          sx={{width: 300}}
+          sx={{maxWidth: useMediaQuery(theme.breakpoints.up("sm")) ? 300 : 800, width: "100%"}}
           getOptionLabel={(website: Website) => website.domain}
           isOptionEqualToValue={(option: Website, value: Website) => option.id === value.id}
           filterOptions={(x) => x}

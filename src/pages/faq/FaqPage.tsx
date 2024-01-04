@@ -37,6 +37,7 @@ function FaqPage() {
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon/>}
+            sx={{flexDirection: "row-reverse"}}
             aria-controls={`panel-${questionId}-content`}
             id={questionId}
           >

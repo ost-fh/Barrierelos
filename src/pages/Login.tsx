@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {useTranslation} from "react-i18next";
-import React, {useContext, useState} from "react";
+import React, {useContext, useLayoutEffect, useState} from "react";
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
@@ -32,12 +32,23 @@ function Login() {
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string|undefined>(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [dialogUsernameOpen, setDialogUsernameOpen] = useState(false);
   const [dialogUsername, setDialogUsername] = useState("");
-  const [dialogError, setDialogError] = useState<string|undefined>(undefined);
+  const [dialogError, setDialogError] = useState<string | undefined>(undefined);
   const {setAuthentication} = useContext(AuthenticationContext);
   const navigate = useNavigate();
+
+  const [googleLoginWidth, setGoogleLoginWidth] = useState(0)
+  useLayoutEffect(() => {
+    function updateSize() {
+      setGoogleLoginWidth(document.querySelector("#login-box")?.clientWidth ?? 0)
+    }
+
+    window.addEventListener("resize", updateSize)
+    updateSize()
+    return () => window.removeEventListener("resize", updateSize)
+  }, [])
 
   function onLoginSuccess() {
     setError(undefined);
@@ -50,11 +61,10 @@ function Login() {
   function onLoginError(error: string): void
   function onLoginError(error: number): void
   function onLoginError(error: unknown = t("LoginPage.loginFailed")): void {
-    if(typeof error === "string") {
+    if (typeof error === "string") {
       setError(error);
-    }
-    else if(typeof error === "number") {
-      switch(error) {
+    } else if (typeof error === "number") {
+      switch (error) {
         default:
           onLoginError();
           break;
@@ -78,7 +88,7 @@ function Login() {
       firstname: userObject.given_name,
       lastname: userObject.family_name,
       email: userObject.email,
-      roles: ['CONTRIBUTOR'],
+      roles: ["CONTRIBUTOR"],
       deleted: false,
       modified: 0,
       created: 0,
@@ -100,10 +110,9 @@ function Login() {
 
     UserControllerService.addUser(registrationMessage)
       .then(() => {
-        if(setAuthentication !== undefined) {
+        if (setAuthentication !== undefined) {
           AuthenticationService.loginWithTokenAuthentication(token, onLoginSuccess, onLoginError, setAuthentication);
-        }
-        else {
+        } else {
           onLoginError()
         }
       })
@@ -118,10 +127,9 @@ function Login() {
     setError(undefined);
     setLoading(true);
 
-    if(setAuthentication !== undefined) {
+    if (setAuthentication !== undefined) {
       AuthenticationService.loginWithBasicAuthentication(username, password, onLoginSuccess, onLoginError, setAuthentication);
-    }
-    else {
+    } else {
       onLoginError()
     }
   };
@@ -134,10 +142,9 @@ function Login() {
 
     setToken(identityToken);
 
-    if(setAuthentication !== undefined) {
+    if (setAuthentication !== undefined) {
       AuthenticationService.loginWithTokenAuthentication(identityToken, onLoginSuccess, () => setDialogUsernameOpen(true), setAuthentication);
-    }
-    else {
+    } else {
       onLoginError()
     }
   }
@@ -145,7 +152,7 @@ function Login() {
   const handleLoginDialogUsernameYes = () => {
     setDialogError(undefined);
 
-    if(!isValidUsername(dialogUsername.toString())) {
+    if (!isValidUsername(dialogUsername.toString())) {
       return onDialogError(t("SignupPage.invalidUsername"));
     }
 
@@ -160,19 +167,20 @@ function Login() {
   return (
     <>
       <Container maxWidth="xs">
-        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Avatar sx={{ m: 1, backgroundColor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+        <Box id="login-box" sx={{marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
+          <Avatar sx={{m: 1, backgroundColor: "secondary.main"}}>
+            <LockOutlinedIcon/>
           </Avatar>
-          <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
+          <Typography component="h1" variant="h5" sx={{mb: 3}}>
             {t("LoginPage.logIn")}
           </Typography>
-          <GoogleLogin width="1000"
-                       onSuccess = {(credentialResponse) => handleGoogleLogin(credentialResponse)}
-                       onError = {() => onLoginError()}
+          <GoogleLogin
+            width={googleLoginWidth}
+            onSuccess={(credentialResponse) => handleGoogleLogin(credentialResponse)}
+            onError={() => onLoginError()}
           />
-          <Divider sx={{ mt: 4, mb: 1 }} flexItem>{t("LoginPage.dividerOr")}</Divider>
-          <Box component="form" onSubmit={handleBasicLogin} sx={{ mt: 1 }}>
+          <Divider sx={{mt: 4, mb: 1}} flexItem>{t("LoginPage.dividerOr")}</Divider>
+          <Box component="form" onSubmit={handleBasicLogin} sx={{mt: 1}}>
             <TextField
               onChange={(event) => setUsername(event.target.value)}
               margin="normal"
@@ -197,13 +205,13 @@ function Login() {
               value={password}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="primary"/>}
               label={t("LoginPage.rememberMe")}
             />
             {error && (
-              <Alert sx={{ mt: 2 }} severity="error">{error}</Alert>
+              <Alert sx={{mt: 2}} severity="error">{error}</Alert>
             )}
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}}>
               {loading ? (
                 <CircularProgress size="1.5rem" sx={{color: "white"}}/>
               ) : (
@@ -233,7 +241,7 @@ function Login() {
           onNo={handleLoginDialogUsernameNo}
           onYes={handleLoginDialogUsernameYes}
         >
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             <TextField
               onChange={(event) => setDialogUsername(event.target.value)}
               margin="normal"
@@ -244,10 +252,10 @@ function Login() {
               autoComplete="username"
               autoFocus
               value={dialogUsername}
-              sx={{ width: 'min(550px, 80vw)' }}
+              sx={{width: "min(550px, 80vw)"}}
             />
             {dialogError && (
-              <Alert sx={{ mt: 2 }} severity="error">{dialogError}</Alert>
+              <Alert sx={{mt: 2}} severity="error">{dialogError}</Alert>
             )}
           </Box>
         </ConfirmDialog>

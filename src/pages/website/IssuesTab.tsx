@@ -37,6 +37,7 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
       <Accordion key={webpageScan.webpage.id} variant="outlined">
         <AccordionSummary
           expandIcon={<ExpandMoreIcon/>}
+          sx={{flexDirection: "row-reverse"}}
           aria-controls={`panel-${webpageScan.webpage.id}-content`}
           id={`panel-${webpageScan.webpage.id}-header`}
         >
@@ -93,9 +94,7 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
                 </span>
               </>
             ) : null}
-
           </p>
-
         </CardContent>
         <CardActions disableSpacing>
           <a href={rule.axeUrl} target="_blank" rel="noreferrer">{t("WebsitePage.IssuesTab.learnMoreLinkLabel")}</a>

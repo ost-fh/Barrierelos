@@ -38,6 +38,8 @@ public interface WebsiteRepository : Repository<WebsiteEntity>
 
   public fun existsByDomain(domain: String): Boolean
 
+  public fun findAllByWebsiteIdIn(websiteIds: Collection<Long>): Set<WebsiteEntity>
+
   public companion object
   {
     public fun WebsiteRepository.findAll(showDeleted: Boolean, showBlocked: Boolean, defaultParameters: DefaultParameters): Result<Website>

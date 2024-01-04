@@ -10,10 +10,14 @@ import ch.barrierelos.backend.util.toResult
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 
 public interface WebsiteReportRepository : JpaRepository<WebsiteReportEntity, Long>
 {
   public fun findAllByWebsiteFk(websiteFk: Long, pageable: Pageable): Page<WebsiteReportEntity>
+
+  @Query("SELECT r FROM WebsiteReportEntity r WHERE r.report.reportId IN (:reportFks)")
+  public fun findAllByReportFks(reportFks: Collection<Long>): Set<WebsiteReportEntity>
 
   public companion object
   {

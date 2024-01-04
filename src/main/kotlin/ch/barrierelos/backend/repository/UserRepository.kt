@@ -11,4 +11,6 @@ public interface UserRepository : Repository<UserEntity>
   public fun findByIssuerAndSubject(issuer: String, subject: String): UserEntity?
 
   public fun existsByUsername(username: String): Boolean
+
+  public fun findAllByUserIdIn(userIds: Collection<Long>): Set<UserEntity>
 }

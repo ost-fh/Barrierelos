@@ -205,7 +205,7 @@ function Login() {
             )}
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               {loading ? (
-                <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                <CircularProgress size="1.5rem" sx={{color: "white"}}/>
               ) : (
                 t("LoginPage.logIn")
               )}

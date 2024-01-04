@@ -338,7 +338,7 @@ function Profile() {
               <Grid item>
                 <Button type="submit" fullWidth variant="contained">
                   {changeContactLoading ? (
-                    <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                    <CircularProgress size="1.5rem" sx={{color: "white"}}/>
                   ) : (
                     t("ProfilePage.changeContact")
                   )}
@@ -407,7 +407,7 @@ function Profile() {
                 <Grid item>
                   <Button type="submit" fullWidth variant="contained">
                     {changePasswordLoading ? (
-                      <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                      <CircularProgress size="1.5rem" sx={{color: "white"}}/>
                     ) : (
                       t("ProfilePage.changePassword")
                     )}
@@ -449,7 +449,7 @@ function Profile() {
               <Grid item>
                 <Button type="submit" fullWidth variant="contained">
                   {deleteAccountLoading ? (
-                    <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                    <CircularProgress size="1.5rem" sx={{color: "white"}}/>
                   ) : (
                     t("ProfilePage.deleteAccount")
                   )}

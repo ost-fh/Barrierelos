@@ -156,7 +156,7 @@ function ReportConversation(props: { reportId: number, conversation: ReportMessa
               )}
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 1 }}>
                 {loading ? (
-                  <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                  <CircularProgress size="1.5rem" sx={{color: "white"}}/>
                 ) : (
                   t('ReportsPage.buttonSend')
                 )}

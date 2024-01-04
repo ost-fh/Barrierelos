@@ -24,7 +24,7 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage.tsx";
 import ImpressumPage from "./pages/ImpressumPage.tsx";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import {OAUTH_GOOGLE_CLIENT_ID} from "./constants.ts";
-
+import Reports from "./pages/Reports.tsx";
 
 type MuiLocales = "enUS" | "deDE";
 
@@ -43,6 +43,7 @@ function App() {
         },
         background: {
           paper: "#ffffff",
+          surface: "#fafafa",
           default: "#ffffff",
         },
         primary: {
@@ -98,7 +99,7 @@ function App() {
 
   const [authentication, setAuthentication] = useState<Authentication>(new Authentication());
 
-  if (!authentication.isAuthenticated) {
+  if(!authentication.isAuthenticated) {
     AuthenticationService.load(setAuthentication);
   }
 
@@ -136,6 +137,7 @@ function App() {
                 <Route path="/logout" element={<Logout/>}/>
                 <Route path="/signup" element={<Signup/>}/>
                 <Route path="/profile" element={<Private Component={Profile}/>}/>
+                <Route path="/reports" element={<Private Component={Reports} />}/>
                 <Route path="/impressum" element={<ImpressumPage/>}/>
                 <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
                 <Route path="*" element={<NotFound/>}/>

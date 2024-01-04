@@ -34,6 +34,9 @@ export default function NavBar() {
           <li>
             <NavLink to="/profile" onClick={resetFocus}>Profile</NavLink>
           </li>
+          <li>
+            <NavLink to="/reports" onClick={resetFocus}>Reports</NavLink>
+          </li>
           <li className="languageSelection">
             <ButtonGroup variant="text">
               {authentication.isAuthenticated ?

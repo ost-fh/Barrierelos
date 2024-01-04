@@ -5,3 +5,5 @@ export const OAUTH_GOOGLE_CLIENT_ID = "853032647850-896jhdp7s4ck8e1pqlmoktibs8a2
 
 export const MIN_LENGTH_USERNAME = 3
 export const MIN_LENGTH_PASSWORD = 6
+
+export const POLLING_INTERVAL = 10000;  // 10 seconds

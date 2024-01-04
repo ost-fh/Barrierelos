@@ -1,0 +1,9 @@
+td.heightWorkaround {
+  height: 1px;
+}
+
+@-moz-document url-prefix() {
+  td.heightWorkaround {
+    height: 100%;
+  }
+}

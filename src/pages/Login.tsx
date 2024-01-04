@@ -159,7 +159,7 @@ function Login() {
 
   return (
     <>
-      <Container component="main" maxWidth="xs">
+      <Container maxWidth="xs">
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, backgroundColor: 'secondary.main' }}>
             <LockOutlinedIcon />

@@ -1,4 +1,4 @@
-import {Alert, Avatar, Box, Button, CircularProgress, Container, Grid, TextField, Typography} from "@mui/material";
+import {Alert, Avatar, Box, Button, CircularProgress, Grid, TextField, Typography} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import {useTranslation} from "react-i18next";
 import React, {useContext, useState} from "react";
@@ -259,222 +259,218 @@ function Profile() {
   }
 
   return (
-    <>
-      <Container component="main">
-        <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Avatar sx={{ m: 1, backgroundColor: 'secondary.main', width: 96, height: 96 }}>
-            <PersonIcon sx={{ width: 72, height: 72 }} />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            {t("ProfilePage.profile")}
-          </Typography>
-          <Grid container sx={{ px: 3, mb: 3, width: '100vw' }} spacing={2} direction="row">
-            <Grid item xs={12} sm={6}>
-              <Box component="form" onSubmit={handleChangeContact} sx={{ mt: 3, alignItems: 'left' }}>
-                <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
-                  <Grid item>
-                    <Typography component="h2" variant="h6">
-                      {t("ProfilePage.contact")}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="body1">
-                      {t("ProfilePage.contactHint")}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      fullWidth
-                      id="firstname"
-                      name="firstname"
-                      label={t("ProfilePage.firstname")}
-                      autoComplete="given-name"
-                      defaultValue={authentication?.user?.firstname}
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      fullWidth
-                      id="lastname"
-                      name="lastname"
-                      label={t("ProfilePage.lastname")}
-                      autoComplete="family-name"
-                      defaultValue={authentication?.user?.lastname}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      fullWidth
-                      id="email"
-                      name="email"
-                      label={t("ProfilePage.email")}
-                      autoComplete="email"
-                      defaultValue={authentication?.user?.email}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      fullWidth
-                      id="username"
-                      name="username"
-                      label={t("ProfilePage.username")}
-                      defaultValue={authentication?.user?.username}
-                      autoComplete="username"
-                    />
-                  </Grid>
-                  {changeContactError && (
-                    <Grid item>
-                      <Alert sx={{ mt: 1 }} severity="error">{changeContactError}</Alert>
-                    </Grid>
-                  )}
-                  {changeContactSuccess && (
-                    <Grid item>
-                      <Alert sx={{ mt: 1 }} severity="success">{changeContactSuccess}</Alert>
-                    </Grid>
-                  )}
-                  <Grid item>
-                    <Button type="submit" fullWidth variant="contained">
-                      {changeContactLoading ? (
-                        <CircularProgress size="1.5rem" sx={{color: "background"}}/>
-                      ) : (
-                        t("ProfilePage.changeContact")
-                      )}
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
-            {authentication.isBasicAuthentication && (
-              <Grid item xs={12} sm={6}>
-                <Box component="form" onSubmit={handleChangePassword} sx={{ mt: 3, alignItems: 'left' }}>
-                  <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
-                    <Grid item>
-                      <Typography component="h2" variant="h6">
-                        {t("ProfilePage.changePassword")}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="body1">
-                        {t("ProfilePage.changePasswordHint")}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <TextField
-                        required
-                        fullWidth
-                        id="currentPassword"
-                        name="currentPassword"
-                        type="password"
-                        label={t("ProfilePage.currentPassword")}
-                        autoComplete="new-password"
-                      />
-                    </Grid>
-                    <Grid item>
-                      <TextField
-                        required
-                        fullWidth
-                        id="newPassword"
-                        name="newPassword"
-                        type="password"
-                        label={t("ProfilePage.newPassword")}
-                        autoComplete="new-password"
-                      />
-                    </Grid>
-                    <Grid item>
-                      <TextField
-                        required
-                        fullWidth
-                        id="confirmNewPassword"
-                        name="confirmNewPassword"
-                        type="password"
-                        label={t("ProfilePage.confirmNewPassword")}
-                        autoComplete="new-password"
-                      />
-                    </Grid>
-                    {changePasswordError && (
-                      <Grid item>
-                        <Alert sx={{ mt: 1 }} severity="error">{changePasswordError}</Alert>
-                      </Grid>
-                    )}
-                    {changePasswordSuccess && (
-                      <Grid item>
-                        <Alert sx={{ mt: 1 }} severity="success">{changePasswordSuccess}</Alert>
-                      </Grid>
-                    )}
-                    <Grid item>
-                      <Button type="submit" fullWidth variant="contained">
-                        {changePasswordLoading ? (
-                          <CircularProgress size="1.5rem" sx={{color: "background"}}/>
-                        ) : (
-                          t("ProfilePage.changePassword")
-                        )}
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Box>
+    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Avatar sx={{ m: 1, backgroundColor: 'secondary.main', width: 96, height: 96 }}>
+        <PersonIcon sx={{ width: 72, height: 72 }} />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        {t("ProfilePage.profile")}
+      </Typography>
+      <Grid container sx={{ px: 3, mb: 3, width: '100vw' }} spacing={2} direction="row">
+        <Grid item xs={12} sm={6}>
+          <Box component="form" onSubmit={handleChangeContact} sx={{ mt: 3, alignItems: 'left' }}>
+            <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
+              <Grid item>
+                <Typography component="h2" variant="h6">
+                  {t("ProfilePage.contact")}
+                </Typography>
               </Grid>
-            )}
-            <Grid item xs={12} sm={6}>
-              <Box component="form" onSubmit={handleDeleteAccount} sx={{ mt: 3, alignItems: 'left' }}>
-                <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
-                  <Grid item>
-                    <Typography component="h2" variant="h6">
-                      {t("ProfilePage.deleteAccount")}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="body1">
-                      {t("ProfilePage.deleteAccountHint")}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      fullWidth
-                      id="password"
-                      name="password"
-                      type="password"
-                      label={t("ProfilePage.password")}
-                      autoComplete="new-password"
-                    />
-                  </Grid>
-                  {deleteAccountError && (
-                    <Grid item>
-                      <Alert sx={{ mt: 1 }} severity="error">{deleteAccountError}</Alert>
-                    </Grid>
-                  )}
-                  <Grid item>
-                    <Button type="submit" fullWidth variant="contained">
-                      {deleteAccountLoading ? (
-                        <CircularProgress size="1.5rem" sx={{color: "background"}}/>
-                      ) : (
-                        t("ProfilePage.deleteAccount")
-                      )}
-                    </Button>
-                  </Grid>
+              <Grid item>
+                <Typography variant="body1">
+                  {t("ProfilePage.contactHint")}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <TextField
+                  required
+                  fullWidth
+                  id="firstname"
+                  name="firstname"
+                  label={t("ProfilePage.firstname")}
+                  autoComplete="given-name"
+                  defaultValue={authentication?.user?.firstname}
+                  autoFocus
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastname"
+                  name="lastname"
+                  label={t("ProfilePage.lastname")}
+                  autoComplete="family-name"
+                  defaultValue={authentication?.user?.lastname}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  name="email"
+                  label={t("ProfilePage.email")}
+                  autoComplete="email"
+                  defaultValue={authentication?.user?.email}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  name="username"
+                  label={t("ProfilePage.username")}
+                  defaultValue={authentication?.user?.username}
+                  autoComplete="username"
+                />
+              </Grid>
+              {changeContactError && (
+                <Grid item>
+                  <Alert sx={{ mt: 1 }} severity="error">{changeContactError}</Alert>
                 </Grid>
-                <ConfirmDialog
-                  title={t("ProfilePage.confirmDialogTitle")}
-                  no={t("ProfilePage.confirmDialogNo")}
-                  yes={t("ProfilePage.confirmDialogYes")}
-                  open={deleteAccountConfirmOpen}
-                  setOpen={setDeleteAccountConfirmOpen}
-                  onNo={handleDeleteAccountNo}
-                  onYes={handleDeleteAccountYes}
-                >
-                  {t("ProfilePage.confirmDialogText")}
-                </ConfirmDialog>
-              </Box>
+              )}
+              {changeContactSuccess && (
+                <Grid item>
+                  <Alert sx={{ mt: 1 }} severity="success">{changeContactSuccess}</Alert>
+                </Grid>
+              )}
+              <Grid item>
+                <Button type="submit" fullWidth variant="contained">
+                  {changeContactLoading ? (
+                    <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                  ) : (
+                    t("ProfilePage.changeContact")
+                  )}
+                </Button>
+              </Grid>
             </Grid>
+          </Box>
+        </Grid>
+        {authentication.isBasicAuthentication && (
+          <Grid item xs={12} sm={6}>
+            <Box component="form" onSubmit={handleChangePassword} sx={{ mt: 3, alignItems: 'left' }}>
+              <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
+                <Grid item>
+                  <Typography component="h2" variant="h6">
+                    {t("ProfilePage.changePassword")}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">
+                    {t("ProfilePage.changePasswordHint")}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    required
+                    fullWidth
+                    id="currentPassword"
+                    name="currentPassword"
+                    type="password"
+                    label={t("ProfilePage.currentPassword")}
+                    autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    required
+                    fullWidth
+                    id="newPassword"
+                    name="newPassword"
+                    type="password"
+                    label={t("ProfilePage.newPassword")}
+                    autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    required
+                    fullWidth
+                    id="confirmNewPassword"
+                    name="confirmNewPassword"
+                    type="password"
+                    label={t("ProfilePage.confirmNewPassword")}
+                    autoComplete="new-password"
+                  />
+                </Grid>
+                {changePasswordError && (
+                  <Grid item>
+                    <Alert sx={{ mt: 1 }} severity="error">{changePasswordError}</Alert>
+                  </Grid>
+                )}
+                {changePasswordSuccess && (
+                  <Grid item>
+                    <Alert sx={{ mt: 1 }} severity="success">{changePasswordSuccess}</Alert>
+                  </Grid>
+                )}
+                <Grid item>
+                  <Button type="submit" fullWidth variant="contained">
+                    {changePasswordLoading ? (
+                      <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                    ) : (
+                      t("ProfilePage.changePassword")
+                    )}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
           </Grid>
-        </Box>
-      </Container>
-    </>
+        )}
+        <Grid item xs={12} sm={6}>
+          <Box component="form" onSubmit={handleDeleteAccount} sx={{ mt: 3, alignItems: 'left' }}>
+            <Grid container spacing={2} columns={{ xs: 2, sm: 4, md: 6 }} direction="column">
+              <Grid item>
+                <Typography component="h2" variant="h6">
+                  {t("ProfilePage.deleteAccount")}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1">
+                  {t("ProfilePage.deleteAccountHint")}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <TextField
+                  required
+                  fullWidth
+                  id="password"
+                  name="password"
+                  type="password"
+                  label={t("ProfilePage.password")}
+                  autoComplete="new-password"
+                />
+              </Grid>
+              {deleteAccountError && (
+                <Grid item>
+                  <Alert sx={{ mt: 1 }} severity="error">{deleteAccountError}</Alert>
+                </Grid>
+              )}
+              <Grid item>
+                <Button type="submit" fullWidth variant="contained">
+                  {deleteAccountLoading ? (
+                    <CircularProgress size="1.5rem" sx={{color: "background"}}/>
+                  ) : (
+                    t("ProfilePage.deleteAccount")
+                  )}
+                </Button>
+              </Grid>
+            </Grid>
+            <ConfirmDialog
+              title={t("ProfilePage.confirmDialogTitle")}
+              no={t("ProfilePage.confirmDialogNo")}
+              yes={t("ProfilePage.confirmDialogYes")}
+              open={deleteAccountConfirmOpen}
+              setOpen={setDeleteAccountConfirmOpen}
+              onNo={handleDeleteAccountNo}
+              onYes={handleDeleteAccountYes}
+            >
+              {t("ProfilePage.confirmDialogText")}
+            </ConfirmDialog>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 

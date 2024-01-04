@@ -195,5 +195,45 @@
     "confirmDialogText": "Soll dieses Konto wirklich gelöscht werden? Das Löschen des Kontos kann nicht rückgängig gemacht werden!",
     "confirmDialogNo": "Cancel",
     "confirmDialogYes": "Delete"
+  },
+  "ReportsPage": {
+    "title": "Meldungen",
+    "titleWebsites": "Websites",
+    "titleWebpages": "Webpages",
+    "titleUsers": "Benutzer",
+    "text": "Eine Übersicht über alle Meldungen die dich betreffen oder bei deren Besprechung du involviert bist.",
+    "tableHeaderDate": "Datum",
+    "tableHeaderWebsite": "Website",
+    "tableHeaderWebpage": "Webpage",
+    "tableHeaderUser": "Benutzer",
+    "tableHeaderInitiator": "Initiator",
+    "tableHeaderReason": "Grund",
+    "tableHeaderStatus": "Status",
+    "labelRegistered": "Registriert",
+    "labelStatus": "Status",
+    "labelMessage": "Nachricht",
+    "buttonSend": "Nachricht Absenden",
+    "sendError": "Absenden der Nachricht nicht möglich, bitte später noch einmal versuchen.",
+    "loadError": "Keine Meldungen vorhanden."
+  },
+  "ReasonEnum": {
+    "INCORRECT": "inkorrekt",
+    "MISLEADING": "irreführend",
+    "INAPPROPRIATE": "unangebracht"
+  },
+  "StateEnum": {
+    "OPEN": "offen",
+    "CLOSED": "abgeschlossen"
+  },
+  "RoleEnum": {
+    "ADMIN": "Administrator",
+    "MODERATOR": "Moderator",
+    "CONTRIBUTOR": "Kontributor",
+    "VIEWER": "Betrachter",
+    "GUEST": "Gast"
+  },
+  "DeleteEnum": {
+    "ACTIVE": "Aktiv",
+    "INACTIVE": "Inaktiv"
   }
 }

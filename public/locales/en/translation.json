@@ -195,5 +195,45 @@
     "confirmDialogText": "Are you sure you want to delete this account? Deleting the account cannot be undone!",
     "confirmDialogNo": "Cancel",
     "confirmDialogYes": "Delete"
+  },
+  "ReportsPage": {
+    "title": "Reports",
+    "titleWebsites": "Websites",
+    "titleWebpages": "Webpages",
+    "titleUsers": "Users",
+    "text": "An overview of all reports that affect you or that you are involved in discussing.",
+    "tableHeaderDate": "Date",
+    "tableHeaderWebsite": "Website",
+    "tableHeaderWebpage": "Webpage",
+    "tableHeaderUser": "User",
+    "tableHeaderInitiator": "Initiator",
+    "tableHeaderReason": "Reason",
+    "tableHeaderStatus": "Status",
+    "labelRegistered": "Registered",
+    "labelStatus": "Status",
+    "labelMessage": "Message",
+    "buttonSend": "Send Message",
+    "sendError": "Unable to send message. Please try again later.",
+    "loadError": "No Reports present."
+  },
+  "ReasonEnum": {
+    "INCORRECT": "incorrect",
+    "MISLEADING": "misleading",
+    "INAPPROPRIATE": "inappropriate"
+  },
+  "StateEnum": {
+    "OPEN": "open",
+    "CLOSED": "closed"
+  },
+  "RoleEnum": {
+    "ADMIN": "Admin",
+    "MODERATOR": "Moderator",
+    "CONTRIBUTOR": "Contributor",
+    "VIEWER": "Viewer",
+    "GUEST": "Guest"
+  },
+  "DeleteEnum": {
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive"
   }
 }

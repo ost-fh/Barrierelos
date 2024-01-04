@@ -24,7 +24,7 @@ public class TagService
 
     throwIfNameAlreadyExists(tag)
 
-    return this.tagRepository.save(tag.toEntity()).toModel()
+    return this.tagRepository.save(tag.toEntity()).toModel(tag)
   }
 
   public fun updateTag(tag: Tag): Tag

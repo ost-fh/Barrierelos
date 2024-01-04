@@ -48,6 +48,19 @@ public fun WebsiteScanEntity.toModel(): WebsiteScan
   return websiteScan
 }
 
+public fun WebsiteScanEntity.toModel(websiteScan: WebsiteScan): WebsiteScan
+{
+  return websiteScan.apply {
+    id = this@toModel.websiteScanId
+    website = this@toModel.website.toModel()
+    websiteStatistic = this@toModel.websiteStatistic?.toModel()
+    websiteResult = this@toModel.websiteResult?.toModel()
+    webpageScans = this@toModel.webpageScans.map { it.toModel() }.toMutableSet()
+    modified = this@toModel.modified.time
+    created = this@toModel.created.time
+  }
+}
+
 public fun Collection<WebsiteScan>.toEntities(): MutableSet<WebsiteScanEntity>
 {
   return this.map { websiteScan -> websiteScan.toEntity() }.toMutableSet()

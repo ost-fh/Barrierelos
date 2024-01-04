@@ -27,7 +27,7 @@ public class WebsiteScanService
     websiteScan.created = timestamp
     websiteScan.modified = timestamp
 
-    return this.websiteScanRepository.save(websiteScan.toEntity()).toModel()
+    return this.websiteScanRepository.save(websiteScan.toEntity()).toModel(websiteScan)
   }
 
   public fun updateWebsiteScan(websiteScan: WebsiteScan): WebsiteScan

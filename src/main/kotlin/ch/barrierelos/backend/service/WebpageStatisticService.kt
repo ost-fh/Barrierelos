@@ -27,7 +27,7 @@ public class WebpageStatisticService
     webpageStatistic.created = timestamp
     webpageStatistic.modified = timestamp
 
-    return this.webpageStatisticRepository.save(webpageStatistic.toEntity()).toModel()
+    return this.webpageStatisticRepository.save(webpageStatistic.toEntity()).toModel(webpageStatistic)
   }
 
   public fun updateWebpageStatistic(webpageStatistic: WebpageStatistic): WebpageStatistic

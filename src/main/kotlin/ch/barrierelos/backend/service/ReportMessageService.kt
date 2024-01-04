@@ -29,7 +29,7 @@ public class ReportMessageService
     reportMessage.created = timestamp
     reportMessage.modified = timestamp
 
-    return this.reportMessageRepository.save(reportMessage.toEntity()).toModel()
+    return this.reportMessageRepository.save(reportMessage.toEntity()).toModel(reportMessage)
   }
 
   public fun updateReportMessage(reportMessage: ReportMessage): ReportMessage

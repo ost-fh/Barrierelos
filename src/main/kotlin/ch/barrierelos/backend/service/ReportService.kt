@@ -31,7 +31,7 @@ public class ReportService
 
     report.state = StateEnum.OPEN
 
-    return this.reportRepository.save(report.toEntity()).toModel()
+    return this.reportRepository.save(report.toEntity()).toModel(report)
   }
 
   public fun updateReport(report: Report): Report

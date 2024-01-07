@@ -1,23 +1,13 @@
+html, body, #root {
+  height: 100%
+}
+
+.content-container {
+  min-height: calc(100vh - 24px - 72px);
+}
+
 main, footer {
   margin-inline: 24px;
-}
-
-.skip-link {
-  position: absolute;
-  left: -999px;
-  width: 1px;
-  height: 1px;
-  top: auto;
-}
-
-.skip-link:focus,
-.skip-link:active {
-  color: black;
-  display: inline-block;
-  height: auto;
-  width: auto;
-  position: static;
-  margin: auto;
 }
 
 hr {
@@ -25,32 +15,13 @@ hr {
 }
 
 footer {
+  position: relative;
+  top: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-block-end: 24px;
-}
-
-.barrierelos-logo {
-  width: 250px;
-}
-
-.footer-links {
-  display: inline-block;
-  margin: 0;
-  padding-inline-start: 0;
-  list-style-type: none;
-}
-
-.footer-links li {
-  text-align: end;
-}
-
-.footer-links li a {
-  color: #006064;
-  font-weight: normal;
-}
-
-.footer-links li a:visited {
-  color: #006064;
-  text-decoration: none;
+  margin: 24px 0 0 0;
+  padding: 24px;
+  background: #333333;
+  color: #339999;
 }

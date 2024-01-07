@@ -46,8 +46,9 @@
     "Canton: JU": "Kanton: Jura",
     "Country: FL": "Land: Liechtenstein"
   },
-  "Navbar": {
-    "languageSelectionLabel": "Sprachauswahl"
+  "NavBar": {
+    "openNavigationMenuBtnAriaLabel": "Navigationsmenü öffnen",
+    "closeNavigationMenuBtnAriaLabel": "Navigationsmenü schliessen"
   },
   "HomePage": {
     "title": "Start",

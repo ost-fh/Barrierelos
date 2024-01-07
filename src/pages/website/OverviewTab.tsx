@@ -14,8 +14,6 @@ import {
   TableRow,
   Tooltip,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material"
 import "./OverviewTab.css"
 import {useTranslation} from "react-i18next"
@@ -32,9 +30,6 @@ import {ReactElement} from "react";
 function OverviewTab(props: { websiteScan: WebsiteScan }) {
   const {t, i18n} = useTranslation();
   const websiteScan: WebsiteScan = props.websiteScan
-
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const tags = websiteScan.website.tags.map(websiteTag => (
     <Chip key={websiteTag.id} label={mapWebsiteTag(websiteTag)} variant="outlined"/>
@@ -83,11 +78,10 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
       <TableContainer component={Paper} variant="outlined" sx={{maxWidth: "1200px"}}>
         <Table
           aria-label={t("WebsitePage.OverviewTab.webpagesTableAriaLabel")}
-          size={isSmallScreen ? "small" : "medium"}
         >
           <TableHead>
             <TableRow>
-              <TableCell sx={{minWidth: "80px"}}>{t("WebsitePage.OverviewTab.webpageUrl")}</TableCell>
+              <TableCell sx={{minWidth: "150px"}}>{t("WebsitePage.OverviewTab.webpageUrl")}</TableCell>
               {websiteScan.websiteStatistic ? (
                 <>
                   <TableCell sx={{width: "15%", minWidth: "105px"}}>{t("General.barrierelosScore")}</TableCell>
@@ -109,7 +103,7 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
                 key={webpageScan.id}
                 sx={{"&:last-child td, &:last-child th": {border: 0}}}
               >
-                <TableCell>{webpageScan.webpage.displayUrl}</TableCell>
+                <TableCell sx={{overflowWrap: "anywhere"}}>{webpageScan.webpage.displayUrl}</TableCell>
                 {webpageScan.webpageStatistic ? (
                   <>
                     <TableCell>{Math.round(webpageScan.webpageStatistic.score ?? 0)}</TableCell>

@@ -289,7 +289,6 @@ function Profile() {
                   label={t("ProfilePage.firstname")}
                   autoComplete="given-name"
                   defaultValue={authentication?.user?.firstname}
-                  autoFocus
                 />
               </Grid>
               <Grid item>

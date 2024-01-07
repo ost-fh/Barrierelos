@@ -73,7 +73,7 @@ function IssuesTab(props: { websiteScan: WebsiteScan }) {
     const testedCount = rule.checks.map((check) => check.testedCount).reduce((a, b) => a + b, 0)
     const violationPercentage = testedCount !== 0 ? formatViolationRatio(violatedCount / testedCount * 100, 2) : "0"
     return (
-      <Card sx={{maxWidth: 345}} variant="outlined">
+      <Card sx={{maxWidth: 345}} variant="outlined" component="article">
         <CardHeader title={rule.description} lang="en"/>
         <CardContent>
           <div>{t("WebsitePage.IssuesTab.violationsLabel")}: {violatedCount}</div>

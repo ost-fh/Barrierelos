@@ -77,7 +77,8 @@ export function WebsiteTable() {
       field: "score",
       headerName: t("WebsitesPage.WebsiteTable.scoreHeaderLabel"),
       width: 160,
-      align: "center"
+      align: "center",
+      valueFormatter: (params: GridValueFormatterParams<number | undefined>) => formatScore(params.value),
     },
   ];
 
@@ -115,7 +116,7 @@ export function WebsiteTable() {
     setRows(websites?.map((website) => ({
       id: website.id,
       domain: website.domain,
-      score: formatScore(website.score),
+      score: website.score,
       category: website.category,
       tags: website.tags,
     }) as TableRow) || [])
@@ -129,5 +130,5 @@ interface TableRow {
   id: number
   domain: string
   category: Website.category
-  score: string
+  score: number | undefined
 }

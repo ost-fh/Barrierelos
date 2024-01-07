@@ -49,7 +49,6 @@ function WebsitePage() {
         <title>{websiteScan.website.domain} - {t("General.title")}</title>
       </Helmet>
 
-
       <Stack direction="row" alignItems="center">
         <h1>{websiteScan.website.domain}</h1>
         {websiteScan.website.status !== status.READY ? (

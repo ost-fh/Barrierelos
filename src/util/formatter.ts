@@ -1,5 +1,5 @@
 export function formatScore(score: number | undefined): string {
-  if (score === undefined) {
+  if (score == null) {
     return "N/A";
   }
   return Math.round(score).toString();

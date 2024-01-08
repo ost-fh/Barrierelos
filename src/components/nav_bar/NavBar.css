@@ -63,7 +63,7 @@ nav .hamburger-btn svg {
   font-size: 32px;
 }
 
-nav a {
+nav a, nav a:visited, nav a:active, nav a:focus, nav a:hover {
   display: inline-block;
   color: white;
   text-align: center;

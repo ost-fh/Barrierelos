@@ -23,5 +23,14 @@ footer {
   margin: 24px 0 0 0;
   padding: 24px;
   background: #333333;
-  color: #339999;
+  color: white;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #00668a;
+}
+
+a:hover {
+  color: #3384a1;
 }

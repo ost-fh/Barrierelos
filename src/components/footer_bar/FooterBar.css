@@ -1,10 +1,10 @@
 .footer-links a {
   font-weight: normal;
-  text-decoration-color: #339999;
+  text-decoration: none;
 }
 
 .footer-links a:visited {
-  color: #339999;
+  color: white;
 }
 
 .footer-links a:hover, .footer-links a:focus {

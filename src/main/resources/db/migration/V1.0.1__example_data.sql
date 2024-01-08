@@ -55,9 +55,9 @@ TRUNCATE "website" CASCADE;
 
 INSERT INTO "website"(  "website_id", "user_fk", "url", "domain", "category", "status")
 VALUES
-  (1, 10, 'https://admin.ch', 'admin.ch', 'GOVERNMENT_FEDERAL'::category_enum, 'PENDING_INITIAL'::status_enum),
+  (1, 10, 'https://admin.cha', 'admin.cha', 'GOVERNMENT_FEDERAL'::category_enum, 'PENDING_INITIAL'::status_enum),
   (2, 10, 'https://www.zuerich.com', 'zuerich.com', 'GOVERNMENT_CANTONAL'::category_enum, 'BLOCKED'::status_enum),
-  (3, 10, 'https://zh.ch', 'zh.ch', 'GOVERNMENT_CANTONAL'::category_enum, 'PENDING_INITIAL'::status_enum),
+  (3, 10, 'https://zh.ch', 'zh.ch', 'GOVERNMENT_MUNICIPAL'::category_enum, 'PENDING_INITIAL'::status_enum),
   (4, 10, 'https://www.rapperswil-jona.ch', 'rapperswil-jona.ch', 'GOVERNMENT_MUNICIPAL'::category_enum, 'PENDING_RESCAN'::status_enum);
 
 INSERT INTO "webpage"(  "webpage_id", "website_fk", "user_fk", "url", "display_url", "status", "deleted")

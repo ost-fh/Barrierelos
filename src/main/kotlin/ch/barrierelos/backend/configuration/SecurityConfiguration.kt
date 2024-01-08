@@ -5,7 +5,6 @@ import ch.barrierelos.backend.constant.Endpoint.DOCUMENTATION_OPENAPI
 import ch.barrierelos.backend.constant.Endpoint.DOCUMENTATION_SWAGGER
 import ch.barrierelos.backend.constant.Endpoint.REPORT
 import ch.barrierelos.backend.constant.Endpoint.REPORT_MESSAGE
-import ch.barrierelos.backend.constant.Endpoint.STATISTICS
 import ch.barrierelos.backend.constant.Endpoint.TAG
 import ch.barrierelos.backend.constant.Endpoint.USER
 import ch.barrierelos.backend.constant.Endpoint.USER_REPORT
@@ -79,8 +78,6 @@ public class SecurityConfiguration
           .requestMatchers(HttpMethod.HEAD, "$WEBPAGE/**").permitAll()
           .requestMatchers(HttpMethod.GET, "$WEBPAGE/**").permitAll()
           .requestMatchers(HttpMethod.DELETE, "$WEBPAGE/**").hasAnyRole(RoleEnum.ADMIN.name, RoleEnum.MODERATOR.name)
-
-          .requestMatchers("${STATISTICS}/**").permitAll()
 
           .requestMatchers(HttpMethod.POST, "$WEBSITE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)
           .requestMatchers(HttpMethod.PUT, "$WEBSITE_STATISTIC/**").hasAnyRole(RoleEnum.ADMIN.name)

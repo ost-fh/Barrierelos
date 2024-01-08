@@ -5,7 +5,6 @@ import ch.barrierelos.backend.constant.MediaType
 import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.message.WebsiteScanMessage
 import ch.barrierelos.backend.model.WebsiteScan
-import ch.barrierelos.backend.model.WebsiteStatistic
 import ch.barrierelos.backend.service.StatisticService
 import ch.barrierelos.backend.service.WebsiteScanService
 import ch.barrierelos.backend.util.toHeaders
@@ -58,14 +57,6 @@ public class WebsiteScanController
     val websiteScan = this.statisticService.getWebsiteScan(websiteId)
 
     return ResponseEntity.status(HttpStatus.OK).body(websiteScan)
-  }
-
-  @GetMapping(value = ["$WEBSITE_SCAN/{id}/statistic"], produces = [MediaType.JSON])
-  public fun getWebsiteScanStatistic(@PathVariable id: Long): ResponseEntity<WebsiteStatistic>
-  {
-    val websiteScan: WebsiteScan = this.websiteScanService.getWebsiteScan(id)
-
-    return ResponseEntity.status(HttpStatus.OK).body(websiteScan.websiteStatistic)
   }
 
   @DeleteMapping(value = ["$WEBSITE_SCAN/{id}"], produces = [MediaType.JSON])

@@ -53,19 +53,19 @@ TRUNCATE "report" CASCADE;
 TRUNCATE "webpage" CASCADE;
 TRUNCATE "website" CASCADE;
 
-INSERT INTO "website"(  "website_id", "user_fk", "url", "domain", "category", "status", "score")
+INSERT INTO "website"(  "website_id", "user_fk", "url", "domain", "category", "status")
 VALUES
-  (1, 10, 'https://admin.cha', 'admin.cha', 'GOVERNMENT_FEDERAL'::category_enum, 'READY'::status_enum, 1.0),
-  (2, 10, 'https://www.zuerich.com', 'zuerich.com', 'GOVERNMENT_CANTONAL'::category_enum, 'BLOCKED'::status_enum, 1.0),
-  (3, 10, 'https://zh.ch', 'zh.ch', 'GOVERNMENT_MUNICIPAL'::category_enum, 'READY'::status_enum, 1.0),
-  (4, 10, 'https://www.rapperswil-jona.ch', 'rapperswil-jona.ch', 'GOVERNMENT_MUNICIPAL'::category_enum, 'PENDING_RESCAN'::status_enum, 1.0);
+  (1, 10, 'https://admin.ch', 'admin.ch', 'GOVERNMENT_FEDERAL'::category_enum, 'PENDING_INITIAL'::status_enum),
+  (2, 10, 'https://www.zuerich.com', 'zuerich.com', 'GOVERNMENT_CANTONAL'::category_enum, 'BLOCKED'::status_enum),
+  (3, 10, 'https://zh.ch', 'zh.ch', 'GOVERNMENT_CANTONAL'::category_enum, 'PENDING_INITIAL'::status_enum),
+  (4, 10, 'https://www.rapperswil-jona.ch', 'rapperswil-jona.ch', 'GOVERNMENT_MUNICIPAL'::category_enum, 'PENDING_RESCAN'::status_enum);
 
 INSERT INTO "webpage"(  "webpage_id", "website_fk", "user_fk", "url", "display_url", "status", "deleted")
 VALUES
-  (1, 1, 10, 'https://admin.cha/troll', '/troll', 'READY'::status_enum, false),
-  (2, 2, 10, 'https://www.zuerich.com/en/visit/shopping/airport-shopping', '/en/visit/shopping/airport-shopping', 'BLOCKED'::status_enum, false),
-  (3, 3, 10, 'https://zh.ch/interkantonales-technikum-rapperswil', '/interkantonales-technikum-rapperswil', 'READY'::status_enum, true),
-  (4, 4, 10, 'https://www.rapperswil-jona.ch/go-jona', '/go-jona', 'PENDING_RESCAN'::status_enum, false);
+  (1, 1, 10, 'https://admin.cha/troll', 'admin.cha/troll', 'PENDING_INITIAL'::status_enum, false),
+  (2, 2, 10, 'https://www.zuerich.com/en/visit/shopping/airport-shopping', 'www.zuerich.com/en/visit/shopping/airport-shopping', 'BLOCKED'::status_enum, false),
+  (3, 3, 10, 'https://zh.ch/interkantonales-technikum-rapperswil', 'zh.ch/interkantonales-technikum-rapperswil', 'PENDING_INITIAL'::status_enum, true),
+  (4, 4, 10, 'https://www.rapperswil-jona.ch/go-jona', 'www.rapperswil-jona.ch/go-jona', 'PENDING_RESCAN'::status_enum, false);
 
 INSERT INTO "report"("report_id", "user_fk", "reason", "state", "modified", "created")
 VALUES

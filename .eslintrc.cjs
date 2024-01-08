@@ -8,7 +8,7 @@ module.exports = {
         "plugin:@typescript-eslint/strict-type-checked",
         "plugin:@typescript-eslint/stylistic-type-checked",
     ],
-    ignorePatterns: ["dist", ".eslintrc.*", "jest.config.*"],
+    ignorePatterns: ["dist", ".eslintrc.*"],
     parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",

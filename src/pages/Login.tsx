@@ -27,7 +27,7 @@ import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
 import {isValidUsername} from "../util.ts";
 
 function Login() {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
@@ -178,6 +178,7 @@ function Login() {
             width={googleLoginWidth}
             onSuccess={(credentialResponse) => handleGoogleLogin(credentialResponse)}
             onError={() => onLoginError()}
+            locale={i18n.resolvedLanguage}
           />
           <Divider sx={{mt: 4, mb: 1}} flexItem>{t("LoginPage.dividerOr")}</Divider>
           <Box component="form" onSubmit={handleBasicLogin} sx={{mt: 1}}>

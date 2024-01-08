@@ -2903,47 +2903,6 @@
         }
       }
     },
-    "/website-scan/{id}/statistic": {
-      "get": {
-        "tags": [
-          "website-scan-controller"
-        ],
-        "operationId": "getWebsiteScanStatistic",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseStatusException"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WebsiteStatistic"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/website-report/{id}": {
       "get": {
         "tags": [
@@ -3573,6 +3532,18 @@
       "HttpHeaders": {
         "type": "object",
         "properties": {
+          "accept": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaType"
+            }
+          },
+          "acceptPatch": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaType"
+            }
+          },
           "acceptLanguage": {
             "type": "array",
             "items": {
@@ -3667,18 +3638,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HttpMethod"
-            }
-          },
-          "accept": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaType"
-            }
-          },
-          "acceptPatch": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaType"
             }
           },
           "accessControlAllowOrigin": {
@@ -3826,9 +3785,6 @@
               "type": "string"
             }
           },
-          "cacheControl": {
-            "type": "string"
-          },
           "host": {
             "type": "object",
             "properties": {
@@ -3894,6 +3850,9 @@
                 "type": "string"
               }
             }
+          },
+          "cacheControl": {
+            "type": "string"
           },
           "range": {
             "type": "array",
@@ -3990,16 +3949,16 @@
             "type": "number",
             "format": "double"
           },
-          "subtypeSuffix": {
-            "type": "string"
-          },
-          "concrete": {
-            "type": "boolean"
-          },
           "wildcardType": {
             "type": "boolean"
           },
           "wildcardSubtype": {
+            "type": "boolean"
+          },
+          "subtypeSuffix": {
+            "type": "string"
+          },
+          "concrete": {
             "type": "boolean"
           },
           "charset": {
@@ -4119,6 +4078,18 @@
           "headers": {
             "type": "object",
             "properties": {
+              "accept": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
+              },
+              "acceptPatch": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
+              },
               "acceptLanguage": {
                 "type": "array",
                 "items": {
@@ -4213,18 +4184,6 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/HttpMethod"
-                }
-              },
-              "accept": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MediaType"
-                }
-              },
-              "acceptPatch": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MediaType"
                 }
               },
               "accessControlAllowOrigin": {
@@ -4372,9 +4331,6 @@
                   "type": "string"
                 }
               },
-              "cacheControl": {
-                "type": "string"
-              },
               "host": {
                 "type": "object",
                 "properties": {
@@ -4441,6 +4397,9 @@
                   }
                 }
               },
+              "cacheControl": {
+                "type": "string"
+              },
               "range": {
                 "type": "array",
                 "items": {
@@ -4500,18 +4459,17 @@
           "message": {
             "type": "string"
           },
+          "detailMessageCode": {
+            "type": "string"
+          },
           "detailMessageArguments": {
             "type": "array",
             "items": {
               "type": "object"
             }
           },
-          "detailMessageCode": {
-            "type": "string"
-          },
-          "detail": {
-            "type": "string",
-            "writeOnly": true
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
           },
           "title": {
             "type": "string",
@@ -4522,63 +4480,20 @@
             "format": "uri",
             "writeOnly": true
           },
-          "statusCode": {
-            "$ref": "#/components/schemas/HttpStatusCode"
+          "detail": {
+            "type": "string",
+            "writeOnly": true
           },
           "type": {
             "type": "string",
             "format": "uri",
             "writeOnly": true
           },
-          "titleMessageCode": {
-            "type": "string"
-          },
           "typeMessageCode": {
             "type": "string"
           },
-          "mostSpecificCause": {
-            "type": "object",
-            "properties": {
-              "stackTrace": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "classLoaderName": {
-                      "type": "string"
-                    },
-                    "moduleName": {
-                      "type": "string"
-                    },
-                    "moduleVersion": {
-                      "type": "string"
-                    },
-                    "methodName": {
-                      "type": "string"
-                    },
-                    "fileName": {
-                      "type": "string"
-                    },
-                    "lineNumber": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "nativeMethod": {
-                      "type": "boolean"
-                    },
-                    "className": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "message": {
-                "type": "string"
-              },
-              "localizedMessage": {
-                "type": "string"
-              }
-            }
+          "titleMessageCode": {
+            "type": "string"
           },
           "rootCause": {
             "type": "object",
@@ -4709,6 +4624,50 @@
                     }
                   }
                 }
+              },
+              "localizedMessage": {
+                "type": "string"
+              }
+            }
+          },
+          "mostSpecificCause": {
+            "type": "object",
+            "properties": {
+              "stackTrace": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "classLoaderName": {
+                      "type": "string"
+                    },
+                    "moduleName": {
+                      "type": "string"
+                    },
+                    "moduleVersion": {
+                      "type": "string"
+                    },
+                    "methodName": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "nativeMethod": {
+                      "type": "boolean"
+                    },
+                    "className": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "message": {
+                "type": "string"
               },
               "localizedMessage": {
                 "type": "string"
@@ -5144,6 +5103,10 @@
             "format": "date-time",
             "writeOnly": true
           },
+          "epochSeconds": {
+            "type": "integer",
+            "format": "int64"
+          },
           "value$kotlinx_datetime": {
             "type": "string",
             "format": "date-time"
@@ -5151,10 +5114,6 @@
           "nanosecondsOfSecond": {
             "type": "integer",
             "format": "int32"
-          },
-          "epochSeconds": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },

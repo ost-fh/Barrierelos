@@ -15,7 +15,7 @@ import {
 
 function formatWebsiteResults(job: ScanJob, webpageResults: WebpageResult[]): WebsiteResult {
     return {
-        modelVersion: "0.0.0",
+        modelVersion: "1.0.0",
         jobId: job.jobId,
         domain: job.domain,
         scanTimestamp: new Date().toISOString(),
@@ -26,7 +26,7 @@ function formatWebsiteResults(job: ScanJob, webpageResults: WebpageResult[]): We
 
 function formatFailedWebsiteResult(error: unknown): WebsiteResult {
     return {
-        modelVersion: "0.0.0",
+        modelVersion: "1.0.0",
         jobId: 0,
         domain: "N/A",
         scanTimestamp: new Date().toISOString(),

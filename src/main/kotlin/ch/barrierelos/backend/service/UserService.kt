@@ -81,7 +81,7 @@ public class UserService
 
   public fun getUser(userId: Long): User
   {
-    Security.assertRoleOrId(userId, RoleEnum.ADMIN)
+    Security.assertAnyRolesOrId(userId, RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
 
     return this.userRepository.findById(userId).orThrow(NoSuchElementException()).toModel()
   }

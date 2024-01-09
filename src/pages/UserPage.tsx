@@ -1,6 +1,6 @@
 import PersonIcon from "@mui/icons-material/Person";
 import {Alert, Avatar, Box, CircularProgress, Typography} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Helmet} from "react-helmet-async";
 import {useTranslation} from "react-i18next";
 import {User, UserControllerService} from "../lib/api-client";
@@ -11,6 +11,7 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {convertRolesToString, convertTimestampToLocalDatetime} from "../util.ts";
 import ReportComponent from "../components/ReportComponent.tsx";
+import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 
 interface UserPageParams extends Record<string, string> {
   userId: string
@@ -19,6 +20,7 @@ interface UserPageParams extends Record<string, string> {
 function UserProfile(props: { user: User }) {
   const { user } = props;
   const {t} = useTranslation();
+  const {authentication} = useContext(AuthenticationContext);
 
   return (
     <>
@@ -81,9 +83,11 @@ function UserProfile(props: { user: User }) {
             </TableRow>
           </TableBody>
         </Table>
-        <ReportComponent
-          subject={user}
-        />
+        {authentication.user !== undefined && authentication.user.id === user.id ? null : (
+          <ReportComponent
+            subject={user}
+          />
+        )}
       </Box>
     </>
   )

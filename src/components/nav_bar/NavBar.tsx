@@ -1,4 +1,4 @@
-import {Link, NavLink} from "react-router-dom"
+import {Link, NavLink, useLocation} from "react-router-dom"
 import "./NavBar.css"
 import {useTranslation} from "react-i18next";
 import {Button, ButtonGroup, Stack, useMediaQuery, useTheme} from "@mui/material";
@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 export default function NavBar() {
   const {t, i18n} = useTranslation()
   const {authentication} = useContext(AuthenticationContext);
+  const location = useLocation();
 
   const theme = useTheme();
   const isMobileNav = useMediaQuery(theme.breakpoints.down("sm"))
@@ -92,11 +93,20 @@ export default function NavBar() {
             <NavLink to="/reports" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
               Reports
             </NavLink>
+            {isCurrentLocation('/user') ? (
+              <NavLink to={location.pathname} onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
+                User
+              </NavLink>
+            ) : null}
           </>
         ) : null}
       </nav>
     </>
   )
+
+  function isCurrentLocation(path: string) {
+    return location.pathname.toLowerCase().startsWith(path);
+  }
 
   function toggleExpanded() {
     setIsNavExpanded(!isNavExpanded);

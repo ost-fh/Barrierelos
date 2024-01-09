@@ -25,8 +25,7 @@ import {GoogleOAuthProvider} from "@react-oauth/google";
 import {OAUTH_GOOGLE_CLIENT_ID} from "./constants.ts";
 import FaqPage from "./pages/faq/FaqPage.tsx";
 import ReportsPage from "./pages/ReportsPage.tsx";
-import FooterBar from "./components/footer_bar/FooterBar.tsx";
-
+import UserPage from "./pages/UserPage.tsx";
 
 type MuiLocales = "enUS" | "deDE";
 
@@ -140,6 +139,7 @@ function App() {
                   <Route path="/signup" element={<SignupPage/>}/>
                   <Route path="/profile" element={<Private Component={ProfilePage}/>}/>
                   <Route path="/reports" element={<Private Component={ReportsPage}/>}/>
+                  <Route path="/user/:userId" element={<Private Component={UserPage} />}/>
                   <Route path="/impressum" element={<ImpressumPage/>}/>
                   <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
                   <Route path="*" element={<NotFoundPage/>}/>

@@ -48,7 +48,19 @@
   },
   "NavBar": {
     "openNavigationMenuBtnAriaLabel": "Navigationsmenü öffnen",
-    "closeNavigationMenuBtnAriaLabel": "Navigationsmenü schliessen"
+    "closeNavigationMenuBtnAriaLabel": "Navigationsmenü schliessen",
+    "logout": "Abmelden",
+    "login": "Anmelden"
+  },
+  "NavLinks": {
+    "home": "Startseite",
+    "websites": "Webseiten",
+    "faq": "FAQ",
+    "profile": "Profil",
+    "reports": "Meldungen",
+    "user": "Benutzer",
+    "privacyPolicy": "Datenschutz",
+    "impressum": "Impressum"
   },
   "HomePage": {
     "title": "Start",

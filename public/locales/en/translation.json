@@ -48,7 +48,19 @@
   },
   "NavBar": {
     "openNavigationMenuBtnAriaLabel": "Open navigation menu",
-    "closeNavigationMenuBtnAriaLabel": "Close navigation menu"
+    "closeNavigationMenuBtnAriaLabel": "Close navigation menu",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "NavLinks": {
+    "home": "Home",
+    "websites": "Websites",
+    "faq": "FAQ",
+    "profile": "Profile",
+    "reports": "Reports",
+    "user": "User",
+    "privacyPolicy": "Privacy Policy",
+    "impressum": "Legal Notice"
   },
   "HomePage": {
     "title": "Home",

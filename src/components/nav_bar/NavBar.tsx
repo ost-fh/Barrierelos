@@ -35,9 +35,9 @@ export default function NavBar() {
           <div className="profile-area">
             <ButtonGroup variant="text">
               {authentication.isAuthenticated ? (
-                <Button to="/logout" onClick={resetFocus} component={Link}>Logout</Button>
+                <Button to="/logout" onClick={resetFocus} component={Link}>{t("NavBar.logout")}</Button>
               ) : (
-                <Button to="/login" onClick={resetFocus} component={Link}>Login</Button>
+                <Button to="/login" onClick={resetFocus} component={Link}>{t("NavBar.login")}</Button>
               )}
             </ButtonGroup>
           </div>
@@ -77,25 +77,25 @@ export default function NavBar() {
           )}
         </IconButton>
         <NavLink to="/" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
-          Home
+          {t("NavLinks.home")}
         </NavLink>
         <NavLink to="/websites" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
-          Websites
+          {t("NavLinks.websites")}
         </NavLink>
         <NavLink to="/faq" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
-          FAQ
+          {t("NavLinks.faq")}
         </NavLink>
         {authentication.isAuthenticated ? (
           <>
             <NavLink to="/profile" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
-              Profile
+              {t("NavLinks.profile")}
             </NavLink>
             <NavLink to="/reports" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
-              Reports
+              {t("NavLinks.reports")}
             </NavLink>
             {isCurrentLocation('/user') ? (
               <NavLink to={location.pathname} onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
-                User
+                {t("NavLinks.user")}
               </NavLink>
             ) : null}
           </>

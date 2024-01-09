@@ -10,7 +10,7 @@ import {ERROR_CONFLICT, ERROR_UNAUTHORIZED} from "../constants.ts";
 import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
 import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
 
-function Profile() {
+function ProfilePage() {
   const {t} = useTranslation();
   const [changeContactLoading, setChangeContactLoading] = useState(false);
   const [changePasswordLoading, setChangePasswordLoading] = useState(false);
@@ -473,4 +473,4 @@ function Profile() {
   )
 }
 
-export default Profile;
+export default ProfilePage;

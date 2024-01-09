@@ -1,9 +1,9 @@
 import "./App.css"
 import {Route, Routes} from "react-router-dom";
-import Login from "./pages/Login.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
 import WebsitePage from "./pages/website/WebsitePage.tsx";
 import HomePage from "./pages/HomePage.tsx";
-import {NotFound} from "./pages/NotFound.tsx";
+import {NotFoundPage} from "./pages/NotFoundPage.tsx";
 import NavBar from "./components/nav_bar/NavBar.tsx";
 import {useTranslation} from "react-i18next";
 import * as locales from "@mui/material/locale";
@@ -15,16 +15,16 @@ import {AuthenticationContext} from "./context/AuthenticationContext.ts";
 import {Authentication} from "./model/Authentication.ts";
 import {AuthenticationService} from "./services/AuthenticationService.ts";
 import Private from "./components/Private.tsx";
-import Logout from "./pages/Logout.tsx";
-import Profile from "./pages/Profile.tsx";
-import Signup from "./pages/Signup.tsx";
+import LogoutPage from "./pages/LogoutPage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx";
+import SignupPage from "./pages/SignupPage.tsx";
 import WebsitesPage from "./pages/websites/WebsitesPage.tsx";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage.tsx";
 import ImpressumPage from "./pages/ImpressumPage.tsx";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import {OAUTH_GOOGLE_CLIENT_ID} from "./constants.ts";
 import FaqPage from "./pages/faq/FaqPage.tsx";
-import Reports from "./pages/Reports.tsx";
+import ReportsPage from "./pages/ReportsPage.tsx";
 import FooterBar from "./components/footer_bar/FooterBar.tsx";
 
 
@@ -135,14 +135,14 @@ function App() {
                   <Route path="/websites" element={<WebsitesPage/>}/>
                   <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
                   <Route path="/faq" element={<FaqPage/>}/>
-                  <Route path="/login" element={<Login/>}/>
-                  <Route path="/logout" element={<Logout/>}/>
-                  <Route path="/signup" element={<Signup/>}/>
-                  <Route path="/profile" element={<Private Component={Profile}/>}/>
-                  <Route path="/reports" element={<Private Component={Reports}/>}/>
+                  <Route path="/login" element={<LoginPage/>}/>
+                  <Route path="/logout" element={<LogoutPage/>}/>
+                  <Route path="/signup" element={<SignupPage/>}/>
+                  <Route path="/profile" element={<Private Component={ProfilePage}/>}/>
+                  <Route path="/reports" element={<Private Component={ReportsPage}/>}/>
                   <Route path="/impressum" element={<ImpressumPage/>}/>
                   <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
-                  <Route path="*" element={<NotFound/>}/>
+                  <Route path="*" element={<NotFoundPage/>}/>
                 </Routes>
               </main>
             </div>

@@ -4,7 +4,7 @@ import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Navigate} from "react-router-dom";
 import {googleLogout} from "@react-oauth/google";
 
-function Logout() {
+function LogoutPage() {
   const {authentication, setAuthentication} = useContext(AuthenticationContext);
 
   useEffect(() => {
@@ -20,4 +20,4 @@ function Logout() {
   return <Navigate to="/" />
 }
 
-export default Logout;
+export default LogoutPage;

@@ -22,7 +22,7 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {ERROR_CONFLICT} from "../constants.ts";
 import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
 
-function Signup() {
+function SignupPage() {
   const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string|undefined>(undefined);
@@ -244,4 +244,4 @@ function Signup() {
   )
 }
 
-export default Signup;
+export default SignupPage;

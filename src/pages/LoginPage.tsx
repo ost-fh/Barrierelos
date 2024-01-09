@@ -26,7 +26,7 @@ import {Credential, RegistrationMessage, User, UserControllerService} from "../l
 import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
 import {isValidUsername} from "../util.ts";
 
-function Login() {
+function LoginPage() {
   const {t, i18n} = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -265,4 +265,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;

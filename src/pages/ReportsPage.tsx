@@ -1,4 +1,4 @@
-import "./Reports.css"
+import "./ReportsPage.css"
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
@@ -267,7 +267,7 @@ function ReportTable(props: { contentHeader: string, data: WebsiteReportData | W
   );
 }
 
-function Reports() {
+function ReportsPage() {
   const {t} = useTranslation();
   const [websiteData, setWebsiteData] = useState<WebsiteReportData|undefined>();
   const [webpageData, setWebpageData] = useState<WebpageReportData|undefined>();
@@ -424,4 +424,4 @@ function Reports() {
   )
 }
 
-export default Reports;
+export default ReportsPage;

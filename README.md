@@ -41,6 +41,21 @@ describe our project specific directories.
   - `unit` contains the unit tests.
   - `integration` contains the integration tests. They are further subdivided into the three logical layers.
 
+## Files
+
+- `.env` contains the environment variables that are used to connect to RabbitMQ and the database. These only need to be
+  adjusted if you changed the setup for local development in
+  the [deployment](https://gitlab.ost.ch/barrierelos/deployment) repository.
+- `.gitlab-ci.yml` contains the GitLab CI/CD pipeline configuration. It is used to automatically build and test the
+  application on the GitLab CI/CD runners. It also contains an `include` for the shared Docker image build, publish and
+  deployments from the [deployment](https://gitlab.ost.ch/barrierelos/deployment) repository.
+- `build.gradle.kts` contains the Gradle build script. It is written in Kotlin and is used to configure the build
+  process. It also contains the dependencies of the project.
+- `Dockerfile` contains the logic to build the Docker image which is used by the GitLab CI/CD pipeline.
+- `gradlew` is the Gradle wrapper script. It is used to execute Gradle tasks without having to install Gradle on your
+  machine. You may have to make it executable with `chmod +x ./gradlew` first.
+- `gradlew.bat` is the Windows equivalent of `gradlew`.
+
 ## Development
 
 Before getting started, have a look at the [deployment](https://gitlab.ost.ch/barrierelos/deployment) repository where
@@ -49,7 +64,8 @@ describe the steps that are specific to the backend.
 
 We developed the backend with IntelliJ IDEA, and we highly recommend using it for development since our development
 workflow is well integrated into the IDE. When you open the project in IntelliJ, everything should be set up configured
-correctly.
+correctly. A popup should appear in the bottom right corner asking you to import the Gradle project. If it doesn't
+appear, you can also open the `Gradle` view and click on the `Refresh all Gradle projects` button.
 
 We were developing on Linux and as such, some scripts might not work on Windows or macOS. MacOS should
 technically work, but we didn't test it.
@@ -61,7 +77,7 @@ The project already comes with three run configurations:
 
 - `Setup Database` will run all database migration scripts to set up the database and insert the initial data. This will
   also delete the existing tables and data before recreating them. This is useful if you want to reset the database.
-- `Run Locally` to run the application locally. The application can either be started normally or in debug mode.
+- `Run Locally` to run the application locally. It can either be started normally or in debug mode.
 - `Run All Tests` to run all tests. The tests can also either be run normally or in debug mode. Note that the Gradle
   cache can lead to the tests not being found, to fix this, you can run `./gradlew clean` in the terminal. You might
   have to make `./gradlew` executable first with `chmod +x ./gradlew`.

@@ -271,5 +271,14 @@
   "DeleteEnum": {
     "ACTIVE": "Aktiv",
     "INACTIVE": "Inaktiv"
+  },
+  "ReportComponent": {
+    "title": "Melden",
+    "labelReason": "Grund",
+    "labelExplanation": "Begründung",
+    "buttonCancel": "Abbrechen",
+    "buttonReport": "Melden",
+    "alreadyReported": "Bereits gemeldet.",
+    "error": "Melden fehlgeschlagen."
   }
 }

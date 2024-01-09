@@ -222,9 +222,10 @@ function ProfilePage() {
     const data = new FormData(event.currentTarget);
     const password = data.get('password');
 
-    if(authentication.user !== undefined
-      && password !== null) {
-      setDeleteAccountPassword(password.toString());
+    if(authentication.user !== undefined && (!authentication.isBasicAuthentication || password !== null)) {
+      if(authentication.isBasicAuthentication && password) {
+        setDeleteAccountPassword(password.toString());
+      }
 
       return setDeleteAccountConfirmOpen(true);
     }
@@ -238,9 +239,10 @@ function ProfilePage() {
   }
 
   const handleDeleteAccountYes = () => {
-    if(authentication.user !== undefined
-      && deleteAccountPassword !== null) {
-      AuthenticationService.changePassword(deleteAccountPassword);
+    if(authentication.user !== undefined && (!authentication.isBasicAuthentication || deleteAccountPassword !== null)) {
+      if(authentication.isBasicAuthentication && deleteAccountPassword) {
+        AuthenticationService.changePassword(deleteAccountPassword);
+      }
 
       UserControllerService.deleteUser(authentication.user.id)
         .then(() => {
@@ -248,7 +250,9 @@ function ProfilePage() {
           navigate("/logout");
         })
         .catch((error) => {
-          AuthenticationService.changePassword(AuthenticationService.getPassword());
+          if(authentication.isBasicAuthentication) {
+            AuthenticationService.changePassword(AuthenticationService.getPassword());
+          }
 
           return onDeleteAccountError(error.status as number);
         });
@@ -429,17 +433,19 @@ function ProfilePage() {
                   {t("ProfilePage.deleteAccountHint")}
                 </Typography>
               </Grid>
-              <Grid item>
-                <TextField
-                  required
-                  fullWidth
-                  id="password"
-                  name="password"
-                  type="password"
-                  label={t("ProfilePage.password")}
-                  autoComplete="new-password"
-                />
-              </Grid>
+              {authentication.isBasicAuthentication && (
+                <Grid item>
+                  <TextField
+                    required
+                    fullWidth
+                    id="password"
+                    name="password"
+                    type="password"
+                    label={t("ProfilePage.password")}
+                    autoComplete="new-password"
+                  />
+                </Grid>
+              )}
               {deleteAccountError && (
                 <Grid item>
                   <Alert sx={{ mt: 1 }} severity="error">{deleteAccountError}</Alert>

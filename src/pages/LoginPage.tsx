@@ -3,11 +3,9 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   CircularProgress,
   Container,
   Divider,
-  FormControlLabel,
   Grid,
   Link,
   TextField,
@@ -22,9 +20,10 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 import {jwtDecode} from "jwt-decode";
 import {Token} from "../model/Token.ts";
-import {Credential, RegistrationMessage, User, UserControllerService} from "../lib/api-client";
+import {ApiError, Credential, RegistrationMessage, User, UserControllerService} from "../lib/api-client";
 import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
 import {isValidUsername} from "../util.ts";
+import {ERROR_CONFLICT} from "../constants.ts";
 
 function LoginPage() {
   const {t, i18n} = useTranslation();
@@ -117,7 +116,14 @@ function LoginPage() {
         }
       })
       .catch((error) => {
-        onLoginError(error.status)
+        if(error instanceof ApiError) {
+          switch(error.status) {
+            case ERROR_CONFLICT:
+              return onLoginError(t("SignupPage.changeUsernameFailed"));
+            default:
+              return onLoginError();
+          }
+        }
       });
   }
 
@@ -156,12 +162,13 @@ function LoginPage() {
       return onDialogError(t("SignupPage.invalidUsername"));
     }
 
-    createUser()
+    createUser();
   }
 
   const handleLoginDialogUsernameNo = () => {
     setDialogError(undefined);
     setDialogUsername("");
+    setLoading(false);
   }
 
   return (
@@ -205,10 +212,6 @@ function LoginPage() {
               autoComplete="current-password"
               value={password}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary"/>}
-              label={t("LoginPage.rememberMe")}
-            />
             {error && (
               <Alert sx={{mt: 2}} severity="error">{error}</Alert>
             )}
@@ -219,14 +222,9 @@ function LoginPage() {
                 t("LoginPage.logIn")
               )}
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link to="#" component={RouterLink} variant="body2">
-                  {t("LoginPage.forgotPassword")}
-                </Link>
-              </Grid>
+            <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to="/signup" component={RouterLink} variant="body2">
+                <Link to="/signup" component={RouterLink} variant="body2" sx={{ textDecoration: "none" }}>
                   {t("LoginPage.noAccountSignUp")}
                 </Link>
               </Grid>

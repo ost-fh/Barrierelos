@@ -16,6 +16,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Link,
   TextField,
   Typography
 } from "@mui/material";
@@ -47,6 +48,7 @@ import {
   convertTimestampToLocalDate,
   convertTimestampToLocalDatetime
 } from "../util.ts";
+import {convertUserToLink, convertWebpageToLink, convertWebsiteToLink} from "../util.tsx";
 
 function ReportMessage(props: { message: ReportMessage, user: User }) {
   const { message, user } = props;
@@ -55,27 +57,29 @@ function ReportMessage(props: { message: ReportMessage, user: User }) {
   return (
     <TableRow sx={{ height: '100%', "& td": { borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }, "& td:first-of-type": { borderLeft: '1px solid #e0e0e0', borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px' }, "& td:last-of-type": { borderRight: '1px solid #e0e0e0', borderTopRightRadius: '8px', borderBottomRightRadius: '8px' } }}>
       <TableCell padding="none" sx={{ whiteSpace: 'nowrap', backgroundColor: 'background.surface' }}>
-        <Box sx={{ mr: 2, display: 'flex', flexFlow: 'column nowrap' }}>
-          <Box sx={{ my: 1, ml: 1, display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'left' }}>
-            <Avatar sx={{ mr: 1, backgroundColor: 'secondary.light', width: 48, height: 48 }}>
-              <PersonIcon sx={{ width: 32, height: 32 }} />
-            </Avatar>
-            <Box sx={{ display: 'flex', flexFlow: 'column nowrap', justifyContent: 'center' }}>
-              <Typography component="strong" variant="subtitle2">
-                {user.firstname} {user.lastname}
-              </Typography>
-              <Typography component="span" variant="body2">
-                {convertRolesToString(user.roles, t)}
-              </Typography>
+        <Link href={`/user/${user.id}`} sx={{ color: 'black', textDecoration: 'none' }}>
+          <Box sx={{ mr: 2, display: 'flex', flexFlow: 'column nowrap' }}>
+            <Box sx={{ my: 1, ml: 1, display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'left' }}>
+              <Avatar sx={{ mr: 1, backgroundColor: 'secondary.light', width: 48, height: 48 }}>
+                <PersonIcon sx={{ width: 32, height: 32 }} />
+              </Avatar>
+              <Box sx={{ display: 'flex', flexFlow: 'column nowrap', justifyContent: 'center' }}>
+                <Typography component="strong" variant="subtitle2">
+                  {user.firstname} {user.lastname}
+                </Typography>
+                <Typography component="span" variant="body2">
+                  {convertRolesToString(user.roles, t)}
+                </Typography>
+              </Box>
             </Box>
+            <Typography component="i" variant="caption" sx={{ ml: 1 }}>
+              {t('ReportsPage.labelRegistered')}: {convertTimestampToLocalDate(user.created)}
+            </Typography>
+            <Typography component="i" variant="caption" sx={{ ml: 1 }}>
+              {t('ReportsPage.labelStatus')}: {convertDeletedToString(user.deleted, t)}
+            </Typography>
           </Box>
-          <Typography component="i" variant="caption" sx={{ ml: 1 }}>
-            {t('ReportsPage.labelRegistered')}: {convertTimestampToLocalDate(user.created)}
-          </Typography>
-          <Typography component="i" variant="caption" sx={{ ml: 1 }}>
-            {t('ReportsPage.labelStatus')}: {convertDeletedToString(user.deleted, t)}
-          </Typography>
-        </Box>
+        </Link>
       </TableCell>
       <TableCell padding="none" className="heightWorkaround" sx={{ pt: 1, width: '100%' }}>
         <Box sx={{ ml: 2, mr: 1, display: 'flex', flexFlow: 'column nowrap', height: '100%' }}>
@@ -177,22 +181,22 @@ function ReportRow(props: { reportId: number, report: WebsiteReport | WebpageRep
   const initiator = users.get(report.report.userId);
 
   const dateText = convertTimestampToLocalDate(report.report.created);
-  const initiatorText = initiator ? `${initiator.firstname} ${initiator.lastname} (${initiator.username})` : "unknown";
+  const initiatorText = convertUserToLink(initiator);
   const reasonText = convertReasonToString(report.report.reason, t);
   const stateText = convertStateToString(report.report.state, t);
-  let contentText = "unknown";
+  let contentText: React.JSX.Element | string = "unknown";
 
   if(data instanceof WebsiteReportData && isWebsiteReport(report)) {
     const website = data.websites.get(report.websiteId);
-    contentText = website ? `${website.domain}` : contentText;
+    contentText = convertWebsiteToLink(website);
   }
   else if(data instanceof WebpageReportData && isWebpageReport(report)) {
     const webpage = data.webpages.get(report.webpageId);
-    contentText = webpage ? `${webpage.displayUrl}` : contentText;
+    contentText = convertWebpageToLink(webpage);
   }
   else if(data instanceof UserReportData && isUserReport(report)) {
     const user = users.get(report.userId);
-    contentText = user ? `${user.firstname} ${user.lastname} (${user.username})` : "unknown";
+    contentText = convertUserToLink(user);
   }
 
   const conversation = messages.filter((message) => message.reportId === reportId)
@@ -200,8 +204,8 @@ function ReportRow(props: { reportId: number, report: WebsiteReport | WebpageRep
   return (
     <>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell align="left">{dateText}</TableCell>
-        <TableCell align="left">{contentText}</TableCell>
+        <TableCell align="left" sx={{ whiteSpace: 'nowrap'}}>{dateText}</TableCell>
+        <TableCell align="left" sx={{ width: "100%" }}>{contentText}</TableCell>
         <TableCell align="left">{initiatorText}</TableCell>
         <TableCell align="left">{reasonText}</TableCell>
         <TableCell align="left">{stateText}</TableCell>
@@ -275,9 +279,9 @@ function ReportsPage() {
   const [websiteError, setWebsiteError] = useState<string|undefined>();
   const [webpageError, setWebpageError] = useState<string|undefined>();
   const [userError, setUserError] = useState<string|undefined>();
+  const [isPollingEnabled, setIsPollingEnabled] = useState(true);
   const {authentication} = useContext(AuthenticationContext);
   const timerIdRef = useRef<NodeJS.Timeout|null>(null);
-  const [isPollingEnabled, setIsPollingEnabled] = useState(true);
 
   const loadWebsiteData = () => {
     WebsiteReportControllerService.getWebsiteReportsForUser(authentication.user ? authentication.user.id : 0)
@@ -383,7 +387,7 @@ function ReportsPage() {
         />
       ) : (
         websiteError ? (
-          <p>{websiteError}</p>
+          <Alert sx={{ my: 1 }} severity="error">{websiteError}</Alert>
         ) : (
           <CircularProgress size="1.5rem" sx={{color: "background"}}/>
         )
@@ -398,7 +402,7 @@ function ReportsPage() {
         />
       ) : (
         webpageError ? (
-          <p>{webpageError}</p>
+          <Alert sx={{ my: 1 }} severity="error">{webpageError}</Alert>
         ) : (
           <CircularProgress size="1.5rem" sx={{color: "background"}}/>
         )
@@ -413,7 +417,7 @@ function ReportsPage() {
           />
       ) : (
         userError ? (
-          <p>{userError}</p>
+          <Alert sx={{ my: 1 }} severity="error">{userError}</Alert>
         ) : (
           <CircularProgress size="1.5rem" sx={{color: "background"}}/>
         )

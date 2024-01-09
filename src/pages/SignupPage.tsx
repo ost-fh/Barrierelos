@@ -3,10 +3,8 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   CircularProgress,
   Container,
-  FormControlLabel,
   Grid,
   Link,
   TextField,
@@ -122,7 +120,6 @@ function SignupPage() {
           })
           .catch((error) => {
             if(error instanceof ApiError) {
-              console.log(error)
               switch(error.status) {
                 case ERROR_CONFLICT:
                   return onSignupError(t("SignupPage.changeUsernameFailed"));
@@ -212,12 +209,6 @@ function SignupPage() {
                 type="password"
                 label={t("SignupPage.confirmPassword")}
                 autoComplete="new-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label={t("SignupPage.rememberMe")}
               />
             </Grid>
           </Grid>

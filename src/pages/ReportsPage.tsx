@@ -380,11 +380,15 @@ function ReportsPage() {
 
       <h2>{t("ReportsPage.titleWebsites")}</h2>
       {websiteData ? (
-        <ReportTable
-          contentHeader={t("ReportsPage.tableHeaderWebsite")}
-          data={websiteData}
-          onMessageSent={onWebsiteMessageSent}
-        />
+        websiteData.reports.length ? (
+          <ReportTable
+            contentHeader={t("ReportsPage.tableHeaderWebsite")}
+            data={websiteData}
+            onMessageSent={onWebsiteMessageSent}
+          />
+        ) : (
+          <p>{t("ReportsPage.nothingFound")}</p>
+        )
       ) : (
         websiteError ? (
           <Alert sx={{ my: 1 }} severity="error">{websiteError}</Alert>
@@ -395,11 +399,15 @@ function ReportsPage() {
 
       <h2>{t("ReportsPage.titleWebpages")}</h2>
       {webpageData ? (
-        <ReportTable
-          contentHeader={t("ReportsPage.tableHeaderWebpage")}
-          data={webpageData}
-          onMessageSent={onWebpageMessageSent}
-        />
+        webpageData.reports.length ? (
+          <ReportTable
+            contentHeader={t("ReportsPage.tableHeaderWebpage")}
+            data={webpageData}
+            onMessageSent={onWebpageMessageSent}
+          />
+        ) : (
+          <p>{t("ReportsPage.nothingFound")}</p>
+        )
       ) : (
         webpageError ? (
           <Alert sx={{ my: 1 }} severity="error">{webpageError}</Alert>
@@ -410,11 +418,15 @@ function ReportsPage() {
 
       <h2>{t("ReportsPage.titleUsers")}</h2>
       {userData ? (
-          <ReportTable
-            contentHeader={t("ReportsPage.tableHeaderUser")}
-            data={userData}
-            onMessageSent={onUserMessageSent}
-          />
+        userData.reports.length ? (
+            <ReportTable
+              contentHeader={t("ReportsPage.tableHeaderUser")}
+              data={userData}
+              onMessageSent={onUserMessageSent}
+            />
+        ) : (
+          <p>{t("ReportsPage.nothingFound")}</p>
+        )
       ) : (
         userError ? (
           <Alert sx={{ my: 1 }} severity="error">{userError}</Alert>

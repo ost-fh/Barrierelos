@@ -253,7 +253,8 @@
     "labelMessage": "Message",
     "buttonSend": "Send Message",
     "sendError": "Unable to send message. Please try again later.",
-    "loadError": "No Reports present."
+    "loadError": "Cannot load.",
+    "nothingFound": "Nothing found."
   },
   "UserPage": {
     "title": "User",

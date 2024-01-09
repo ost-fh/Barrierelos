@@ -253,7 +253,8 @@
     "labelMessage": "Nachricht",
     "buttonSend": "Nachricht Absenden",
     "sendError": "Absenden der Nachricht nicht möglich, bitte später noch einmal versuchen.",
-    "loadError": "Keine Meldungen vorhanden."
+    "loadError": "Kann nicht geladen werden.",
+    "nothingFound": "Nichts gefunden."
   },
   "UserPage": {
     "title": "Benutzer",

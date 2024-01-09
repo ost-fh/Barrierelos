@@ -1,21 +1,5 @@
-import {ReactNode} from "react";
-import {MIN_LENGTH_PASSWORD, MIN_LENGTH_USERNAME} from "./constants.ts";
-import {Report} from "./lib/api-client";
+import {Report, UserReport, WebpageReport, WebsiteReport} from "../lib/api-client";
 import {TFunction} from "i18next";
-
-export interface Props { children: ReactNode; }
-
-export function isValidEmail(email: string) {
-  return /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z0-9.-]+/.test(email);
-}
-
-export function isValidUsername(username: string) {
-  return username.length >= MIN_LENGTH_USERNAME && !username.includes('@');
-}
-
-export function isValidPassword(password: string) {
-  return password.length >= MIN_LENGTH_PASSWORD;
-}
 
 export function convertReasonToString(reason: Report.reason, t: TFunction<"translation", undefined>) {
   return t(`ReasonEnum.${reason}`);
@@ -63,4 +47,16 @@ export function convertTimestampToLocalTime(timestamp: number) {
   const date = new Date(timestamp);
 
   return date.toLocaleString('sv').split(' ')[1];
+}
+
+export function isWebsiteReport(report: WebsiteReport | WebpageReport | UserReport): report is WebsiteReport {
+  return ("websiteId" in report);
+}
+
+export function isWebpageReport(report: WebsiteReport | WebpageReport | UserReport): report is WebpageReport {
+  return ("webpageId" in report);
+}
+
+export function isUserReport(report: WebsiteReport | WebpageReport | UserReport): report is UserReport {
+  return ("userId" in report);
 }

@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "npm run openapi:generate && npm run i18n && vite dev",
-    "preview": "npm run openapi:generate && vite preview",
     "openapi:fetch": "wget -O openapi.json http://localhost:8030/openapi",
-    "openapi:fetch_prod": "wget -O openapi.json http://barrierelos.ch:40001/openapi",
+    "openapi:fetch:prod": "wget -O openapi.json http://barrierelos.ch:40001/openapi",
     "openapi:generate": "npx openapi-typescript-codegen --input openapi.json --output src/lib/api-client",
     "i18n": "i18next-resources-for-ts interface -i ./public/locales/en -o ./src/@types/resources.d.ts",
     "build": "npm run openapi:generate && npm run i18n && vite build",

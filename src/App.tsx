@@ -10,7 +10,6 @@ import * as locales from "@mui/material/locale";
 import {createTheme, ThemeProvider, useTheme} from "@mui/material";
 import {useMemo, useState} from "react";
 import {Helmet, HelmetProvider} from "react-helmet-async";
-import {Props} from "./util.ts";
 import {AuthenticationContext} from "./context/AuthenticationContext.ts";
 import {Authentication} from "./model/Authentication.ts";
 import {AuthenticationService} from "./services/AuthenticationService.ts";
@@ -22,11 +21,12 @@ import WebsitesPage from "./pages/websites/WebsitesPage.tsx";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage.tsx";
 import ImpressumPage from "./pages/ImpressumPage.tsx";
 import {GoogleOAuthProvider} from "@react-oauth/google";
-import {OAUTH_GOOGLE_CLIENT_ID} from "./constants.ts";
+import {OAUTH_GOOGLE_CLIENT_ID} from "./util/constants.ts";
 import FaqPage from "./pages/faq/FaqPage.tsx";
 import ReportsPage from "./pages/ReportsPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
 import FooterBar from "./components/footer_bar/FooterBar.tsx";
+import {Props} from "./util/login.ts";
 
 type MuiLocales = "enUS" | "deDE";
 

@@ -29,26 +29,31 @@ import {
   User,
   UserReport,
   UserReportControllerService,
-  UserReportsMessage, WebpageReport,
+  UserReportsMessage,
+  WebpageReport,
   WebpageReportControllerService,
-  WebpageReportsMessage, WebsiteReport,
+  WebpageReportsMessage,
+  WebsiteReport,
   WebsiteReportControllerService,
   WebsiteReportsMessage
 } from "../lib/api-client";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Helmet} from "react-helmet-async";
-import { UserReportData } from '../model/UserReportData.ts';
+import {UserReportData} from "../model/UserReportData.ts";
 import {WebsiteReportData} from "../model/WebsiteReportData.ts";
 import {WebpageReportData} from "../model/WebpageReportData.ts";
-import {isUserReport, isWebpageReport, isWebsiteReport} from "../typeguards.ts";
-import {POLLING_INTERVAL} from "../constants.ts";
+import {POLLING_INTERVAL} from "../util/constants.ts";
 import {
-  convertDeletedToString, convertReasonToString,
-  convertRolesToString, convertStateToString,
+  convertDeletedToString,
+  convertReasonToString,
+  convertRolesToString,
+  convertStateToString,
   convertTimestampToLocalDate,
-  convertTimestampToLocalDatetime
-} from "../util.ts";
-import {convertUserToLink, convertWebpageToLink, convertWebsiteToLink} from "../util.tsx";
+  convertTimestampToLocalDatetime,
+  isUserReport,
+  isWebpageReport,
+  isWebsiteReport
+} from "../util/reports.ts";
 
 function ReportMessage(props: { message: ReportMessage, user: User }) {
   const { message, user } = props;

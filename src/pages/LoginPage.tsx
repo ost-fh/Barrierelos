@@ -35,8 +35,12 @@ function LoginPage() {
   const [dialogUsernameOpen, setDialogUsernameOpen] = useState(false);
   const [dialogUsername, setDialogUsername] = useState("");
   const [dialogError, setDialogError] = useState<string | undefined>(undefined);
-  const {setAuthentication} = useContext(AuthenticationContext);
+  const {authentication, setAuthentication} = useContext(AuthenticationContext);
   const navigate = useNavigate();
+
+  if(authentication.isAuthenticated) {
+    navigate("/profile");
+  }
 
   const [googleLoginWidth, setGoogleLoginWidth] = useState(0)
   useLayoutEffect(() => {

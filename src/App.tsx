@@ -26,6 +26,7 @@ import {OAUTH_GOOGLE_CLIENT_ID} from "./constants.ts";
 import FaqPage from "./pages/faq/FaqPage.tsx";
 import ReportsPage from "./pages/ReportsPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
+import FooterBar from "./components/footer_bar/FooterBar.tsx";
 
 type MuiLocales = "enUS" | "deDE";
 

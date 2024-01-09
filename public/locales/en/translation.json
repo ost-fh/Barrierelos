@@ -243,6 +243,15 @@
     "sendError": "Unable to send message. Please try again later.",
     "loadError": "No Reports present."
   },
+  "UserPage": {
+    "title": "User",
+    "error": "Cannot load user data.",
+    "labelFirstname": "First Name",
+    "labelLastname": "Last Name",
+    "labelUsername": "Username",
+    "labelRole": "Role",
+    "labelRegistered": "Registered"
+  },
   "ReasonEnum": {
     "INCORRECT": "incorrect",
     "MISLEADING": "misleading",

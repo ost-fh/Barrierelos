@@ -243,6 +243,15 @@
     "sendError": "Absenden der Nachricht nicht möglich, bitte später noch einmal versuchen.",
     "loadError": "Keine Meldungen vorhanden."
   },
+  "UserPage": {
+    "title": "Benutzer",
+    "error": "Benutzerdaten können nicht geladen werden.",
+    "labelFirstname": "Vorname",
+    "labelLastname": "Nachname",
+    "labelUsername": "Benutzername",
+    "labelRole": "Rolle",
+    "labelRegistered": "Registriert"
+  },
   "ReasonEnum": {
     "INCORRECT": "inkorrekt",
     "MISLEADING": "irreführend",

@@ -15,7 +15,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useTranslation} from "react-i18next";
 import "./IssuesTab.css"
-import {compareStrings, formatViolationRatio} from "../../util/formatter.ts";
+import {compareStrings, formatViolationRatio} from "../../util/formatter.tsx";
 
 
 function IssuesTab(props: { websiteScan: WebsiteScan }) {

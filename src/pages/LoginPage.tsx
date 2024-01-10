@@ -18,7 +18,7 @@ import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import GoogleLoginComponent from "../components/GoogleLoginComponent.tsx";
-import {PAGE_AFTER_LOGIN} from "../constants.ts";
+import {PAGE_AFTER_LOGIN} from "../util/constants.ts";
 import {Helmet} from "react-helmet-async";
 
 function LoginPage() {

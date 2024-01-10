@@ -9,7 +9,7 @@ import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import {convertRolesToString, convertTimestampToLocalDatetime} from "../util.ts";
+import {convertRolesToString, convertTimestampToLocalDatetime} from "../util/reports.ts";
 import ReportComponent from "../components/ReportComponent.tsx";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 

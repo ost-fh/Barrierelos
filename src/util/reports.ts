@@ -1,4 +1,4 @@
-import {Report, UserReport, WebpageReport, WebsiteReport} from "../lib/api-client";
+import {Report} from "../lib/api-client";
 import {TFunction} from "i18next";
 
 export function convertReasonToString(reason: Report.reason, t: TFunction<"translation", undefined>) {
@@ -49,14 +49,3 @@ export function convertTimestampToLocalTime(timestamp: number) {
   return date.toLocaleString('sv').split(' ')[1];
 }
 
-export function isWebsiteReport(report: WebsiteReport | WebpageReport | UserReport): report is WebsiteReport {
-  return ("websiteId" in report);
-}
-
-export function isWebpageReport(report: WebsiteReport | WebpageReport | UserReport): report is WebpageReport {
-  return ("webpageId" in report);
-}
-
-export function isUserReport(report: WebsiteReport | WebpageReport | UserReport): report is UserReport {
-  return ("userId" in report);
-}

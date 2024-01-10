@@ -10,7 +10,7 @@ import {useEffect, useState} from "react";
 import useSWRMutation from "swr/mutation";
 import {ResultWebsite, Website, WebsiteControllerService} from "../../lib/api-client";
 import {Link} from "react-router-dom";
-import {formatScore} from "../../util/formatter.ts";
+import {formatScore} from "../../util/formatter.tsx";
 import {useTranslation} from "react-i18next";
 import {useMediaQuery, useTheme} from "@mui/material";
 import {ParseKeys} from "i18next";

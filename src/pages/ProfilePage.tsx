@@ -6,9 +6,9 @@ import {Credential, CredentialControllerService, UserControllerService} from "..
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {useNavigate} from "react-router-dom";
-import {ERROR_CONFLICT, ERROR_UNAUTHORIZED} from "../constants.ts";
-import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
-import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
+import {ERROR_CONFLICT, ERROR_UNAUTHORIZED} from "../util/constants.ts";
+import ConfirmDialog from "../components/ConfirmDialog.tsx";
+import {isValidEmail, isValidPassword, isValidUsername} from "../util/login.ts";
 import {Helmet} from "react-helmet-async";
 
 function ProfilePage() {

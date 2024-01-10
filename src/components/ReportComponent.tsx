@@ -1,4 +1,4 @@
-import ReportDialog from "../dialogs/ReportDialog.tsx";
+import ReportDialog from "../components/ReportDialog.tsx";
 import {useContext, useState} from "react";
 import {Alert, Box, Button, Typography} from "@mui/material";
 import {
@@ -16,11 +16,11 @@ import {
   WebsiteReportControllerService
 } from "../lib/api-client";
 import {useTranslation} from "react-i18next";
-import {isUser, isWebpage, isWebsite} from "../typeguards.ts";
+import {isUser, isWebpage, isWebsite} from "../util/typeguards.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
+import {useNavigate} from "react-router-dom";
 import reasonEnum = Report.reason;
 import state = Report.state;
-import {useNavigate} from "react-router-dom";
 
 function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: boolean }) {
   const { subject, fullWidth } = props;

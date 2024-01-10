@@ -3,7 +3,7 @@ import {useContext, useEffect} from "react";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Navigate} from "react-router-dom";
 import {googleLogout} from "@react-oauth/google";
-import {PAGE_AFTER_LOGOUT} from "../constants.ts";
+import {PAGE_AFTER_LOGOUT} from "../util/constants.ts";
 
 function LogoutPage() {
   const {authentication, setAuthentication} = useContext(AuthenticationContext);

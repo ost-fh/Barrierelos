@@ -6,10 +6,10 @@ import {Token} from "../model/Token.ts";
 import {jwtDecode} from "jwt-decode";
 import {ApiError, Credential, RegistrationMessage, User, UserControllerService} from "../lib/api-client";
 import {AuthenticationService} from "../services/AuthenticationService.ts";
-import {ERROR_CONFLICT} from "../constants.ts";
+import {ERROR_CONFLICT} from "../util/constants.ts";
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
-import {isValidUsername} from "../util.ts";
-import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
+import {isValidUsername} from "../util/login.ts";
+import ConfirmDialog from "../components/ConfirmDialog.tsx";
 import {Alert, Box, TextField} from "@mui/material";
 
 function GoogleLoginComponent(props: { onLoginSuccess: (authentication: Authentication) => void, onLoginError: (errorCode?: number) => void, setError: Dispatch<SetStateAction<string | undefined>>, setLoading: Dispatch<SetStateAction<boolean>> }) {

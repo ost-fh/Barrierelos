@@ -1,25 +1,16 @@
 import "./ReportsPage.css"
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {
-  Alert,
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  Link,
-  TextField,
-  Typography
-} from "@mui/material";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import {Alert, Avatar, Box, Button, CircularProgress, Link, TextField, Typography} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import {useTranslation} from "react-i18next";
 import React, {useContext, useEffect, useRef, useState} from "react";
@@ -49,11 +40,10 @@ import {
   convertRolesToString,
   convertStateToString,
   convertTimestampToLocalDate,
-  convertTimestampToLocalDatetime,
-  isUserReport,
-  isWebpageReport,
-  isWebsiteReport
+  convertTimestampToLocalDatetime
 } from "../util/reports.ts";
+import {convertUserToLink, convertWebpageToLink, convertWebsiteToLink} from "../util/formatter.tsx";
+import {isUserReport, isWebpageReport, isWebsiteReport} from "../util/typeguards.ts";
 
 function ReportMessage(props: { message: ReportMessage, user: User }) {
   const { message, user } = props;

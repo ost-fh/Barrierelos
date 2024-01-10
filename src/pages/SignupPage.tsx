@@ -18,8 +18,8 @@ import {ApiError, Credential, RegistrationMessage, User, UserControllerService} 
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
-import {ERROR_CONFLICT, PAGE_AFTER_SIGNUP} from "../constants.ts";
-import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
+import {ERROR_CONFLICT, PAGE_AFTER_SIGNUP} from "../util/constants.ts";
+import {isValidEmail, isValidPassword, isValidUsername} from "../util/login.ts";
 import GoogleLoginComponent from "../components/GoogleLoginComponent.tsx";
 import {Helmet} from "react-helmet-async";
 

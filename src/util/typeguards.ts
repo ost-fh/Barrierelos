@@ -1,4 +1,4 @@
-import {User, UserReport, Webpage, WebpageReport, Website, WebsiteReport} from "./lib/api-client";
+import {User, UserReport, Webpage, WebpageReport, Website, WebsiteReport} from "../lib/api-client";
 
 export function isWebsiteReport(report: WebsiteReport | WebpageReport | UserReport): report is WebsiteReport {
   return ("websiteId" in report);

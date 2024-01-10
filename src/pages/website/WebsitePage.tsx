@@ -10,11 +10,11 @@ import "./WebsitePage.css"
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 import LoadingIndicator from "../../components/LoadingIndicator.tsx";
-import {formatScore, getScoreClass, getScoreColor} from "../../util/formatter.ts";
+import {formatScore, getScoreClass, getScoreColor} from "../../util/formatter.tsx";
 import ScanInfosTab from "./ScanInfosTab.tsx";
 import {ParseKeys} from "i18next";
-import status = Website.status;
 import ReportComponent from "../../components/ReportComponent.tsx";
+import status = Website.status;
 
 function WebsitePage() {
   const {t} = useTranslation();

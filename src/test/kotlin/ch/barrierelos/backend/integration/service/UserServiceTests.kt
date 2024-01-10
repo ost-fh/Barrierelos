@@ -390,20 +390,33 @@ abstract class UserServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("contributor", setupBefore= TestExecutionEvent.TEST_EXECUTION)
-    fun `gets user, given correct account`()
+    @WithUserDetails("moderator", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `gets user, given moderator account`()
     {
-      val actual = userService.getUser(Security.getUserId())
+      // when
+      val user = userService.getUser(moderator.id)
 
-      Assertions.assertEquals(Security.getUserId(), actual.id)
-      Assertions.assertEquals(Security.getUsername(), actual.username)
+      // then
+      Assertions.assertEquals(moderator, user)
     }
 
     @Test
-    fun `cannot get user, given no account`()
+    @WithUserDetails("contributor", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `gets user, given contributor account`()
     {
       // when
-      val user = userRepository.findAll().first().toModel()
+      val user = userService.getUser(contributor.id)
+
+      // then
+      Assertions.assertEquals(contributor, user)
+    }
+
+    @Test
+    @WithUserDetails("viewer", setupBefore= TestExecutionEvent.TEST_EXECUTION)
+    fun `gets user, given viewer account`()
+    {
+      // when
+      val user = userRepository.findAll().find { it.userId != Security.getUserId() }!!.toModel()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {
@@ -412,11 +425,10 @@ abstract class UserServiceTests : ServiceTests()
     }
 
     @Test
-    @WithUserDetails("contributor", setupBefore= TestExecutionEvent.TEST_EXECUTION)
-    fun `cannot get user, given wrong account`()
+    fun `cannot get user, given no account`()
     {
       // when
-      val user = userRepository.findAll().find { it.userId != Security.getUserId() }!!.toModel()
+      val user = userRepository.findAll().first().toModel()
 
       // then
       Assertions.assertThrows(NoAuthorizationException::class.java) {

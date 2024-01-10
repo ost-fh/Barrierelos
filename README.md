@@ -2,6 +2,8 @@
 
 ## OpenAPI
 
+### From Development
+
 * Download latest OpenAPI:
 
 ```shell
@@ -18,6 +20,26 @@ npm run openapi:generate
 
 ```shell
 npm run openapi:fetch && npm run openapi:generate
+```
+
+### From Production
+
+* Download latest OpenAPI:
+
+```shell
+npm run openapi:fetch_prod
+```
+
+* Generate client:
+
+```shell
+npm run openapi:generate
+```
+
+* Download and generate in a single command:
+
+```shell
+npm run openapi:fetch_prod && npm run openapi:generate
 ```
 
 ## Internationalization

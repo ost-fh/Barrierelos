@@ -8,9 +8,9 @@ function ImpressumPage() {
     <>
       <Helmet>
         <html lang="en"/>
-        <title>Impressum - {t("General.title")}</title>
+        <title>Legal Notice - {t("General.title")}</title>
       </Helmet>
-      <h1>Impressum</h1>
+      <h1>Legal Notice</h1>
       <h2>Developers</h2>
       <p>
         This project was developed as part of a bachelors thesis at OST – Eastern Switzerland University of Applied

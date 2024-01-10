@@ -138,7 +138,8 @@
         "notYetScanned": "Not yet scanned"
       },
       "technicalErrorLabel": "Technical Error"
-    }
+    },
+    "report": "Report"
   },
   "Faq": {
     "header": "Frequently Asked Questions (FAQ)",

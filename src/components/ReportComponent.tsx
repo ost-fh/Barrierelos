@@ -2,7 +2,9 @@ import ReportDialog from "../dialogs/ReportDialog.tsx";
 import {useContext, useState} from "react";
 import {Alert, Box, Button, Typography} from "@mui/material";
 import {
-  Report, ReportMessage, ReportMessageControllerService,
+  Report,
+  ReportMessage,
+  ReportMessageControllerService,
   User,
   UserReport,
   UserReportControllerService,
@@ -142,14 +144,14 @@ function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: bool
     <>
       {(!authentication.isAuthenticated || loaded) && (
         alreadyReported ? (
-          <Alert sx={{ my: 2, marginLeft: fullWidth ? "initial" : "auto", width: fullWidth ? "100%" : "fit-content" }} severity="info">
+          <Alert sx={{ width: fullWidth ? "100%" : "fit-content" }} severity="info">
             <Typography component="span" variant="body2">
               {t('ReportComponent.alreadyReported')}
             </Typography>
           </Alert>
         ) : (
           error ? (
-            <Alert sx={{ my: 2, marginLeft: fullWidth ? "initial" : "auto", width: fullWidth ? "100%" : "fit-content" }} severity="error">
+            <Alert sx={{ width: fullWidth ? "100%" : "fit-content" }} severity="error">
               <Typography component="span" variant="body2">
                 {t('ReportComponent.error')}
               </Typography>
@@ -164,8 +166,8 @@ function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: bool
                 onReportYes={onReportYes}
               />
             ) : (
-              <Box sx={{ display: 'flex', flexFlow: 'row', justifyContent: "flex-end" }}>
-                <Button onClick={handleReport} variant="contained" color={"error"} sx={{ mt: 2, width: "fit-content", alignSelf: "end" }}>
+              <Box sx={{ display: fullWidth ? "flex" : "inline-flex", flexFlow: "row", justifyContent: "flex-end" }}>
+                <Button onClick={handleReport} variant="contained" color={"error"} sx={{ width: "fit-content", alignSelf: "end" }}>
                   {t('ReportComponent.buttonReport')}
                 </Button>
               </Box>

@@ -25,7 +25,7 @@ import OperableIcon from "@mui/icons-material/Keyboard";
 import UnderstandableIcon from "@mui/icons-material/Psychology";
 import RobustIcon from "@mui/icons-material/FitnessCenter";
 import {ReactElement} from "react";
-
+import ReportComponent from "../../components/ReportComponent.tsx";
 
 function OverviewTab(props: { websiteScan: WebsiteScan }) {
   const {t, i18n} = useTranslation();
@@ -93,6 +93,7 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
                       </Stack>
                     </Tooltip>
                   </TableCell>
+                  <TableCell sx={{width: "15%", minWidth: "105px", justifyContent: "flex-start"}}>{t("WebsitePage.report")}</TableCell>
                 </>
               ) : null}
             </TableRow>
@@ -108,6 +109,12 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
                   <>
                     <TableCell>{Math.round(webpageScan.webpageStatistic.score ?? 0)}</TableCell>
                     <TableCell>{Math.round(webpageScan.webpageStatistic.weight * 100)}%</TableCell>
+                    <TableCell>
+                      <ReportComponent
+                        subject={webpageScan.webpage}
+                        fullWidth={false}
+                      />
+                    </TableCell>
                   </>
                 ) : null}
               </TableRow>

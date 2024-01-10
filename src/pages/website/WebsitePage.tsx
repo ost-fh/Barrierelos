@@ -65,7 +65,7 @@ function WebsitePage() {
             </Tooltip>
           </Box>
         ) : null}
-        <Box sx={{flexGrow: 1}}>
+        <Box sx={{flexGrow: 1, display: "flex", justifyContent: "flex-end"}}>
           <ReportComponent
             subject={websiteScan.website}
             fullWidth={false}

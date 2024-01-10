@@ -84,10 +84,12 @@ function UserProfile(props: { user: User }) {
           </TableBody>
         </Table>
         {authentication.user !== undefined && authentication.user.id === user.id ? null : (
-          <ReportComponent
-            subject={user}
-            fullWidth={true}
-          />
+          <Box sx={{my: 2}}>
+            <ReportComponent
+              subject={user}
+              fullWidth={true}
+            />
+          </Box>
         )}
       </Box>
     </>

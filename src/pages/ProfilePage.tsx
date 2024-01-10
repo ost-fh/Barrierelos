@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {ERROR_CONFLICT, ERROR_UNAUTHORIZED} from "../constants.ts";
 import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
 import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
+import {Helmet} from "react-helmet-async";
 
 function ProfilePage() {
   const {t} = useTranslation();
@@ -264,6 +265,9 @@ function ProfilePage() {
 
   return (
     <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Helmet>
+        <title>{t('ProfilePage.profile')} - {t("General.title")}</title>
+      </Helmet>
       <Avatar sx={{ m: 1, backgroundColor: 'secondary.main', width: 96, height: 96 }}>
         <PersonIcon sx={{ width: 72, height: 72 }} />
       </Avatar>

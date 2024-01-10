@@ -123,7 +123,7 @@ function UserPage() {
   return (
     <>
       <Helmet>
-        <title>{t('UserPage.title')}</title>
+        <title>{t('UserPage.title')} - {t("General.title")}</title>
       </Helmet>
       <h1>{t('UserPage.title')}</h1>
       {user ? (

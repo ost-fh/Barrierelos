@@ -20,6 +20,7 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {ERROR_CONFLICT, PAGE_AFTER_SIGNUP} from "../constants.ts";
 import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
 import GoogleLoginComponent from "../components/GoogleLoginComponent.tsx";
+import {Helmet} from "react-helmet-async";
 
 function SignupPage() {
   const {t} = useTranslation();
@@ -145,6 +146,9 @@ function SignupPage() {
 
   return (
     <Container maxWidth="xs">
+      <Helmet>
+        <title>{t("SignupPage.signUp")} - {t("General.title")}</title>
+      </Helmet>
       <Box id="login-box" sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar sx={{ m: 1, backgroundColor: 'secondary.main' }}>
           <LockOutlinedIcon />

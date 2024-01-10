@@ -373,7 +373,7 @@ function ReportsPage() {
   return (
     <>
       <Helmet>
-        <title>{t("ReportsPage.title")}</title>
+        <title>{t("ReportsPage.title")} - {t("General.title")}</title>
       </Helmet>
       <h1>{t("ReportsPage.title")}</h1>
       <p>{t("ReportsPage.text")}</p>

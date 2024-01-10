@@ -19,6 +19,7 @@ import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import GoogleLoginComponent from "../components/GoogleLoginComponent.tsx";
 import {PAGE_AFTER_LOGIN} from "../constants.ts";
+import {Helmet} from "react-helmet-async";
 
 function LoginPage() {
   const {t} = useTranslation();
@@ -75,6 +76,9 @@ function LoginPage() {
   return (
     <>
       <Container maxWidth="xs">
+        <Helmet>
+          <title>{t('LoginPage.logIn')} - {t("General.title")}</title>
+        </Helmet>
         <Box id="login-box" sx={{marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
           <Avatar sx={{m: 1, backgroundColor: "secondary.main"}}>
             <LockOutlinedIcon/>

@@ -86,6 +86,7 @@ function UserProfile(props: { user: User }) {
         {authentication.user !== undefined && authentication.user.id === user.id ? null : (
           <ReportComponent
             subject={user}
+            fullWidth={true}
           />
         )}
       </Box>

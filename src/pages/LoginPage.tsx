@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {useTranslation} from "react-i18next";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
@@ -28,9 +28,11 @@ function LoginPage() {
   const {authentication, setAuthentication} = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  if(authentication.isAuthenticated) {
-    navigate("/profile");
-  }
+  useEffect(() => {
+    if(authentication.isAuthenticated) {
+      navigate("/profile");
+    }
+  }, []);
 
   function onLoginSuccess() {
     setError(undefined);

@@ -18,16 +18,26 @@ import {isUser, isWebpage, isWebsite} from "../typeguards.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import reasonEnum = Report.reason;
 import state = Report.state;
+import {useNavigate} from "react-router-dom";
 
-function ReportComponent(props: { subject: Website|Webpage|User }) {
-  const { subject } = props;
+function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: boolean }) {
+  const { subject, fullWidth } = props;
   const {t} = useTranslation();
   const [alreadyReported, setAlreadyReported] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [error, setError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const {authentication} = useContext(AuthenticationContext);
+  const navigate = useNavigate();
 
-  const handleReport = () => setDialogOpen(true);
+  const handleReport = () => {
+    if(!authentication.isAuthenticated) {
+      navigate("/login");
+    }
+    else {
+      setDialogOpen(true);
+    }
+  }
 
   const onReportYes = (reason: reasonEnum, explanation: string) => {
     if(authentication.user) {
@@ -100,61 +110,66 @@ function ReportComponent(props: { subject: Website|Webpage|User }) {
     }
   }
 
-  if(isWebsite(subject)) {
-    WebsiteReportControllerService.getWebsiteReports1(subject.id)
-      .then((reports: WebsiteReport[]) => {
-        if(reports.find(report => report.websiteId === subject.id)) {
-          setAlreadyReported(true);
-        }
-      });
-  }
-  else if(isWebpage(subject)) {
-    WebpageReportControllerService.getWebpageReports1(subject.id)
-      .then((reports: WebpageReport[]) => {
-        if(reports.find(report => report.webpageId === subject.id)) {
-          setAlreadyReported(true);
-        }
-      });
-  }
-  else if(isUser(subject)) {
-    UserReportControllerService.getUserReports1(subject.id)
-      .then((reports: UserReport[]) => {
-        if(reports.find(report => report.userId === subject.id)) {
-          setAlreadyReported(true);
-        }
-      });
+  if(authentication.isAuthenticated) {
+    if (isWebsite(subject)) {
+      WebsiteReportControllerService.getWebsiteReports1(subject.id)
+        .then((reports: WebsiteReport[]) => {
+          if (reports.find(report => report.websiteId === subject.id)) {
+            setAlreadyReported(true);
+          }
+          setLoaded(true);
+        });
+    } else if (isWebpage(subject)) {
+      WebpageReportControllerService.getWebpageReports1(subject.id)
+        .then((reports: WebpageReport[]) => {
+          if (reports.find(report => report.webpageId === subject.id)) {
+            setAlreadyReported(true);
+          }
+          setLoaded(true);
+        });
+    } else if (isUser(subject)) {
+      UserReportControllerService.getUserReports1(subject.id)
+        .then((reports: UserReport[]) => {
+          if (reports.find(report => report.userId === subject.id)) {
+            setAlreadyReported(true);
+          }
+          setLoaded(true);
+        });
+    }
   }
 
   return (
     <>
-      {alreadyReported ? (
-        <Alert sx={{ my: 2 }} severity="info">
-          <Typography component="span" variant="body2" sx={{ width: "100vh" }}>
-            {t('ReportComponent.alreadyReported')}
-          </Typography>
-        </Alert>
-      ) : (
-        error ? (
-          <Alert sx={{ my: 2 }} severity="error">
-            <Typography component="span" variant="body2" sx={{ width: "100vh" }}>
-              {t('ReportComponent.error')}
+      {(!authentication.isAuthenticated || loaded) && (
+        alreadyReported ? (
+          <Alert sx={{ my: 2, marginLeft: fullWidth ? "initial" : "auto", width: fullWidth ? "100%" : "fit-content" }} severity="info">
+            <Typography component="span" variant="body2">
+              {t('ReportComponent.alreadyReported')}
             </Typography>
           </Alert>
         ) : (
-          dialogOpen ? (
-            <ReportDialog
-              subject={subject}
-              open={dialogOpen}
-              setOpen={setDialogOpen}
-              onReportNo={() => {}}
-              onReportYes={onReportYes}
-            />
+          error ? (
+            <Alert sx={{ my: 2, marginLeft: fullWidth ? "initial" : "auto", width: fullWidth ? "100%" : "fit-content" }} severity="error">
+              <Typography component="span" variant="body2">
+                {t('ReportComponent.error')}
+              </Typography>
+            </Alert>
           ) : (
-            <Box sx={{ display: 'flex', flexFlow: 'row', justifyContent: "flex-end" }}>
-              <Button onClick={handleReport} variant="contained" color={"error"} sx={{ mt: 2, width: "fit-content", alignSelf: "end" }}>
-                {t('ReportComponent.buttonReport')}
-              </Button>
-            </Box>
+            dialogOpen ? (
+              <ReportDialog
+                subject={subject}
+                open={dialogOpen}
+                setOpen={setDialogOpen}
+                onReportNo={() => {}}
+                onReportYes={onReportYes}
+              />
+            ) : (
+              <Box sx={{ display: 'flex', flexFlow: 'row', justifyContent: "flex-end" }}>
+                <Button onClick={handleReport} variant="contained" color={"error"} sx={{ mt: 2, width: "fit-content", alignSelf: "end" }}>
+                  {t('ReportComponent.buttonReport')}
+                </Button>
+              </Box>
+            )
           )
         )
       )}

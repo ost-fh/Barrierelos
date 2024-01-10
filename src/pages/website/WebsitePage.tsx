@@ -14,6 +14,7 @@ import {formatScore, getScoreClass, getScoreColor} from "../../util/formatter.ts
 import ScanInfosTab from "./ScanInfosTab.tsx";
 import {ParseKeys} from "i18next";
 import status = Website.status;
+import ReportComponent from "../../components/ReportComponent.tsx";
 
 function WebsitePage() {
   const {t} = useTranslation();
@@ -49,7 +50,7 @@ function WebsitePage() {
         <title>{websiteScan.website.domain} - {t("General.title")}</title>
       </Helmet>
 
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" alignItems="center" justifyContent="space-between" gap="16px">
         <h1>{websiteScan.website.domain}</h1>
         {websiteScan.website.status !== status.READY ? (
           <Chip
@@ -64,6 +65,12 @@ function WebsitePage() {
             </Tooltip>
           </Box>
         ) : null}
+        <Box sx={{flexGrow: 1}}>
+          <ReportComponent
+            subject={websiteScan.website}
+            fullWidth={false}
+          />
+        </Box>
       </Stack>
 
       <TabContext value={currentTabIndex}>

@@ -134,7 +134,7 @@ function GoogleLoginComponent(props: { onLoginSuccess: (authentication: Authenti
         onNo={handleLoginDialogUsernameNo}
         onYes={handleLoginDialogUsernameYes}
       >
-        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "stretch"}}>
           <TextField
             onChange={(event) => setDialogUsername(event.target.value)}
             margin="normal"

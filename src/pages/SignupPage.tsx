@@ -4,7 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
-  Container,
+  Container, Divider,
   Grid,
   Link,
   TextField,
@@ -19,13 +19,42 @@ import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {ERROR_CONFLICT} from "../constants.ts";
 import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
+import GoogleLoginComponent from "../components/GoogleLoginComponent.tsx";
 
 function SignupPage() {
   const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string|undefined>(undefined);
-  const {setAuthentication} = useContext(AuthenticationContext);
+  const {authentication, setAuthentication} = useContext(AuthenticationContext);
   const navigate = useNavigate();
+
+  if(authentication.isAuthenticated) {
+    navigate("/profile");
+  }
+
+  function onLoginSuccess() {
+    setError(undefined);
+    setLoading(false);
+
+    navigate("/profile");
+  }
+
+  function onLoginError(): void
+  function onLoginError(error: string): void
+  function onLoginError(error: number): void
+  function onLoginError(error: unknown = t("SignupPage.signupFailed")): void {
+    if (typeof error === "string") {
+      setError(error);
+    } else if (typeof error === "number") {
+      switch (error) {
+        default:
+          onLoginError();
+          break;
+      }
+    }
+
+    setLoading(false);
+  }
 
   function onSignupSuccess() {
     setError(undefined);
@@ -140,13 +169,20 @@ function SignupPage() {
 
   return (
     <Container maxWidth="xs">
-      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box id="login-box" sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar sx={{ m: 1, backgroundColor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" sx={{mb: 3}}>
           {t("SignupPage.signUp")}
         </Typography>
+        <GoogleLoginComponent
+          onLoginSuccess={() => onLoginSuccess}
+          onLoginError={() => onLoginError}
+          setError={() => setError}
+          setLoading={() => setLoading}
+        />
+        <Divider sx={{mt: 4, mb: 1}} flexItem>{t("LoginPage.dividerOr")}</Divider>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>

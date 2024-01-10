@@ -1,6 +1,7 @@
 package ch.barrierelos.backend.unit
 
 import ch.barrierelos.backend.unit.converter.*
+import ch.barrierelos.backend.unit.converter.scanner.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 
@@ -66,4 +67,28 @@ open class ConverterTestSuite
   @Nested
   @DisplayName("Webpage Report Converter")
   inner class WebpageReportConverterTestSuite : WebpageReportConverterTests()
+
+  @Nested
+  @DisplayName("Website Result Converter")
+  inner class WebsiteResultConverterTestSuite : WebsiteResultConverterTests()
+
+  @Nested
+  @DisplayName("Webpage Result Converter")
+  inner class WebpageResultConverterTestSuite : WebpageResultConverterTests()
+
+  @Nested
+  @DisplayName("Rule Converter")
+  inner class RuleConverterTestSuite : RuleConverterTests()
+
+  @Nested
+  @DisplayName("Check Converter")
+  inner class CheckConverterTestSuite : CheckConverterTests()
+
+  @Nested
+  @DisplayName("Check Element Converter")
+  inner class CheckElementConverterTestSuite : CheckElementConverterTests()
+
+  @Nested
+  @DisplayName("Element Converter")
+  inner class ElementConverterTestSuite : ElementConverterTests()
 }

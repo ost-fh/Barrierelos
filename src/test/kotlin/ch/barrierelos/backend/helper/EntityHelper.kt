@@ -1,7 +1,11 @@
 package ch.barrierelos.backend.helper
 
 import ch.barrierelos.backend.entity.*
+import ch.barrierelos.backend.entity.scanner.*
 import ch.barrierelos.backend.enums.*
+import ch.barrierelos.backend.enums.scanner.CheckTypeEnum
+import ch.barrierelos.backend.enums.scanner.ImpactEnum
+import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
 import java.sql.Timestamp
 
 fun createUserEntity() = UserEntity(
@@ -116,4 +120,76 @@ fun createWebsiteReportEntity(websiteFk: Long = 0) = WebsiteReportEntity(
 fun createWebpageReportEntity(webpageFk: Long = 0) = WebpageReportEntity(
   webpageFk = webpageFk,
   report = createReportEntity(webpageFk),
+)
+
+fun createScanJobEntity(websiteFk: Long = 0, userFk: Long = 0) = ScanJobEntity(
+  websiteFk = websiteFk,
+  userFk = userFk,
+  modelVersion = "1.0.0",
+  jobTimestamp = Timestamp(5000),
+  domain = "example.com",
+  webpages = mutableSetOf("https://example.com/test"),
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)
+
+fun createWebsiteResultEntity() = WebsiteResultEntity(
+  modelVersion = "1.0.0",
+  domain = "example.com",
+  scanTimestamp = Timestamp(5000),
+  scanStatus = ScanStatusEnum.SUCCESS,
+  scanJob = createScanJobEntity(),
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)
+
+fun createWebpageResultEntity() = WebpageResultEntity(
+  websiteResult = createWebsiteResultEntity(),
+  url = "https://example.com/test",
+  scanStatus = ScanStatusEnum.SUCCESS,
+  rules = mutableSetOf(),
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)
+
+fun createRuleEntity(webpageResultEntity: WebpageResultEntity) = RuleEntity(
+  webpageResult = webpageResultEntity,
+  code = "aria-hidden-focus",
+  description = "This is a test rule.",
+  axeUrl = "https://dequeuniversity.com/rules/axe/4.2/aria-hidden-focus",
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)
+
+fun createCheckEntity() = CheckEntity(
+  rule = createRuleEntity(createWebpageResultEntity()),
+  code = "aria-hidden-body",
+  type = CheckTypeEnum.ALL,
+  impact = ImpactEnum.MODERATE,
+  testedCount = 4,
+  passedCount = 1,
+  violatedCount = 1,
+  incompleteCount = 1,
+  violatingElements = mutableSetOf(),
+  incompleteElements = mutableSetOf(),
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)
+
+fun createCheckElementEntity() = CheckElementEntity(
+  target = "body",
+  html = "<body></body>",
+  issueDescription = "This is a test issue.",
+  data = "",
+  relatedElements = mutableSetOf(),
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
+)
+
+fun createElementEntity() = ElementEntity(
+  checkElement = createCheckElementEntity(),
+  target = "body",
+  html = "<body></body>",
+  modified = Timestamp(5000),
+  created = Timestamp(5000),
 )

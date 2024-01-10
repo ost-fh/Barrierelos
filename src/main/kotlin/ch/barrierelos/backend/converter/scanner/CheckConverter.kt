@@ -4,6 +4,7 @@ import ch.barrierelos.backend.entity.scanner.CheckEntity
 import ch.barrierelos.backend.entity.scanner.RuleEntity
 import ch.barrierelos.backend.message.scanner.CheckMessage
 import ch.barrierelos.backend.model.scanner.Check
+import java.sql.Timestamp
 
 public fun CheckMessage.toEntity(rule: RuleEntity): CheckEntity
 {
@@ -37,6 +38,8 @@ public fun Check.toEntity(rule: RuleEntity): CheckEntity
     incompleteCount = this.incompleteCount,
     violatingElements = this.violatingElements.map { it.toEntity() }.toMutableSet(),
     incompleteElements = this.incompleteElements.map { it.toEntity() }.toMutableSet(),
+    modified = Timestamp(this.modified),
+    created = Timestamp(this.created),
   )
 }
 

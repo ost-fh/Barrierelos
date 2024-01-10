@@ -7,6 +7,7 @@ import ch.barrierelos.backend.message.scanner.RuleMessage
 import ch.barrierelos.backend.message.scanner.WcagReferencesMessage
 import ch.barrierelos.backend.model.scanner.Rule
 import ch.barrierelos.backend.model.scanner.WcagReferences
+import java.sql.Timestamp
 
 public fun RuleMessage.toEntity(webpageResult: WebpageResultEntity): RuleEntity
 {
@@ -30,6 +31,8 @@ public fun Rule.toEntity(webpageResult: WebpageResultEntity): RuleEntity
     code = this.code,
     axeUrl = this.axeUrl,
     description = this.description,
+    modified = Timestamp(this.modified),
+    created = Timestamp(this.created),
   )
 
   rule.wcagReferences = this.wcagReferences?.toEntity(rule)

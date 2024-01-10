@@ -5,6 +5,7 @@ import ch.barrierelos.backend.entity.scanner.WebsiteResultEntity
 import ch.barrierelos.backend.message.scanner.WebpageResultMessage
 import ch.barrierelos.backend.model.scanner.WebpageResult
 import ch.barrierelos.backend.model.scanner.WebsiteResult
+import java.sql.Timestamp
 
 public fun WebpageResultMessage.toEntity(websiteResult: WebsiteResultEntity): WebpageResultEntity
 {
@@ -28,6 +29,8 @@ public fun WebpageResult.toEntity(websiteResult: WebsiteResult): WebpageResultEn
     url = this.url,
     scanStatus = this.scanStatus,
     errorMessage = this.errorMessage,
+    modified = Timestamp(this.modified),
+    created = Timestamp(this.created),
   )
 
   webpageResult.rules = this.rules.map { it.toEntity(webpageResult) }.toMutableSet()

@@ -1,7 +1,12 @@
 package ch.barrierelos.backend.helper
 
 import ch.barrierelos.backend.enums.*
+import ch.barrierelos.backend.enums.scanner.CheckTypeEnum
+import ch.barrierelos.backend.enums.scanner.ImpactEnum
+import ch.barrierelos.backend.enums.scanner.ScanStatusEnum
 import ch.barrierelos.backend.model.*
+import ch.barrierelos.backend.model.scanner.*
+import kotlinx.datetime.Instant
 
 fun createUserModel() = User(
   username = "username",
@@ -114,4 +119,80 @@ fun createWebsiteReportModel(websiteId: Long = 0) = WebsiteReport(
 fun createWebpageReportModel(webpageId: Long = 0) = WebpageReport(
   webpageId = webpageId,
   report = createReportModel(webpageId),
+)
+
+fun createScanJobModel(websiteId: Long = 0, userId: Long = 0) = ScanJob(
+  websiteId = websiteId,
+  userId = userId,
+  modelVersion = "1.0.0",
+  jobTimestamp = Instant.fromEpochSeconds(5),
+  domain = "example.com",
+  webpages = mutableSetOf("https://example.com/test"),
+  modified = 5000,
+  created = 5000,
+)
+
+fun createWebsiteResultModel(id: Long = 0) = WebsiteResult(
+  id = id,
+  modelVersion = "1.0.0",
+  domain = "example.com",
+  scanTimestamp = Instant.fromEpochSeconds(5),
+  scanStatus = ScanStatusEnum.SUCCESS,
+  scanJob = createScanJobModel(),
+  modified = 5000,
+  created = 5000,
+)
+
+fun createWebpageResultModel(id: Long = 0) = WebpageResult(
+  id = id,
+  url = "https://example.com/test",
+  scanStatus = ScanStatusEnum.SUCCESS,
+  rules = mutableSetOf(),
+  modified = 5000,
+  created = 5000,
+)
+
+fun createRuleModel(id: Long = 0) = Rule(
+  id = id,
+  code = "aria-hidden-focus",
+  description = "This is a test rule.",
+  axeUrl = "https://dequeuniversity.com/rules/axe/4.2/aria-hidden-focus",
+  wcagReferences = null,
+  checks = mutableSetOf(),
+  modified = 5000,
+  created = 5000,
+)
+
+fun createCheckModel(id: Long = 0) = Check(
+  id = id,
+  code = "aria-hidden-body",
+  type = CheckTypeEnum.ALL,
+  impact = ImpactEnum.MODERATE,
+  testedCount = 4,
+  passedCount = 1,
+  violatedCount = 1,
+  incompleteCount = 1,
+  violatingElements = mutableSetOf(),
+  incompleteElements = mutableSetOf(),
+  modified = 5000,
+  created = 5000,
+)
+
+fun createCheckElementModel(id: Long = 0) = CheckElement(
+  id = id,
+  target = "body",
+  html = "<body></body>",
+  issueDescription = "This is a test issue.",
+  data = "",
+  relatedElements = mutableSetOf(),
+  modified = 5000,
+  created = 5000,
+)
+
+fun createElementModel(id: Long = 0) = Element(
+  id = id,
+  target = "body",
+  html = "<body></body>",
+  modified = 5000,
+  created = 5000,
 )

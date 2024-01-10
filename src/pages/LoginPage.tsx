@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {useTranslation} from "react-i18next";
-import React, {useContext, useLayoutEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useContext, useLayoutEffect, useState} from "react";
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
@@ -24,25 +24,18 @@ import {ApiError, Credential, RegistrationMessage, User, UserControllerService} 
 import ConfirmDialog from "../dialogs/ConfirmDialog.tsx";
 import {isValidUsername} from "../util.ts";
 import {ERROR_CONFLICT} from "../constants.ts";
+import {Authentication} from "../model/Authentication.ts";
 
-function LoginPage() {
+function GoogleLoginComponent(props: { onLoginSuccess: (authentication: Authentication) => void, onLoginError: (errorCode?: number) => void, setError: Dispatch<SetStateAction<string | undefined>>, setLoading: Dispatch<SetStateAction<boolean>> }) {
+  const { onLoginSuccess, onLoginError, setError, setLoading } = props;
   const {t, i18n} = useTranslation();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | undefined>(undefined);
   const [dialogUsernameOpen, setDialogUsernameOpen] = useState(false);
-  const [dialogUsername, setDialogUsername] = useState("");
   const [dialogError, setDialogError] = useState<string | undefined>(undefined);
-  const {authentication, setAuthentication} = useContext(AuthenticationContext);
-  const navigate = useNavigate();
+  const [token, setToken] = useState("");
+  const [dialogUsername, setDialogUsername] = useState("");
+  const [googleLoginWidth, setGoogleLoginWidth] = useState(0);
+  const {setAuthentication} = useContext(AuthenticationContext);
 
-  if(authentication.isAuthenticated) {
-    navigate("/profile");
-  }
-
-  const [googleLoginWidth, setGoogleLoginWidth] = useState(0)
   useLayoutEffect(() => {
     function updateSize() {
       setGoogleLoginWidth(document.querySelector("#login-box")?.clientWidth ?? 0)
@@ -51,36 +44,7 @@ function LoginPage() {
     window.addEventListener("resize", updateSize)
     updateSize()
     return () => window.removeEventListener("resize", updateSize)
-  }, [])
-
-  function onLoginSuccess() {
-    setError(undefined);
-    setLoading(false);
-
-    navigate("/profile");
-  }
-
-  function onLoginError(): void
-  function onLoginError(error: string): void
-  function onLoginError(error: number): void
-  function onLoginError(error: unknown = t("LoginPage.loginFailed")): void {
-    if (typeof error === "string") {
-      setError(error);
-    } else if (typeof error === "number") {
-      switch (error) {
-        default:
-          onLoginError();
-          break;
-      }
-    }
-
-    setLoading(false);
-  }
-
-  function onDialogError(error: string = t("LoginPage.loginFailed")): void {
-    setDialogError(error);
-    setDialogUsernameOpen(true)
-  }
+  }, []);
 
   function createUser() {
     const userObject: Token = jwtDecode(token);
@@ -123,12 +87,124 @@ function LoginPage() {
         if(error instanceof ApiError) {
           switch(error.status) {
             case ERROR_CONFLICT:
-              return onLoginError(t("SignupPage.changeUsernameFailed"));
+              return onDialogError(t("SignupPage.changeUsernameFailed"));
             default:
               return onLoginError();
           }
         }
       });
+  }
+
+  const handleGoogleLogin = async (response: CredentialResponse) => {
+    setError(undefined);
+    setLoading(true);
+
+    const identityToken = response.credential ?? "";
+
+    setToken(identityToken);
+
+    if (setAuthentication !== undefined) {
+      AuthenticationService.loginWithTokenAuthentication(identityToken, onLoginSuccess, () => setDialogUsernameOpen(true), setAuthentication);
+    } else {
+      onLoginError()
+    }
+  };
+
+  const handleLoginDialogUsernameYes = () => {
+    setDialogError(undefined);
+
+    if (!isValidUsername(dialogUsername.toString())) {
+      return onDialogError(t("SignupPage.invalidUsername"));
+    }
+
+    createUser();
+  };
+
+  const handleLoginDialogUsernameNo = () => {
+    setDialogError(undefined);
+    setDialogUsername("");
+    setLoading(false);
+  };
+
+  function onDialogError(error: string = t("LoginPage.loginFailed")): void {
+    setDialogError(error);
+    setDialogUsernameOpen(true)
+  }
+
+  return (
+    <>
+      <GoogleLogin
+        width={googleLoginWidth}
+        onSuccess={(credentialResponse) => handleGoogleLogin(credentialResponse)}
+        onError={() => onLoginError()}
+        locale={i18n.resolvedLanguage}
+      />
+      <ConfirmDialog
+        title={t("LoginPage.loginDialogUsernameTitle")}
+        no={t("LoginPage.loginDialogUsernameNo")}
+        yes={t("LoginPage.loginDialogUsernameYes")}
+        open={dialogUsernameOpen}
+        setOpen={setDialogUsernameOpen}
+        onNo={handleLoginDialogUsernameNo}
+        onYes={handleLoginDialogUsernameYes}
+      >
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+          <TextField
+            onChange={(event) => setDialogUsername(event.target.value)}
+            margin="normal"
+            required
+            id="dialogUsername"
+            name="dialogUsername"
+            label={t("LoginPage.username")}
+            autoComplete="username"
+            autoFocus
+            value={dialogUsername}
+            sx={{width: "min(550px, 80vw)"}}
+          />
+          {dialogError && (
+            <Alert sx={{mt: 2}} severity="error">{dialogError}</Alert>
+          )}
+        </Box>
+      </ConfirmDialog>
+    </>
+  );
+}
+
+function LoginPage() {
+  const {t} = useTranslation();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const {authentication, setAuthentication} = useContext(AuthenticationContext);
+  const navigate = useNavigate();
+
+  if(authentication.isAuthenticated) {
+    navigate("/profile");
+  }
+
+  function onLoginSuccess() {
+    setError(undefined);
+    setLoading(false);
+
+    navigate("/profile");
+  }
+
+  function onLoginError(): void
+  function onLoginError(error: string): void
+  function onLoginError(error: number): void
+  function onLoginError(error: unknown = t("LoginPage.loginFailed")): void {
+    if (typeof error === "string") {
+      setError(error);
+    } else if (typeof error === "number") {
+      switch (error) {
+        default:
+          onLoginError();
+          break;
+      }
+    }
+
+    setLoading(false);
   }
 
   const handleBasicLogin = (event: React.FormEvent<HTMLFormElement>) => {
@@ -144,37 +220,6 @@ function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = async (response: CredentialResponse) => {
-    setError(undefined);
-    setLoading(true);
-
-    const identityToken = response.credential ?? "";
-
-    setToken(identityToken);
-
-    if (setAuthentication !== undefined) {
-      AuthenticationService.loginWithTokenAuthentication(identityToken, onLoginSuccess, () => setDialogUsernameOpen(true), setAuthentication);
-    } else {
-      onLoginError()
-    }
-  }
-
-  const handleLoginDialogUsernameYes = () => {
-    setDialogError(undefined);
-
-    if (!isValidUsername(dialogUsername.toString())) {
-      return onDialogError(t("SignupPage.invalidUsername"));
-    }
-
-    createUser();
-  }
-
-  const handleLoginDialogUsernameNo = () => {
-    setDialogError(undefined);
-    setDialogUsername("");
-    setLoading(false);
-  }
-
   return (
     <>
       <Container maxWidth="xs">
@@ -185,11 +230,11 @@ function LoginPage() {
           <Typography component="h1" variant="h5" sx={{mb: 3}}>
             {t("LoginPage.logIn")}
           </Typography>
-          <GoogleLogin
-            width={googleLoginWidth}
-            onSuccess={(credentialResponse) => handleGoogleLogin(credentialResponse)}
-            onError={() => onLoginError()}
-            locale={i18n.resolvedLanguage}
+          <GoogleLoginComponent
+            onLoginSuccess={() => onLoginSuccess}
+            onLoginError={() => onLoginError}
+            setError={() => setError}
+            setLoading={() => setLoading}
           />
           <Divider sx={{mt: 4, mb: 1}} flexItem>{t("LoginPage.dividerOr")}</Divider>
           <Box component="form" onSubmit={handleBasicLogin} sx={{mt: 1}}>
@@ -235,33 +280,6 @@ function LoginPage() {
             </Grid>
           </Box>
         </Box>
-        <ConfirmDialog
-          title={t("LoginPage.loginDialogUsernameTitle")}
-          no={t("LoginPage.loginDialogUsernameNo")}
-          yes={t("LoginPage.loginDialogUsernameYes")}
-          open={dialogUsernameOpen}
-          setOpen={setDialogUsernameOpen}
-          onNo={handleLoginDialogUsernameNo}
-          onYes={handleLoginDialogUsernameYes}
-        >
-          <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-            <TextField
-              onChange={(event) => setDialogUsername(event.target.value)}
-              margin="normal"
-              required
-              id="dialogUsername"
-              name="dialogUsername"
-              label={t("LoginPage.username")}
-              autoComplete="username"
-              autoFocus
-              value={dialogUsername}
-              sx={{width: "min(550px, 80vw)"}}
-            />
-            {dialogError && (
-              <Alert sx={{mt: 2}} severity="error">{dialogError}</Alert>
-            )}
-          </Box>
-        </ConfirmDialog>
       </Container>
     </>
   );

@@ -17,7 +17,7 @@ import {ApiError, Credential, RegistrationMessage, User, UserControllerService} 
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
-import {ERROR_CONFLICT} from "../constants.ts";
+import {ERROR_CONFLICT, PAGE_AFTER_SIGNUP} from "../constants.ts";
 import {isValidEmail, isValidPassword, isValidUsername} from "../util.ts";
 import GoogleLoginComponent from "../components/GoogleLoginComponent.tsx";
 
@@ -29,37 +29,13 @@ function SignupPage() {
   const navigate = useNavigate();
 
   if(authentication.isAuthenticated) {
-    navigate("/profile");
-  }
-
-  function onLoginSuccess() {
-    setError(undefined);
-    setLoading(false);
-
-    navigate("/profile");
-  }
-
-  function onLoginError(): void
-  function onLoginError(error: string): void
-  function onLoginError(error: number): void
-  function onLoginError(error: unknown = t("SignupPage.signupFailed")): void {
-    if (typeof error === "string") {
-      setError(error);
-    } else if (typeof error === "number") {
-      switch (error) {
-        default:
-          onLoginError();
-          break;
-      }
-    }
-
-    setLoading(false);
+    navigate(PAGE_AFTER_SIGNUP);
   }
 
   function onSignupSuccess() {
     setError(undefined);
     setLoading(false);
-    navigate("/profile");
+    navigate(PAGE_AFTER_SIGNUP);
   }
 
   function onSignupError(): void
@@ -177,8 +153,8 @@ function SignupPage() {
           {t("SignupPage.signUp")}
         </Typography>
         <GoogleLoginComponent
-          onLoginSuccess={() => onLoginSuccess}
-          onLoginError={() => onLoginError}
+          onLoginSuccess={() => onSignupSuccess}
+          onLoginError={() => onSignupError}
           setError={() => setError}
           setLoading={() => setLoading}
         />

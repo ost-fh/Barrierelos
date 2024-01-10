@@ -87,11 +87,11 @@ export default function NavBar() {
         </NavLink>
         {authentication.isAuthenticated ? (
           <>
-            <NavLink to="/profile" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
-              {t("NavLinks.profile")}
-            </NavLink>
             <NavLink to="/reports" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
               {t("NavLinks.reports")}
+            </NavLink>
+            <NavLink to="/profile" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
+              {t("NavLinks.profile")}
             </NavLink>
             {isCurrentLocation('/user') ? (
               <NavLink to={location.pathname} onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>

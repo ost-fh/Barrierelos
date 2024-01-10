@@ -18,6 +18,7 @@ import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {AuthenticationContext} from "../context/AuthenticationContext.ts";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import GoogleLoginComponent from "../components/GoogleLoginComponent.tsx";
+import {PAGE_AFTER_LOGIN} from "../constants.ts";
 
 function LoginPage() {
   const {t} = useTranslation();
@@ -30,7 +31,7 @@ function LoginPage() {
 
   useEffect(() => {
     if(authentication.isAuthenticated) {
-      navigate("/profile");
+      navigate(PAGE_AFTER_LOGIN);
     }
   }, []);
 
@@ -38,7 +39,7 @@ function LoginPage() {
     setError(undefined);
     setLoading(false);
 
-    navigate("/profile");
+    navigate(PAGE_AFTER_LOGIN);
   }
 
   function onLoginError(): void

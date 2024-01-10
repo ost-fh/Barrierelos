@@ -34,6 +34,10 @@ public class WebpageReportService
   {
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
 
+    val timestamp = System.currentTimeMillis()
+    webpageReport.report.created = timestamp
+    webpageReport.report.modified = timestamp
+
     return this.webpageReportRepository.save(webpageReport.toEntity()).toModel(webpageReport)
   }
 

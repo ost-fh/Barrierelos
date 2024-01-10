@@ -31,6 +31,10 @@ public class UserReportService
   {
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
 
+    val timestamp = System.currentTimeMillis()
+    userReport.report.created = timestamp
+    userReport.report.modified = timestamp
+
     return this.userReportRepository.save(userReport.toEntity()).toModel(userReport)
   }
 

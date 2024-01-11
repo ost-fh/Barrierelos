@@ -4,7 +4,6 @@ import body
 import ch.barrierelos.backend.entity.DefaultParameters
 import ch.barrierelos.backend.enums.OrderEnum
 import ch.barrierelos.backend.exception.NoAuthorizationException
-import ch.barrierelos.backend.helper.createWebpageModel
 import ch.barrierelos.backend.helper.createWebpageScanModel
 import ch.barrierelos.backend.model.WebpageScan
 import ch.barrierelos.backend.service.WebpageScanService
@@ -28,7 +27,6 @@ abstract class WebpageScanControllerTests : ControllerTests()
   lateinit var webpageScanService: WebpageScanService
 
   private val webpageScan = createWebpageScanModel()
-  private val webpage = createWebpageModel()
 
   @Nested
   @DisplayName("Get Webpage Scans")

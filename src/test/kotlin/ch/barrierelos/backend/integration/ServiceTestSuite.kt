@@ -20,28 +20,12 @@ class ServiceTestSuite
   inner class TagServiceTestSuite : TagServiceTests()
 
   @Nested
-  @DisplayName("Website Service")
-  inner class WebsiteServiceTestSuite : WebsiteServiceTests()
-
-  @Nested
-  @DisplayName("Webpage Service")
-  inner class WebpageServiceTestSuite : WebpageServiceTests()
-
-  @Nested
   @DisplayName("Website Statistic Service")
   inner class WebsiteStatisticServiceTestSuite : WebsiteStatisticServiceTests()
 
   @Nested
   @DisplayName("Webpage Statistic Service")
   inner class WebpageStatisticServiceTestSuite : WebpageStatisticServiceTests()
-
-  @Nested
-  @DisplayName("Website Scan Service")
-  inner class WebsiteScanServiceTestSuite : WebsiteScanServiceTests()
-
-  @Nested
-  @DisplayName("Webpage Scan Service")
-  inner class WebpageScanServiceTestSuite : WebpageScanServiceTests()
 
   @Nested
   @DisplayName("Report Service")

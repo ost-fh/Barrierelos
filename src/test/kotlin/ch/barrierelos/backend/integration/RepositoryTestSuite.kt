@@ -32,14 +32,6 @@ class RepositoryTestSuite
   inner class WebpageRepositoryTestSuite : WebpageRepositoryTests()
 
   @Nested
-  @DisplayName("Website Scan Repository")
-  inner class WebsiteScanRepositoryTestSuite : WebsiteScanRepositoryTests()
-
-  @Nested
-  @DisplayName("Webpage Scan Repository")
-  inner class WebpageScanRepositoryTestSuite : WebpageScanRepositoryTests()
-
-  @Nested
   @DisplayName("Report Repository")
   inner class ReportRepositoryTestSuite : ReportRepositoryTests()
 

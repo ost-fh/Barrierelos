@@ -17,7 +17,7 @@ export class AuthenticationService {
   }
 
   public static login(username: string | undefined, password: string | undefined, token: string | undefined, onSuccess: (authentication: Authentication) => void, onError: (errorCode?: number) => void, setAuthentication: Dispatch<SetStateAction<Authentication>>, timeout?: number): void {
-    if(((username === undefined || password === undefined) && token === undefined) || ((username !== undefined || password !== undefined) && token !== undefined)) {
+    if((username === undefined && token === undefined) || (username !== undefined && (password === undefined && token === undefined))) {
       return onError();
     }
     else {

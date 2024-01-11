@@ -27,6 +27,7 @@ import ReportsPage from "./pages/ReportsPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
 import FooterBar from "./components/footer_bar/FooterBar.tsx";
 import {Props} from "./util/login.ts";
+import ContributePage from "./pages/contribute/ContributePage.tsx";
 
 type MuiLocales = "enUS" | "deDE";
 
@@ -134,13 +135,14 @@ function App() {
                   <Route path="/" element={<HomePage/>}/>
                   <Route path="/websites" element={<WebsitesPage/>}/>
                   <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
+                  <Route path="/contribute" element={<ContributePage/>}/>
                   <Route path="/faq" element={<FaqPage/>}/>
+                  <Route path="/reports" element={<Private Component={ReportsPage}/>}/>
+                  <Route path="/profile" element={<Private Component={ProfilePage}/>}/>
+                  <Route path="/user/:userId" element={<Private Component={UserPage} />}/>
                   <Route path="/login" element={<LoginPage/>}/>
                   <Route path="/logout" element={<LogoutPage/>}/>
                   <Route path="/signup" element={<SignupPage/>}/>
-                  <Route path="/profile" element={<Private Component={ProfilePage}/>}/>
-                  <Route path="/reports" element={<Private Component={ReportsPage}/>}/>
-                  <Route path="/user/:userId" element={<Private Component={UserPage} />}/>
                   <Route path="/impressum" element={<ImpressumPage/>}/>
                   <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
                   <Route path="*" element={<NotFoundPage/>}/>

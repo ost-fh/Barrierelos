@@ -27,6 +27,7 @@ function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: bool
   const {t} = useTranslation();
   const [alreadyReported, setAlreadyReported] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const {authentication} = useContext(AuthenticationContext);
@@ -104,7 +105,7 @@ function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: bool
           .catch(() => setError(true));
       }
 
-      setAlreadyReported(true);
+      setSuccess(true);
     }
     else
     {
@@ -116,7 +117,7 @@ function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: bool
     if (isWebsite(subject)) {
       WebsiteReportControllerService.getWebsiteReports1(subject.id)
         .then((reports: WebsiteReport[]) => {
-          if (reports.find(report => report.websiteId === subject.id)) {
+          if (reports.find(report => report.websiteId === subject.id && authentication.user && report.report.userId === authentication.user.id)) {
             setAlreadyReported(true);
           }
           setLoaded(true);
@@ -124,7 +125,7 @@ function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: bool
     } else if (isWebpage(subject)) {
       WebpageReportControllerService.getWebpageReports1(subject.id)
         .then((reports: WebpageReport[]) => {
-          if (reports.find(report => report.webpageId === subject.id)) {
+          if (reports.find(report => report.webpageId === subject.id && authentication.user && report.report.userId === authentication.user.id)) {
             setAlreadyReported(true);
           }
           setLoaded(true);
@@ -132,7 +133,7 @@ function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: bool
     } else if (isUser(subject)) {
       UserReportControllerService.getUserReports1(subject.id)
         .then((reports: UserReport[]) => {
-          if (reports.find(report => report.userId === subject.id)) {
+          if (reports.find(report => report.userId === subject.id && authentication.user && report.report.userId === authentication.user.id)) {
             setAlreadyReported(true);
           }
           setLoaded(true);
@@ -143,35 +144,44 @@ function ReportComponent(props: { subject: Website|Webpage|User, fullWidth: bool
   return (
     <>
       {(!authentication.isAuthenticated || loaded) && (
-        alreadyReported ? (
-          <Alert sx={{ width: fullWidth ? "100%" : "fit-content" }} severity="info">
+        error ? (
+          <Alert sx={{ width: fullWidth ? "100%" : "fit-content" }} severity="error">
             <Typography component="span" variant="body2">
-              {t('ReportComponent.alreadyReported')}
+              {t('ReportComponent.error')}
             </Typography>
           </Alert>
         ) : (
-          error ? (
-            <Alert sx={{ width: fullWidth ? "100%" : "fit-content" }} severity="error">
+          success ? (
+            <Alert sx={{ width: fullWidth ? "100%" : "fit-content" }} severity="success">
               <Typography component="span" variant="body2">
-                {t('ReportComponent.error')}
+                {t('ReportComponent.success')}
               </Typography>
             </Alert>
           ) : (
-            dialogOpen ? (
-              <ReportDialog
-                subject={subject}
-                open={dialogOpen}
-                setOpen={setDialogOpen}
-                onReportNo={() => {}}
-                onReportYes={onReportYes}
-              />
-            ) : (
-              <Box sx={{ display: fullWidth ? "flex" : "inline-flex", flexFlow: "row", justifyContent: "flex-end" }}>
-                <Button onClick={handleReport} variant="contained" color={"error"} sx={{ width: "fit-content", alignSelf: "end" }}>
-                  {t('ReportComponent.buttonReport')}
-                </Button>
-              </Box>
-            )
+            <>
+              {alreadyReported ? (
+                <Box sx={{ display: fullWidth ? "flex" : "inline-flex", flexFlow: "row", justifyContent: "flex-end" }}>
+                  <Button onClick={handleReport} variant="contained" color="error" disabled={true} sx={{ width: "fit-content", alignSelf: "end" }}>
+                    {t('ReportComponent.alreadyReported')}
+                  </Button>
+                </Box>
+              ) : (
+                <Box sx={{ display: fullWidth ? "flex" : "inline-flex", flexFlow: "row", justifyContent: "flex-end" }}>
+                  <Button onClick={handleReport} variant="contained" color="error" disabled={dialogOpen} sx={{ width: "fit-content", alignSelf: "end" }}>
+                    {t('ReportComponent.buttonReport')}
+                  </Button>
+                </Box>
+              )}
+              {dialogOpen && (
+                <ReportDialog
+                  subject={subject}
+                  open={dialogOpen}
+                  setOpen={setDialogOpen}
+                  onReportNo={() => {}}
+                  onReportYes={onReportYes}
+                />
+              )}
+            </>
           )
         )
       )}

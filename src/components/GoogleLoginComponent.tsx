@@ -8,9 +8,9 @@ import {ApiError, Credential, RegistrationMessage, User, UserControllerService} 
 import {AuthenticationService} from "../services/AuthenticationService.ts";
 import {ERROR_CONFLICT} from "../util/constants.ts";
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
-import {isValidUsername} from "../util/login.ts";
 import ConfirmDialog from "../components/ConfirmDialog.tsx";
 import {Alert, Box, TextField} from "@mui/material";
+import {isValidUsername} from "../util/validation.ts";
 
 function GoogleLoginComponent(props: { onLoginSuccess: (authentication: Authentication) => void, onLoginError: (errorCode?: number) => void, setError: Dispatch<SetStateAction<string | undefined>>, setLoading: Dispatch<SetStateAction<boolean>> }) {
   const { onLoginSuccess, onLoginError, setError, setLoading } = props;

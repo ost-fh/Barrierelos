@@ -29,7 +29,9 @@ export default function NavBar() {
       </div>
       <Stack direction="row" className="logo-bar" useFlexGap flexWrap="wrap" spacing={4}>
         <div>
-          <img className="barrierelos-logo" src={barrierelosLogo} alt={t("General.barrierelosLogoAlt")}/>
+          <a href="/">
+            <img className="barrierelos-logo" src={barrierelosLogo} alt={t("General.barrierelosLogoAlt")}/>
+          </a>
         </div>
         <Stack direction="row" spacing={4} className="header-actions">
           <div className="profile-area">
@@ -81,6 +83,9 @@ export default function NavBar() {
         </NavLink>
         <NavLink to="/websites" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
           {t("NavLinks.websites")}
+        </NavLink>
+        <NavLink to="/contribute" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
+          {t("NavLinks.contribute")}
         </NavLink>
         <NavLink to="/faq" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
           {t("NavLinks.faq")}

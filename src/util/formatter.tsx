@@ -1,5 +1,7 @@
 import {User, Webpage, Website} from "../lib/api-client";
-import {Link} from "@mui/material";
+import {Button as MuiButton, Link} from "@mui/material";
+import {MutableRefObject} from "react";
+import {styled} from "@mui/system";
 
 export function formatScore(score: number | undefined): string {
   if (score == null) {
@@ -68,3 +70,14 @@ export function convertUserToLink(user: User | undefined) {
     return "unknown";
   }
 }
+
+export function scrollToBottom(endRef: MutableRefObject<HTMLDivElement | null>) {
+  endRef.current?.scrollIntoView({ behavior: "smooth" });
+}
+
+export const ContributeButton = styled(MuiButton)({
+  "&.MuiButton-contained.Mui-disabled": {
+    background: "#339999",
+    color: "white"
+  }
+});

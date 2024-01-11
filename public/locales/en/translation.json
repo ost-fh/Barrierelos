@@ -17,35 +17,6 @@
     "PRIVATE_SHOP": "Online Shop",
     "PRIVATE_OTHER": "Other"
   },
-  "WebsiteTags": {
-    "Canton: ZH": "Canton: Zurich",
-    "Canton: BE": "Canton: Bern",
-    "Canton: LU": "Canton: Lucerne",
-    "Canton: UR": "Canton: Uri",
-    "Canton: SZ": "Canton: Schwyz",
-    "Canton: OW": "Canton: Obwalden",
-    "Canton: NW": "Canton: Nidwalden",
-    "Canton: GL": "Canton: Glarus",
-    "Canton: ZG": "Canton: Zug",
-    "Canton: FR": "Canton: Fribourg",
-    "Canton: SO": "Canton: Solothurn",
-    "Canton: BS": "Canton: Basel-Stadt",
-    "Canton: BL": "Canton: Basel-Landschaft",
-    "Canton: SH": "Canton: Schaffhausen",
-    "Canton: AR": "Canton: Appenzell Ausserrhoden",
-    "Canton: AI": "Canton: Appenzell Innerrhoden",
-    "Canton: SG": "Canton: St. Gallen",
-    "Canton: GR": "Canton: Aargau",
-    "Canton: AG": "Canton: Grisons",
-    "Canton: TG": "Canton: Thurgau",
-    "Canton: TI": "Canton: Ticino",
-    "Canton: VD": "Canton: Vaud",
-    "Canton: VS": "Canton: Valais",
-    "Canton: NE": "Canton: Neuchâtel",
-    "Canton: GE": "Canton: Geneva",
-    "Canton: JU": "Canton: Jura",
-    "Country: FL": "Country: Liechtenstein"
-  },
   "NavBar": {
     "openNavigationMenuBtnAriaLabel": "Open navigation menu",
     "closeNavigationMenuBtnAriaLabel": "Close navigation menu",
@@ -55,6 +26,7 @@
   "NavLinks": {
     "home": "Home",
     "websites": "Websites",
+    "contribute": "Contribute",
     "faq": "FAQ",
     "profile": "Profile",
     "reports": "Reports",
@@ -86,7 +58,8 @@
       "ariaLabel": "Table of websites cumulated by region and sorted by Barrierelos-Score",
       "regionHeaderLabel": "Region",
       "scoreHeaderLabel": "Barrierelos-Score"
-    }
+    },
+    "addWebsiteButton": "Add Website"
   },
   "WebsitePage": {
     "WebsiteStatus": {
@@ -203,7 +176,6 @@
   "ProfilePage": {
     "profile": "Profile",
     "success": "Changes successfully saved.",
-
     "contact": "Contact",
     "contactHint": "By changing the username you also change your login.",
     "firstname": "First Name",
@@ -216,7 +188,6 @@
     "invalidUsername": "Invalid username. Must be at least 3 characters long. May not be an email address.",
     "invalidPassword": "Invalid password. Must be at least 6 characters long.",
     "changeUsernameFailed": "Username already exists.",
-
     "changePassword": "Change Password",
     "changePasswordHint": "Please confirm your current password, before changing it.",
     "currentPassword": "Current Password",
@@ -225,7 +196,6 @@
     "changePasswordError": "Changing the password failed. Please try again later.",
     "wrongPasswordError": "Changing the password failed. Please check the password.",
     "passwordConfirmationFailed": "Passwords don't match. Please check that you entered the same password twice.",
-
     "deleteAccount": "Delete Account",
     "deleteAccountHint": "Deleting the account cannot be undone.",
     "password": "Password",
@@ -266,6 +236,17 @@
     "labelRole": "Role",
     "labelRegistered": "Registered"
   },
+  "ContributePage": {
+    "title": "Contribute",
+    "text": "Contribute to this project by adding a new Website:",
+    "url": "URL",
+    "categoryLabel": "Category",
+    "municipalityLabel": "Municipality",
+    "cantonLabel": "Canton",
+    "addWebsiteButton": "Add Website",
+    "alreadyAddedError": "Website has already been added.",
+    "defaultError": "Cannot add website."
+  },
   "ReasonEnum": {
     "INCORRECT": "incorrect",
     "MISLEADING": "misleading",
@@ -292,7 +273,54 @@
     "labelExplanation": "Explanation",
     "buttonCancel": "Cancel",
     "buttonReport": "Report",
-    "alreadyReported": "Already reported.",
+    "alreadyReported": "Reported",
+    "success": "Reported.",
     "error": "Reporting failed."
+  },
+  "Validation": {
+    "invalidUrl": "Invalid URL."
+  },
+  "Tags": {
+    "country": {
+      "switzerland": "Country: Switzerland",
+      "liechtenstein": "Country: Liechtenstein"
+    },
+    "canton": {
+      "ag": "Canton: Aargau",
+      "ai": "Canton: Appenzell Innerrhoden",
+      "ar": "Canton: Appenzell Ausserrhoden",
+      "be": "Canton: Bern",
+      "bl": "Canton: Basel-Landschaft",
+      "bs": "Canton: Basel-Stadt",
+      "fr": "Canton: Fribourg",
+      "ge": "Canton: Geneva",
+      "gl": "Canton: Glarus",
+      "gr": "Canton: Grisons",
+      "ju": "Canton: Jura",
+      "lu": "Canton: Lucerne",
+      "ne": "Canton: Neuchâtel",
+      "nw": "Canton: Nidwalden",
+      "ow": "Canton: Obwalden",
+      "sg": "Canton: St. Gallen",
+      "sh": "Canton: Schaffhausen",
+      "so": "Canton: Solothurn",
+      "sz": "Canton: Schwyz",
+      "tg": "Canton: Thurgau",
+      "ti": "Canton: Ticino",
+      "ur": "Canton: Uri",
+      "vd": "Canton: Vaud",
+      "vs": "Canton: Valais",
+      "zg": "Canton: Zug",
+      "zh": "Canton: Zurich"
+    }
+  },
+  "Category": {
+    "private": {
+      "affiliated": "Staatsnah",
+      "university": "Bildungsinstitut",
+      "news": "Nachrichten",
+      "shop": "Shop",
+      "other": "Anderes"
+    }
   }
 }

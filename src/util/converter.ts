@@ -48,4 +48,3 @@ export function convertTimestampToLocalTime(timestamp: number) {
 
   return date.toLocaleString('sv').split(' ')[1];
 }
-

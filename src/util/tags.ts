@@ -2,8 +2,8 @@ import {WebsiteTag} from "../lib/api-client";
 import {ParseKeys, t} from "i18next";
 
 const REGION_TAG_PREFIXES = [
-  "Canton: ",
-  "Country: ",
+  "canton.",
+  "country.",
 ]
 
 export function isRegionTag(tag: string) {
@@ -18,7 +18,7 @@ export function mapWebsiteTag(websiteTag: WebsiteTag | undefined): string {
   if (!isRegionTag(tag))
     return websiteTag.tag.name
 
-  return t(`WebsiteTags.${websiteTag.tag.name}` as ParseKeys)
+  return t(`Tags.${websiteTag.tag.name}` as ParseKeys)
 }
 
 export function compareWebsiteTags(websiteTag1: WebsiteTag, websiteTag2: WebsiteTag) {

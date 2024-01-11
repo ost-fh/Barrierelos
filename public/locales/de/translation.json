@@ -17,35 +17,6 @@
     "PRIVATE_SHOP": "Online-Shop",
     "PRIVATE_OTHER": "Sonstige"
   },
-  "WebsiteTags": {
-    "Canton: ZH": "Kanton: Zürich",
-    "Canton: BE": "Kanton: Bern",
-    "Canton: LU": "Kanton: Luzern",
-    "Canton: UR": "Kanton: Uri",
-    "Canton: SZ": "Kanton: Schwyz",
-    "Canton: OW": "Kanton: Obwalden",
-    "Canton: NW": "Kanton: Nidwalden",
-    "Canton: GL": "Kanton: Glarus",
-    "Canton: ZG": "Kanton: Zug",
-    "Canton: FR": "Kanton: Fribourg",
-    "Canton: SO": "Kanton: Solothurn",
-    "Canton: BS": "Kanton: Basel-Stadt",
-    "Canton: BL": "Kanton: Basel-Landschaft",
-    "Canton: SH": "Kanton: Schaffhausen",
-    "Canton: AR": "Kanton: Appenzell Ausserrhoden",
-    "Canton: AI": "Kanton: Appenzell Innerrhoden",
-    "Canton: SG": "Kanton: St. Gallen",
-    "Canton: GR": "Kanton: Aargau",
-    "Canton: AG": "Kanton: Graubünden",
-    "Canton: TG": "Kanton: Thurgau",
-    "Canton: TI": "Kanton: Tessin",
-    "Canton: VD": "Kanton: Waadt",
-    "Canton: VS": "Kanton: Wallis",
-    "Canton: NE": "Kanton: Neuchâtel",
-    "Canton: GE": "Kanton: Genf",
-    "Canton: JU": "Kanton: Jura",
-    "Country: FL": "Land: Liechtenstein"
-  },
   "NavBar": {
     "openNavigationMenuBtnAriaLabel": "Navigationsmenü öffnen",
     "closeNavigationMenuBtnAriaLabel": "Navigationsmenü schliessen",
@@ -55,6 +26,7 @@
   "NavLinks": {
     "home": "Startseite",
     "websites": "Webseiten",
+    "contribute": "Mitwirken",
     "faq": "FAQ",
     "profile": "Profil",
     "reports": "Meldungen",
@@ -86,7 +58,8 @@
       "ariaLabel": "Tabelle der Websites zusammengefasst nach Region und sortiert nach Barrierelos-Score",
       "regionHeaderLabel": "Region",
       "scoreHeaderLabel": "Barrierelos-Score"
-    }
+    },
+    "addWebsiteButton": "Website hinzufügen"
   },
   "WebsitePage": {
     "WebsiteStatus": {
@@ -266,6 +239,17 @@
     "labelRole": "Rolle",
     "labelRegistered": "Registriert"
   },
+  "ContributePage": {
+    "title": "Mitwirken",
+    "text": "Leiste einen Beitrag zu diesem Projekt, indem du eine neue Website hinzufügst:",
+    "url": "URL",
+    "categoryLabel": "Kategorie",
+    "municipalityLabel": "Gemeinde",
+    "cantonLabel": "Kanton",
+    "addWebsiteButton": "Website hinzufügen",
+    "alreadyAddedError": "Website wurde bereits hinzugefügt.",
+    "defaultError": "Website kann nicht hinzugefügt werden."
+  },
   "ReasonEnum": {
     "INCORRECT": "inkorrekt",
     "MISLEADING": "irreführend",
@@ -292,7 +276,54 @@
     "labelExplanation": "Begründung",
     "buttonCancel": "Abbrechen",
     "buttonReport": "Melden",
-    "alreadyReported": "Bereits gemeldet.",
+    "alreadyReported": "Gemeldet",
+    "success": "Gemeldet.",
     "error": "Melden fehlgeschlagen."
+  },
+  "Validation": {
+    "invalidUrl": "Ungültige URL."
+  },
+  "Tags": {
+    "country": {
+      "switzerland": "Land: Schweiz",
+      "liechtenstein": "Land: Liechtenstein"
+    },
+    "canton": {
+      "ag": "Kanton: Aargau",
+      "ai": "Kanton: Appenzell Innerrhoden",
+      "ar": "Kanton: Appenzell Ausserrhoden",
+      "be": "Kanton: Bern",
+      "bl": "Kanton: Basel-Landschaft",
+      "bs": "Kanton: Basel-Stadt",
+      "fr": "Kanton: Fribourg",
+      "ge": "Kanton: Genf",
+      "gl": "Kanton: Glarus",
+      "gr": "Kanton: Graubünden",
+      "ju": "Kanton: Jura",
+      "lu": "Kanton: Luzern",
+      "ne": "Kanton: Neuchâtel",
+      "nw": "Kanton: Nidwalden",
+      "ow": "Kanton: Obwalden",
+      "sg": "Kanton: St. Gallen",
+      "sh": "Kanton: Schaffhausen",
+      "so": "Kanton: Solothurn",
+      "sz": "Kanton: Schwyz",
+      "tg": "Kanton: Thurgau",
+      "ti": "Kanton: Tessin",
+      "ur": "Kanton: Uri",
+      "vd": "Kanton: Waadt",
+      "vs": "Kanton: Wallis",
+      "zg": "Kanton: Zug",
+      "zh": "Kanton: Zürich"
+    }
+  },
+  "Category": {
+    "private": {
+      "affiliated": "Affiliated",
+      "university": "University",
+      "news": "News",
+      "shop": "Shop",
+      "other": "Other"
+    }
   }
 }

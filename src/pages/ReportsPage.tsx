@@ -41,7 +41,7 @@ import {
   convertStateToString,
   convertTimestampToLocalDate,
   convertTimestampToLocalDatetime
-} from "../util/reports.ts";
+} from "../util/converter.ts";
 import {convertUserToLink, convertWebpageToLink, convertWebsiteToLink} from "../util/formatter.tsx";
 import {isUserReport, isWebpageReport, isWebsiteReport} from "../util/typeguards.ts";
 

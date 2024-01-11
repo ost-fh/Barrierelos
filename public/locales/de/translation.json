@@ -28,6 +28,7 @@
     "websites": "Webseiten",
     "contribute": "Mitwirken",
     "faq": "FAQ",
+    "contributions": "Beiträge",
     "profile": "Profil",
     "reports": "Meldungen",
     "user": "Benutzer",
@@ -239,6 +240,18 @@
     "labelRole": "Rolle",
     "labelRegistered": "Registriert"
   },
+  "ContributionsPage": {
+    "title": "Beiträge",
+    "text": "Deine Beiträge, die du zu diesem Projekt geleistet hast.",
+    "titleWebsites": "Websites",
+    "titleWebpages": "Webpages",
+    "loadError": "Kann nicht geladen werden.",
+    "nothingFound": "Nichts gefunden.",
+    "tableHeaderDate": "Datum",
+    "tableHeaderWebsite": "Website",
+    "tableHeaderWebpage": "Webpage",
+    "tableHeaderStatus": "Status"
+  },
   "ContributePage": {
     "title": "Mitwirken",
     "text": "Leiste einen Beitrag zu diesem Projekt, indem du eine neue Website hinzufügst:",
@@ -298,6 +311,12 @@
   "StateEnum": {
     "OPEN": "offen",
     "CLOSED": "abgeschlossen"
+  },
+  "StatusEnum": {
+    "BLOCKED": "blockiert",
+    "READY": "bereit",
+    "PENDING_INITIAL": "initialer Scan ausstehend",
+    "PENDING_RESCAN": "erneuter Scan ausstehend"
   },
   "RoleEnum": {
     "ADMIN": "Administrator",

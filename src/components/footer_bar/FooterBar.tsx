@@ -10,8 +10,8 @@ function FooterBar() {
     <Stack direction="row" spacing={4} width="100%" justifyContent="space-between">
       <span>© 2024 Barrierelos</span>
       <Stack direction={"row"} spacing={4} className="footer-links">
-        <Link to="/privacy-policy" underline="always" component={RouterLink}>{t("NavLinks.privacyPolicy")}</Link>
-        <Link to="/impressum" underline="always" component={RouterLink}>{t("NavLinks.impressum")}</Link>
+        <Link to="/privacy-policy" underline="always" component={RouterLink} sx={{ color: "white"}}>{t("NavLinks.privacyPolicy")}</Link>
+        <Link to="/impressum" underline="always" component={RouterLink} sx={{ color: "white"}}>{t("NavLinks.impressum")}</Link>
       </Stack>
     </Stack>
   )

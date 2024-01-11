@@ -56,6 +56,7 @@ export default function ChooseWebsite() {
             label={t("ContributePage.url")}
             type="url"
             sx={{flexGrow: 1}}
+            onChange={() => setDone(false)}
           />
           <ContributeButton type="submit" variant="contained">
             {t("ContributePage.addWebsiteButton")}

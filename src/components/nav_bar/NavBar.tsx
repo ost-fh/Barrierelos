@@ -92,6 +92,9 @@ export default function NavBar() {
         </NavLink>
         {authentication.isAuthenticated ? (
           <>
+            <NavLink to="/contributions" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
+              {t("NavLinks.contributions")}
+            </NavLink>
             <NavLink to="/reports" onClick={resetFocus} tabIndex={isMobileNav && !isNavExpanded ? -1 : undefined}>
               {t("NavLinks.reports")}
             </NavLink>

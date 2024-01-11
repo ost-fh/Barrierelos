@@ -198,7 +198,7 @@ function ReportRow(props: { reportId: number, report: WebsiteReport | WebpageRep
 
   return (
     <>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow>
         <TableCell align="left" sx={{ whiteSpace: 'nowrap'}}>{dateText}</TableCell>
         <TableCell align="left" sx={{ width: "100%" }}>{contentText}</TableCell>
         <TableCell align="left">{initiatorText}</TableCell>

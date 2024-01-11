@@ -1,5 +1,5 @@
 import {Report} from "../lib/api-client";
-import {TFunction} from "i18next";
+import {TFunction, ParseKeys} from "i18next";
 
 export function convertReasonToString(reason: Report.reason, t: TFunction<"translation", undefined>) {
   return t(`ReasonEnum.${reason}`);
@@ -7,6 +7,10 @@ export function convertReasonToString(reason: Report.reason, t: TFunction<"trans
 
 export function convertStateToString(state: Report.state, t: TFunction<"translation", undefined>) {
   return t(`StateEnum.${state ?? "OPEN"}`);
+}
+
+export function convertStatusToString(status: string, t: TFunction<"translation", undefined>) {
+  return t(`StatusEnum.${status}` as ParseKeys);
 }
 
 export function convertRolesToString(roles: Array<'ADMIN' | 'MODERATOR' | 'CONTRIBUTOR' | 'VIEWER'>, t: TFunction<"translation", undefined>) {

@@ -28,6 +28,7 @@ import UserPage from "./pages/UserPage.tsx";
 import FooterBar from "./components/footer_bar/FooterBar.tsx";
 import {Props} from "./util/login.ts";
 import ContributePage from "./pages/contribute/ContributePage.tsx";
+import ContributionsPage from "./pages/ContributionsPage.tsx";
 
 type MuiLocales = "enUS" | "deDE";
 
@@ -137,6 +138,7 @@ function App() {
                   <Route path="/websites/:websiteId" element={<WebsitePage/>}/>
                   <Route path="/contribute" element={<ContributePage/>}/>
                   <Route path="/faq" element={<FaqPage/>}/>
+                  <Route path="/contributions" element={<Private Component={ContributionsPage}/>}/>
                   <Route path="/reports" element={<Private Component={ReportsPage}/>}/>
                   <Route path="/profile" element={<Private Component={ProfilePage}/>}/>
                   <Route path="/user/:userId" element={<Private Component={UserPage} />}/>

@@ -28,6 +28,7 @@
     "websites": "Websites",
     "contribute": "Contribute",
     "faq": "FAQ",
+    "contributions": "Contributions",
     "profile": "Profile",
     "reports": "Reports",
     "user": "User",
@@ -236,6 +237,18 @@
     "labelRole": "Role",
     "labelRegistered": "Registered"
   },
+  "ContributionsPage": {
+    "title": "Contributions",
+    "text": "Your contributions to the project.",
+    "titleWebsites": "Websites",
+    "titleWebpages": "Webpages",
+    "loadError": "Cannot load.",
+    "nothingFound": "Nothing found.",
+    "tableHeaderDate": "Date",
+    "tableHeaderWebsite": "Website",
+    "tableHeaderWebpage": "Webpage",
+    "tableHeaderStatus": "Status"
+  },
   "ContributePage": {
     "title": "Contribute",
     "text": "Contribute to this project by adding a new Website:",
@@ -295,6 +308,12 @@
   "StateEnum": {
     "OPEN": "open",
     "CLOSED": "closed"
+  },
+  "StatusEnum": {
+    "BLOCKED": "blocked",
+    "READY": "ready",
+    "PENDING_INITIAL": "initial scan pending",
+    "PENDING_RESCAN": "rescan pending"
   },
   "RoleEnum": {
     "ADMIN": "Admin",

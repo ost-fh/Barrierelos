@@ -3532,22 +3532,10 @@
       "HttpHeaders": {
         "type": "object",
         "properties": {
-          "ifNoneMatch": {
+          "accept": {
             "type": "array",
             "items": {
-              "type": "string"
-            }
-          },
-          "origin": {
-            "type": "string"
-          },
-          "pragma": {
-            "type": "string"
-          },
-          "ifMatch": {
-            "type": "array",
-            "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/MediaType"
             }
           },
           "acceptPatch": {
@@ -3556,28 +3544,30 @@
               "$ref": "#/components/schemas/MediaType"
             }
           },
-          "accept": {
+          "acceptCharset": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MediaType"
+              "type": "string"
             }
           },
-          "acceptLanguage": {
+          "allow": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "range": {
-                  "type": "string"
-                },
-                "weight": {
-                  "type": "number",
-                  "format": "double"
-                }
-              }
+              "$ref": "#/components/schemas/HttpMethod"
             }
           },
-          "basicAuth": {
+          "accessControlRequestMethod": {
+            "$ref": "#/components/schemas/HttpMethod"
+          },
+          "contentDisposition": {
+            "$ref": "#/components/schemas/ContentDisposition"
+          },
+          "ifUnmodifiedSince": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "bearerAuth": {
             "type": "string",
             "writeOnly": true
           },
@@ -3647,7 +3637,143 @@
             "type": "integer",
             "format": "int64"
           },
-          "connection": {
+          "ifMatch": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ifNoneMatch": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "origin": {
+            "type": "string"
+          },
+          "pragma": {
+            "type": "string"
+          },
+          "upgrade": {
+            "type": "string"
+          },
+          "vary": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "acceptLanguage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "range": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number",
+                  "format": "double"
+                }
+              }
+            }
+          },
+          "basicAuth": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "acceptLanguageAsLocales": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "language": {
+                  "type": "string"
+                },
+                "displayName": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "variant": {
+                  "type": "string"
+                },
+                "script": {
+                  "type": "string"
+                },
+                "unicodeLocaleAttributes": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "unicodeLocaleKeys": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "displayLanguage": {
+                  "type": "string"
+                },
+                "displayScript": {
+                  "type": "string"
+                },
+                "displayCountry": {
+                  "type": "string"
+                },
+                "displayVariant": {
+                  "type": "string"
+                },
+                "extensionKeys": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "iso3Language": {
+                  "type": "string"
+                },
+                "iso3Country": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "accessControlAllowCredentials": {
+            "type": "boolean"
+          },
+          "accessControlAllowHeaders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accessControlAllowMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HttpMethod"
+            }
+          },
+          "accessControlAllowOrigin": {
+            "type": "string"
+          },
+          "accessControlExposeHeaders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accessControlMaxAge": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accessControlRequestHeaders": {
             "type": "array",
             "items": {
               "type": "string"
@@ -3656,11 +3782,10 @@
           "cacheControl": {
             "type": "string"
           },
-          "allow": {
-            "uniqueItems": true,
+          "connection": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/HttpMethod"
+              "type": "string"
             }
           },
           "host": {
@@ -3729,16 +3854,6 @@
               }
             }
           },
-          "acceptCharset": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "bearerAuth": {
-            "type": "string",
-            "writeOnly": true
-          },
           "range": {
             "type": "array",
             "items": {
@@ -3749,127 +3864,12 @@
             "type": "string",
             "format": "uri"
           },
-          "contentDisposition": {
-            "$ref": "#/components/schemas/ContentDisposition"
-          },
-          "contentType": {
-            "$ref": "#/components/schemas/MediaType"
-          },
           "contentLength": {
             "type": "integer",
             "format": "int64"
           },
-          "ifUnmodifiedSince": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "accessControlAllowCredentials": {
-            "type": "boolean"
-          },
-          "accessControlAllowHeaders": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "accessControlAllowMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/HttpMethod"
-            }
-          },
-          "accessControlAllowOrigin": {
-            "type": "string"
-          },
-          "accessControlExposeHeaders": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "accessControlMaxAge": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "accessControlRequestHeaders": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "acceptLanguageAsLocales": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "language": {
-                  "type": "string"
-                },
-                "displayName": {
-                  "type": "string"
-                },
-                "country": {
-                  "type": "string"
-                },
-                "variant": {
-                  "type": "string"
-                },
-                "script": {
-                  "type": "string"
-                },
-                "unicodeLocaleAttributes": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "unicodeLocaleKeys": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "displayLanguage": {
-                  "type": "string"
-                },
-                "displayScript": {
-                  "type": "string"
-                },
-                "displayCountry": {
-                  "type": "string"
-                },
-                "displayVariant": {
-                  "type": "string"
-                },
-                "extensionKeys": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "iso3Language": {
-                  "type": "string"
-                },
-                "iso3Country": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "accessControlRequestMethod": {
-            "$ref": "#/components/schemas/HttpMethod"
-          },
-          "upgrade": {
-            "type": "string"
-          },
-          "vary": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "contentType": {
+            "$ref": "#/components/schemas/MediaType"
           },
           "empty": {
             "type": "boolean"
@@ -3949,16 +3949,16 @@
             "type": "number",
             "format": "double"
           },
-          "subtypeSuffix": {
-            "type": "string"
-          },
-          "concrete": {
-            "type": "boolean"
-          },
           "wildcardType": {
             "type": "boolean"
           },
           "wildcardSubtype": {
+            "type": "boolean"
+          },
+          "subtypeSuffix": {
+            "type": "string"
+          },
+          "concrete": {
             "type": "boolean"
           },
           "charset": {
@@ -4078,22 +4078,10 @@
           "headers": {
             "type": "object",
             "properties": {
-              "ifNoneMatch": {
+              "accept": {
                 "type": "array",
                 "items": {
-                  "type": "string"
-                }
-              },
-              "origin": {
-                "type": "string"
-              },
-              "pragma": {
-                "type": "string"
-              },
-              "ifMatch": {
-                "type": "array",
-                "items": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/MediaType"
                 }
               },
               "acceptPatch": {
@@ -4102,28 +4090,30 @@
                   "$ref": "#/components/schemas/MediaType"
                 }
               },
-              "accept": {
+              "acceptCharset": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/MediaType"
+                  "type": "string"
                 }
               },
-              "acceptLanguage": {
+              "allow": {
+                "uniqueItems": true,
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "range": {
-                      "type": "string"
-                    },
-                    "weight": {
-                      "type": "number",
-                      "format": "double"
-                    }
-                  }
+                  "$ref": "#/components/schemas/HttpMethod"
                 }
               },
-              "basicAuth": {
+              "accessControlRequestMethod": {
+                "$ref": "#/components/schemas/HttpMethod"
+              },
+              "contentDisposition": {
+                "$ref": "#/components/schemas/ContentDisposition"
+              },
+              "ifUnmodifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "bearerAuth": {
                 "type": "string",
                 "writeOnly": true
               },
@@ -4193,7 +4183,143 @@
                 "type": "integer",
                 "format": "int64"
               },
-              "connection": {
+              "ifMatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ifNoneMatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "origin": {
+                "type": "string"
+              },
+              "pragma": {
+                "type": "string"
+              },
+              "upgrade": {
+                "type": "string"
+              },
+              "vary": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "acceptLanguage": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "range": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  }
+                }
+              },
+              "basicAuth": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "acceptLanguageAsLocales": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "language": {
+                      "type": "string"
+                    },
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "variant": {
+                      "type": "string"
+                    },
+                    "script": {
+                      "type": "string"
+                    },
+                    "unicodeLocaleAttributes": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "unicodeLocaleKeys": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "displayLanguage": {
+                      "type": "string"
+                    },
+                    "displayScript": {
+                      "type": "string"
+                    },
+                    "displayCountry": {
+                      "type": "string"
+                    },
+                    "displayVariant": {
+                      "type": "string"
+                    },
+                    "extensionKeys": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "iso3Language": {
+                      "type": "string"
+                    },
+                    "iso3Country": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "accessControlAllowCredentials": {
+                "type": "boolean"
+              },
+              "accessControlAllowHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessControlAllowMethods": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpMethod"
+                }
+              },
+              "accessControlAllowOrigin": {
+                "type": "string"
+              },
+              "accessControlExposeHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessControlMaxAge": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "accessControlRequestHeaders": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -4202,11 +4328,10 @@
               "cacheControl": {
                 "type": "string"
               },
-              "allow": {
-                "uniqueItems": true,
+              "connection": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/HttpMethod"
+                  "type": "string"
                 }
               },
               "host": {
@@ -4275,16 +4400,6 @@
                   }
                 }
               },
-              "acceptCharset": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "bearerAuth": {
-                "type": "string",
-                "writeOnly": true
-              },
               "range": {
                 "type": "array",
                 "items": {
@@ -4295,127 +4410,12 @@
                 "type": "string",
                 "format": "uri"
               },
-              "contentDisposition": {
-                "$ref": "#/components/schemas/ContentDisposition"
-              },
-              "contentType": {
-                "$ref": "#/components/schemas/MediaType"
-              },
               "contentLength": {
                 "type": "integer",
                 "format": "int64"
               },
-              "ifUnmodifiedSince": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "accessControlAllowCredentials": {
-                "type": "boolean"
-              },
-              "accessControlAllowHeaders": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "accessControlAllowMethods": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/HttpMethod"
-                }
-              },
-              "accessControlAllowOrigin": {
-                "type": "string"
-              },
-              "accessControlExposeHeaders": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "accessControlMaxAge": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "accessControlRequestHeaders": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "acceptLanguageAsLocales": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "language": {
-                      "type": "string"
-                    },
-                    "displayName": {
-                      "type": "string"
-                    },
-                    "country": {
-                      "type": "string"
-                    },
-                    "variant": {
-                      "type": "string"
-                    },
-                    "script": {
-                      "type": "string"
-                    },
-                    "unicodeLocaleAttributes": {
-                      "uniqueItems": true,
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "unicodeLocaleKeys": {
-                      "uniqueItems": true,
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "displayLanguage": {
-                      "type": "string"
-                    },
-                    "displayScript": {
-                      "type": "string"
-                    },
-                    "displayCountry": {
-                      "type": "string"
-                    },
-                    "displayVariant": {
-                      "type": "string"
-                    },
-                    "extensionKeys": {
-                      "uniqueItems": true,
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "iso3Language": {
-                      "type": "string"
-                    },
-                    "iso3Country": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "accessControlRequestMethod": {
-                "$ref": "#/components/schemas/HttpMethod"
-              },
-              "upgrade": {
-                "type": "string"
-              },
-              "vary": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+              "contentType": {
+                "$ref": "#/components/schemas/MediaType"
               },
               "empty": {
                 "type": "boolean"
@@ -5103,10 +5103,6 @@
             "format": "date-time",
             "writeOnly": true
           },
-          "epochSeconds": {
-            "type": "integer",
-            "format": "int64"
-          },
           "value$kotlinx_datetime": {
             "type": "string",
             "format": "date-time"
@@ -5114,6 +5110,10 @@
           "nanosecondsOfSecond": {
             "type": "integer",
             "format": "int32"
+          },
+          "epochSeconds": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

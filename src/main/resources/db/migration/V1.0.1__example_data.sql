@@ -50,7 +50,13 @@ TRUNCATE "webpage_report" CASCADE;
 TRUNCATE "website_report" CASCADE;
 TRUNCATE "user_report" CASCADE;
 TRUNCATE "report" CASCADE;
+TRUNCATE "website_result" CASCADE;
+TRUNCATE "website_scan" CASCADE;
+TRUNCATE "website_statistic" CASCADE;
 TRUNCATE "webpage" CASCADE;
+TRUNCATE "website_result" CASCADE;
+TRUNCATE "website_scan" CASCADE;
+TRUNCATE "website_statistic" CASCADE;
 TRUNCATE "website" CASCADE;
 
 INSERT INTO "website"(  "website_id", "user_fk", "url", "domain", "category", "status")
@@ -141,37 +147,36 @@ SELECT SETVAL('"report_message_report_message_id_seq"', (SELECT MAX("report_mess
 
 TRUNCATE "tag" CASCADE;
 
-
 INSERT INTO "tag"("tag_id", "name")
 VALUES
-  (28, 'Canton: ZH'),
-  (2, 'Canton: BE'),
-  (3, 'Canton: LU'),
-  (4, 'Canton: UR'),
-  (5, 'Canton: SZ'),
-  (6, 'Canton: OW'),
-  (7, 'Canton: NW'),
-  (8, 'Canton: GL'),
-  (9, 'Canton: ZG'),
-  (10, 'Canton: FR'),
-  (11, 'Canton: SO'),
-  (12, 'Canton: BS'),
-  (13, 'Canton: BL'),
-  (14, 'Canton: SH'),
-  (15, 'Canton: AR'),
-  (16, 'Canton: AI'),
-  (17, 'Canton: SG'),
-  (18, 'Canton: GR'),
-  (19, 'Canton: AG'),
-  (20, 'Canton: TG'),
-  (21, 'Canton: TI'),
-  (22, 'Canton: VD'),
-  (23, 'Canton: VS'),
-  (24, 'Canton: NE'),
-  (25, 'Canton: GE'),
-  (26, 'Canton: JU'),
-  (27, 'Country: FL')
-;
+  (1, 'country.switzerland'),
+  (2, 'country.liechtenstein'),
+  (3, 'canton.ag'),
+  (4, 'canton.ai'),
+  (5, 'canton.ar'),
+  (6, 'canton.be'),
+  (7, 'canton.bl'),
+  (8, 'canton.bs'),
+  (9, 'canton.fr'),
+  (10, 'canton.ge'),
+  (11, 'canton.gl'),
+  (12, 'canton.gr'),
+  (13, 'canton.ju'),
+  (14, 'canton.lu'),
+  (15, 'canton.ne'),
+  (16, 'canton.nw'),
+  (17, 'canton.ow'),
+  (18, 'canton.sg'),
+  (19, 'canton.sh'),
+  (20, 'canton.so'),
+  (21, 'canton.sz'),
+  (22, 'canton.tg'),
+  (23, 'canton.ti'),
+  (24, 'canton.ur'),
+  (25, 'canton.vd'),
+  (26, 'canton.vs'),
+  (27, 'canton.zg'),
+  (28, 'canton.zh');
 
 SELECT SETVAL('"tag_tag_id_seq"', (SELECT MAX("tag_id") FROM "tag"));
 

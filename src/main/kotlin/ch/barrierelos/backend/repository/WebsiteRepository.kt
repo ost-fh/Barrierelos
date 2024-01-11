@@ -29,7 +29,7 @@ public interface WebsiteRepository : Repository<WebsiteEntity>
     INNER JOIN WebsiteTagEntity wt ON wt.tag = t
     INNER JOIN WebsiteEntity w ON w.websiteId = wt.websiteFk
     WHERE
-        (t.name LIKE 'Canton: %' OR t.name LIKE 'Country: %') AND
+        (t.name LIKE 'canton.%' OR t.name LIKE 'country.%') AND
         w.deleted = false
     GROUP BY t
     ORDER BY sum(w.score) / (count(w)) DESC

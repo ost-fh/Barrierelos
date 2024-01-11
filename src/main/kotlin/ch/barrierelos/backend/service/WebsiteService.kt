@@ -107,8 +107,8 @@ public class WebsiteService
 
   private fun validateTags(tags: MutableSet<Tag>, category: CategoryEnum)
   {
-    val countries = tags.filter { it.name.startsWith("Country:") }
-    val cantons = tags.filter { it.name.startsWith("Canton:") }
+    val countries = tags.filter { it.name.startsWith("country.") }
+    val cantons = tags.filter { it.name.startsWith("canton.") }
 
     if(countries.size > 1)
     {
@@ -130,7 +130,9 @@ public class WebsiteService
       {
         throw InvalidArgumentException("Federal government websites cannot have a canton tag.")
       }
-    } else {
+    }
+    else
+    {
       if(mutableSetOf(CategoryEnum.GOVERNMENT_CANTONAL, CategoryEnum.GOVERNMENT_MUNICIPAL).contains(category))
       {
         throw InvalidArgumentException("Cantonal and municipal websites must have a canton tag.")

@@ -24,7 +24,7 @@ import {GoogleOAuthProvider} from "@react-oauth/google";
 import {OAUTH_GOOGLE_CLIENT_ID} from "./util/constants.ts";
 import FaqPage from "./pages/faq/FaqPage.tsx";
 import ReportsPage from "./pages/reports/ReportsPage.tsx";
-import UserPage from "./pages/UserPage.tsx";
+import UserPage from "./pages/user/UserPage.tsx";
 import FooterBar from "./components/footer_bar/FooterBar.tsx";
 import {Props} from "./util/login.ts";
 import ContributePage from "./pages/contribute/ContributePage.tsx";

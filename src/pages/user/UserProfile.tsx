@@ -1,23 +1,17 @@
-import PersonIcon from "@mui/icons-material/Person";
-import {Alert, Avatar, Box, CircularProgress, Typography} from "@mui/material";
-import {useContext, useEffect, useState} from "react";
-import {Helmet} from "react-helmet-async";
+import {User} from "../../lib/api-client";
 import {useTranslation} from "react-i18next";
-import {User, UserControllerService} from "../lib/api-client";
-import {useParams} from "react-router-dom";
+import {useContext} from "react";
+import {AuthenticationContext} from "../../context/AuthenticationContext.ts";
+import {Avatar, Box, Typography} from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
 import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-import {convertRolesToString, convertTimestampToLocalDatetime} from "../util/converter.ts";
-import ReportComponent from "../components/ReportComponent.tsx";
-import {AuthenticationContext} from "../context/AuthenticationContext.ts";
+import {convertRolesToString, convertTimestampToLocalDatetime} from "../../util/converter.ts";
+import ReportComponent from "../../components/ReportComponent.tsx";
 
-interface UserPageParams extends Record<string, string> {
-  userId: string
-}
-
-function UserProfile(props: { user: User }) {
+export default function UserProfile(props: { user: User }) {
   const { user } = props;
   const {t} = useTranslation();
   const {authentication} = useContext(AuthenticationContext);
@@ -95,52 +89,3 @@ function UserProfile(props: { user: User }) {
     </>
   )
 }
-
-function UserPage() {
-  const {t} = useTranslation();
-  const [user, setUser] = useState<User|undefined>();
-  const [error, setError] = useState<string|undefined>();
-
-  const params = useParams<UserPageParams>();
-
-  if(params.userId === undefined) {
-    throw Error('Path param userId is missing');
-  }
-
-  const userId = parseInt(params.userId);
-
-  const loadUser = () => {
-    UserControllerService.getUser(userId)
-      .then((user) => {
-        setError(undefined);
-        setUser(user);
-      })
-      .catch(() => setError(t('UserPage.error')));
-  }
-
-  useEffect(() => { loadUser(); }, []);
-
-  return (
-    <>
-      <Helmet>
-        <title>{t('UserPage.title')} - {t("General.title")}</title>
-      </Helmet>
-      <h1>{t('UserPage.title')}</h1>
-      {user ? (
-        <UserProfile user={user}/>
-      ) : (
-        error ? (
-          <>
-            <Alert sx={{ my: 1 }} severity="error">{error}</Alert>
-          </>
-        ) : (
-          <>
-            <CircularProgress size="1.5rem" sx={{color: "background"}}/>
-          </>
-        )
-      )}
-    </>
-  )
-}
-
-export default UserPage;

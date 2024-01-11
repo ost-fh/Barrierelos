@@ -28,7 +28,7 @@ import UserPage from "./pages/UserPage.tsx";
 import FooterBar from "./components/footer_bar/FooterBar.tsx";
 import {Props} from "./util/login.ts";
 import ContributePage from "./pages/contribute/ContributePage.tsx";
-import ContributionsPage from "./pages/ContributionsPage.tsx";
+import ContributionsPage from "./pages/contributions/ContributionsPage.tsx";
 
 type MuiLocales = "enUS" | "deDE";
 

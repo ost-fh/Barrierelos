@@ -16,6 +16,8 @@ public interface UserReportRepository : JpaRepository<UserReportEntity, Long>
 {
   public fun findAllByUserFk(userFk: Long, pageable: Pageable): Page<UserReportEntity>
 
+  public fun findAllByUserFk(userFk: Long): Set<UserReportEntity>
+
   @Query("SELECT r FROM UserReportEntity r WHERE r.report.reportId IN (:reportFks)")
   public fun findAllByReportFks(reportFks: Collection<Long>): Set<UserReportEntity>
 

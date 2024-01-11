@@ -57,7 +57,13 @@ public class UserReportService
     Security.assertAnyRoles(RoleEnum.ADMIN, RoleEnum.MODERATOR, RoleEnum.CONTRIBUTOR)
 
     // All report ids from messages written by the user
-    val reportIds = this.reportMessageRepository.findAllReportIdsFromMessagesWrittenByTheUser(userId)
+    val reportIdsFromMessage = this.reportMessageRepository.findAllReportIdsFromMessagesWrittenByTheUser(userId)
+    // All report ids from reports about the user
+    val reportIdsFromReports = this.userReportRepository.findAllByUserFk(userId).map { it.report.reportId }.toSet()
+    // All report ids concerning the user
+    val reportIds = mutableSetOf<Long>()
+    reportIds.addAll(reportIdsFromMessage)
+    reportIds.addAll(reportIdsFromReports)
     // All of those reports that are user reports (filter out non-user reports)
     val reports = this.userReportRepository.findAllByReportFks(reportIds).toModels()
     // All messages from conversations concerning those reports

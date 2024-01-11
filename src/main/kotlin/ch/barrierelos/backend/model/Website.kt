@@ -20,6 +20,7 @@ public data class Website(
   public var score: Double? = null,
   @EncodeDefault
   public var tags: MutableSet<WebsiteTag> = mutableSetOf(),
+  @EncodeDefault
   public var deleted: Boolean = false,
   public var modified: Long = System.currentTimeMillis(),
   public var created: Long = System.currentTimeMillis(),

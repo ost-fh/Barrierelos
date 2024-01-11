@@ -1,23 +1,42 @@
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 import "./WebsitesPage.css"
-import {Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack} from "@mui/material";
-import {useState} from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+} from "@mui/material";
+import React, {useState} from "react";
 import {WebsiteTable} from "./WebsiteTable.tsx";
 import {RegionTable} from "./RegionTable.tsx";
-
+import {useNavigate} from "react-router-dom";
 
 function WebsitePage() {
   const {t} = useTranslation();
+  const navigate = useNavigate();
 
   const [groupBy, setGroupBy] = useState(GroupBy.website);
+
+  const onAddWebsite = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    navigate('/contribute');
+  }
 
   return (
     <>
       <Helmet>
         <title>{t("WebsitesPage.title")} - {t("General.title")}</title>
       </Helmet>
-      <h1>{t("WebsitesPage.title")}</h1>
+      <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+        <h1>{t("WebsitesPage.title")}</h1>
+        <Button onClick={onAddWebsite} variant="contained">{t("WebsitesPage.addWebsiteButton")}</Button>
+      </Box>
       <Stack spacing={2}>
         <FormControl>
           <InputLabel id="group-by-select">{t("WebsitesPage.groupByLabel")}</InputLabel>

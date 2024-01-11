@@ -1,16 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 import "./WebsitesPage.css"
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-} from "@mui/material";
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack,} from "@mui/material";
 import React, {useState} from "react";
 import {WebsiteTable} from "./WebsiteTable.tsx";
 import {RegionTable} from "./RegionTable.tsx";
@@ -33,7 +24,7 @@ function WebsitePage() {
       <Helmet>
         <title>{t("WebsitesPage.title")} - {t("General.title")}</title>
       </Helmet>
-      <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Box display="flex" flexDirection="row" justifyContent="left" alignItems="center" gap={4}>
         <h1>{t("WebsitesPage.title")}</h1>
         <Button onClick={onAddWebsite} variant="contained">{t("WebsitesPage.addWebsiteButton")}</Button>
       </Box>

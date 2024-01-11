@@ -25,7 +25,7 @@
   },
   "NavLinks": {
     "home": "Startseite",
-    "websites": "Webseiten",
+    "websites": "Websites",
     "contribute": "Mitwirken",
     "faq": "FAQ",
     "contributions": "Beiträge",
@@ -75,6 +75,7 @@
     "tabRulesLabel": "Probleme",
     "tabScanInfosLabel": "Scan Infos",
     "OverviewTab": {
+      "whatIsTheBarrierelosScoreLabel": "Was ist der Barrierelos-Score?",
       "websiteDetailsHeader": "Website Details",
       "addedOnLabel": "Hinzugefügt am",
       "categoryLabel": "Kategorie",
@@ -84,6 +85,7 @@
       "violationsPerWcagPrincipleOperableLabel": "Bedienbar",
       "violationsPerWcagPrincipleUnderstandableLabel": "Verständlich",
       "violationsPerWcagPrincipleRobustLabel": "Robust",
+      "whatIsWcagLabel": "What ist WCAG?",
       "webpagesHeader": "Webpages",
       "webpagesTableAriaLabel": "Webpages Tabelle",
       "webpageUrl": "URL",
@@ -124,7 +126,7 @@
       },
       "website-vs-webpage": {
         "question": "Was ist der Unterschied zwischen einer Website und einer Webpage?",
-        "answer": "Eine Website ist eine Sammlung von Webseiten. Die Website <i>barrierelos.ch</i> besteht zum Beispiel aus vielen Webpages wie <i>barrierelos.ch/faq</i>, <i>barrierelos.ch/login</i> und <i>barrierelos.ch/profile</i>."
+        "answer": "Eine Website ist eine Sammlung von Webpages. Die Website <i>barrierelos.ch</i> besteht zum Beispiel aus vielen Webpages wie <i>barrierelos.ch/faq</i>, <i>barrierelos.ch/login</i> und <i>barrierelos.ch/profile</i>."
       },
       "wcag-explanation": {
         "question": "What ist <i>WCAG</i>?",
@@ -254,7 +256,8 @@
   },
   "ContributePage": {
     "title": "Mitwirken",
-    "text": "Leiste einen Beitrag zu diesem Projekt, indem du eine neue Website hinzufügst:",
+    "text": "Leiste einen Beitrag zu diesem Projekt, indem du eine neue Website hinzufügst.",
+    "loginRequired": "Logge dich ein oder erstelle einen Account und schon kann es losgehen.",
     "url": "URL",
     "addWebsiteButton": "Website hinzufügen",
     "alreadyAddedError": "Website wurde bereits hinzugefügt.",

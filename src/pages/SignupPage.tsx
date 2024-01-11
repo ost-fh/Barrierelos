@@ -239,7 +239,7 @@ function SignupPage() {
               t("SignupPage.signUp")
             )}
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid container justifyContent="flex-start">
             <Grid item>
               <Link to="/login" component={RouterLink} variant="body2">
                 {t("SignupPage.alreadyAccountLogIn")}

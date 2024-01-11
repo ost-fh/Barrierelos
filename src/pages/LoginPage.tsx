@@ -127,7 +127,7 @@ function LoginPage() {
                 t("LoginPage.logIn")
               )}
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="flex-start">
               <Grid item>
                 <Link to="/signup" component={RouterLink} variant="body2" sx={{ textDecoration: "none" }}>
                   {t("LoginPage.noAccountSignUp")}

@@ -26,6 +26,7 @@ import UnderstandableIcon from "@mui/icons-material/Psychology";
 import RobustIcon from "@mui/icons-material/FitnessCenter";
 import {ReactElement} from "react";
 import ReportComponent from "../../components/ReportComponent.tsx";
+import {Link} from "react-router-dom";
 
 function OverviewTab(props: { websiteScan: WebsiteScan }) {
   const {t, i18n} = useTranslation();
@@ -39,6 +40,8 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
     <>
       {websiteScan.websiteStatistic ? (
         <>
+          <Link to="/faq#wcag-explanation">{t("WebsitePage.OverviewTab.whatIsTheBarrierelosScoreLabel")}</Link>
+
           <h2>{t("WebsitePage.OverviewTab.websiteDetailsHeader")}</h2>
           <Stack spacing={2}>
             <div>{t("WebsitePage.OverviewTab.addedOnLabel")}: {new Date(websiteScan.website.created).toLocaleString(i18n.language)}</div>
@@ -49,7 +52,7 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
           </Stack>
 
           <h2>{t("WebsitePage.OverviewTab.violationsPerWcagPrincipleHeader")}</h2>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} mb={2}>
             <WcagPrincipleGridCard
               principle={t("WebsitePage.OverviewTab.violationsPerWcagPrinciplePerceivableLabel")}
               icon={(<PerceivableIcon sx={{fontSize: 80}}/>)}
@@ -71,6 +74,7 @@ function OverviewTab(props: { websiteScan: WebsiteScan }) {
               count={getViolationsPerPrinciple("robust", websiteScan)}
             />
           </Grid>
+          <Link to="/faq#wcag-explanation">{t("WebsitePage.OverviewTab.whatIsWcagLabel")}</Link>
         </>
       ) : null}
 

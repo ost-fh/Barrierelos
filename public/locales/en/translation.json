@@ -75,6 +75,7 @@
     "tabRulesLabel": "Issues",
     "tabScanInfosLabel": "Scan Infos",
     "OverviewTab": {
+      "whatIsTheBarrierelosScoreLabel": "What is the Barrierelos-Score?",
       "websiteDetailsHeader": "Website Details",
       "addedOnLabel": "Added on",
       "categoryLabel": "Category",
@@ -84,6 +85,7 @@
       "violationsPerWcagPrincipleOperableLabel": "Operable",
       "violationsPerWcagPrincipleUnderstandableLabel": "Understandable",
       "violationsPerWcagPrincipleRobustLabel": "Robust",
+      "whatIsWcagLabel": "What is WCAG?",
       "webpagesHeader": "Webpages",
       "webpagesTableAriaLabel": "Webpages Table",
       "webpageUrl": "URL",
@@ -251,7 +253,8 @@
   },
   "ContributePage": {
     "title": "Contribute",
-    "text": "Contribute to this project by adding a new Website:",
+    "text": "Contribute to this project by adding a new Website.",
+    "loginRequired": "Please log in or sign up and you're ready to go.",
     "url": "URL",
     "addWebsiteButton": "Add Website",
     "alreadyAddedError": "Website has already been added.",

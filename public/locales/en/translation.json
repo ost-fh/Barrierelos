@@ -240,12 +240,52 @@
     "title": "Contribute",
     "text": "Contribute to this project by adding a new Website:",
     "url": "URL",
-    "categoryLabel": "Category",
-    "municipalityLabel": "Municipality",
-    "cantonLabel": "Canton",
     "addWebsiteButton": "Add Website",
     "alreadyAddedError": "Website has already been added.",
-    "defaultError": "Cannot add website."
+    "defaultError": "Cannot add website.",
+    "ChooseWebsite": {
+      "title": "Choose Website",
+      "text": "Add the URL of the website you want to add:"
+    },
+    "ChooseType": {
+      "title": "Choose Type",
+      "text": "Choose whether this website is a government or a private website:",
+      "governmentButton": "Government",
+      "privateButton": "Private"
+    },
+    "ChooseCategory": {
+      "title": "Choose Category",
+      "text": "Choose what category this website belongs to:",
+      "categoryLabel": "Category"
+    },
+    "ChooseLevel": {
+      "title": "Choose Level",
+      "text": "Choose what level of government this website belongs to:",
+      "federalButton": "Federal",
+      "cantonalButton": "Cantonal",
+      "municipalButton": "Municipal"
+    },
+    "ChooseCountry": {
+      "title": "Choose Country",
+      "text": "Choose what country this website belongs to:",
+      "switzerlandButton": "Switzerland",
+      "liechtensteinButton": "Liechtenstein"
+    },
+    "ChooseCanton": {
+      "title": "Choose Canton",
+      "text": "Choose what canton this website belongs to:",
+      "cantonLabel": "Canton"
+    },
+    "ChooseMunicipality": {
+      "title": "Choose Municipality",
+      "text": "Choose what municipality this website belongs to:",
+      "municipalityLabel": "Municipality"
+    },
+    "Done": {
+      "title": "Add Website?",
+      "text": "Confirm that you are finished:",
+      "cancelButton": "Cancel"
+    }
   },
   "ReasonEnum": {
     "INCORRECT": "incorrect",
@@ -316,11 +356,11 @@
   },
   "Category": {
     "private": {
-      "affiliated": "Staatsnah",
-      "university": "Bildungsinstitut",
-      "news": "Nachrichten",
+      "affiliated": "Affiliated",
+      "university": "University",
+      "news": "News",
       "shop": "Shop",
-      "other": "Anderes"
+      "other": "Other"
     }
   }
 }

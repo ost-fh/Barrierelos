@@ -63,22 +63,22 @@ export default function Done(props: {url: string, category: category, tags: Arra
       <Box ref={endRef} component="form" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         <ArrowCircleDownIcon color={"disabled"} sx={{mt: 4, fontSize: 80}}/>
         <Typography component="h2" variant="h5" sx={{mt: 2}}>
-          Add Website?
+          {t("ContributePage.Done.title")}
         </Typography>
         <Typography component="p" variant="body1" sx={{my: 2}}>
-          Confirm that you are finished:
+          {t("ContributePage.Done.text")}
         </Typography>
         {error && (
           <Alert sx={{ mb: 2 }} severity="error">{error}</Alert>
         )}
         <Box display="flex" gap="16px">
-          <ContributeButton onClick={onCancel} variant="contained">Cancel</ContributeButton>
+          <ContributeButton onClick={onCancel} variant="contained">{t("ContributePage.Done.cancelButton")}</ContributeButton>
           {!error && (
             <ContributeButton onClick={onAdd} variant="contained">
               {loading ? (
                 <CircularProgress size="1.5rem" sx={{color: "white"}}/>
               ) : (
-                "Add Website"
+                t("ContributePage.addWebsiteButton")
               )}
             </ContributeButton>
           )}

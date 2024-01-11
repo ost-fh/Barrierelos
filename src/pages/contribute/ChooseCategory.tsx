@@ -8,7 +8,7 @@ import Done from "./Done.tsx";
 import {WebsiteMessage} from "../../lib/api-client";
 import {categories} from "../../model/Categories.ts";
 
-export default function ChoosePrivate(props: {url: string}) {
+export default function ChooseCategory(props: {url: string}) {
   const { url } = props;
   const {t} = useTranslation();
   const endRef = useRef<null | HTMLDivElement>(null);
@@ -30,19 +30,19 @@ export default function ChoosePrivate(props: {url: string}) {
       <Box ref={endRef} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         <ArrowCircleDownIcon color={"disabled"} sx={{mt: 4, fontSize: 80}}/>
         <Typography component="h2" variant="h5" sx={{mt: 2}}>
-          Choose Category
+          {t("ContributePage.ChooseCategory.title")}
         </Typography>
         <Typography component="p" variant="body1" sx={{my: 2}}>
-          Choose what category this website belongs to:
+          {t("ContributePage.ChooseCategory.text")}
         </Typography>
         <Box display="flex" gap="16px" sx={{flexGrow: 1, width: "100%", maxWidth: "320px"}}>
           <FormControl fullWidth={true}>
-            <InputLabel id="label-category">{t("ContributePage.categoryLabel")}</InputLabel>
+            <InputLabel id="label-category">{t("ContributePage.ChooseCategory.categoryLabel")}</InputLabel>
             <Select
               id="category"
               labelId="label-category"
               value={category}
-              label={t("ContributePage.categoryLabel")}
+              label={t("ContributePage.ChooseCategory.categoryLabel")}
               onChange={(event) => onCategory(event.target.value)}
             >
               {Object.values(categories).map(category =>

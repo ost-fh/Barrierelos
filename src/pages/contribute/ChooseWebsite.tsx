@@ -43,10 +43,10 @@ export default function ChooseWebsite() {
     <>
       <Box component="form" onSubmit={onChooseWebsite} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         <Typography component="h2" variant="h5" sx={{mt: 2}}>
-          Choose Website
+          {t("ContributePage.ChooseWebsite.title")}
         </Typography>
         <Typography component="p" variant="body1" sx={{my: 2}}>
-          Add the URL of the website you want to add:
+          {t("ContributePage.ChooseWebsite.text")}
         </Typography>
         <Box display="flex" justifyContent="center" alignItems="center" gap="32px" sx={{flexGrow: 1, width: "100%", maxWidth: "640px"}}>
           <TextField

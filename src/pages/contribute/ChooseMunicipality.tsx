@@ -28,10 +28,10 @@ export default function ChooseMunicipality(props: {url: string}) {
       <Box ref={endRef} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         <ArrowCircleDownIcon color={"disabled"} sx={{mt: 4, fontSize: 80}}/>
         <Typography component="h2" variant="h5" sx={{mt: 2}}>
-          Choose Canton
+          {t("ContributePage.ChooseMunicipality.title")}
         </Typography>
         <Typography component="p" variant="body1" sx={{my: 2}}>
-          Choose what municipality this website belongs to:
+          {t("ContributePage.ChooseMunicipality.text")}
         </Typography>
         <Box display="flex" gap="16px" sx={{flexGrow: 1, width: "100%", maxWidth: "320px"}}>
           <Autocomplete
@@ -40,7 +40,7 @@ export default function ChooseMunicipality(props: {url: string}) {
             options={municipalities}
             getOptionLabel={(option) => `${option.zip} ${option.municipality}`}
             fullWidth={true}
-            renderInput={(params) => <TextField {...params} label={t("ContributePage.municipalityLabel")} />}
+            renderInput={(params) => <TextField {...params} label={t("ContributePage.ChooseMunicipality.municipalityLabel")} />}
             onChange={(_event, newValue: Municipality | null) => {
               if(newValue) {
                 onMunicipality(newValue);

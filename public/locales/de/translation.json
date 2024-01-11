@@ -243,12 +243,52 @@
     "title": "Mitwirken",
     "text": "Leiste einen Beitrag zu diesem Projekt, indem du eine neue Website hinzufügst:",
     "url": "URL",
-    "categoryLabel": "Kategorie",
-    "municipalityLabel": "Gemeinde",
-    "cantonLabel": "Kanton",
     "addWebsiteButton": "Website hinzufügen",
     "alreadyAddedError": "Website wurde bereits hinzugefügt.",
-    "defaultError": "Website kann nicht hinzugefügt werden."
+    "defaultError": "Website kann nicht hinzugefügt werden.",
+    "ChooseWebsite": {
+      "title": "Website wählen",
+      "text": "Füge die URL der Website hinzu, welche du hinzufügen möchtest:"
+    },
+    "ChooseType": {
+      "title": "Typ wählen",
+      "text": "Wähle ob diese Website staatlich oder privat ist:",
+      "governmentButton": "staatlich",
+      "privateButton": "privat"
+    },
+    "ChooseCategory": {
+      "title": "Kategorie wählen",
+      "text": "Wähle zu welcher Kategorie diese Website gehört:",
+      "categoryLabel": "Kategorie"
+    },
+    "ChooseLevel": {
+      "title": "Wähle die Ebene",
+      "text": "Whäle zu welcher staatlichen Ebene diese Website gehört:",
+      "federalButton": "Bund",
+      "cantonalButton": "Kanton",
+      "municipalButton": "Gemeinde"
+    },
+    "ChooseCountry": {
+      "title": "Wähle das Land",
+      "text": "Wähle zu welchem Land diese Website gehört:",
+      "switzerlandButton": "Schweiz",
+      "liechtensteinButton": "Liechtenstein"
+    },
+    "ChooseCanton": {
+      "title": "Kanton wählen",
+      "text": "Wähle zu welchem Kanton diese Website gehört:",
+      "cantonLabel": "Kanton"
+    },
+    "ChooseMunicipality": {
+      "title": "Gemeinde wählen",
+      "text": "Wähle zu welcher Gemeinde diese Website gehört:",
+      "municipalityLabel": "Gemeinde"
+    },
+    "Done": {
+      "title": "Website hinzufügen?",
+      "text": "Bestätige dass du die Website so hinzufügen möchtest:",
+      "cancelButton": "Abbrechen"
+    }
   },
   "ReasonEnum": {
     "INCORRECT": "inkorrekt",
@@ -319,11 +359,11 @@
   },
   "Category": {
     "private": {
-      "affiliated": "Affiliated",
-      "university": "University",
-      "news": "News",
+      "affiliated": "Staatsnah",
+      "university": "Bildungsinstitut",
+      "news": "Nachrichten",
       "shop": "Shop",
-      "other": "Other"
+      "other": "Anderes"
     }
   }
 }

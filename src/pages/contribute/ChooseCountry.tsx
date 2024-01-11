@@ -36,14 +36,14 @@ export default function ChooseCountry(props: {url: string}) {
       <Box ref={endRef} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         <ArrowCircleDownIcon color={"disabled"} sx={{mt: 4, fontSize: 80}}/>
         <Typography component="h2" variant="h5" sx={{mt: 2}}>
-          Choose Country
+          {t("ContributePage.ChooseCountry.title")}
         </Typography>
         <Typography component="p" variant="body1" sx={{my: 2}}>
-          Choose what country this website belongs to:
+          {t("ContributePage.ChooseCountry.text")}
         </Typography>
         <Box display="flex" gap="16px">
-          <ContributeButton onClick={onSwitzerland} disabled={isSwitzerland} variant="contained">Switzerland</ContributeButton>
-          <ContributeButton onClick={onLiechtenstein} disabled={isLiechtenstein} variant="contained">Liechtenstein</ContributeButton>
+          <ContributeButton onClick={onSwitzerland} disabled={isSwitzerland} variant="contained">{t("ContributePage.ChooseCountry.switzerlandButton")}</ContributeButton>
+          <ContributeButton onClick={onLiechtenstein} disabled={isLiechtenstein} variant="contained">{t("ContributePage.ChooseCountry.liechtensteinButton")}</ContributeButton>
         </Box>
       </Box>
       {isSwitzerland && (

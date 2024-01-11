@@ -4,7 +4,7 @@ import {ContributeButton, scrollToBottom} from "../../util/formatter.tsx";
 import {Box, Typography} from "@mui/material";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import ChooseLevel from "./ChooseLevel.tsx";
-import ChoosePrivate from "./ChoosePrivate.tsx";
+import ChooseCategory from "./ChooseCategory.tsx";
 
 export default function ChooseType(props: {url: string}) {
   const { url } = props;
@@ -34,14 +34,14 @@ export default function ChooseType(props: {url: string}) {
       <Box ref={endRef} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         <ArrowCircleDownIcon color={"disabled"} sx={{mt: 4, fontSize: 80}}/>
         <Typography component="h2" variant="h5" sx={{mt: 2}}>
-          Choose Type
+          {t("ContributePage.ChooseType.title")}
         </Typography>
         <Typography component="p" variant="body1" sx={{my: 2}}>
-          Choose whether this website is a government or a private website:
+          {t("ContributePage.ChooseType.text")}
         </Typography>
         <Box display="flex" gap="16px">
-          <ContributeButton onClick={onGovernement} disabled={isGovernment} variant="contained">Government</ContributeButton>
-          <ContributeButton onClick={onPrivate} disabled={isPrivate} variant="contained">Private</ContributeButton>
+          <ContributeButton onClick={onGovernement} disabled={isGovernment} variant="contained">{t("ContributePage.ChooseType.governmentButton")}</ContributeButton>
+          <ContributeButton onClick={onPrivate} disabled={isPrivate} variant="contained">{t("ContributePage.ChooseType.privateButton")}</ContributeButton>
         </Box>
       </Box>
       {isGovernment && (
@@ -50,7 +50,7 @@ export default function ChooseType(props: {url: string}) {
         />
       )}
       {isPrivate && (
-        <ChoosePrivate
+        <ChooseCategory
           url={url}
         />
       )}

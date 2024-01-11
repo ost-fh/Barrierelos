@@ -45,15 +45,15 @@ export default function ChooseLevel(props: {url: string}) {
       <Box ref={endRef} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         <ArrowCircleDownIcon color={"disabled"} sx={{mt: 4, fontSize: 80}}/>
         <Typography component="h2" variant="h5" sx={{mt: 2}}>
-          Choose Level
+          {t("ContributePage.ChooseLevel.title")}
         </Typography>
         <Typography component="p" variant="body1" sx={{my: 2}}>
-          Choose whether this website is a government or a private website:
+          {t("ContributePage.ChooseLevel.text")}
         </Typography>
         <Box display="flex" gap="16px">
-          <ContributeButton onClick={onFederal} disabled={isFederal} variant="contained">Federal</ContributeButton>
-          <ContributeButton onClick={onCantonal} disabled={isCantonal} variant="contained">Cantonal</ContributeButton>
-          <ContributeButton onClick={onMunicipal} disabled={isMunicipal} variant="contained">Municipal</ContributeButton>
+          <ContributeButton onClick={onFederal} disabled={isFederal} variant="contained">{t("ContributePage.ChooseLevel.federalButton")}</ContributeButton>
+          <ContributeButton onClick={onCantonal} disabled={isCantonal} variant="contained">{t("ContributePage.ChooseLevel.cantonalButton")}</ContributeButton>
+          <ContributeButton onClick={onMunicipal} disabled={isMunicipal} variant="contained">{t("ContributePage.ChooseLevel.municipalButton")}</ContributeButton>
         </Box>
       </Box>
       {isFederal && (

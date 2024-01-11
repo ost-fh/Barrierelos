@@ -44,7 +44,7 @@ export default function ReportConversationMessage(props: { message: ReportMessag
       </TableCell>
       <TableCell padding="none" className="heightWorkaround" sx={{ pt: 1, width: '100%' }}>
         <Box sx={{ ml: 2, mr: 1, display: 'flex', flexFlow: 'column nowrap', height: '100%' }}>
-          <Typography component="p" variant="body2" sx={{ flexGrow: 1 }}>
+          <Typography component="p" variant="body2" sx={{ flexGrow: 1, whiteSpace: 'break-spaces', wordWrap: 'break-word', overflowWrap: "anywhere" }}>
             {message.message}
           </Typography>
           <Typography component="i" variant="caption" color={'text.hint'} sx={{ alignSelf: 'flex-end' }} >

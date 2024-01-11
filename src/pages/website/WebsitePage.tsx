@@ -50,7 +50,8 @@ function WebsitePage() {
         <title>{websiteScan.website.domain} - {t("General.title")}</title>
       </Helmet>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={5} padding={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={{xs: 2, sm: 4}} m={2}
+             flexWrap="wrap" gap={2}>
         <h1>{websiteScan.website.domain}</h1>
         {websiteScan.website.status !== status.READY ? (
           <Chip
@@ -65,10 +66,12 @@ function WebsitePage() {
             </Tooltip>
           </Box>
         ) : null}
-        <ReportComponent
-          subject={websiteScan.website}
-          fullWidth={false}
-        />
+        <Box sx={{flexGrow: 1, display: "flex", justifyContent: "flex-end", mr: 1}}>
+          <ReportComponent
+            subject={websiteScan.website}
+            fullWidth={false}
+          />
+        </Box>
       </Stack>
 
       <TabContext value={currentTabIndex}>

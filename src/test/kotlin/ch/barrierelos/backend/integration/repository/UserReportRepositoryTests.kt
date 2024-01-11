@@ -3,7 +3,6 @@ package ch.barrierelos.backend.integration.repository
 import ch.barrierelos.backend.enums.ReasonEnum
 import ch.barrierelos.backend.helper.createUserReportEntity
 import ch.barrierelos.backend.repository.UserReportRepository
-import ch.barrierelos.backend.repository.UserReportRepository.Companion.findAllByUserFk
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
@@ -29,7 +28,7 @@ abstract class UserReportRepositoryTests : RepositoryTests()
     entityManager.flush()
 
     // then
-    val actual = userReportRepository.findAllByUserFk(userFk).content
+    val actual = userReportRepository.findAllByUserFk(userFk)
 
     actual.shouldHaveSize(2)
     actual.shouldHaveSingleElement { it.report.reason == ReasonEnum.INCORRECT }
@@ -44,7 +43,7 @@ abstract class UserReportRepositoryTests : RepositoryTests()
     entityManager.flush()
 
     // then
-    val userReports = userReportRepository.findAllByUserFk(5000).content
+    val userReports = userReportRepository.findAllByUserFk(5000)
 
     userReports.shouldBeEmpty()
   }

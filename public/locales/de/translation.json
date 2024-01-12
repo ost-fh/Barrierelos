@@ -37,10 +37,12 @@
   },
   "HomePage": {
     "title": "Start",
+    "text": "Laut Bundesamt für Statistik (BFS) haben knapp 18 % der Bevölkerung eine Behinderung im Sinne des Behindertengleichstellungsgesetzes (BehiG). Der Bundesrat gab im Dezember 2023 bekannt, dass er an einer Revision dieser Vorschriften arbeitet, die auch Privatunternehmen dazu verpflichten soll, ihre digitalen Dienste barrierefrei bereitzustellen. Deshalb müssen sich nun weitaus mehr Akteure an diese Regeln halten. Trotz bestehender Regelungen bestehen in der Schweiz deutliche Defizite bei der Zugänglichkeit digitaler Dienste, insbesondere bei staatlichen Dienstleistungen auf kantonaler und kommunaler Ebene. Das Ausmass dieser Defizite lässt sich derzeit jedoch nicht abschätzen. Aus diesem Grund zielt unser Projekt darauf ab, Barrierefreiheitsprobleme auf Websites zu erfassen, diese Websites anhand ihrer Barrierefreiheit zu bewerten und sie nach Region und anderen Kategorien zu klassifizieren. Die gesammelten Daten werden der Öffentlichkeit zugänglich gemacht, um das Bewusstsein für die Barrierefreiheit im Internet zu schärfen und Website-Betreibern bei der Lösung solcher Probleme zu helfen.",
     "searchLabel": "Bestehende Website suchen",
     "searchStringEmptyLabel": "Tippen Sie um zu suchen",
     "searchNoResultsLabel": "Keine Website mit dieser Domain gefunden",
-    "viewWebsiteBtnLabel": "Auswertung ansehen"
+    "viewWebsiteBtnLabel": "Auswertung ansehen",
+    "searchTitle": "Webseite suchen"
   },
   "WebsitesPage": {
     "title": "Websites",

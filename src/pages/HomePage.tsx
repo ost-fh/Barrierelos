@@ -39,6 +39,10 @@ function HomePage() {
       </Helmet>
       <h1>{t("General.title")}</h1>
 
+      <p>{t("HomePage.text")}</p>
+
+      <h2>{t("HomePage.searchTitle")}</h2>
+
       <Stack direction={useMediaQuery(theme.breakpoints.up("sm")) ? "row" : "column"} spacing={2}>
         <Autocomplete
           sx={{maxWidth: useMediaQuery(theme.breakpoints.up("sm")) ? 300 : 800, width: "100%"}}

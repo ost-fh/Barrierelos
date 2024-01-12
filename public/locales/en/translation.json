@@ -37,10 +37,12 @@
   },
   "HomePage": {
     "title": "Home",
+    "text": "According to the Swiss Federal Statistical Office (BFS), almost 18% of the population have disabilities as defined under the Disability Discrimination Act (BehiG). The Federal Council of Switzerland announced in December 2023 that they are working on a revision of these regulations also obligating private companies to make their digital services accessible. Therefore, a far greater number of actors will now have to adhere to these rules. Despite existing regulations, there are clear deficits with the accessibility of digital services in Switzerland, especially with government services at the cantonal and municipal levels. However, the extent of these deficits cannot currently be determined. For this reason, our project aims to: record accessibility issues on websites, score these websites based on their accessibility and classify them by region and other categories. The collected data is made available to the public to raise awareness of web accessibility and help website maintainers resolve such issues.",
     "searchLabel": "Find an existing website",
     "searchStringEmptyLabel": "Type to search",
     "searchNoResultsLabel": "No website with this domain found",
-    "viewWebsiteBtnLabel": "View Evaluation"
+    "viewWebsiteBtnLabel": "View Evaluation",
+    "searchTitle": "Search for Website"
   },
   "WebsitesPage": {
     "title": "Websites",

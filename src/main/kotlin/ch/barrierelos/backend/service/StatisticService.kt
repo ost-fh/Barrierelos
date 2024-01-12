@@ -82,6 +82,7 @@ public class StatisticService
 
     websiteScan.website = website
     websiteScan.websiteResult = websiteResult
+    websiteScan.modified = System.currentTimeMillis()
     websiteScan = websiteScanRepository.save(websiteScan.toEntity()).toModel()
 
     val webpages = webpageRepository.findAllByWebsiteWebsiteId(websiteResult.scanJob.websiteId).toModels()

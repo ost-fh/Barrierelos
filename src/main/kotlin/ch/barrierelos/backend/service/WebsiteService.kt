@@ -160,14 +160,14 @@ public class WebsiteService
   }
 
   @Transactional
-  public fun scanWebsite(website: Website, webpages: MutableSet<Webpage>? = null): ScanJob
+  public fun scanWebsite(website: Website, webpages: MutableSet<Webpage>? = null, userId: Long? = null): ScanJob
   {
     throwIfDeleted(website)
 
     val scanWebpages = webpages ?: webpageRepository.findAllByWebsiteWebsiteId(website.id).map { it.toModel() }.toMutableSet()
     if(scanWebpages.isEmpty()) throw InvalidStateException("Website has no webpages.")
 
-    val scanJob = website.toScanJob(scanWebpages)
+    val scanJob = website.toScanJob(scanWebpages, userId)
     val scanJobMessage = this.scanJobRepository.save(scanJob.toEntity()).toModel().toMessage()
 
     this.queue.send(Queueing.QUEUE_SCAN_JOB, scanJobMessage.toJson())
@@ -175,9 +175,9 @@ public class WebsiteService
   }
 
   @Transactional
-  public fun scanWebsite(id: Long): ScanJob
+  public fun scanWebsite(id: Long, userId: Long? = null): ScanJob
   {
-    return scanWebsite(this.websiteRepository.findById(id).orElseThrow().toModel())
+    return scanWebsite(this.websiteRepository.findById(id).orElseThrow().toModel(), userId=userId)
   }
 
   public fun searchWebsiteByDomain(domain: String): Set<Website>

@@ -10,12 +10,11 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.sql.Timestamp
 
-
-public fun Website.toScanJob(webpages: MutableSet<Webpage>): ScanJob
+public fun Website.toScanJob(webpages: MutableSet<Webpage>, userId: Long? = null): ScanJob
 {
   return ScanJob(
     websiteId = this.id,
-    userId = Security.getUserId(),
+    userId = userId ?: Security.getUserId(),
     jobTimestamp = Clock.System.now(),
     domain = this.domain,
     webpages = webpages.map { it.url }.toMutableSet(),

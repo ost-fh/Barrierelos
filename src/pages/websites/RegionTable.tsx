@@ -46,7 +46,7 @@ export function RegionTable() {
       headerName: t("WebsitesPage.RegionTable.regionHeaderLabel"),
       flex: 50,
       sortable: false,
-      valueFormatter: (params: GridValueFormatterParams<string>) => t(`WebsiteTags.${params.value}` as ParseKeys),
+      valueFormatter: (params: GridValueFormatterParams<string>) => t(`Tags.${params.value}` as ParseKeys),
     },
     {
       field: "score",

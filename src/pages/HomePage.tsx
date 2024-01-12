@@ -39,7 +39,7 @@ function HomePage() {
       </Helmet>
       <h1>{t("General.title")}</h1>
 
-      <p>{t("HomePage.text")}</p>
+      <p style={{maxWidth: "60rem"}}>{t("HomePage.text")}</p>
 
       <h2>{t("HomePage.searchTitle")}</h2>
 

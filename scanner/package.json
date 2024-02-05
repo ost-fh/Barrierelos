@@ -1,0 +1,48 @@
+{
+  "name": "barrierelos-scanner",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start:dev": "npx tsx watch --enable-source-maps ./src/app.ts",
+    "start": "node dist/app.js --enable-source-maps",
+    "build": "rimraf ./dist && tsc --project tsconfig.build.json",
+    "test:lint": "eslint . --ext .ts",
+    "test:typecheck": "tsc --noEmit",
+    "test:unittest": "c8 mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.ost.ch/barrierelos/scanner"
+  },
+  "author": "Pascal Lehmann",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/chai-as-promised": "^7.1.8",
+    "@types/mocha": "^10.0.4",
+    "@types/node": "^20.8.7",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "c8": "^8.0.1",
+    "chai": "^4.3.10",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^8.52.0",
+    "eslint-config-standard-with-typescript": "^39.1.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-n": "^16.2.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "mocha": "^10.2.0",
+    "rimraf": "^5.0.5",
+    "testdouble": "^3.20.0",
+    "tsx": "^4.1.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@axe-core/puppeteer": "^4.8.1",
+    "@cloudamqp/amqp-client": "^3.1.1",
+    "axe-core": "^4.8.2",
+    "dotenv": "^16.3.1",
+    "puppeteer": "^21.4.0",
+    "winston": "^3.11.0"
+  }
+}

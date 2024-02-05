@@ -1,0 +1,40 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Create and publish a Docker image for the frontend
+
+on:
+  push:
+    branches: 
+     - main
+    paths:
+     - frontend/**
+
+jobs:
+  build-and-push-frontend-image:
+    uses: ./.github/workflows/ghcr-image-release.yml
+    permissions:
+      contents: read
+      packages: write
+    with:
+      build-namespace: "frontend"
+      repository-name: ${{ github.repository }}
+      github-actor: ${{ github.actor }}
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+  deploy-new-image:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build-and-push-frontend-image
+    steps:
+      - name: Invoke deployment hook
+        uses: distributhor/workflow-webhook@v3.0.4
+        env:
+          webhook_url: ${{ secrets.FRONTEND_SERVICE_WEBHOOK_URL }}
+          silent: true

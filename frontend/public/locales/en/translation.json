@@ -1,0 +1,390 @@
+{
+  "General": {
+    "title": "Barrierelos",
+    "skipLinkLabel": "Skip to main content",
+    "barrierelosScore": "Barrierelos-Score",
+    "webpageWeight": "Weight",
+    "barrierelosLogoAlt": "Logo with accompanying text: Barrierelos: For better access to digital services."
+  },
+  "WebsiteCategories": {
+    "label": "Category",
+    "GOVERNMENT_FEDERAL": "Federal Government",
+    "GOVERNMENT_CANTONAL": "Canton",
+    "GOVERNMENT_MUNICIPAL": "Municipality",
+    "PRIVATE_AFFILIATED": "Government-affiliated Company",
+    "PRIVATE_UNIVERSITY": "University",
+    "PRIVATE_NEWS": "News Portal",
+    "PRIVATE_SHOP": "Online Shop",
+    "PRIVATE_OTHER": "Other"
+  },
+  "NavBar": {
+    "openNavigationMenuBtnAriaLabel": "Open navigation menu",
+    "closeNavigationMenuBtnAriaLabel": "Close navigation menu",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "NavLinks": {
+    "home": "Home",
+    "websites": "Websites",
+    "contribute": "Contribute",
+    "faq": "FAQ",
+    "contributions": "Contributions",
+    "profile": "Profile",
+    "reports": "Reports",
+    "user": "User",
+    "privacyPolicy": "Privacy Policy",
+    "impressum": "Legal Notice"
+  },
+  "HomePage": {
+    "title": "Home",
+    "text": "According to the Swiss Federal Statistical Office (BFS), almost 18% of the population have disabilities as defined under the Disability Discrimination Act (BehiG). The Federal Council of Switzerland announced in December 2023 that they are working on a revision of these regulations also obligating private companies to make their digital services accessible. Therefore, a far greater number of actors will now have to adhere to these rules. Despite existing regulations, there are clear deficits with the accessibility of digital services in Switzerland, especially with government services at the cantonal and municipal levels. However, the extent of these deficits cannot currently be determined. For this reason, our project aims to: record accessibility issues on websites, score these websites based on their accessibility and classify them by region and other categories. The collected data is made available to the public to raise awareness of web accessibility and help website maintainers resolve such issues.",
+    "searchLabel": "Find an existing website",
+    "searchStringEmptyLabel": "Type to search",
+    "searchNoResultsLabel": "No website with this domain found",
+    "viewWebsiteBtnLabel": "View Evaluation",
+    "searchTitle": "Search for Website"
+  },
+  "WebsitesPage": {
+    "title": "Websites",
+    "groupByLabel": "Group by",
+    "groupBy": {
+      "website": "Website",
+      "region": "Region"
+    },
+    "WebsiteTable": {
+      "ariaLabel": "Table of websites",
+      "domainHeaderLabel": "Domain",
+      "categoryHeaderLabel": "Category",
+      "scoreHeaderLabel": "Barrierelos-Score"
+    },
+    "RegionTable": {
+      "ariaLabel": "Table of websites cumulated by region and sorted by Barrierelos-Score",
+      "regionHeaderLabel": "Region",
+      "scoreHeaderLabel": "Barrierelos-Score"
+    },
+    "addWebsiteButton": "Add Website"
+  },
+  "WebsitePage": {
+    "WebsiteStatus": {
+      "label": "Status",
+      "BLOCKED": "Blocked",
+      "READY": "Ready",
+      "PENDING_INITIAL": "Initial Scan Pending",
+      "PENDING_RESCAN": "Rescan Pending"
+    },
+    "tabsAriaLabel": "Tabs",
+    "tabOverviewLabel": "Overview",
+    "tabRulesLabel": "Issues",
+    "tabScanInfosLabel": "Scan Infos",
+    "OverviewTab": {
+      "whatIsTheBarrierelosScoreLabel": "What is the Barrierelos-Score?",
+      "websiteDetailsHeader": "Website Details",
+      "addedOnLabel": "Added on",
+      "categoryLabel": "Category",
+      "tagsLabel": "Tags",
+      "violationsPerWcagPrincipleHeader": "Issues per WCAG principle",
+      "violationsPerWcagPrinciplePerceivableLabel": "Perceivable",
+      "violationsPerWcagPrincipleOperableLabel": "Operable",
+      "violationsPerWcagPrincipleUnderstandableLabel": "Understandable",
+      "violationsPerWcagPrincipleRobustLabel": "Robust",
+      "whatIsWcagLabel": "What is WCAG?",
+      "webpagesHeader": "Webpages",
+      "webpagesTableAriaLabel": "Webpages Table",
+      "webpageUrl": "URL",
+      "webpageWeightTooltip": "Determines the influence of this webpage on the website score. The weight is based on the number of HTML elements on the webpage that are relevant for Accessibility."
+    },
+    "IssuesTab": {
+      "header": "Issues per Webpage",
+      "violationsLabel": "Violations",
+      "violationPercentageSuffix": "of elements tested for this rule",
+      "issueTypeLabel": "Type",
+      "issueTypeBestPracticeLabel": "Best-Practice",
+      "issueTypeWcagLabel": "WCAG",
+      "issueTypeWcagVersionLabel": "Version",
+      "issueTypeWcagLevelLabel": "Level",
+      "issueTypeWcagRelevantCriteriaLabel": "Relevant criteria",
+      "learnMoreLinkLabel": "Learn more"
+    },
+    "ScanInfosTab": {
+      "scanInfosHeader": "Scan Infos",
+      "lastScannedAtLabel": "Last scanned at",
+      "webpagesHeader": "Webpage Scans",
+      "ScanStatus": {
+        "label": "Scan Status",
+        "SUCCESS": "Success",
+        "FAILED": "Failed",
+        "notYetScanned": "Not yet scanned"
+      },
+      "technicalErrorLabel": "Technical Error"
+    },
+    "report": "Report"
+  },
+  "Faq": {
+    "header": "Frequently Asked Questions (FAQ)",
+    "Questions": {
+      "barrierelos-explanation": {
+        "question": "What does <i>Barrierelos</i> mean?",
+        "answer": "<i>Barrierelos</i> is Swiss German dialect for the German word 'barrierefrei' which means 'barrier-free' or 'accessible'."
+      },
+      "website-vs-webpage": {
+        "question": "What is difference between a website and a webpage?",
+        "answer": "A website is a collection of webpages. For example, the website <i>barrierelos.ch</i> consists of multiple webpages like <i>barrierelos.ch/faq</i>, <i>barrierelos.ch/login</i> and <i>barrierelos.ch/profile</i>."
+      },
+      "wcag-explanation": {
+        "question": "What is <i>WCAG</i>?",
+        "answer": "<i>WCAG</i> is a standard developed by the World Wide Web Consortium (W3C) that has the goal to make web content more accessible to people with disabilities. It defines many criteria a website should fulfill to be accessible. The criteria are grouped into four categories called principles: <i>Perceivable</i>, <i>Operable</i>, <i>Understandable</i> and <i>Robust</i>. Each principle is further divided into guidelines and each guideline is divided into success criteria. The WCAG standard is widely used in the field of web accessibility and is also the basis of many national laws and regulations."
+      },
+      "barrierelos-score-explanation": {
+        "question": "What is the <i>Barrierelos-Score</i>?",
+        "answer": "The <i>Barrierelos-Score</i> is a rating between 0 and 100. It is derived from an automated scan of the website using the Axe-core accessibility engine. The score is based on the number of accessibility issues found on the website and the severity of these issues. The higher the score, the better the accessibility of the website. Please note that an automated scan can only find a subset of all accessibility issues. Therefore the Barrierelos-Score should only be considered a <strong>limited approximation</strong> of the actual accessibility of the website."
+      },
+      "barrierelos-score-calculation": {
+        "question": "How is the Barrierelos-Score calculated?",
+        "answer": "The Axe-core accessibility engine runs a number of tests on each relevant HTML element for a specific test. This results in a large list of tests performed, from which we can derive the total number of elements that passed or failed a specific test. Each test also has an associated issue severity: minor, moderate, serious or critical, which determines the impact on the accessibility if an element fails this test. We assign a <i>severity value</i> to each issue severity respectively: 2, 4, 8, 16. We then calculated the <i>violation value</i> by multiplying the number of elements that failed the test by the issue severity. We define the <i>weight</i> of a rule to be the violation value plus the number of elements that passed the test. So now we have a violation value and a weight for each test. To calculate the score of a webpage, we divide the sum of the violation values of all tests by the sum of the weights of all tests. This results in a number between 0 and 1, which we multiply by 100 to get the Barrierelos-Score. To calculate the score of a whole website, we simply calculate the weighted arithmetic mean of all webpages of the website."
+      }
+    }
+  },
+  "LoginPage": {
+    "logIn": "Log In",
+    "continueWithGoogle": "Continue with Google",
+    "dividerOr": "or",
+    "username": "Username",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "noAccountSignUp": "Don't have an account? Sign Up",
+    "loginFailed": "Log in failed. Check username and password, then try again.",
+    "accountWithEmailAlreadyExists": "Someone has already created an account with this email address. This account has been deleted. The same email address cannot be used again to create an account.",
+    "loginDialogUsernameTitle": "Enter Username",
+    "loginDialogUsernameYes": "Create User",
+    "loginDialogUsernameNo": "Cancel",
+    "invalidUsername": "Invalid username. Must be at least 3 characters long. May not be an email address.",
+    "usernameAlreadyExists": "Username already exists."
+  },
+  "SignupPage": {
+    "signUp": "Sign Up",
+    "username": "Username",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "email": "Email Address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "rememberMe": "Remember me",
+    "alreadyAccountLogIn": "Already have an account? Log in",
+    "passwordConfirmationFailed": "Passwords don't match. Please check that you entered the same password twice.",
+    "signupFailed": "Sign up failed. Please try again later.",
+    "wrongEmail": "Email address wrong, please enter correct email address.",
+    "invalidUsername": "Invalid username. Must be at least 3 characters long. May not be an email address.",
+    "invalidPassword": "Invalid password. Must be at least 6 characters long.",
+    "changeUsernameFailed": "Username already exists."
+  },
+  "ProfilePage": {
+    "profile": "Profile",
+    "success": "Changes successfully saved.",
+    "contact": "Contact",
+    "contactHint": "By changing the username you also change your login.",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "email": "Email Address",
+    "username": "Username",
+    "changeContact": "Save Changes",
+    "changeContactError": "Changing the contact failed. Please try again later.",
+    "wrongEmail": "Email address wrong, please enter correct email address.",
+    "invalidUsername": "Invalid username. Must be at least 3 characters long. May not be an email address.",
+    "invalidPassword": "Invalid password. Must be at least 6 characters long.",
+    "changeUsernameFailed": "Username already exists.",
+    "changePassword": "Change Password",
+    "changePasswordHint": "Please confirm your current password, before changing it.",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "changePasswordError": "Changing the password failed. Please try again later.",
+    "wrongPasswordError": "Changing the password failed. Please check the password.",
+    "passwordConfirmationFailed": "Passwords don't match. Please check that you entered the same password twice.",
+    "deleteAccount": "Delete Account",
+    "deleteAccountHint": "Deleting the account cannot be undone.",
+    "password": "Password",
+    "deleteAccountError": "Deleting the account failed. Please try again later.",
+    "delete_wrongPasswordError": "Wrong password.",
+    "confirmDialogTitle": "Delete Account?",
+    "confirmDialogText": "Are you sure you want to delete this account? Deleting the account cannot be undone!",
+    "confirmDialogNo": "Cancel",
+    "confirmDialogYes": "Delete"
+  },
+  "ReportsPage": {
+    "title": "Reports",
+    "titleWebsites": "Websites",
+    "titleWebpages": "Webpages",
+    "titleUsers": "Users",
+    "text": "An overview of all reports that affect you or that you are involved in discussing.",
+    "tableHeaderDate": "Date",
+    "tableHeaderWebsite": "Website",
+    "tableHeaderWebpage": "Webpage",
+    "tableHeaderUser": "User",
+    "tableHeaderInitiator": "Initiator",
+    "tableHeaderReason": "Reason",
+    "tableHeaderStatus": "Status",
+    "labelRegistered": "Registered",
+    "labelStatus": "Status",
+    "labelMessage": "Message",
+    "buttonSend": "Send Message",
+    "sendError": "Unable to send message. Please try again later.",
+    "loadError": "Cannot load.",
+    "nothingFound": "Nothing found."
+  },
+  "UserPage": {
+    "title": "User",
+    "error": "Cannot load user data.",
+    "labelFirstname": "First Name",
+    "labelLastname": "Last Name",
+    "labelUsername": "Username",
+    "labelRole": "Role",
+    "labelRegistered": "Registered"
+  },
+  "ContributionsPage": {
+    "title": "Contributions",
+    "text": "Your contributions to the project.",
+    "titleWebsites": "Websites",
+    "titleWebpages": "Webpages",
+    "loadError": "Cannot load.",
+    "nothingFound": "Nothing found.",
+    "tableHeaderDate": "Date",
+    "tableHeaderWebsite": "Website",
+    "tableHeaderWebpage": "Webpage",
+    "tableHeaderStatus": "Status"
+  },
+  "ContributePage": {
+    "title": "Contribute",
+    "text": "Contribute to this project by adding a new Website.",
+    "loginRequired": "Please log in or sign up and you're ready to go.",
+    "url": "URL",
+    "addWebsiteButton": "Add Website",
+    "alreadyAddedError": "Website has already been added.",
+    "defaultError": "Cannot add website.",
+    "ChooseWebsite": {
+      "title": "Choose Website",
+      "text": "Add the URL of the website you want to add:"
+    },
+    "ChooseType": {
+      "title": "Choose Type",
+      "text": "Choose whether this website is a government or a private website:",
+      "governmentButton": "Government",
+      "privateButton": "Private"
+    },
+    "ChooseCategory": {
+      "title": "Choose Category",
+      "text": "Choose what category this website belongs to:",
+      "categoryLabel": "Category"
+    },
+    "ChooseLevel": {
+      "title": "Choose Level",
+      "text": "Choose what level of government this website belongs to:",
+      "federalButton": "Federal",
+      "cantonalButton": "Cantonal",
+      "municipalButton": "Municipal"
+    },
+    "ChooseCountry": {
+      "title": "Choose Country",
+      "text": "Choose what country this website belongs to:",
+      "switzerlandButton": "Switzerland",
+      "liechtensteinButton": "Liechtenstein"
+    },
+    "ChooseCanton": {
+      "title": "Choose Canton",
+      "text": "Choose what canton this website belongs to:",
+      "cantonLabel": "Canton"
+    },
+    "ChooseMunicipality": {
+      "title": "Choose Municipality",
+      "text": "Choose what municipality this website belongs to:",
+      "municipalityLabel": "Municipality"
+    },
+    "Done": {
+      "title": "Add Website?",
+      "text": "Confirm that you are finished:",
+      "cancelButton": "Cancel"
+    }
+  },
+  "ReasonEnum": {
+    "INCORRECT": "incorrect",
+    "MISLEADING": "misleading",
+    "INAPPROPRIATE": "inappropriate"
+  },
+  "StateEnum": {
+    "OPEN": "open",
+    "CLOSED": "closed"
+  },
+  "StatusEnum": {
+    "BLOCKED": "blocked",
+    "READY": "ready",
+    "PENDING_INITIAL": "initial scan pending",
+    "PENDING_RESCAN": "rescan pending"
+  },
+  "RoleEnum": {
+    "ADMIN": "Admin",
+    "MODERATOR": "Moderator",
+    "CONTRIBUTOR": "Contributor",
+    "VIEWER": "Viewer",
+    "GUEST": "Guest"
+  },
+  "DeleteEnum": {
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive"
+  },
+  "ReportComponent": {
+    "title": "Report",
+    "labelReason": "Reason",
+    "labelExplanation": "Explanation",
+    "buttonCancel": "Cancel",
+    "buttonReport": "Report",
+    "alreadyReported": "Reported",
+    "success": "Reported.",
+    "error": "Reporting failed."
+  },
+  "Validation": {
+    "invalidUrl": "Invalid URL."
+  },
+  "Tags": {
+    "country": {
+      "switzerland": "Country: Switzerland",
+      "liechtenstein": "Country: Liechtenstein"
+    },
+    "canton": {
+      "ag": "Canton: Aargau",
+      "ai": "Canton: Appenzell Innerrhoden",
+      "ar": "Canton: Appenzell Ausserrhoden",
+      "be": "Canton: Bern",
+      "bl": "Canton: Basel-Landschaft",
+      "bs": "Canton: Basel-Stadt",
+      "fr": "Canton: Fribourg",
+      "ge": "Canton: Geneva",
+      "gl": "Canton: Glarus",
+      "gr": "Canton: Grisons",
+      "ju": "Canton: Jura",
+      "lu": "Canton: Lucerne",
+      "ne": "Canton: Neuchâtel",
+      "nw": "Canton: Nidwalden",
+      "ow": "Canton: Obwalden",
+      "sg": "Canton: St. Gallen",
+      "sh": "Canton: Schaffhausen",
+      "so": "Canton: Solothurn",
+      "sz": "Canton: Schwyz",
+      "tg": "Canton: Thurgau",
+      "ti": "Canton: Ticino",
+      "ur": "Canton: Uri",
+      "vd": "Canton: Vaud",
+      "vs": "Canton: Valais",
+      "zg": "Canton: Zug",
+      "zh": "Canton: Zurich"
+    }
+  },
+  "Category": {
+    "private": {
+      "affiliated": "Affiliated",
+      "university": "University",
+      "news": "News",
+      "shop": "Shop",
+      "other": "Other"
+    }
+  }
+}

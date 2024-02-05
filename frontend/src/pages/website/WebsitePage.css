@@ -1,0 +1,85 @@
+main:has(.MuiTabs-root) {
+  margin-inline: 0;
+}
+
+main:has(.MuiTabs-root) h1 {
+  margin-inline: 24px;
+}
+
+:root {
+  --rating-size: 4.5rem;
+  --bar-size: 0.5rem;
+  --background-color: #ffffff;
+  --score-color-default: #2980b9;
+  --score-color-background: #c7e1f3;
+  --score-color-good: #27ae60;
+  --score-color-medium: #f1c40f;
+  --score-color-bad: #e74c3c;
+}
+
+/* Rating item */
+.score {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  overflow: hidden;
+
+  background: var(--score-color-default);
+  color: var(--score-color-default);
+  width: var(--rating-size);
+  height: var(--rating-size);
+
+  /* Basic style for the text */
+  font-size: calc(var(--rating-size) / 3);
+  line-height: 1;
+}
+
+.score:nth-child(3) {
+  margin-inline-start: 1.5rem;
+}
+
+/* Rating circle content */
+.score span {
+  position: relative;
+  display: flex;
+  font-weight: bold;
+  z-index: 2;
+}
+
+/* Bar mask, creates an inner circle with the same color as the background */
+.score::after {
+  content: "";
+  position: absolute;
+  inset: var(--bar-size);
+  background: var(--background-color);
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* Bar background */
+.score::before {
+  content: "";
+  position: absolute;
+  inset: var(--bar-size);
+  border-radius: inherit;
+  box-shadow: 0 0 0 1rem var(--score-color-background);
+  z-index: -1;
+}
+
+/* Classes to give different colors to ratings, based on their score */
+.score.good {
+  background: var(--score-color-good);
+  color: var(--score-color-good);
+}
+
+.score.medium {
+  background: var(--score-color-medium);
+  color: var(--score-color-medium);
+}
+
+.score.bad {
+  background: var(--score-color-bad);
+  color: var(--score-color-bad);
+}

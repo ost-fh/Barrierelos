@@ -1,0 +1,393 @@
+{
+  "General": {
+    "title": "Barrierelos",
+    "skipLinkLabel": "Zum Hauptinhalt springen",
+    "barrierelosScore": "Barrierelos-Score",
+    "webpageWeight": "Gewichtung",
+    "barrierelosLogoAlt": "Logo mit dazugehörigem Text: Barrierelos: Für besseren Zugang zu digitalen Angeboten."
+  },
+  "WebsiteCategories": {
+    "label": "Kategorie",
+    "GOVERNMENT_FEDERAL": "Bund",
+    "GOVERNMENT_CANTONAL": "Kanton",
+    "GOVERNMENT_MUNICIPAL": "Gemeinde",
+    "PRIVATE_AFFILIATED": "Bundesnaher Betrieb",
+    "PRIVATE_UNIVERSITY": "Universität",
+    "PRIVATE_NEWS": "Newsportal",
+    "PRIVATE_SHOP": "Online-Shop",
+    "PRIVATE_OTHER": "Sonstige"
+  },
+  "NavBar": {
+    "openNavigationMenuBtnAriaLabel": "Navigationsmenü öffnen",
+    "closeNavigationMenuBtnAriaLabel": "Navigationsmenü schliessen",
+    "logout": "Abmelden",
+    "login": "Anmelden"
+  },
+  "NavLinks": {
+    "home": "Startseite",
+    "websites": "Websites",
+    "contribute": "Mitwirken",
+    "faq": "FAQ",
+    "contributions": "Beiträge",
+    "profile": "Profil",
+    "reports": "Meldungen",
+    "user": "Benutzer",
+    "privacyPolicy": "Datenschutz",
+    "impressum": "Impressum"
+  },
+  "HomePage": {
+    "title": "Start",
+    "text": "Laut Bundesamt für Statistik (BFS) haben knapp 18 % der Bevölkerung eine Behinderung im Sinne des Behindertengleichstellungsgesetzes (BehiG). Der Bundesrat gab im Dezember 2023 bekannt, dass er an einer Revision dieser Vorschriften arbeitet, die auch Privatunternehmen dazu verpflichten soll, ihre digitalen Dienste barrierefrei bereitzustellen. Deshalb müssen sich nun weitaus mehr Akteure an diese Regeln halten. Trotz bestehender Regelungen bestehen in der Schweiz deutliche Defizite bei der Zugänglichkeit digitaler Dienste, insbesondere bei staatlichen Dienstleistungen auf kantonaler und kommunaler Ebene. Das Ausmass dieser Defizite lässt sich derzeit jedoch nicht abschätzen. Aus diesem Grund zielt unser Projekt darauf ab, Barrierefreiheitsprobleme auf Websites zu erfassen, diese Websites anhand ihrer Barrierefreiheit zu bewerten und sie nach Region und anderen Kategorien zu klassifizieren. Die gesammelten Daten werden der Öffentlichkeit zugänglich gemacht, um das Bewusstsein für die Barrierefreiheit im Internet zu schärfen und Website-Betreibern bei der Lösung solcher Probleme zu helfen.",
+    "searchLabel": "Bestehende Website suchen",
+    "searchStringEmptyLabel": "Tippen Sie um zu suchen",
+    "searchNoResultsLabel": "Keine Website mit dieser Domain gefunden",
+    "viewWebsiteBtnLabel": "Auswertung ansehen",
+    "searchTitle": "Webseite suchen"
+  },
+  "WebsitesPage": {
+    "title": "Websites",
+    "groupByLabel": "Gruppieren nach",
+    "groupBy": {
+      "website": "Website",
+      "region": "Region"
+    },
+    "WebsiteTable": {
+      "ariaLabel": "Tabelle der Websites",
+      "domainHeaderLabel": "Domain",
+      "categoryHeaderLabel": "Kategorie",
+      "scoreHeaderLabel": "Barrierelos-Score"
+    },
+    "RegionTable": {
+      "ariaLabel": "Tabelle der Websites zusammengefasst nach Region und sortiert nach Barrierelos-Score",
+      "regionHeaderLabel": "Region",
+      "scoreHeaderLabel": "Barrierelos-Score"
+    },
+    "addWebsiteButton": "Website hinzufügen"
+  },
+  "WebsitePage": {
+    "WebsiteStatus": {
+      "label": "Status",
+      "BLOCKED": "Blockiert",
+      "READY": "Bereit",
+      "PENDING_INITIAL": "Initialer Scan ausstehend",
+      "PENDING_RESCAN": "Erneuter Scan ausstehend"
+    },
+    "tabsAriaLabel": "Tabs",
+    "tabOverviewLabel": "Übersicht",
+    "tabRulesLabel": "Probleme",
+    "tabScanInfosLabel": "Scan Infos",
+    "OverviewTab": {
+      "whatIsTheBarrierelosScoreLabel": "Was ist der Barrierelos-Score?",
+      "websiteDetailsHeader": "Website Details",
+      "addedOnLabel": "Hinzugefügt am",
+      "categoryLabel": "Kategorie",
+      "tagsLabel": "Tags",
+      "violationsPerWcagPrincipleHeader": "Probleme pro WCAG Prinzip",
+      "violationsPerWcagPrinciplePerceivableLabel": "Wahrnehmbar",
+      "violationsPerWcagPrincipleOperableLabel": "Bedienbar",
+      "violationsPerWcagPrincipleUnderstandableLabel": "Verständlich",
+      "violationsPerWcagPrincipleRobustLabel": "Robust",
+      "whatIsWcagLabel": "Was ist WCAG?",
+      "webpagesHeader": "Webpages",
+      "webpagesTableAriaLabel": "Webpages Tabelle",
+      "webpageUrl": "URL",
+      "webpageWeightTooltip": "Bestimmt den Einfluss dieser Webpage auf den Website Score. Die Gewichtung basiert auf der Anzahl HTML Elemente auf der Webpage die relevant für die Barrierefreiheit sind."
+    },
+    "IssuesTab": {
+      "header": "Probleme pro Webpage",
+      "violationsLabel": "Verstösse",
+      "violationPercentageSuffix": " der für diese Regel getesteten Elemente",
+      "issueTypeLabel": "Type",
+      "issueTypeBestPracticeLabel": "Best-Practice",
+      "issueTypeWcagLabel": "WCAG",
+      "issueTypeWcagVersionLabel": "Version",
+      "issueTypeWcagLevelLabel": "Level",
+      "issueTypeWcagRelevantCriteriaLabel": "Relevante Kriterien",
+      "learnMoreLinkLabel": "Mehr Informationen (auf Englisch)"
+    },
+    "ScanInfosTab": {
+      "scanInfosHeader": "Scan Infos",
+      "lastScannedAtLabel": "Zuletzt gescannt am",
+      "webpagesHeader": "Webpage Scans",
+      "scanStatusLabel": "Scan Status",
+      "ScanStatus": {
+        "SUCCESS": "Erfolgreich",
+        "FAILED": "Fehlgeschlagen",
+        "notYetScanned": "Noch nicht gescannt"
+      },
+      "technicalErrorLabel": "Technischer Fehler"
+    },
+    "report": "Melden"
+  },
+  "Faq": {
+    "header": "Häufig gestellte Fragen (FAQ)",
+    "Questions": {
+      "barrierelos-explanation": {
+        "question": "Was bedeutet <i>Barrierelos</i>?",
+        "answer": "<i>Barrierelos</i> ist schweizerdeutscher Dialekt für das deutsche Wort 'barrierefrei'."
+      },
+      "website-vs-webpage": {
+        "question": "Was ist der Unterschied zwischen einer Website und einer Webpage?",
+        "answer": "Eine Website ist eine Sammlung von Webpages. Die Website <i>barrierelos.ch</i> besteht zum Beispiel aus vielen Webpages wie <i>barrierelos.ch/faq</i>, <i>barrierelos.ch/login</i> und <i>barrierelos.ch/profile</i>."
+      },
+      "wcag-explanation": {
+        "question": "What ist <i>WCAG</i>?",
+        "answer": "<i>WCAG</i> ist ein vom World Wide Web Consortium (W3C) entwickelter Standard, der darauf abzielt, Webinhalte für Menschen mit Behinderungen besser zugänglich zu machen. Er definiert viele Kriterien, die eine Website erfüllen sollte, um zugänglich zu sein. Die Kriterien sind in vier Kategorien unterteilt, die Prinzipien genannt werden: <i>Wahrnehmbar</i>, Bedienbar</i>, <i>Verständlich</i> und <i>Robust</i>. Jedes Prinzip ist weiter in Leitlinien unterteilt, und jede Leitlinie ist in Kriterien unterteilt. Der WCAG Standard ist im Bereich der Barrierefreiheit im Internet weit verbreitet und bildet auch die Grundlage für viele nationale Gesetze und Vorschriften."
+      },
+      "barrierelos-score-explanation": {
+        "question": "Was ist der <i>Barrierelos-Score</i>?",
+        "answer": "Der <i>Barrierelos-Score</i> ist eine Wertung von 0 bis 100. Sie wird aus einem automatischen Scan der Website mit der Axe-core Zugänglichkeits-Engine abgeleitet. Die Punktzahl basiert auf der Anzahl der auf der Website gefundenen Zugänglichkeitsprobleme und dem Schweregrad dieser Probleme. Je höher die Punktzahl, desto besser ist die Zugänglichkeit der Website. Bitte beachten Sie, dass ein automatischer Scan nur eine Teilmenge aller Zugänglichkeitsprobleme finden kann. Daher sollte der Barrierelos-Score nur als eine <strong>eingeschränkte Annäherung</strong> an die tatsächliche Zugänglichkeit verstanden werden."
+      },
+      "barrierelos-score-calculation": {
+        "question": "Wie wird der Barrierelos-Score berechnet?",
+        "answer": "Die Axe-core Zugänglichkeits-Engine führt eine Reihe von Tests für jedes relevante HTML-Element für einen bestimmten Test durch. Daraus ergibt sich eine umfangreiche Liste der durchgeführten Tests, aus der wir die Gesamtzahl der Elemente ableiten können, die einen bestimmten Test bestanden oder nicht bestanden haben. Jedem Test ist ein Schweregrad zugeordnet: geringfügig, mittelschwer, schwerwiegend oder kritisch, der die Auswirkungen auf die Zugänglichkeit bestimmt, wenn ein Element diesen Test nicht besteht. Wir ordnen jedem Schweregrad einen numerischen <i>Schweregrads-Wert</i> zu: 2, 4, 8, 16. Anschließend berechnen wir den <i>Verstoss-Wert</i>, indem wir die Anzahl der Elemente, die den Test nicht bestanden haben, mit dem Schweregrads-Wert multiplizieren. Wir definieren das <i>Gewicht</i> einer Regel als den Verstoss-Wert plus die Anzahl der Elemente, die den Test bestanden haben. Jetzt haben wir also einen Verstoss-Wert und eine Gewicht für jeden Test. Um die Punktzahl einer Webpage zu berechnen, dividieren wir die Summe der Verstoss-Werte aller Tests durch die Summe der Gewichte aller Tests. Das Ergebnis ist eine Zahl zwischen 0 und 1, die wir mit 100 multiplizieren, um den Barrierelos-Score zu erhalten. Um den Score einer gesamten Website zu berechnen, berechnen wir einfach das gewichtete arithmetische Mittel aller Webpages der Website."
+      }
+    }
+  },
+  "LoginPage": {
+    "logIn": "Anmelden",
+    "continueWithGoogle": "Weiter mit Google",
+    "dividerOr": "oder",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccountSignUp": "Keinen Account? Account erstellen",
+    "loginFailed": "Login fehlgeschlagen. Benutzername und Passwort überprüfen und nochmal versuchen.",
+    "accountWithEmailAlreadyExists": "Jemand hat mit dieser E-Mail-Adresse bereits ein Konto erstellt. Dieses Konto wurde gelöscht. Die gleiche E-Mail-Adresse kann nicht erneut zum Erstellen eines Kontos verwendet werden.",
+    "loginDialogUsernameTitle": "Benutzername eingeben",
+    "loginDialogUsernameYes": "Benutzer erstellen",
+    "loginDialogUsernameNo": "Abbrechen",
+    "invalidUsername": "Ungültiger Benutzername. Muss mindestens 3 Zeichen lang sein. Darf keine E-Mail-Adresse sein.",
+    "usernameAlreadyExists": "Benutzername existiert bereits."
+  },
+  "SignupPage": {
+    "signUp": "Registrieren",
+    "username": "Benutzername",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "rememberMe": "Angemeldet bleiben",
+    "alreadyAccountLogIn": "Bereits einen Account? Anmelden",
+    "passwordConfirmationFailed": "Passwörter stimmen nicht überein. Bitte überprüfen, dass zweimal das gleiche Passwort eingegeben wurde.",
+    "signupFailed": "Registration fehlgeschlagen. Bitte später nochmal versuchen.",
+    "wrongEmail": "E-Mail-Adresse falsch, bitte korrekte E-Mail-Adresse angeben.",
+    "invalidUsername": "Ungültiger Benutzername. Muss mindestens 3 Zeichen lang sein. Darf keine E-Mail-Adresse sein.",
+    "invalidPassword": "Passwort ungültig. Muss mindestens 6 Zeichen lang sein.",
+    "changeUsernameFailed": "Benutzername existiert bereits."
+  },
+  "ProfilePage": {
+    "profile": "Profil",
+    "success": "Änderungen erfolgreich gespeichert.",
+
+    "contact": "Kontakt",
+    "contactHint": "Mit ändern des Benutzernamens ändert sich auch der Login.",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "email": "E-Mail-Adresse",
+    "username": "Benutzername",
+    "changeContact": "Änderungen Speichern",
+    "changeContactError": "Kontakt konnte nicht geändert werden. Bitte später noch einmal probieren.",
+    "wrongEmail": "E-Mail-Adresse falsch, bitte korrekte E-Mail-Adresse angeben.",
+    "invalidUsername": "Ungültiger Benutzername. Muss mindestens 3 Zeichen lang sein. Darf keine E-Mail-Adresse sein.",
+    "invalidPassword": "Passwort ungültig. Muss mindestens 6 Zeichen lang sein.",
+    "changeUsernameFailed": "Benutzername existiert bereits.",
+
+    "changePassword": "Passwort ändern",
+    "changePasswordHint": "Bitte mit aktuellem Passwort bestätigen, bevor das Passwort geändert werden kann.",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmNewPassword": "Neues Passwort bestätigen",
+    "changePasswordError": "Passwort konnte nicht geändert werden. Bitte später noch einmal probieren.",
+    "wrongPasswordError": "Passwort konnte nicht geändert werden. Bitte Passwort überprüfen.",
+    "passwordConfirmationFailed": "Passwörter stimmen nicht überein. Bitte überprüfen, dass zweimal das gleiche Passwort eingegeben wurde.",
+
+    "deleteAccount": "Konto Löschen",
+    "deleteAccountHint": "Das Löschen des Kontos kann nicht rückgängig gemacht werden.",
+    "password": "Passwort",
+    "deleteAccountError": "Account konnte nicht gelöscht werden. Bitte später noch einmal probieren.",
+    "delete_wrongPasswordError": "Falsches Passwort.",
+    "confirmDialogTitle": "Konto löschen?",
+    "confirmDialogText": "Soll dieses Konto wirklich gelöscht werden? Das Löschen des Kontos kann nicht rückgängig gemacht werden!",
+    "confirmDialogNo": "Cancel",
+    "confirmDialogYes": "Delete"
+  },
+  "ReportsPage": {
+    "title": "Meldungen",
+    "titleWebsites": "Websites",
+    "titleWebpages": "Webpages",
+    "titleUsers": "Benutzer",
+    "text": "Eine Übersicht über alle Meldungen die dich betreffen oder bei deren Besprechung du involviert bist.",
+    "tableHeaderDate": "Datum",
+    "tableHeaderWebsite": "Website",
+    "tableHeaderWebpage": "Webpage",
+    "tableHeaderUser": "Benutzer",
+    "tableHeaderInitiator": "Initiator",
+    "tableHeaderReason": "Grund",
+    "tableHeaderStatus": "Status",
+    "labelRegistered": "Registriert",
+    "labelStatus": "Status",
+    "labelMessage": "Nachricht",
+    "buttonSend": "Nachricht Absenden",
+    "sendError": "Absenden der Nachricht nicht möglich, bitte später noch einmal versuchen.",
+    "loadError": "Kann nicht geladen werden.",
+    "nothingFound": "Nichts gefunden."
+  },
+  "UserPage": {
+    "title": "Benutzer",
+    "error": "Benutzerdaten können nicht geladen werden.",
+    "labelFirstname": "Vorname",
+    "labelLastname": "Nachname",
+    "labelUsername": "Benutzername",
+    "labelRole": "Rolle",
+    "labelRegistered": "Registriert"
+  },
+  "ContributionsPage": {
+    "title": "Beiträge",
+    "text": "Deine Beiträge, die du zu diesem Projekt geleistet hast.",
+    "titleWebsites": "Websites",
+    "titleWebpages": "Webpages",
+    "loadError": "Kann nicht geladen werden.",
+    "nothingFound": "Nichts gefunden.",
+    "tableHeaderDate": "Datum",
+    "tableHeaderWebsite": "Website",
+    "tableHeaderWebpage": "Webpage",
+    "tableHeaderStatus": "Status"
+  },
+  "ContributePage": {
+    "title": "Mitwirken",
+    "text": "Leiste einen Beitrag zu diesem Projekt, indem du eine neue Website hinzufügst.",
+    "loginRequired": "Logge dich ein oder erstelle einen Account und schon kann es losgehen.",
+    "url": "URL",
+    "addWebsiteButton": "Website hinzufügen",
+    "alreadyAddedError": "Website wurde bereits hinzugefügt.",
+    "defaultError": "Website kann nicht hinzugefügt werden.",
+    "ChooseWebsite": {
+      "title": "Website wählen",
+      "text": "Füge die URL der Website hinzu, welche du hinzufügen möchtest:"
+    },
+    "ChooseType": {
+      "title": "Typ wählen",
+      "text": "Wähle ob diese Website staatlich oder privat ist:",
+      "governmentButton": "staatlich",
+      "privateButton": "privat"
+    },
+    "ChooseCategory": {
+      "title": "Kategorie wählen",
+      "text": "Wähle zu welcher Kategorie diese Website gehört:",
+      "categoryLabel": "Kategorie"
+    },
+    "ChooseLevel": {
+      "title": "Wähle die Ebene",
+      "text": "Whäle zu welcher staatlichen Ebene diese Website gehört:",
+      "federalButton": "Bund",
+      "cantonalButton": "Kanton",
+      "municipalButton": "Gemeinde"
+    },
+    "ChooseCountry": {
+      "title": "Wähle das Land",
+      "text": "Wähle zu welchem Land diese Website gehört:",
+      "switzerlandButton": "Schweiz",
+      "liechtensteinButton": "Liechtenstein"
+    },
+    "ChooseCanton": {
+      "title": "Kanton wählen",
+      "text": "Wähle zu welchem Kanton diese Website gehört:",
+      "cantonLabel": "Kanton"
+    },
+    "ChooseMunicipality": {
+      "title": "Gemeinde wählen",
+      "text": "Wähle zu welcher Gemeinde diese Website gehört:",
+      "municipalityLabel": "Gemeinde"
+    },
+    "Done": {
+      "title": "Website hinzufügen?",
+      "text": "Bestätige dass du die Website so hinzufügen möchtest:",
+      "cancelButton": "Abbrechen"
+    }
+  },
+  "ReasonEnum": {
+    "INCORRECT": "inkorrekt",
+    "MISLEADING": "irreführend",
+    "INAPPROPRIATE": "unangebracht"
+  },
+  "StateEnum": {
+    "OPEN": "offen",
+    "CLOSED": "abgeschlossen"
+  },
+  "StatusEnum": {
+    "BLOCKED": "blockiert",
+    "READY": "bereit",
+    "PENDING_INITIAL": "initialer Scan ausstehend",
+    "PENDING_RESCAN": "erneuter Scan ausstehend"
+  },
+  "RoleEnum": {
+    "ADMIN": "Administrator",
+    "MODERATOR": "Moderator",
+    "CONTRIBUTOR": "Kontributor",
+    "VIEWER": "Betrachter",
+    "GUEST": "Gast"
+  },
+  "DeleteEnum": {
+    "ACTIVE": "Aktiv",
+    "INACTIVE": "Inaktiv"
+  },
+  "ReportComponent": {
+    "title": "Melden",
+    "labelReason": "Grund",
+    "labelExplanation": "Begründung",
+    "buttonCancel": "Abbrechen",
+    "buttonReport": "Melden",
+    "alreadyReported": "Gemeldet",
+    "success": "Gemeldet.",
+    "error": "Melden fehlgeschlagen."
+  },
+  "Validation": {
+    "invalidUrl": "Ungültige URL."
+  },
+  "Tags": {
+    "country": {
+      "switzerland": "Land: Schweiz",
+      "liechtenstein": "Land: Liechtenstein"
+    },
+    "canton": {
+      "ag": "Kanton: Aargau",
+      "ai": "Kanton: Appenzell Innerrhoden",
+      "ar": "Kanton: Appenzell Ausserrhoden",
+      "be": "Kanton: Bern",
+      "bl": "Kanton: Basel-Landschaft",
+      "bs": "Kanton: Basel-Stadt",
+      "fr": "Kanton: Fribourg",
+      "ge": "Kanton: Genf",
+      "gl": "Kanton: Glarus",
+      "gr": "Kanton: Graubünden",
+      "ju": "Kanton: Jura",
+      "lu": "Kanton: Luzern",
+      "ne": "Kanton: Neuchâtel",
+      "nw": "Kanton: Nidwalden",
+      "ow": "Kanton: Obwalden",
+      "sg": "Kanton: St. Gallen",
+      "sh": "Kanton: Schaffhausen",
+      "so": "Kanton: Solothurn",
+      "sz": "Kanton: Schwyz",
+      "tg": "Kanton: Thurgau",
+      "ti": "Kanton: Tessin",
+      "ur": "Kanton: Uri",
+      "vd": "Kanton: Waadt",
+      "vs": "Kanton: Wallis",
+      "zg": "Kanton: Zug",
+      "zh": "Kanton: Zürich"
+    }
+  },
+  "Category": {
+    "private": {
+      "affiliated": "Staatsnah",
+      "university": "Bildungsinstitut",
+      "news": "Nachrichten",
+      "shop": "Shop",
+      "other": "Anderes"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+.footer-links a {
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.footer-links a:visited {
+  color: white;
+}
+
+.footer-links a:hover, .footer-links a:focus {
+  outline-offset: 1px;
+  border-radius: 3px;
+  outline: 1px solid #c7e1f3;
+}

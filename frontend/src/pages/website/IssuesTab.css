@@ -1,0 +1,17 @@
+.MuiAccordionSummary-content {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+p:has(.issueType) {
+  margin-block-end: 0;
+}
+
+.issueType {
+  display: block;
+  font-weight: bold;
+}
+
+.issueType ~ span {
+  display: block;
+}

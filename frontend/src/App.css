@@ -1,0 +1,36 @@
+html, body, #root {
+  height: 100%
+}
+
+.content-container {
+  min-height: calc(100vh - 24px - 72px);
+}
+
+main, footer {
+  margin-inline: 24px;
+}
+
+hr {
+  margin-block: 24px;
+}
+
+footer {
+  position: relative;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0 0 0;
+  padding: 24px;
+  background: #333333;
+  color: white;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #00668a;
+}
+
+a:hover {
+  color: #3384a1;
+}

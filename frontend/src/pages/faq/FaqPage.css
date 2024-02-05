@@ -1,0 +1,8 @@
+.faq-entry .MuiAccordionDetails-root {
+  padding: 16px;
+}
+
+.faq-entry strong {
+  font-weight: normal;
+  text-decoration: underline;
+}

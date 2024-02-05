@@ -1,3 +1,8 @@
+FROM node:18 as build
+COPY . /
+RUN npm ci --cache .npm --prefer-offline
+RUN npm run build
+
 FROM node:18
 
 # The next three commands are required for puppeteer to run a headless chrome in the container
@@ -11,9 +16,9 @@ ENV NODE_ENV production
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY --from=build package*.json ./
 
-COPY ./dist/ ./dist
+COPY --from=build ./dist/ ./dist
 
 RUN npm clean-install
 

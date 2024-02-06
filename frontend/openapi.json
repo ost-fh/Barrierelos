@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://barrierelos.ch:40001",
+      "url": "https://barrierelos.sifs0003.infs.ch/api",
       "description": "Generated server url"
     }
   ],

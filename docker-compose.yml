@@ -1,0 +1,133 @@
+version: "3.8"
+# name: barrierelos
+
+services:
+  proxy:
+    image: geometalab/env-configurable-caddy:latest
+    networks:
+      - web
+      - default
+    environment:
+      CADDY_CONFIG: |
+        :8080 {
+          route {
+            handle /api/* {
+              uri strip_prefix /api
+              reverse_proxy backend:8030
+            }
+            redir /api /api/
+            reverse_proxy /* {
+              to frontend:5000
+            }
+          }
+        }
+    deploy:
+      labels:
+        # caddy: barrierelos.projects-ost.ch
+        caddy: barrierelos.sifs0003.infs.ch
+        caddy.reverse_proxy: "{{upstreams 8080}}"
+      restart_policy:
+        condition: "on-failure"
+
+  rabbitmq:
+    container_name: barrierelos-rabbitmq
+    image: rabbitmq:3-management
+    restart: always
+    volumes:
+      - rabbitmq-data-dir:/var/lib/rabbitmq/mnesia/
+    networks:
+      - default
+    hostname: rabbitmq
+    # expose:
+    #   - 5672
+    # ports:
+    #   - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=$RABBITMQ_USER
+      - RABBITMQ_DEFAULT_PASS=$RABBITMQ_PASSWORD
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  scanner:
+    container_name: barrierelos-scanner
+    image: $CONTAINER_REGISTRY_PATH/scanner:latest
+    restart: always
+    depends_on:
+      - rabbitmq
+    networks:
+      - default
+    environment:
+      - NODE_ENV=production
+      - RABBITMQ_HOSTNAME=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=$RABBITMQ_USER
+      - RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+
+  database:
+    container_name: barrierelos-database
+    image: postgres:16.0
+    restart: always
+    # ports:
+    #   - "5432:5432"
+    environment:
+      - POSTGRES_DB=barrierelos-db
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+    volumes:
+      - barrierelos-data:/var/lib/postgresql/data/
+    networks:
+      - default
+    healthcheck:
+      test: pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  backend:
+    container_name: barrierelos-backend
+    image: $CONTAINER_REGISTRY_PATH/backend:latest
+    restart: always
+    # expose:
+    #   - 8030
+    # ports:
+    #   - "40001:8030"
+    networks:
+      - default
+    environment:
+      - RABBITMQ_USER=$RABBITMQ_USER
+      - RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/barrierelos-db?stringtype=unspecified
+    depends_on:
+      - database
+      - rabbitmq
+
+  frontend:
+    container_name: barrierelos-frontend
+    image: $CONTAINER_REGISTRY_PATH/frontend:latest
+    restart: always
+    networks:
+      - default
+    # ports:
+    #   - "40000:5000"
+    depends_on:
+      - backend
+
+volumes:
+  rabbitmq-data-dir:
+  barrierelos-data:
+
+networks:
+  web:
+    external: true
+    name: web

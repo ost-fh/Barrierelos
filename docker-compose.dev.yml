@@ -1,0 +1,64 @@
+# This file is used for development only and cloned into the local repositories
+# It extends the production configuration additional configuration and reset values
+
+services:
+  rabbitmq:
+    volumes: !reset []
+    networks:
+      - default
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-barrierelos}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD:-barrierelos}
+
+  scanner:
+    image: !reset
+    build:
+      context: scanner
+      dockerfile: ./Dockerfile
+    networks:
+      - default
+    environment:
+      - RABBITMQ_HOSTNAME=${RABBITMQ_HOSTNAME:-barrierelos-rabbitmq}
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=${RABBITMQ_USER:-barrierelos}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD:-barrierelos}
+    deploy: !reset {}
+
+
+  database:
+    volumes: !reset []
+    networks:
+      - default
+    ports:
+      - "5040:5432"
+
+  backend:
+    image: !reset
+    build:
+      context: backend
+      dockerfile: ./Dockerfile
+    networks:
+      - default
+    ports:
+      - "8030:8030"
+
+  frontend:
+    image: !reset
+    build:
+      context: frontend
+      dockerfile: ./Dockerfile
+    depends_on: !reset []
+    networks: !reset
+      - hostnet
+    extra_hosts:
+      # Enables using "host.docker.internal" to access the host machine
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "5000:5000"
+
+networks:
+  hostnet:
+    external: true
+    name: host

@@ -5,9 +5,11 @@ services:
   rabbitmq:
     volumes: !reset []
     networks:
+      - web
       - default
     ports:
       - "${RABBITMQ_PORT:-5672}:5672"
+      - "15672:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-barrierelos}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD:-barrierelos}
@@ -18,6 +20,7 @@ services:
       context: scanner
       dockerfile: ./Dockerfile
     networks:
+      - web
       - default
     environment:
       - RABBITMQ_HOSTNAME=${RABBITMQ_HOSTNAME:-barrierelos-rabbitmq}
@@ -30,6 +33,7 @@ services:
   database:
     volumes: !reset []
     networks:
+      - web
       - default
     ports:
       - "5040:5432"
@@ -40,6 +44,7 @@ services:
       context: backend
       dockerfile: ./Dockerfile
     networks:
+      - web
       - default
     ports:
       - "8030:8030"
@@ -51,14 +56,10 @@ services:
       dockerfile: ./Dockerfile
     depends_on: !reset []
     networks: !reset
-      - hostnet
+      - web
+      - default
     extra_hosts:
       # Enables using "host.docker.internal" to access the host machine
       - "host.docker.internal:host-gateway"
     ports:
       - "5000:5000"
-
-networks:
-  hostnet:
-    external: true
-    name: host

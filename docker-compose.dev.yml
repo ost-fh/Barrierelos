@@ -4,9 +4,7 @@
 services:
   rabbitmq:
     volumes: !reset []
-    networks:
-      - web
-      - default
+    networks: !reset []
     ports:
       - "${RABBITMQ_PORT:-5672}:5672"
       - "15672:15672"
@@ -14,14 +12,16 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-barrierelos}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD:-barrierelos}
 
+  proxy:
+    image: geometalab/env-configurable-caddy:latest
+    networks: !reset []
+
   scanner:
-    image: !reset
+    image: !reset ""
     build:
       context: scanner
       dockerfile: ./Dockerfile
-    networks:
-      - web
-      - default
+    networks: !reset []
     environment:
       - RABBITMQ_HOSTNAME=${RABBITMQ_HOSTNAME:-barrierelos-rabbitmq}
       - RABBITMQ_PORT=5672
@@ -29,37 +29,32 @@ services:
       - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD:-barrierelos}
     deploy: !reset {}
 
-
   database:
     volumes: !reset []
-    networks:
-      - web
-      - default
+    networks: !reset []
     ports:
       - "5040:5432"
 
   backend:
-    image: !reset
+    image: !reset ""
     build:
       context: backend
       dockerfile: ./Dockerfile
-    networks:
-      - web
-      - default
+    networks: !reset []
     ports:
       - "8030:8030"
 
   frontend:
-    image: !reset
+    image: !reset ""
     build:
       context: frontend
       dockerfile: ./Dockerfile
     depends_on: !reset []
-    networks: !reset
-      - web
-      - default
+    networks: !reset []
     extra_hosts:
       # Enables using "host.docker.internal" to access the host machine
       - "host.docker.internal:host-gateway"
     ports:
-      - "5000:5000"
+      - "5555:5000"
+
+networks: !reset {}

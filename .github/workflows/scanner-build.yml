@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
+          cache-dependency-path: scanner/package-lock.json
 
       - name: Cache node modules
         uses: actions/cache@v2

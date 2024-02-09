@@ -10,11 +10,13 @@
 name: Create and publish a Docker image for the backend
 
 on:
-  push:
+  workflow_run:
+    workflows: 
+      - Backend Test Stage
+    types:
+      - completed
     branches: 
      - main
-    paths:
-     - backend/**
 
 jobs:        
   build-and-push-backend-image:

@@ -1,8 +1,6 @@
 name: Scanner Test Stage
 
 on:
-  # push:
-  # pull_request:
   workflow_run:
     workflows: 
       - Scanner Build Stage
@@ -15,10 +13,7 @@ defaults:
 
 jobs:
   lint:
-    # if: jobs.build.result == 'success'
     runs-on: ubuntu-latest
-    # needs: build
-    # uses: ./.github/workflows/scanner-build.yml
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,10 +30,7 @@ jobs:
         run: npm run test:lint
 
   type-check:
-    # if: jobs.build.result == 'success'
     runs-on: ubuntu-latest
-    # needs: build
-    # uses: ./.github/workflows/scanner-build.yml
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -55,10 +47,7 @@ jobs:
         run: npm run test:typecheck
 
   unit-test:
-    # if: jobs.build.result == 'success'
     runs-on: ubuntu-latest
-    # needs: build
-    # uses: ./.github/workflows/scanner-build.yml
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

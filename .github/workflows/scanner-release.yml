@@ -9,16 +9,14 @@
 
 name: Create and publish a Docker image for the scanner
 
-defaults:
-  run:
-    working-directory: ./scanner
-
 on:
-  push:
+  workflow_run:
+    workflows: 
+      - Scanner Test Stage
+    types:
+      - completed
     branches: 
      - main
-    paths:
-     - scanner/**
 
 jobs:        
   build-and-push-scanner-image:

@@ -46,7 +46,8 @@ jobs:
         # Adjust the path to match your project structure
         # You can adjust the expiration time as needed
         # Learn more: https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts
-        artifacts:
-          paths:
-            - build/libs/*.jar
-          expire-in: 1 day
+      - name: Upload libs
+        uses: actions/upload-artifact@v4
+        with:
+          name: libs
+          path: build/libs/*.jar

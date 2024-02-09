@@ -2,12 +2,12 @@ name: Backend Build Stage
 
 on:
   push:
-    # paths:
-    #  - backend/**
+    paths:
+     - backend/**
 
   pull_request:
-    # paths:
-    #   - backend/**
+    paths:
+      - backend/**
 
 defaults:
   run:

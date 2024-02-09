@@ -10,11 +10,13 @@
 name: Create and publish a Docker image for the frontend
 
 on:
-  push:
+  workflow_run:
+    workflows: 
+      - Frontend Test Stage
+    types:
+      - completed
     branches: 
      - main
-    paths:
-     - frontend/**
 
 jobs:
   build-and-push-frontend-image:

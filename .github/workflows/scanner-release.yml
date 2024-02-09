@@ -9,6 +9,10 @@
 
 name: Create and publish a Docker image for the scanner
 
+defaults:
+  run:
+    working-directory: ./scanner
+
 on:
   push:
     branches: 
